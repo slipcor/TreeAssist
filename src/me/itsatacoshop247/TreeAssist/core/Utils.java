@@ -2,8 +2,10 @@ package me.itsatacoshop247.TreeAssist.core;
 
 import com.gmail.nossr50.api.AbilityAPI;
 import com.gmail.nossr50.api.ExperienceAPI;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import me.itsatacoshop247.TreeAssist.TreeAssist;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
+import me.itsatacoshop247.TreeAssist.trees.BaseTree;
 import me.itsatacoshop247.TreeAssist.trees.CustomTree;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -448,6 +450,18 @@ public final class Utils {
 				.contains(itemStack.getTypeId()));
 	}
 
+    public static String joinArray(final Object[] array, final String glue) {
+        final StringBuilder result = new StringBuilder("");
+        for (final Object o : array) {
+            result.append(glue);
+            result.append(o);
+        }
+        if (result.length() <= glue.length()) {
+            return result.toString();
+        }
+        return result.substring(glue.length());
+    }
+
 	/**
 	 * Add mcMMO exp for destroying a block
 	 * 
@@ -460,61 +474,28 @@ public final class Utils {
 		Plugin mcmmo = Utils.plugin.getServer().getPluginManager().getPlugin("mcMMO");
 
 		if (player == null) {
-			return;
-		}
+            BaseTree.debug.i("no Player!!");
+            return;
+        }
 
         MaterialData state = block.getState().getData();
 
         if (!(state instanceof Tree)) {
+            BaseTree.debug.i("no Tree!!");
             return;
         }
 
         Tree tree = (Tree) state;
-		
-		if (player.isOnline()) {
-		
-			if (tree.getSpecies() == TreeSpecies.GENERIC) {
-				ExperienceAPI.addXP(player, "Woodcutting", mcmmo.getConfig()
-						.getInt("Experience.Woodcutting.Oak"));
-			} else if (tree.getSpecies() == TreeSpecies.REDWOOD) {
-				ExperienceAPI.addXP(player, "Woodcutting", mcmmo.getConfig()
-						.getInt("Experience.Woodcutting.Spruce"));
-            } else if (tree.getSpecies() == TreeSpecies.BIRCH) {
-				ExperienceAPI.addXP(player, "Woodcutting", mcmmo.getConfig()
-						.getInt("Experience.Woodcutting.Birch"));
-            } else if (tree.getSpecies() == TreeSpecies.JUNGLE) {
-                ExperienceAPI.addXP(player, "Woodcutting", mcmmo.getConfig()
-                        .getInt("Experience.Woodcutting.Jungle"));
-            } else if (tree.getSpecies() == TreeSpecies.ACACIA) {
-                ExperienceAPI.addXP(player, "Woodcutting", mcmmo.getConfig()
-                        .getInt("Experience.Woodcutting.Acacia"));
-            } else if (tree.getSpecies() == TreeSpecies.DARK_OAK) {
-                ExperienceAPI.addXP(player, "Woodcutting", mcmmo.getConfig()
-                        .getInt("Experience.Woodcutting.Dark_Oak"));
-            }
-		} else {
-			
-			if (tree.getSpecies() == TreeSpecies.GENERIC) {
-				ExperienceAPI.addRawXPOffline(player.getName(), "Woodcutting", mcmmo.getConfig()
-						.getInt("Experience.Woodcutting.Oak"));
-			} else if (tree.getSpecies() == TreeSpecies.REDWOOD) {
-				ExperienceAPI.addRawXPOffline(player.getName(), "Woodcutting", mcmmo.getConfig()
-						.getInt("Experience.Woodcutting.Spruce"));
-            } else if (tree.getSpecies() == TreeSpecies.BIRCH) {
-				ExperienceAPI.addRawXPOffline(player.getName(), "Woodcutting", mcmmo.getConfig()
-						.getInt("Experience.Woodcutting.Birch"));
-            } else if (tree.getSpecies() == TreeSpecies.JUNGLE) {
-				ExperienceAPI.addRawXPOffline(player.getName(), "Woodcutting", mcmmo.getConfig()
-						.getInt("Experience.Woodcutting.Jungle"));
-			} else if (tree.getSpecies() == TreeSpecies.ACACIA) {
-                ExperienceAPI.addRawXPOffline(player.getName(), "Woodcutting", mcmmo.getConfig()
-                        .getInt("Experience.Woodcutting.Acacia"));
-            } else if (tree.getSpecies() == TreeSpecies.DARK_OAK) {
-                ExperienceAPI.addRawXPOffline(player.getName(), "Woodcutting", mcmmo.getConfig()
-                        .getInt("Experience.Woodcutting.Dark_Oak"));
-            }
-		}
-	}
+        int toAdd = ExperienceConfig.getInstance().getWoodcuttingTreeXP(tree.getSpecies());
+        if (player.isOnline()) {
+            BaseTree.debug.i("adding " + toAdd + " EXP!");
+            ExperienceAPI.addXP(player, "Woodcutting", toAdd);
+        } else {
+            BaseTree.debug.i("adding " + toAdd + " offline EXP!");
+            ExperienceAPI.addRawXPOffline(player.getName(), "Woodcutting", mcmmo.getConfig()
+                    .getInt("Experience.Woodcutting.Dark_Oak"));
+        }
+    }
 
 	public final static BlockFace[] NEIGHBORFACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST,
 	BlockFace.NORTH_EAST,BlockFace.SOUTH_EAST,BlockFace.NORTH_WEST,BlockFace.SOUTH_WEST};

@@ -1,14 +1,14 @@
 name: TreeAssist
 main: me.itsatacoshop247.TreeAssist.TreeAssist
-version: 5.9.jenkins-build-number
+version: 5.10.jenkins-build-number
 author: itsatacoshop247
 description: TreeAssist
 softdepend: [mcMMO, Prism, CoreProtect, LogBlock]
 dev-url: http://dev.bukkit.org/server-mods/tree-assist/
 commands:
   TreeAssist:
-    description: Turn TreeAssist Featues on or off
-    usage: /<command> toggle/global/debug/protecttool/purge
+    description: Turn TreeAssist features on or off
+    usage: You have no permissions to use this command!
 permissions:
   treeassist.destroy.*:
     description: allows to use tree-assist for all trees
@@ -38,12 +38,41 @@ permissions:
     description: allows to use tree-assist for brown shrooms
   treeassist.destroy.redshroom:
     description: allows to use tree-assist for red shrooms
+  treeassist.commands:
+    description: allows to use all tree-assist commands
+    children:
+      treeassist.addcustom: true
+      treeassist.addtool: true
+      treeassist.debug: true
+      treeassist.forcebreak: true
+      treeassist.forcegrow: true
+      treeassist.noreplace: true
+      treeassist.purge: true
+      treeassist.reload: true
+      treeassist.removecustom: true
+      treeassist.removetool: true
+      treeassist.replant: true
+      treeassist.toggle: true
+      treeassist.tool: true
+    default: op
   treeassist.addcustom:
     descroption: allows to add a custom blocks group
     default: op
   treeassist.addtool:
     descroption: allows to add a required tool
     default: op
+  treeassist.debug:
+    descroption: allows to debug
+    default: op
+  treeassist.forcebreak:
+    descroption: allows to force break trees
+    default: op
+  treeassist.forcegrow:
+    descroption: allows to force grow saplings
+    default: op
+  treeassist.noreplace:
+    descroption: allows to stop replacing saplings for some time
+    default: true
   treeassist.purge:
     descroption: allows to purge the database or data.yml
     default: op

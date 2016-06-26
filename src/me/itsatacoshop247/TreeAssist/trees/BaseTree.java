@@ -98,8 +98,8 @@ public abstract class BaseTree {
                 Tree tree = (Tree) block.getState().getData();
                 return new VanillaTree(tree.getSpecies());
             case ONESEVEN:
-                //Tree tree2 = (Tree) block.getState().getData();
-                return new VanillaOneSevenTree(block.getState().getData().getData());
+                Tree tree2 = (Tree) block.getState().getData();
+                return new VanillaOneSevenTree(tree2.getSpecies());
             case SHROOM:
                 return new MushroomTree(block.getType());
             case CUSTOM:
@@ -356,7 +356,7 @@ public abstract class BaseTree {
                 int durability = player.getItemInHand().getDurability();
                 int maxDurability = player.getItemInHand().getType().getMaxDurability();
 
-                if ((durability > maxDurability || player.getItemInHand().getDurability() < 0)
+                if (((durability > maxDurability) || player.getItemInHand().getDurability() < 0)
                                 && Utils.isVanillaTool(player.getItemInHand())) {
                     debug.i("removing item: " + player.getItemInHand().getType().name() +
                             " (durability " + durability + ">" + maxDurability);
@@ -513,6 +513,7 @@ public abstract class BaseTree {
             tree = null;
         }
         if (!leaf && Utils.plugin.mcMMO && player != null) {
+            debug.i("Adding mcMMO EXP!");
             Utils.mcMMOaddExp(player, block);
         } else if (!leaf) {
             debug.i("mat: " + maat.name());
@@ -783,11 +784,14 @@ public abstract class BaseTree {
                         		block.breakNaturally();
                         	}
                         } else {
-                            debug.i("InstantRunner: breakBlock 1 with player");
+                            debug.i("InstantRunner: 1");
                             breakBlock(block, tool, player);
-                            if (tool.getDurability() == tool.getType().getMaxDurability()) {
-                            	player.getInventory().remove(tool);
-                            	this.cancel();
+                            if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
+
+                                debug.i("removing item: " + player.getItemInHand().getType().name() +
+                                        " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
+                                player.getInventory().remove(tool);
+                                this.cancel();
                             }
                         }
                     }
@@ -813,11 +817,13 @@ public abstract class BaseTree {
                         		block.breakNaturally();
                         	}
                         } else {
-                            debug.i("InstantRunner: breakBlock 2 with player");
+                            debug.i("InstantRunner: 2");
                             breakBlock(block, tool, player);
-                            if (tool.getDurability()== tool.getType().getMaxDurability()) {
-                            	player.getInventory().remove(tool);
-                            	this.cancel();
+                            if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
+                                debug.i("removing item: " + player.getItemInHand().getType().name() +
+                                        " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
+                                player.getInventory().remove(tool);
+                                this.cancel();
                             }
                         }
                         removeBlocks.remove(block);
@@ -859,7 +865,7 @@ public abstract class BaseTree {
                             Utils.plugin.getListener().breakRadiusIfLeaf(block);
                             fastDecaying = true;
                         }
-                        debug.i("CleanRunner: breakBlock 1 with player");
+                        debug.i("CleanRunner: 1");
                         breakBlock(block, null, null);
                     }
                     removeBlocks.clear();
@@ -874,7 +880,7 @@ public abstract class BaseTree {
                             debug.i("CleanRunner: skipping breaking a sapling");
                             continue;
                         }
-                        debug.i("CleanRunner: breakBlock 2 with player");
+                        debug.i("CleanRunner: 2");
                         breakBlock(block, null, null);
                         totalBlocks.remove(block);
                         return;

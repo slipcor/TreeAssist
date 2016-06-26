@@ -1,6 +1,7 @@
 package me.itsatacoshop247.TreeAssist;
 
 import me.itsatacoshop247.TreeAssist.blocklists.*;
+import me.itsatacoshop247.TreeAssist.commands.*;
 import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
@@ -9,6 +10,7 @@ import me.itsatacoshop247.TreeAssist.metrics.MetricsLite;
 import me.itsatacoshop247.TreeAssist.timers.CooldownCounter;
 import me.itsatacoshop247.TreeAssist.trees.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -17,9 +19,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.server.PluginEnableEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -32,10 +31,11 @@ import java.util.*;
 //- Fixed Blocks dissapearing when used to destroy a tree.
 //- Config autoupdates
 
-public class TreeAssist extends JavaPlugin implements Listener {
+public class TreeAssist extends JavaPlugin {
     public List<Location> saplingLocationList = new ArrayList<Location>();
     private final Map<String, List<String>> disabledMap = new HashMap<String, List<String>>();
     private Map<String, CooldownCounter> coolDowns = new HashMap<String, CooldownCounter>();
+    private Set<String> coolDownOverrides = new HashSet<String>();
 
     public boolean Enabled = true;
     public boolean mcMMO = false;
@@ -44,7 +44,7 @@ public class TreeAssist extends JavaPlugin implements Listener {
     FileConfiguration config;
 
     public BlockList blockList;
-    TreeAssistBlockListener listener;
+    public TreeAssistBlockListener listener;
 
     public int getCoolDown(Player player) {
         if (hasCoolDown(player)) {
@@ -58,7 +58,7 @@ public class TreeAssist extends JavaPlugin implements Listener {
     }
 
     public boolean hasCoolDown(Player player) {
-        return coolDowns.containsKey(player.getName());
+        return !coolDownOverrides.contains(player.getName()) && coolDowns.containsKey(player.getName());
     }
 
     public boolean isActive(World world) {
@@ -112,204 +112,28 @@ public class TreeAssist extends JavaPlugin implements Listener {
 
     @EventHandler
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("TreeAssist")) {
-            if (args.length > 0) {
-                if (args[0].equalsIgnoreCase("Reload")) {
-                    if (!sender.hasPermission("treeassist.reload")) {
-                        sender.sendMessage(Language.parse(MSG.ERROR_PERMISSION_RELOAD));
-                        return true;
-                    }
-                    blockList.save();
-                    reloadConfig();
-                    this.loadYamls();
-                    reloadLists();
-                    sender.sendMessage(Language.parse(MSG.SUCCESSFUL_RELOAD));
-                    return true;
-                } else if (args[0].equalsIgnoreCase("Toggle")) {
-
-                    if (sender.hasPermission("treeassist.toggle.other") && args.length > 1) {
-
-                        if (args.length > 2) {
-                            if (Bukkit.getWorld(args[2]) == null) {
-                                sender.sendMessage(Language.parse(MSG.ERROR_NOTFOUND_WORLD, args[1]));
-                                return true;
-                            }
-
-                            if (toggleWorld(args[2], args[1])) {
-                                sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_ON, args[1], args[2]));
-                            } else {
-                                sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_OFF, args[1], args[2]));
-                            }
-                        }
-
-                        if (toggleGlobal(args[1])) {
-                            sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOGGLE_OTHER_ON, args[1]));
-                        } else {
-                            sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOGGLE_OTHER_OFF, args[1]));
-                        }
-                        return true;
-                    }
-
-                    if (!sender.hasPermission("treeassist.toggle")) {
-                        sender.sendMessage(Language.parse(MSG.ERROR_PERMISSION_TOGGLE));
-                        return true;
-                    }
-
-                    if (args.length > 1) {
-                        if (Bukkit.getWorld(args[1]) == null) {
-                            sender.sendMessage(Language.parse(MSG.ERROR_NOTFOUND_WORLD, args[1]));
-                            return true;
-                        }
-
-                        if (toggleWorld(args[1], sender.getName())) {
-                            sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_ON, args[1]));
-                        } else {
-                            sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_OFF, args[1]));
-                        }
-                    }
-
-                    if (toggleGlobal(sender.getName())) {
-                        sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOGGLE_YOU_ON));
-                    } else {
-                        sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOGGLE_YOU_OFF));
-                    }
-                    return true;
-                } else if (args[0].equalsIgnoreCase("Global")) {
-                    if (!sender.hasPermission("treeassist.toggle.global")) {
-                        sender.sendMessage(Language.parse(MSG.ERROR_PERMISSION_TOGGLE_GLOBAL));
-                        return true;
-                    }
-                    if (!this.Enabled) {
-                        this.Enabled = true;
-                        sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOGGLE_GLOBAL_ON));
-                    } else {
-                        this.Enabled = false;
-                        sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOGGLE_GLOBAL_OFF));
-                    }
-                    return true;
-                } else if (args[0].equalsIgnoreCase("Debug")) {
-                    if (args.length < 2) {
-                        getConfig().set("Debug", "none");
-                        Debugger.load(this, sender);
-                    } else {
-                        getConfig().set("Debug", args[1]);
-                        Debugger.load(this, sender);
-                    }
-                    return true;
-                } else if (args[0].equalsIgnoreCase("ProtectTool")) {
-                    if (!sender.hasPermission("treeassist.tool")) {
-                        sender.sendMessage(Language.parse(MSG.ERROR_PERMISSION_TOGGLE_TOOL));
-                        return true;
-
-                    }
-                    if (sender instanceof Player) {
-                        Player player = (Player) sender;
-                        boolean found = false;
-                        for (ItemStack item : player.getInventory().getContents()) {
-                            if (item != null) {
-                                if (item.hasItemMeta()) {
-                                    if (listener.isProtectTool(item)) {
-                                        player.getInventory().removeItem(item);
-                                        sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOOL_OFF));
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        if (!found) {
-                            player.getInventory().addItem(listener.getProtectionTool());
-                            sender.sendMessage(Language.parse(MSG.SUCCESSFUL_TOOL_ON));
-                        }
-                        return true;
-                    }
-                    sender.sendMessage(Language.parse(MSG.ERROR_ONLY_PLAYERS));
-                    return true;
-                } else if (args[0].equalsIgnoreCase("noreplace")) {
-                    int seconds = getConfig().getInt("Sapling Replant.Command Time Delay (Seconds)", 30);
-                    listener.noReplace(sender.getName(), seconds);
-                    sender.sendMessage(Language.parse(MSG.SUCCESSFUL_NOREPLACE, String.valueOf(seconds)));
-                    return true;
-                } else if (args[0].equalsIgnoreCase("purge")) {
-                    if (!sender.hasPermission("treeassist.purge")) {
-                        sender.sendMessage(Language.parse(MSG.ERROR_PERMISSION_PURGE));
-                        return true;
-
-                    }
-                    if (blockList instanceof FlatFileBlockList) {
-                        FlatFileBlockList bl = (FlatFileBlockList) blockList;
-                        try {
-                            int days = Integer.parseInt(args[1]);
-                            int done = bl.purge(days);
-
-                            sender.sendMessage(Language.parse(MSG.SUCCESSFUL_PURGE_DAYS, String.valueOf(done), args[1]));
-                        } catch (NumberFormatException e) {
-                            if (args[1].equalsIgnoreCase("global")) {
-                                int done = bl.purge(sender);
-                                sender.sendMessage(Language.parse(MSG.SUCCESSFUL_PURGE_GLOBAL, String.valueOf(done)));
-                            } else {
-                                int done = bl.purge(args[1]);
-                                sender.sendMessage(Language.parse(MSG.SUCCESSFUL_PURGE_WORLD, String.valueOf(done), args[1]));
-                            }
-                        }
-                    } else {
-                        sender.sendMessage(Language.parse(MSG.ERROR_ONLY_TREEASSIST_BLOCKLIST));
-                    }
-                    return true;
-                } else if (args[0].equalsIgnoreCase("addtool")) {
-                    if (!sender.hasPermission("treeassist.addtool")) {
-                        sender.sendMessage(Language.parse(MSG.ERROR_PERMISSION_ADDTOOL));
-                        return true;
-                    }
-                    if (sender instanceof Player) {
-                        Player player = (Player) sender;
-                        Utils.addRequiredTool(player);
-                        return true;
-                    }
-                    sender.sendMessage(Language.parse(MSG.ERROR_ONLY_PLAYERS));
-                    return true;
-                } else if (args[0].equalsIgnoreCase("removetool")) {
-                    if (!sender.hasPermission("treeassist.removetool")) {
-                        sender.sendMessage(Language.parse(MSG.ERROR_PERMISSION_REMOVETOOL));
-                        return true;
-
-                    }
-                    if (sender instanceof Player) {
-                        Player player = (Player) sender;
-                        Utils.removeRequiredTool(player);
-                        return true;
-                    }
-                    sender.sendMessage(Language.parse(MSG.ERROR_ONLY_PLAYERS));
-                    return true;
-                } else if (args[0].equalsIgnoreCase("addcustom")) {
-                    if (!sender.hasPermission("treeassist.addcustom")) {
-                        sender.sendMessage(Language.parse(MSG.ERROR_PERMISSION_ADDCUSTOM));
-                        return true;
-                    }
-                    if (sender instanceof Player) {
-                        Player player = (Player) sender;
-                        Utils.addCustomGroup(player);
-                        return true;
-                    }
-                    sender.sendMessage(Language.parse(MSG.ERROR_ONLY_PLAYERS));
-                    return true;
-                } else if (args[0].equalsIgnoreCase("removecustom")) {
-                    if (!sender.hasPermission("treeassist.removecustom")) {
-                        sender.sendMessage(Language.parse(MSG.ERROR_PERMISSION_REMOVECUSTOM));
-                        return true;
-
-                    }
-                    if (sender instanceof Player) {
-                        Player player = (Player) sender;
-                        Utils.removeCustomGroup(player);
-                        return true;
-                    }
-                    sender.sendMessage(Language.parse(MSG.ERROR_ONLY_PLAYERS));
-                    return true;
-                }
+        if (args.length <= 0) {
+            return false;
+        }
+        AbstractCommand acc = null;
+        List<String> commandList = new ArrayList<String>();
+        for (final AbstractCommand ac : commands) {
+            if (ac.getMain().contains(args[0].toLowerCase()) || ac.getShort().contains(args[0].toLowerCase())) {
+                acc = ac;
+                break;
+            }
+            if (ac.hasPerms(sender)) {
+                commandList.add(ac.getShortInfo());
             }
         }
-        return false;
+        if (acc != null) {
+            acc.commit(sender, args);
+            return true;
+        }
+        for (String s : commandList) {
+            sender.sendMessage(ChatColor.YELLOW + s);
+        }
+        return acc != null || commandList.size() > 0;
     }
 
     public void onDisable() {
@@ -382,7 +206,27 @@ public class TreeAssist extends JavaPlugin implements Listener {
         }
         blockList.initiate();
 
+        loadCommands();
+
         Language.init(this, config.getString("Main.Language", "en"));
+    }
+
+    List<AbstractCommand> commands = new ArrayList<AbstractCommand>();
+
+    private void loadCommands() {
+        commands.add(new CommandAddCustom());
+        commands.add(new CommandAddTool());
+        commands.add(new CommandDebug());
+        commands.add(new CommandForceBreak());
+        commands.add(new CommandForceGrow());
+        commands.add(new CommandGlobal());
+        commands.add(new CommandNoReplace());
+        commands.add(new CommandPurge());
+        commands.add(new CommandReload());
+        commands.add(new CommandRemoveCustom());
+        commands.add(new CommandRemoveTool());
+        commands.add(new CommandToggle());
+        commands.add(new CommandTool());
     }
 
     public void removeCountDown(String playerName) {
@@ -404,7 +248,7 @@ public class TreeAssist extends JavaPlugin implements Listener {
 
     public void setCoolDown(Player player, BaseTree tree) {
         int coolDown = getConfig().getInt("Automatic Tree Destruction.Cooldown (seconds)", 0);
-        if (coolDown == 0 || tree == null || !tree.isValid()) {
+        if (coolDown == 0 || tree == null || !tree.isValid() || coolDownOverrides.contains(player.getName())) {
             return;
         } else if (coolDown < 0) {
             coolDown = tree.calculateCooldown(player.getItemInHand());
@@ -416,27 +260,24 @@ public class TreeAssist extends JavaPlugin implements Listener {
         coolDowns.put(player.getName(), cc);
     }
 
+    public synchronized void setCoolDownOverride(String player, boolean value) {
+        if (value) {
+            coolDownOverrides.add(player);
+        } else {
+            coolDownOverrides.remove(player);
+        }
+    }
+
     /**
      * @return true if the result is "player may use plugin"
      */
-    boolean toggleGlobal(String player) {
+    public boolean toggleGlobal(String player) {
         return toggleWorld("global", player);
-    }
-
-    public void onPluginEnable(PluginEnableEvent event) {
-        if (event.getPlugin().getName().equals("mcMMO")) {
-            mcMMO = true;
-            getLogger().info("Loaded mcMMO, better late than never!");
-        }
     }
 
     private void checkMcMMO() {
         if (getConfig().getBoolean("Main.Use mcMMO if Available")) {
             this.mcMMO = getServer().getPluginManager().isPluginEnabled("mcMMO");
-            this.getLogger().info("Loaded mcMMO: " + mcMMO);
-            if (!mcMMO) {
-                getServer().getPluginManager().registerEvents(this, this);
-            }
         } else {
             this.mcMMO = false;
         }
@@ -584,7 +425,7 @@ public class TreeAssist extends JavaPlugin implements Listener {
     /**
      * @return true if the result is "player may use plugin"
      */
-    private boolean toggleWorld(String world, String player) {
+    public boolean toggleWorld(String world, String player) {
         if (disabledMap.containsKey(world)) {
             if (disabledMap.get(world).contains(player)) {
                 disabledMap.get(world).remove(player);

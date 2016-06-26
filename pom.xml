@@ -4,7 +4,7 @@
 
 	<groupId>me.itsatacoshop247.TreeAssist</groupId>
 	<artifactId>TreeAssist</artifactId>
-	<version>5.9-SNAPSHOT</version>
+	<version>5.10-SNAPSHOT</version>
 	<name>TreeAssist</name>
 
 	<repositories>
@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
+			<version>1.9.2-R0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>provided</scope>
 		</dependency>

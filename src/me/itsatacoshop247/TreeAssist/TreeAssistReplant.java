@@ -6,7 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.material.MaterialData;
-import org.bukkit.material.Tree;
+import org.bukkit.material.Sapling;
 
 public class TreeAssistReplant implements Runnable {
     public final TreeAssist plugin;
@@ -39,7 +39,7 @@ public class TreeAssistReplant implements Runnable {
             if (data < 0) {
                 BlockState state = block.getState();
                 MaterialData data = state.getData();
-                Tree sap = (Tree) data;
+                Sapling sap = (Sapling) data;
                 sap.setSpecies(species);
                 state.setData(sap);
                 state.update();

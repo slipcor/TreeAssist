@@ -1,15 +1,19 @@
 Main:
-  Automatic Tree Destruction: true
-  Use Permissions: false
-  Sapling Replant: true
   Apply Full Tool Damage: true
-  Ignore User Placed Blocks: false
-  Use mcMMO if Available: true
-  Destroy Only Blocks Above: false
   Auto Plant Dropped Saplings: false
-  Toggle Default: true
+  Automatic Tree Destruction: true
+  Destroy Only Blocks Above: false
+  Force Break Default Radius: 10
+  Force Grow Default Radius: 10
+  Force Break Max Radius: 30
+  Force Grow Max Radius: 30
+  Ignore User Placed Blocks: false
   Initial Delay: false
   Language: en
+  Sapling Replant: true
+  Toggle Default: true
+  Use mcMMO if Available: true
+  Use Permissions: false
 Automatic Tree Destruction:
   Required Lore: ''
   When Sneaking: true

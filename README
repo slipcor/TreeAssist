@@ -1,8 +1,9 @@
-v5.9.16 - clean up after the tree has been removed by the proper instant remover
-v5.9.15 - add more debug to find out what is happening on 1.9.2
-v5.9.14 - add some messages and a plugin enabling listener
-v5.9.13 - wait for other plugins to load before checking whether they are loaded
-v5.9.12 - fix a startup error that only happens the first time you run the plugin :)
+v5.10.17 - push this version to jenkins, fix an issue about disappearing items in 1.10, backwards compatible to 1.9!
+v5.10.4 - add more keywords to start and stop debugging
+v5.10.3 - add cooldown override for forcebreak
+v5.10.2 - add forcebreak, forcegrow, including permissions and messages
+v5.10.1 - pull all fixes from the 1.8 branch and fix mcMMO config reading
+v5.9.12 - ONLY FOR 1.9 !!!
 v5.9.11 - add commands "addcustom" and "removecustom" - setting the first three items to custom block group (SAPLING, LOG, LEAF)
 v5.9.10 - revert the API update, because Spigot did not do that, or did revert it
 v5.9.9 - ignore some number errors in the data.yml parsing , remove them
