@@ -535,6 +535,7 @@ public abstract class BaseTree {
         if (chance > 99 || (new Random()).nextInt(100) < chance) {
             Utils.plugin.blockList.logBreak(block, player);
             block.breakNaturally(tool);
+            player.sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
 
             if (leaf) {
                 ConfigurationSection cs = Utils.plugin.getConfig()
@@ -575,6 +576,7 @@ public abstract class BaseTree {
             }
         } else {
             block.setType(Material.AIR);
+            player.sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
         }
 
         if (!leaf && tool != null && player != null) {
@@ -782,7 +784,8 @@ public abstract class BaseTree {
                         	{
                         		Utils.plugin.blockList.logBreak(block, player);
                         		block.breakNaturally();
-                        	}
+                                player.sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
+                            }
                         } else {
                             debug.i("InstantRunner: 1");
                             breakBlock(block, tool, player);
@@ -815,7 +818,8 @@ public abstract class BaseTree {
                         	{
                         		Utils.plugin.blockList.logBreak(block, player);
                         		block.breakNaturally();
-                        	}
+                                player.sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
+                            }
                         } else {
                             debug.i("InstantRunner: 2");
                             breakBlock(block, tool, player);

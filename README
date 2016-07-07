@@ -1,3 +1,4 @@
+v5.10.18 - try to fix a client display bug - with brute force
 v5.10.17 - push this version to jenkins, fix an issue about disappearing items in 1.10, backwards compatible to 1.9!
 v5.10.4 - add more keywords to start and stop debugging
 v5.10.3 - add cooldown override for forcebreak
