@@ -1,3 +1,4 @@
+v5.10.20 - address github issue #5
 v5.10.19 - address github issue #3 partially and implement github issue #4
 v5.10.18 - try to fix a client display bug - with brute force
 v5.10.17 - push this version to jenkins, fix an issue about disappearing items in 1.10, backwards compatible to 1.9!

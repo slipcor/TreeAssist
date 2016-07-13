@@ -535,7 +535,9 @@ public abstract class BaseTree {
         if (chance > 99 || (new Random()).nextInt(100) < chance) {
             Utils.plugin.blockList.logBreak(block, player);
             block.breakNaturally(tool);
-            player.sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
+            if (player != null) {
+                player.sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
+            }
 
             if (leaf) {
                 ConfigurationSection cs = Utils.plugin.getConfig()
