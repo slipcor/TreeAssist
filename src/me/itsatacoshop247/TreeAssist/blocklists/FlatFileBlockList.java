@@ -31,30 +31,19 @@ public class FlatFileBlockList implements BlockList {
 
     @Override
     public void initiate() {
-        File oldFile = new File(Utils.plugin.getDataFolder(), "data.yml");
-        File newFile = new File(Utils.plugin.getDataFolder(), "data_new.yml");
+        configFile = new File(Utils.plugin.getDataFolder(), "data.yml");
 
-        if (oldFile.exists() && newFile.exists()) {
-            // both exist => first start after importing. Remove old file!
-            oldFile.renameTo(new File(Utils.plugin.getDataFolder(), "data_old.yml"));
-            configFile = newFile;
-            try {
-                config.load(configFile);
-                for (Map<?, ?> map : config.getMapList("Blocks")) {
-                    TreeBlock block = new TreeBlock((Map<String, Object>) map);
-                    blockMap.put(block, block.time);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InvalidConfigurationException e) {
-                e.printStackTrace();
+        try {
+            if (!configFile.exists()) {
+                configFile.createNewFile();
             }
-        } else if (oldFile.exists()) {
-            // only old exists, update!
-            FileConfiguration tempCFG = new YamlConfiguration();
-            try {
-                tempCFG.load(oldFile);
-                final List<String> list = tempCFG.getStringList("Blocks");
+            config.load(configFile);
+            if (config.contains("Blocks")) {
+                File backupFile = new File(Utils.plugin.getDataFolder(), "data_backup.yml");
+                if (!backupFile.exists()) {
+                    config.save(backupFile);
+                }
+                final List<String> list = config.getStringList("Blocks");
                 final Map<String, Object> map = new HashMap<String, Object>();
                 for (String entry : list) {
                     String[] split = entry.split(";");
@@ -89,36 +78,17 @@ public class FlatFileBlockList implements BlockList {
                     }
                     map.clear();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
-        } else if (newFile.exists()) {
-            // only new exists, load!
-            configFile = newFile;
-            try {
-                config.load(configFile);
-                for (Map<?, ?> map : config.getMapList("Blocks")) {
-                    TreeBlock block = new TreeBlock((Map<String, Object>) map);
+                config.set("Blocks", null);
+            } else if (config.contains("TreeBlocks")) {
+                for (Object o : config.getList("TreeBlocks")) {
+                    TreeBlock block = (TreeBlock) o;
                     blockMap.put(block, block.time);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InvalidConfigurationException e) {
-                e.printStackTrace();
             }
-        } else {
-            // neither exist, start fresh!
-            configFile = newFile;
-            try {
-                newFile.createNewFile();
-                config.load(newFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InvalidConfigurationException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InvalidConfigurationException e) {
+            e.printStackTrace();
         }
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(Utils.plugin, new Runnable() {
@@ -217,7 +187,7 @@ public class FlatFileBlockList implements BlockList {
             for (TreeBlock block : blockMap.keySet()) {
                 list.add(block);
             }
-            config.set("Blocks", list);
+            config.set("TreeBlocks", list);
             config.save(configFile);
         } catch (IOException e) {
             e.printStackTrace();

@@ -21,7 +21,7 @@ public class CommandPurge extends AbstractCommand {
             sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_PURGE));
             return;
         }
-        if (!argCountValid(sender, args, new Integer[]{1})) {
+        if (!argCountValid(sender, args, new Integer[]{2})) {
             return;
         }
         if (Utils.plugin.blockList instanceof FlatFileBlockList) {

@@ -5,6 +5,7 @@ import me.itsatacoshop247.TreeAssist.commands.*;
 import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
+import me.itsatacoshop247.TreeAssist.core.TreeBlock;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import me.itsatacoshop247.TreeAssist.metrics.MetricsLite;
 import me.itsatacoshop247.TreeAssist.timers.CooldownCounter;
@@ -17,6 +18,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -144,6 +146,7 @@ public class TreeAssist extends JavaPlugin {
         checkMcMMO();
 
         Utils.plugin = this;
+        ConfigurationSerialization.registerClass(TreeBlock.class);
 
         this.configFile = new File(getDataFolder(), "config.yml");
         try {
