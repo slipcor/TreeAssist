@@ -5,6 +5,7 @@ import me.itsatacoshop247.TreeAssist.core.Utils;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class AbstractCommand {
     private final String[] perms;
@@ -54,4 +55,13 @@ public abstract class AbstractCommand {
         return false;
     }
 
+    public void load(final List<AbstractCommand> list, final Map<String, AbstractCommand> map) {
+        for (String sShort : getShort()) {
+            map.put(sShort, this);
+        }
+        for (String sMain : getMain()) {
+            map.put(sMain, this);
+        }
+        list.add(this);
+    }
 }

@@ -81,6 +81,11 @@ public class CoreProtectBlockList implements BlockList {
 	}
 
 	@Override
+	public void save(boolean force) {
+		// plugin does that
+	}
+
+	@Override
 	public void logBreak(Block block, Player player) {
 		if (protect == null) {
 			return;

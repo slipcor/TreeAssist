@@ -34,6 +34,8 @@ import java.util.*;
 public class TreeAssist extends JavaPlugin {
     public List<Location> saplingLocationList = new ArrayList<Location>();
     private final Map<String, List<String>> disabledMap = new HashMap<String, List<String>>();
+    final Map<String, AbstractCommand> commandMap = new HashMap<String, AbstractCommand>();
+    final List<AbstractCommand> commandList = new ArrayList<AbstractCommand>();
     private Map<String, CooldownCounter> coolDowns = new HashMap<String, CooldownCounter>();
     private Set<String> coolDownOverrides = new HashSet<String>();
 
@@ -115,29 +117,26 @@ public class TreeAssist extends JavaPlugin {
         if (args.length <= 0) {
             return false;
         }
-        AbstractCommand acc = null;
-        List<String> commandList = new ArrayList<String>();
-        for (final AbstractCommand ac : commands) {
-            if (ac.getMain().contains(args[0].toLowerCase()) || ac.getShort().contains(args[0].toLowerCase())) {
-                acc = ac;
-                break;
-            }
-            if (ac.hasPerms(sender)) {
-                commandList.add(ac.getShortInfo());
-            }
-        }
+        AbstractCommand acc = commandMap.get(args[0].toLowerCase());
         if (acc != null) {
             acc.commit(sender, args);
             return true;
         }
-        for (String s : commandList) {
-            sender.sendMessage(ChatColor.YELLOW + s);
+        boolean found = false;
+        for (AbstractCommand command : commandList) {
+            if (command.hasPerms(sender)) {
+                sender.sendMessage(ChatColor.YELLOW + command.getShortInfo());
+                found = true;
+            }
         }
-        return acc != null || commandList.size() > 0;
+        return found;
     }
 
     public void onDisable() {
         this.getServer().getScheduler().cancelTasks(this);
+        if (this.blockList instanceof FlatFileBlockList) {
+            blockList.save(true);
+        }
         Debugger.destroy();
     }
 
@@ -211,22 +210,20 @@ public class TreeAssist extends JavaPlugin {
         Language.init(this, config.getString("Main.Language", "en"));
     }
 
-    List<AbstractCommand> commands = new ArrayList<AbstractCommand>();
-
     private void loadCommands() {
-        commands.add(new CommandAddCustom());
-        commands.add(new CommandAddTool());
-        commands.add(new CommandDebug());
-        commands.add(new CommandForceBreak());
-        commands.add(new CommandForceGrow());
-        commands.add(new CommandGlobal());
-        commands.add(new CommandNoReplace());
-        commands.add(new CommandPurge());
-        commands.add(new CommandReload());
-        commands.add(new CommandRemoveCustom());
-        commands.add(new CommandRemoveTool());
-        commands.add(new CommandToggle());
-        commands.add(new CommandTool());
+        new CommandAddCustom().load(commandList, commandMap);
+        new CommandAddTool().load(commandList, commandMap);
+        new CommandDebug().load(commandList, commandMap);
+        new CommandForceBreak().load(commandList, commandMap);
+        new CommandForceGrow().load(commandList, commandMap);
+        new CommandGlobal().load(commandList, commandMap);
+        new CommandNoReplace().load(commandList, commandMap);
+        new CommandPurge().load(commandList, commandMap);
+        new CommandReload().load(commandList, commandMap);
+        new CommandRemoveCustom().load(commandList, commandMap);
+        new CommandRemoveTool().load(commandList, commandMap);
+        new CommandToggle().load(commandList, commandMap);
+        new CommandTool().load(commandList, commandMap);
     }
 
     public void removeCountDown(String playerName) {

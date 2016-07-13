@@ -18,7 +18,7 @@ public class CommandReload extends AbstractCommand {
             sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_RELOAD));
             return;
         }
-        Utils.plugin.blockList.save();
+        Utils.plugin.blockList.save(true);
         Utils.plugin.reloadConfig();
         Utils.plugin.loadYamls();
         Utils.plugin.reloadLists();

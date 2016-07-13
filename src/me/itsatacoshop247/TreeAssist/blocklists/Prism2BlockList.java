@@ -1,9 +1,6 @@
 package me.itsatacoshop247.TreeAssist.blocklists;
 
-import java.util.List;
-
 import me.botsko.prism.Prism;
-import me.botsko.prism.actionlibs.ActionFactory;
 import me.botsko.prism.actionlibs.ActionsQuery;
 import me.botsko.prism.actionlibs.QueryParameters;
 import me.botsko.prism.actionlibs.QueryResult;
@@ -11,10 +8,11 @@ import me.botsko.prism.actionlibs.RecordingQueue;
 import me.botsko.prism.actions.BlockAction;
 import me.botsko.prism.actions.Handler;
 import me.itsatacoshop247.TreeAssist.core.Utils;
-
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class Prism2BlockList implements BlockList {
 	private final Prism prism;
@@ -79,6 +77,10 @@ public class Prism2BlockList implements BlockList {
 
 	@Override
 	public void save() {
+	}
+
+	@Override
+	public void save(boolean force) {
 	}
 
 	@Override

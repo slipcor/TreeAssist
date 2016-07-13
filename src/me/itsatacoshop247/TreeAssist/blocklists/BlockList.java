@@ -9,5 +9,7 @@ public interface BlockList {
 	void addBlock(Block block);
 	void removeBlock(Block block);
 	void save();
+
+	void save(boolean force);
 	void logBreak(Block block, Player player);
 }

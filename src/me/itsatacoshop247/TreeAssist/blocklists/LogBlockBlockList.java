@@ -1,17 +1,16 @@
 package me.itsatacoshop247.TreeAssist.blocklists;
 
-import java.sql.SQLException;
-import me.itsatacoshop247.TreeAssist.core.Utils;
-
-import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-
 import de.diddiz.LogBlock.BlockChange;
 import de.diddiz.LogBlock.Consumer;
 import de.diddiz.LogBlock.LogBlock;
 import de.diddiz.LogBlock.QueryParams;
 import de.diddiz.LogBlock.QueryParams.BlockChangeType;
+import me.itsatacoshop247.TreeAssist.core.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+
+import java.sql.SQLException;
 
 public class LogBlockBlockList implements BlockList {
 	private final LogBlock logBlock;
@@ -63,11 +62,14 @@ public class LogBlockBlockList implements BlockList {
 
 	@Override
 	public void removeBlock(Block block) {
-		// prism does that
 	}
 
 	@Override
 	public void save() {
+	}
+
+	@Override
+	public void save(boolean force) {
 	}
 
 	@Override

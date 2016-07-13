@@ -26,6 +26,10 @@ public class EmptyBlockList implements BlockList {
 	}
 
 	@Override
+	public void save(boolean force) {
+	}
+
+	@Override
 	public void logBreak(Block block, Player player) {
 	}
 

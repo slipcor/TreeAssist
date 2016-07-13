@@ -66,7 +66,7 @@ public class FlatFileBlockList implements BlockList {
                     newList.add(buff.toString());
                 }
                 list = newList;
-                save();
+                save(true);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -81,7 +81,14 @@ public class FlatFileBlockList implements BlockList {
             copy(Utils.plugin.getResource("data.yml"), this.dataFile);
             list = new ArrayList<String>();
         }
+        Bukkit.getScheduler().runTaskTimerAsynchronously(Utils.plugin, new Runnable() {
+            @Override
+            public void run() {
+                FlatFileBlockList.this.save(true);
+            }
+        }, 1200, 1200);
     }
+
 
     @Override
     public boolean isPlayerPlaced(final Block block) {
@@ -160,7 +167,7 @@ public class FlatFileBlockList implements BlockList {
             }
         }
         list.removeAll(removals);
-        save();
+        save(true);
         return removals.size();
     }
 
@@ -172,7 +179,7 @@ public class FlatFileBlockList implements BlockList {
             }
         }
         list.removeAll(removals);
-        save();
+        save(true);
         return removals.size();
     }
 
@@ -185,12 +192,16 @@ public class FlatFileBlockList implements BlockList {
             }
         }
         list.removeAll(removals);
-        save();
+        save(true);
         return removals.size();
     }
 
     @Override
     public void save() {
+    }
+
+    @Override
+    public void save(boolean force) {
         this.saveData();
     }
 
