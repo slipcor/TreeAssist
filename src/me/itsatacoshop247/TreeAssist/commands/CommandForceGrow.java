@@ -11,7 +11,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
-import org.bukkit.material.Sapling;
+import org.bukkit.material.Tree;
 
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +51,7 @@ public class CommandForceGrow extends AbstractCommand {
                             Block block = player.getLocation().add(x, y, z).getBlock();
                             BlockState state = block.getState();
                             MaterialData data = state.getData();
-                            Sapling sap = (Sapling) data;
+                            Tree sap = (Tree) data;
                             byte specific = sap.getData();
 
                             TreeType type = TreeType.TREE;

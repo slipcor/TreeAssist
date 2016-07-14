@@ -98,8 +98,8 @@ public abstract class BaseTree {
                 Tree tree = (Tree) block.getState().getData();
                 return new VanillaTree(tree.getSpecies());
             case ONESEVEN:
-                Tree tree2 = (Tree) block.getState().getData();
-                return new VanillaOneSevenTree(tree2.getSpecies());
+                //Tree tree2 = (Tree) block.getState().getData();
+                return new VanillaOneSevenTree(block.getState().getData().getData());
             case SHROOM:
                 return new MushroomTree(block.getType());
             case CUSTOM:
