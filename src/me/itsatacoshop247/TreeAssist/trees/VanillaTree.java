@@ -103,9 +103,6 @@ public class VanillaTree extends BaseTree implements INormalTree {
 
     @Override
     protected void getTrunks() {
-        if (species == TreeSpecies.GENERIC || species == TreeSpecies.BIRCH) {
-            return;
-        }
         bottoms = new Block[4];
         bottoms[0] = bottom;
         int j = 1;
@@ -160,7 +157,17 @@ public class VanillaTree extends BaseTree implements INormalTree {
             }
             if (species == TreeSpecies.REDWOOD && !Utils.plugin.getConfig().getBoolean(
                     "Sapling Replant.Tree Types to Replant.BigSpruce")) {
-                debugger.i("no bgi spruce sapling !!!");
+                debugger.i("no big spruce sapling !!!");
+                return;
+            }
+            if (species == TreeSpecies.BIRCH && !Utils.plugin.getConfig().getBoolean(
+                    "Sapling Replant.Tree Types to Replant.BigBirch")) {
+                debugger.i("no big birch sapling !!!");
+                return;
+            }
+            if (species == TreeSpecies.GENERIC && !Utils.plugin.getConfig().getBoolean(
+                    "Sapling Replant.Tree Types to Replant.BigOak")) {
+                debugger.i("no big oak sapling !!!");
                 return;
             }
             for (Block bottom : bottoms) {
@@ -287,12 +294,27 @@ public class VanillaTree extends BaseTree implements INormalTree {
 
         boolean isBig = bottoms != null;
 
-        boolean destroyBig = (tree.getSpecies() == TreeSpecies.JUNGLE
+        boolean destroyBig = false;
+        if (tree.getSpecies() == TreeSpecies.JUNGLE
                 && Utils.plugin.getConfig()
-                .getBoolean("Automatic Tree Destruction.Tree Types.BigJungle")) ||
-                (tree.getSpecies() == TreeSpecies.REDWOOD &&
-                        Utils.plugin.getConfig()
-                                .getBoolean("Automatic Tree Destruction.Tree Types.BigSpruce"));
+                .getBoolean("Automatic Tree Destruction.Tree Types.BigJungle")) {
+            destroyBig = true;
+        }
+        if (tree.getSpecies() == TreeSpecies.REDWOOD &&
+                Utils.plugin.getConfig()
+                        .getBoolean("Automatic Tree Destruction.Tree Types.BigSpruce")) {
+            destroyBig = true;
+        }
+        if (tree.getSpecies() == TreeSpecies.BIRCH &&
+                Utils.plugin.getConfig()
+                        .getBoolean("Automatic Tree Destruction.Tree Types.BigBirch")) {
+            destroyBig = true;
+        }
+        if (tree.getSpecies() == TreeSpecies.GENERIC &&
+                Utils.plugin.getConfig()
+                        .getBoolean("Automatic Tree Destruction.Tree Types.BigOak")) {
+            destroyBig = true;
+        }
 
         if (!destroyBig && isBig) {
 //			debug.i("!destroy & isBig; out!");

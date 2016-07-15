@@ -413,6 +413,19 @@ public class TreeAssist extends JavaPlugin {
 
         items.put("Sapling Replant.Time to Block Sapling Growth (Seconds)", "0");
         items.put("Main.Language", "en");
+
+        items.put("Modding.Disable Durability Fix", "false");
+
+        // 5.9 additions
+        items.put("Main.Force Break Default Radius", "10");
+        items.put("Main.Force Grow Default Radius", "10");
+        items.put("Main.Force Break Max Radius", "30");
+        items.put("Main.Force Grow Max Radius", "30");
+
+        items.put("Automatic Tree Destruction.Tree Types.BigBirch", "false");
+        items.put("Sapling Replant.Tree Types to Replant.BigBirch", "false");
+        items.put("Automatic Tree Destruction.Tree Types.BigOak", "false");
+        items.put("Sapling Replant.Tree Types to Replant.BigOak", "false");
         return items;
     }
 

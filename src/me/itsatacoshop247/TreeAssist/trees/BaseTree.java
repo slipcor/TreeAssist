@@ -320,11 +320,9 @@ public abstract class BaseTree {
                 if (!Utils.validTypes.contains(block.getRelative(
                         BlockFace.valueOf(directions[x])).getTypeId())) {
                     if (!((block.getRelative(BlockFace.valueOf(directions[x]))
-                            .getType() == Material.LOG && (block.getData() == 1 || block
-                            .getData() == 3)) || (block
+                            .getType() == Material.LOG) || (block
                             .getRelative(BlockFace.valueOf(directions[x]))
-                            .getType() == Material.LOG_2 && block
-                            .getData() == 1))) {
+                            .getType() == Material.LOG_2))) {
                         debug.i("invalid because of invalid type: "
                                 + block.getRelative(
                                 BlockFace.valueOf(directions[x]))
