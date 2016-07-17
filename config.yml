@@ -26,9 +26,11 @@ Automatic Tree Destruction:
     Jungle: true
     BigJungle: true
     BigSpruce: true
+    BigOak: true
+    BigBirch: true
     Oak: true
-    BigOak: false
-    BigBirch: false
+    BigOak: true
+    BigBirch: true
     Spruce: true
     Brown Shroom: true
     Red Shroom: true
@@ -53,8 +55,8 @@ Sapling Replant:
     Birch: true
     Jungle: true
     BigJungle: true
-    BigOak: false
-    BigBirch: false
+    BigOak: true
+    BigBirch: true
     BigSpruce: true
     Oak: true
     Spruce: true

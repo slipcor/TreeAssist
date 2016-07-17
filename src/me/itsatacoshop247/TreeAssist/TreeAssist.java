@@ -422,10 +422,10 @@ public class TreeAssist extends JavaPlugin {
         items.put("Main.Force Break Max Radius", "30");
         items.put("Main.Force Grow Max Radius", "30");
 
-        items.put("Automatic Tree Destruction.Tree Types.BigBirch", "false");
-        items.put("Sapling Replant.Tree Types to Replant.BigBirch", "false");
-        items.put("Automatic Tree Destruction.Tree Types.BigOak", "false");
-        items.put("Sapling Replant.Tree Types to Replant.BigOak", "false");
+        items.put("Automatic Tree Destruction.Tree Types.BigBirch", "true");
+        items.put("Sapling Replant.Tree Types to Replant.BigBirch", "true");
+        items.put("Automatic Tree Destruction.Tree Types.BigOak", "true");
+        items.put("Sapling Replant.Tree Types to Replant.BigOak", "true");
         return items;
     }
 

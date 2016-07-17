@@ -149,7 +149,7 @@ public class VanillaTree extends BaseTree implements INormalTree {
 
     @Override
     protected void handleSaplingReplace(int delay) {
-        if (bottoms != null && (species == TreeSpecies.REDWOOD || species == TreeSpecies.JUNGLE)) {
+        if (bottoms != null) {
             if (species == TreeSpecies.JUNGLE && !Utils.plugin.getConfig().getBoolean(
                     "Sapling Replant.Tree Types to Replant.BigJungle")) {
                 debugger.i("no big jungle sapling !!!");
@@ -261,32 +261,20 @@ public class VanillaTree extends BaseTree implements INormalTree {
             if (block.getX() != top.getX() && block.getZ() != top.getZ()) {
 //				debug.i("not main!");
 
-                if (block.getData() != 3 && block.getData() != 1) {
-//					debug.i("no jungle!");
-
+                boolean diff = true;
+                for (int Cx = -1; Cx < 2; Cx++) {
+                    for (int Cz = -1; Cz < 2; Cz++) {
+                        if (block.getX() - Cx == top.getX()
+                                && block.getZ() - Cz == top.getZ()) {
+                            diff = false;
+                            Cx = 2;
+                            Cz = 2;
+                        }
+                    }
+                }
+                if (diff) {
                     if (checkFail(block)) {
                         return;
-                    }
-
-
-                } else {
-//					debug.i("jungle!");
-
-                    boolean diff = true;
-                    for (int Cx = -1; Cx < 2; Cx++) {
-                        for (int Cz = -1; Cz < 2; Cz++) {
-                            if (block.getX() - Cx == top.getX()
-                                    && block.getZ() - Cz == top.getZ()) {
-                                diff = false;
-                                Cx = 2;
-                                Cz = 2;
-                            }
-                        }
-                    }
-                    if (diff) {
-                        if (checkFail(block)) {
-                            return;
-                        }
                     }
                 }
             }
@@ -402,7 +390,7 @@ public class VanillaTree extends BaseTree implements INormalTree {
 
     @Override
     protected boolean isBottom(Block block) {
-        if (bottoms != null && (species == TreeSpecies.JUNGLE || species == TreeSpecies.REDWOOD)) {
+        if (bottoms != null) {
             for (Block b : bottoms) {
                 if (b != null && b.equals(block)) {
                     return true;
