@@ -1,3 +1,4 @@
+v5.10.38 - stop breaking tools for breaking literally nothing
 v5.10.37 - catch NPE in DarkOak Tree implementation
 v5.10.36 - something something
 v5.10.35 - optimize dark oak tree determination - cut down the fat down to FIVE percent of the former checks

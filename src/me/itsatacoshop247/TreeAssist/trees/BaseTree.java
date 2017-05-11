@@ -858,29 +858,32 @@ public abstract class BaseTree {
                             debug.i("InstantRunner: skip breaking leaf");
                             continue;
                         }
-                        if (tool == null) {
-                        	TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
-                        	Utils.plugin.getServer().getPluginManager().callEvent(event);
-                        	if (!event.isCancelled())
-                        	{
-                        		Utils.plugin.blockList.logBreak(block, player);
-                                if ((block.getType() == Material.LOG || block.getType() == Material.LOG_2)
-                                        && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
-                                    player.getInventory().addItem(block.getState().getData().toItemStack(1));
-                                    block.setType(Material.AIR);
-                                } else {
-                                    block.breakNaturally();
-                                }
-                                player.sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
-                            }
+                        if (block.getType() == Material.AIR) {
+                            debug.i("InstantRunner: AIR at " + Debugger.parse(block.getLocation()));
                         } else {
-                            debug.i("InstantRunner: 2");
-                            breakBlock(block, tool, player);
-                            if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
-                                debug.i("removing item: " + player.getItemInHand().getType().name() +
-                                        " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
-                                player.getInventory().remove(tool);
-                                this.cancel();
+                            if (tool == null) {
+                                TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
+                                Utils.plugin.getServer().getPluginManager().callEvent(event);
+                                if (!event.isCancelled()) {
+                                    Utils.plugin.blockList.logBreak(block, player);
+                                    if ((block.getType() == Material.LOG || block.getType() == Material.LOG_2)
+                                            && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
+                                        player.getInventory().addItem(block.getState().getData().toItemStack(1));
+                                        block.setType(Material.AIR);
+                                    } else {
+                                        block.breakNaturally();
+                                    }
+                                    player.sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
+                                }
+                            } else {
+                                debug.i("InstantRunner: 2");
+                                breakBlock(block, tool, player);
+                                if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
+                                    debug.i("removing item: " + player.getItemInHand().getType().name() +
+                                            " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
+                                    player.getInventory().remove(tool);
+                                    this.cancel();
+                                }
                             }
                         }
                         removeBlocks.remove(block);
