@@ -1,3 +1,5 @@
+v5.10.37 - catch NPE in DarkOak Tree implementation
+v5.10.36 - something something
 v5.10.35 - optimize dark oak tree determination - cut down the fat down to FIVE percent of the former checks
 v5.10.34 - optimize big jungle tree determination - take the block checks down to 20% from before
 v5.10.33 - optimize thin jungle tree determination
