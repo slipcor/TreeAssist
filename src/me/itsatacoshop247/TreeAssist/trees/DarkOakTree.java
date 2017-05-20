@@ -22,26 +22,29 @@ public class DarkOakTree extends BaseTree implements INormalTree {
 
     @Override
     protected List<Block> calculate(final Block bottom, final Block top) {
-        List<Block> list = new ArrayList<Block>();
-        int x = Math.min(bottoms[0].getX(), Math.min(bottoms[1].getX(), bottoms[2].getX()));
-        int z = Math.min(bottoms[0].getZ(), Math.min(bottoms[1].getZ(), bottoms[2].getZ()));
+        List<Block> list = new ArrayList<>();
+        try {
+            int x = Math.min(bottoms[0].getX(), Math.min(bottoms[1].getX(), bottoms[2].getX()));
+            int z = Math.min(bottoms[0].getZ(), Math.min(bottoms[1].getZ(), bottoms[2].getZ()));
 
-        checkBlock(list,
-                bottom.getWorld().getBlockAt(x, bottom.getY(), z),
-                bottom.getWorld().getBlockAt(x, top.getY(), z),
-                BlockFace.WEST, BlockFace.NORTH, true);
-        checkBlock(list,
-                bottom.getWorld().getBlockAt(x+1, bottom.getY(), z),
-                bottom.getWorld().getBlockAt(x+1, top.getY(), z),
-                BlockFace.EAST, BlockFace.NORTH, true);
-        checkBlock(list,
-                bottom.getWorld().getBlockAt(x, bottom.getY(), z+1),
-                bottom.getWorld().getBlockAt(x, top.getY(), z+1),
-                BlockFace.WEST, BlockFace.SOUTH, true);
-        checkBlock(list,
-                bottom.getWorld().getBlockAt(x+1, bottom.getY(), z+1),
-                bottom.getWorld().getBlockAt(x+1, top.getY(), z+1),
-                BlockFace.EAST, BlockFace.SOUTH, true);
+            checkBlock(list,
+                    bottom.getWorld().getBlockAt(x, bottom.getY(), z),
+                    bottom.getWorld().getBlockAt(x, top.getY(), z),
+                    BlockFace.WEST, BlockFace.NORTH, true);
+            checkBlock(list,
+                    bottom.getWorld().getBlockAt(x + 1, bottom.getY(), z),
+                    bottom.getWorld().getBlockAt(x + 1, top.getY(), z),
+                    BlockFace.EAST, BlockFace.NORTH, true);
+            checkBlock(list,
+                    bottom.getWorld().getBlockAt(x, bottom.getY(), z + 1),
+                    bottom.getWorld().getBlockAt(x, top.getY(), z + 1),
+                    BlockFace.WEST, BlockFace.SOUTH, true);
+            checkBlock(list,
+                    bottom.getWorld().getBlockAt(x + 1, bottom.getY(), z + 1),
+                    bottom.getWorld().getBlockAt(x + 1, top.getY(), z + 1),
+                    BlockFace.EAST, BlockFace.SOUTH, true);
+        } catch (NullPointerException npe) {
+        }
         list.addAll(leaves);
         return list;
     }
