@@ -726,7 +726,7 @@ public abstract class BaseTree {
                         debug.i("removeLater: skip breaking leaf");
                     } else {
                         if (!fastDecaying && isLeaf(block) == 1) {
-                            Utils.plugin.getListener().breakRadiusIfLeaf(block);
+                            Utils.plugin.getListener().breakRadiusLeaves(block);
                             fastDecaying = true;
                         }
                         TATreeBrokenEvent event = new TATreeBrokenEvent(block, null, null);
@@ -815,7 +815,7 @@ public abstract class BaseTree {
                             continue;
                         }
                         if (!fastDecaying && isLeaf(block) == 1) {
-                            Utils.plugin.getListener().breakRadiusIfLeaf(block);
+                            Utils.plugin.getListener().breakRadiusLeaves(block);
                             fastDecaying = true;
                         }
                         if (tool == null) {
@@ -851,14 +851,11 @@ public abstract class BaseTree {
                         if (block.getType() == Material.SAPLING || block.getType() == Material.BROWN_MUSHROOM
                                 || block.getType() == Material.RED_MUSHROOM) {
                             debug.i("InstantRunner: skipping breaking a sapling");
-                            continue;
                         } else if (!Utils.plugin.getConfig().getBoolean(
                                 "Automatic Tree Destruction.Remove Leaves") &&
                                 isLeaf(block) == 1) {
                             debug.i("InstantRunner: skip breaking leaf");
-                            continue;
-                        }
-                        if (block.getType() == Material.AIR) {
+                        } else if (block.getType() == Material.AIR) {
                             debug.i("InstantRunner: AIR at " + Debugger.parse(block.getLocation()));
                         } else {
                             if (tool == null) {
@@ -922,7 +919,7 @@ public abstract class BaseTree {
                             continue;
                         }
                         if (!fastDecaying && isLeaf(block) == 1) {
-                            Utils.plugin.getListener().breakRadiusIfLeaf(block);
+                            Utils.plugin.getListener().breakRadiusLeaves(block);
                             fastDecaying = true;
                         }
                         debug.i("CleanRunner: 1");
@@ -932,7 +929,7 @@ public abstract class BaseTree {
                 } else {
                     for (Block block : totalBlocks) {
                         if (!fastDecaying && isLeaf(block) == 1) {
-                            Utils.plugin.getListener().breakRadiusIfLeaf(block);
+                            Utils.plugin.getListener().breakRadiusLeaves(block);
                             fastDecaying = true;
                         }
                         if (block.getType() == Material.SAPLING || block.getType() == Material.BROWN_MUSHROOM

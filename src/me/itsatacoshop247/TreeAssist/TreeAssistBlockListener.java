@@ -34,6 +34,8 @@ public class TreeAssistBlockListener implements Listener {
     private final Map<String, Long> noreplace = new HashMap<String, Long>();
     private final TreeAssistAntiGrow antiGrow;
 
+    private int leafCount = 0;
+
     public TreeAssistBlockListener(TreeAssist instance) {
         plugin = instance;
         antiGrow = new TreeAssistAntiGrow(plugin);
@@ -52,7 +54,7 @@ public class TreeAssistBlockListener implements Listener {
             int z = block.getZ();
 
             // only do the 8 edges instead of all 26 surrounding blocks
-
+/*
             breakRadiusIfLeaf(world.getBlockAt(x - 1, y - 1, z - 1));
             breakRadiusIfLeaf(world.getBlockAt(x - 1, y - 1, z + 1));
             breakRadiusIfLeaf(world.getBlockAt(x - 1, y + 1, z - 1));
@@ -60,7 +62,11 @@ public class TreeAssistBlockListener implements Listener {
             breakRadiusIfLeaf(world.getBlockAt(x + 1, y - 1, z - 1));
             breakRadiusIfLeaf(world.getBlockAt(x + 1, y - 1, z + 1));
             breakRadiusIfLeaf(world.getBlockAt(x + 1, y + 1, z - 1));
-            breakRadiusIfLeaf(world.getBlockAt(x + 1, y + 1, z + 1));
+            breakRadiusIfLeaf(world.getBlockAt(x + 1, y + 1, z + 1));*/
+
+            breakRadiusLeaves(block);
+
+
         }
     }
 
@@ -204,44 +210,43 @@ public class TreeAssistBlockListener implements Listener {
 
         TALeafDecay event = new TALeafDecay(blockAt);
         Utils.plugin.getServer().getPluginManager().callEvent(event);
-        if (!event.isCancelled())
-        {
+        if (event.isCancelled()) {
+        } else {
         	Utils.plugin.blockList.logBreak(blockAt, null);
         	blockAt.breakNaturally();
         }
     }
 
     /**
-     * if the block is a leaf block, enforces
-     * a 8 block radius FloatingLeaf removal
+     * enforces a 8 block radius FloatingLeaf removal
      *
      * @param blockAt the block to check
      */
-    public void breakRadiusIfLeaf(Block blockAt) {
-        if (blockAt.getType() == Material.LEAVES || blockAt.getType().name().equals("LEAVES_2") || CustomTree.isCustomTreeBlock(blockAt)) {
-        	TALeafDecay event = new TALeafDecay(blockAt);
-            Utils.plugin.getServer().getPluginManager().callEvent(event);
-            if (event.isCancelled()) return;
-        	Utils.plugin.blockList.logBreak(blockAt, null);
-            blockAt.breakNaturally();
-            World world = blockAt.getWorld();
-            int x = blockAt.getX();
-            int y = blockAt.getY();
-            int z = blockAt.getZ();
-            for (int x2 = -8; x2 < 9; x2++) {
-                for (int z2 = -8; z2 < 9; z2++) {
-                    breakIfLonelyLeaf(world.getBlockAt(x + x2, y + 2, z + z2));
-                    breakIfLonelyLeaf(world.getBlockAt(x + x2, y + 1, z + z2));
-                    breakIfLonelyLeaf(world.getBlockAt(x + x2, y, z + z2));
-                    breakIfLonelyLeaf(world.getBlockAt(x + x2, y - 1, z + z2));
-                    breakIfLonelyLeaf(world.getBlockAt(x + x2, y - 2, z + z2));
-                }
+    public void breakRadiusLeaves(Block blockAt) {
+        TALeafDecay event = new TALeafDecay(blockAt);
+        Utils.plugin.getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return;
+        }
+        Utils.plugin.blockList.logBreak(blockAt, null);
+        blockAt.breakNaturally();
+        World world = blockAt.getWorld();
+        int x = blockAt.getX();
+        int y = blockAt.getY();
+        int z = blockAt.getZ();
+        for (int x2 = -8; x2 < 9; x2++) {
+            for (int z2 = -8; z2 < 9; z2++) {
+                breakIfLonelyLeaf(world.getBlockAt(x + x2, y + 2, z + z2));
+                breakIfLonelyLeaf(world.getBlockAt(x + x2, y + 1, z + z2));
+                breakIfLonelyLeaf(world.getBlockAt(x + x2, y, z + z2));
+                breakIfLonelyLeaf(world.getBlockAt(x + x2, y - 1, z + z2));
+                breakIfLonelyLeaf(world.getBlockAt(x + x2, y - 2, z + z2));
             }
         }
     }
 
     private int calcAir(Block blockAt) {
-        if (blockAt.getType() == Material.AIR || blockAt.getType() == Material.VINE) {
+        if (blockAt.getType() == Material.AIR || blockAt.getType() == Material.VINE || blockAt.getType() == Material.LEAVES || blockAt.getType() == Material.LEAVES_2) {
             return 0;
         } else if (blockAt.getType() == Material.LOG || blockAt.getType() == Material.LOG_2 || CustomTree.isCustomLog(blockAt)) {
             return 5;
