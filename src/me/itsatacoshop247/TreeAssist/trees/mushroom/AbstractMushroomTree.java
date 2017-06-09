@@ -75,7 +75,7 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
         }
 
         //debug.i("breakTime (" + removeBlocks.size() + " blocks): " + numLogs
-                * singleTime * efficiencyFactor);
+                //* singleTime * efficiencyFactor);
 
         return (int) (numLogs * singleTime * efficiencyFactor);
     }
