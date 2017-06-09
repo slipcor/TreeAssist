@@ -23,7 +23,7 @@ public class DarkOakTree extends AbstractWoodenTree {
 
     @Override
     protected List<Block> calculate(final Block bottom, final Block top) {
-        List<Block> list = new ArrayList<Block>();
+        List<Block> list = new ArrayList<>();
         try {
             int x = Math.min(bottoms[0].getX(), Math.min(bottoms[1].getX(), bottoms[2].getX()));
             int z = Math.min(bottoms[0].getZ(), Math.min(bottoms[1].getZ(), bottoms[2].getZ()));

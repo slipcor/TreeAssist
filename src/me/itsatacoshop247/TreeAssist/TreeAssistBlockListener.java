@@ -191,8 +191,7 @@ public class TreeAssistBlockListener implements Listener {
 
         TALeafDecay event = new TALeafDecay(blockAt);
         Utils.plugin.getServer().getPluginManager().callEvent(event);
-        if (!event.isCancelled())
-        {
+        if (!event.isCancelled()) {
         	Utils.plugin.blockList.logBreak(blockAt, null);
         	blockAt.breakNaturally();
         }
