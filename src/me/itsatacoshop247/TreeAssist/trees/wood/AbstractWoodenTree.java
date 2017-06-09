@@ -1,9 +1,9 @@
-package me.itsatacoshop247.TreeAssist.trees;
+package me.itsatacoshop247.TreeAssist.trees.wood;
 
 import me.itsatacoshop247.TreeAssist.TreeAssistProtect;
 import me.itsatacoshop247.TreeAssist.TreeAssistReplant;
-import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.core.Utils;
+import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
@@ -14,25 +14,39 @@ import org.bukkit.material.Tree;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JungleThinTree extends BaseTree implements INormalTree {
-    public static Debugger debugger;
-    private final List<Block> leaves = new ArrayList<>();
+public abstract class AbstractWoodenTree extends AbstractGenericTree {
+    protected final List<Block> leaves = new ArrayList<>();
+    private final TreeSpecies species;
+    private final String destroySetting;
+    private final String permissionString;
+    final Material logMaterial;
+    private final Material leafMaterial;
 
-    @Override
-    protected List<Block> calculate(Block bottom, Block top) {
+    AbstractWoodenTree(TreeSpecies species, String destroySetting, String permissionString) {
+        this.species = species;
+        this.destroySetting = destroySetting;
+        this.permissionString = permissionString;
+        if (species == TreeSpecies.DARK_OAK || species == TreeSpecies.ACACIA) {
+            logMaterial = Material.LOG_2;
+            leafMaterial = Material.LEAVES_2;
+        } else {
+            logMaterial = Material.LOG;
+            leafMaterial = Material.LEAVES;
+        }
+    }
+
+    protected List<Block> calculate(final Block bottom, final Block top) {
         List<Block> list = new ArrayList<Block>();
         checkBlock(list, bottom, top, true);
         list.addAll(leaves);
         return list;
     }
 
-    @Override
     public void checkBlock(List<Block> list, Block block, Block top, boolean deep) {
-        this.debugCount++;
 
         //debug.i("cB " + Debugger.parse(block.getLocation()));
 
-        if (block.getType() != Material.LOG) {
+        if (block.getType() != logMaterial) {
 //			debug.i("no log: " + block.getType().name());
             if (isLeaf(block) > 0) {
                 if (!leaves.contains(block)) {
@@ -45,12 +59,12 @@ public class JungleThinTree extends BaseTree implements INormalTree {
         }
 
         Tree tree = (Tree) block.getState().getData();
-        if (tree.getSpecies() != TreeSpecies.JUNGLE) {
+        if (tree.getSpecies() != species) {
 //			debug.i("cB not custom log; data wrong! " + block.getData() + "!=" + top.getData());
             return;
         }
 
-        if (block.getRelative(0, 1, 0).getType() == Material.LOG) { // might
+        if (block.getRelative(0, 1, 0).getType() == logMaterial) { // might
             // be a
             // trunk
 //			debug.i("trunk?");
@@ -92,12 +106,12 @@ public class JungleThinTree extends BaseTree implements INormalTree {
     protected boolean checkFail(Block block) {
         int failCount = 0;
         for (int cont = -4; cont < 5; cont++) {
-            if (block.getRelative(0, cont, 0).getType() == Material.LOG) {
+            if (block.getRelative(0, cont, 0).getType() == logMaterial) {
                 failCount++;
             }
         }
         if (failCount > 4) {
-			debug.i("fail count "+failCount+"! out!");
+            debug.i("fail count "+failCount+"! out!");
             return true;
         }
         return false;
@@ -105,27 +119,24 @@ public class JungleThinTree extends BaseTree implements INormalTree {
 
     @Override
     protected void debug() {
-        System.out.print("Tree: JungleThinTree");
-        System.out.print("TreeSpecies: " + TreeSpecies.JUNGLE);
-
-        System.out.print("bottom: " + (bottom == null ? "null" : bottom.toString()));
-        System.out.print("top: " + (top == null ? "null" : top.toString()));
-        System.out.print("valid: " + valid);
+        System.out.print("Tree: "+this.getClass().getName());
+        System.out.print("logMat: " + logMaterial);
+        System.out.print("leafMat: " + leafMaterial);
+        System.out.print("TreeSpecies: " + species);
 
         System.out.print("removeBlocks: " + removeBlocks.size());
         System.out.print("totalBlocks: " + totalBlocks.size());
-    }
 
-    @Override
-    protected boolean isBottom(Block block) {
-        return block.equals(bottom);
+        System.out.print("valid: " + valid);
+        System.out.print("top: " + (top == null ? "null" : top.toString()));
+        System.out.print("bottom: " + (bottom == null ? "null" : bottom.toString()));
     }
 
     @Override
     protected Block getBottom(Block block) {
         int counter = 1;
         do {
-            if (block.getRelative(0, 0 - counter, 0).getType() == Material.LOG) {
+            if (block.getRelative(0, 0 - counter, 0).getType() == logMaterial) {
                 counter++;
             } else {
 
@@ -141,7 +152,7 @@ public class JungleThinTree extends BaseTree implements INormalTree {
         } while (block.getY() - counter > 0);
 
         bottom = null;
-        return bottom;
+        return null;
     }
 
     @Override
@@ -150,7 +161,7 @@ public class JungleThinTree extends BaseTree implements INormalTree {
         int counter = 1;
 
         while (block.getY() + counter < maxY) {
-            if (block.getRelative(0, counter, 0).getType() == Material.LEAVES) {
+            if (block.getRelative(0, counter, 0).getType() == leafMaterial) {
                 top = block.getRelative(0, counter - 1, 0);
                 break;
             } else {
@@ -161,39 +172,13 @@ public class JungleThinTree extends BaseTree implements INormalTree {
     }
 
     @Override
-    protected void getTrunks() {
-
-    }
-
-    @Override
     protected void handleSaplingReplace(int delay) {
-        replaceSapling(delay, bottom);
+        handleSaplingReplace(delay, bottom);
     }
 
-    @Override
-    protected boolean hasPerms(Player player) {
-        if (!Utils.plugin.getConfig().getBoolean("Main.Use Permissions")) {
-            return true;
-        }
-        return player.hasPermission("treeassist.destroy.jungle");
-    }
-
-    @Override
-    protected int isLeaf(Block block) {
-        if (block.getType() == Material.LEAVES) {
-            return 1;
-        }
-        return 0;
-    }
-
-    @Override
-    public boolean isValid() {
-        return valid;
-    }
-
-    private void replaceSapling(int delay, Block bottom) {
+    protected void handleSaplingReplace(int delay, Block bottom) {
         if (bottom == null) {
-            debugger.i("no null sapling !!!");
+            //debugger.i("no null sapling !!!");
             return;
         }
         // make sure that the block is not being removed later
@@ -201,7 +186,7 @@ public class JungleThinTree extends BaseTree implements INormalTree {
         removeBlocks.remove(bottom);
         totalBlocks.remove(bottom);
 
-        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, TreeSpecies.JUNGLE);
+        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, species);
         Utils.plugin.getServer()
                 .getScheduler()
                 .scheduleSyncDelayedTask(Utils.plugin, b,
@@ -224,12 +209,39 @@ public class JungleThinTree extends BaseTree implements INormalTree {
     }
 
     @Override
+    protected boolean hasPerms(Player player) {
+        if (!Utils.plugin.getConfig().getBoolean("Main.Use Permissions")) {
+            return true;
+        }
+        return player.hasPermission("treeassist.destroy."+permissionString);
+    }
+
+    @Override
+    protected boolean isBottom(Block block) {
+        return block.equals(bottom);
+    }
+
+    @Override
+    protected int isLeaf(Block block) {
+        if (block.getType() == leafMaterial) {
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean isValid() {
+        return valid;
+    }
+
+    @Override
     protected boolean willBeDestroyed() {
-        return Utils.plugin.getConfig().getBoolean("Automatic Tree Destruction.Tree Types.Jungle");
+        return Utils.plugin.getConfig()
+                .getBoolean("Automatic Tree Destruction.Tree Types."+destroySetting);
     }
 
     @Override
     protected boolean willReplant() {
-        return Utils.replantType(TreeSpecies.JUNGLE);
+        return Utils.replantType(species);
     }
 }

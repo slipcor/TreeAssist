@@ -4,7 +4,7 @@ import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import me.itsatacoshop247.TreeAssist.events.TALeafDecay;
-import me.itsatacoshop247.TreeAssist.trees.BaseTree;
+import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
 import me.itsatacoshop247.TreeAssist.trees.CustomTree;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -34,8 +34,6 @@ public class TreeAssistBlockListener implements Listener {
     private final Map<String, Long> noreplace = new HashMap<String, Long>();
     private final TreeAssistAntiGrow antiGrow;
 
-    private int leafCount = 0;
-
     public TreeAssistBlockListener(TreeAssist instance) {
         plugin = instance;
         antiGrow = new TreeAssistAntiGrow(plugin);
@@ -49,24 +47,7 @@ public class TreeAssistBlockListener implements Listener {
             if (!plugin.isActive(world)) {
                 return;
             }
-            int x = block.getX();
-            int y = block.getY();
-            int z = block.getZ();
-
-            // only do the 8 edges instead of all 26 surrounding blocks
-/*
-            breakRadiusIfLeaf(world.getBlockAt(x - 1, y - 1, z - 1));
-            breakRadiusIfLeaf(world.getBlockAt(x - 1, y - 1, z + 1));
-            breakRadiusIfLeaf(world.getBlockAt(x - 1, y + 1, z - 1));
-            breakRadiusIfLeaf(world.getBlockAt(x - 1, y + 1, z + 1));
-            breakRadiusIfLeaf(world.getBlockAt(x + 1, y - 1, z - 1));
-            breakRadiusIfLeaf(world.getBlockAt(x + 1, y - 1, z + 1));
-            breakRadiusIfLeaf(world.getBlockAt(x + 1, y + 1, z - 1));
-            breakRadiusIfLeaf(world.getBlockAt(x + 1, y + 1, z + 1));*/
-
             breakRadiusLeaves(block);
-
-
         }
     }
 
@@ -141,7 +122,7 @@ public class TreeAssistBlockListener implements Listener {
         }
     }
 
-    protected final static Set<BaseTree> trees = new HashSet<BaseTree>();
+    protected final static Set<AbstractGenericTree> trees = new HashSet<AbstractGenericTree>();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
@@ -149,12 +130,12 @@ public class TreeAssistBlockListener implements Listener {
             return;
         }
 
-        Set<BaseTree> myTrees = new HashSet<BaseTree>();
-        for (BaseTree tree : trees) {
+        Set<AbstractGenericTree> myTrees = new HashSet<AbstractGenericTree>();
+        for (AbstractGenericTree tree : trees) {
             myTrees.add(tree);
         }
 
-        for (BaseTree tree : myTrees) {
+        for (AbstractGenericTree tree : myTrees) {
             if (tree.contains(event.getBlock())) {
                 return;
             } else if (!tree.isValid()) {
@@ -162,7 +143,7 @@ public class TreeAssistBlockListener implements Listener {
             }
         }
 
-        BaseTree tree = BaseTree.calculate(event);
+        AbstractGenericTree tree = AbstractGenericTree.calculate(event);
 
         if (tree.isValid()) {
             trees.add(tree);
@@ -210,15 +191,14 @@ public class TreeAssistBlockListener implements Listener {
 
         TALeafDecay event = new TALeafDecay(blockAt);
         Utils.plugin.getServer().getPluginManager().callEvent(event);
-        if (event.isCancelled()) {
-        } else {
+        if (!event.isCancelled()) {
         	Utils.plugin.blockList.logBreak(blockAt, null);
         	blockAt.breakNaturally();
         }
     }
 
     /**
-     * enforces a 8 block radius FloatingLeaf removal
+     * enforces an 8 block radius FloatingLeaf removal
      *
      * @param blockAt the block to check
      */

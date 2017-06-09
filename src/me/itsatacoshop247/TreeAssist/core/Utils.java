@@ -5,7 +5,7 @@ import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import me.itsatacoshop247.TreeAssist.TreeAssist;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
-import me.itsatacoshop247.TreeAssist.trees.BaseTree;
+import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
 import me.itsatacoshop247.TreeAssist.trees.CustomTree;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -515,24 +515,24 @@ public final class Utils {
 		Plugin mcmmo = Utils.plugin.getServer().getPluginManager().getPlugin("mcMMO");
 
 		if (player == null) {
-            BaseTree.debug.i("no Player!!");
+            AbstractGenericTree.debug.i("no Player!!");
             return;
         }
 
         MaterialData state = block.getState().getData();
 
         if (!(state instanceof Tree)) {
-            BaseTree.debug.i("no Tree!!");
+            AbstractGenericTree.debug.i("no Tree!!");
             return;
         }
 
         Tree tree = (Tree) state;
         int toAdd = ExperienceConfig.getInstance().getWoodcuttingTreeXP(tree.getSpecies());
         if (player.isOnline()) {
-            BaseTree.debug.i("adding " + toAdd + " EXP!");
+            AbstractGenericTree.debug.i("adding " + toAdd + " EXP!");
             ExperienceAPI.addXP(player, "Woodcutting", toAdd);
         } else {
-            BaseTree.debug.i("adding " + toAdd + " offline EXP!");
+            AbstractGenericTree.debug.i("adding " + toAdd + " offline EXP!");
             ExperienceAPI.addRawXPOffline(player.getName(), "Woodcutting", mcmmo.getConfig()
                     .getInt("Experience.Woodcutting.Dark_Oak"));
         }

@@ -1,23 +1,21 @@
-package me.itsatacoshop247.TreeAssist.trees;
+package me.itsatacoshop247.TreeAssist.trees.wood;
 
-import me.itsatacoshop247.TreeAssist.TreeAssistProtect;
-import me.itsatacoshop247.TreeAssist.TreeAssistReplant;
-import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
 import org.bukkit.material.Tree;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JungleBigTree extends BaseTree implements INormalTree {
-    public static Debugger debugger;
+public class JungleBigTree extends AbstractWoodenTree {
     Block[] bottoms = null;
-    private final List<Block> leaves = new ArrayList<>();
+
+    public JungleBigTree() {
+        super(TreeSpecies.JUNGLE, "Jungle", "jungle");
+    }
 
     @Override
     protected List<Block> calculate(final Block bottom, final Block top) {
@@ -47,8 +45,6 @@ public class JungleBigTree extends BaseTree implements INormalTree {
     }
 
     private void checkBlock(List<Block> list, Block block, Block top, BlockFace x, BlockFace z, boolean deep) {
-
-        this.debugCount++;
 
         if (!Utils.plugin.getConfig()
                 .getBoolean("Automatic Tree Destruction.Tree Types.BigJungle")) {
@@ -196,39 +192,18 @@ public class JungleBigTree extends BaseTree implements INormalTree {
                            Block top, boolean deep) {
     }
 
-    protected boolean checkFail(Block block) {
-        int failCount = 0;
-        for (int cont = -4; cont < 5; cont++) {
-            if (block.getRelative(0, cont, 0).getType() == Material.LOG) {
-                failCount++;
-            }
-        }
-        if (failCount > 4) {
-//			debug.i("fail count "+failCount+"! out!");
-            return true;
-        }
-        return false;
-    }
-
     @Override
     protected void debug() {
-        System.out.print("Tree: JungleBigTree");
-        System.out.print("TreeSpecies: " + TreeSpecies.JUNGLE);
-        System.out.print("bottoms: ");
-        for (Block b : bottoms) {
-            if (b == null) {
-                System.out.print("null");
-            } else {
-                System.out.print(b.toString());
+        super.debug();
+        if (bottoms != null) {
+            for (Block b : bottoms) {
+                if (b == null) {
+                    System.out.print("null");
+                } else {
+                    System.out.print(b.toString());
+                }
             }
         }
-
-        System.out.print("bottom: " + (bottom == null ? "null" : bottom.toString()));
-        System.out.print("top: " + (top == null ? "null" : top.toString()));
-        System.out.print("valid: " + valid);
-
-        System.out.print("removeBlocks: " + removeBlocks.size());
-        System.out.print("totalBlocks: " + totalBlocks.size());
     }
 
     @Override
@@ -257,23 +232,7 @@ public class JungleBigTree extends BaseTree implements INormalTree {
         } while (block.getY() - counter > 0);
 
         bottom = null;
-        return bottom;
-    }
-
-    @Override
-    protected Block getTop(Block block) {
-        int maxY = block.getWorld().getMaxHeight() + 10;
-        int counter = 1;
-
-        while (block.getY() + counter < maxY) {
-            if (block.getRelative(0, counter, 0).getType() == Material.LEAVES) {
-                top = block.getRelative(0, counter - 1, 0);
-                break;
-            } else {
-                counter++;
-            }
-        }
-        return (top != null && leafCheck(top)) ? top.getRelative(0, 1, 0) : null;
+        return null;
     }
 
     @Override
@@ -305,26 +264,18 @@ public class JungleBigTree extends BaseTree implements INormalTree {
 
     @Override
     protected void handleSaplingReplace(int delay) {
-        if (bottoms != null ) {
+        if (bottoms != null) {
             if (!Utils.plugin.getConfig().getBoolean(
                     "Sapling Replant.Tree Types to Replant.BigJungle")) {
                 debugger.i("no big jungle sapling !!!");
                 return;
             }
             for (Block bottom : bottoms) {
-                replaceSapling(delay, bottom);
+                handleSaplingReplace(delay, bottom);
                 //debugger.i("go !!!");
             }
         }
-        replaceSapling(delay, bottom);
-    }
-
-    @Override
-    protected boolean hasPerms(Player player) {
-        if (!Utils.plugin.getConfig().getBoolean("Main.Use Permissions")) {
-            return true;
-        }
-        return player.hasPermission("treeassist.destroy.jungle");
+        handleSaplingReplace(delay, bottom);
     }
 
     @Override
@@ -337,68 +288,5 @@ public class JungleBigTree extends BaseTree implements INormalTree {
             }
         }
         return block.equals(bottom);
-    }
-
-    @Override
-    protected int isLeaf(Block block) {
-        if (block.getType() == Material.LEAVES) {
-            return 1;
-        }
-        return 0;
-    }
-
-    @Override
-    public boolean isValid() {
-        return valid;
-    }
-
-    private void replaceSapling(int delay, Block bottom) {
-        if (bottom == null) {
-            debugger.i("no null sapling !!!");
-            return;
-        }
-        // make sure that the block is not being removed later
-
-        if (bottoms != null) {
-            for (Block b : bottoms) {
-                removeBlocks.remove(b);
-                totalBlocks.remove(b);
-            }
-        }
-
-        removeBlocks.remove(bottom);
-        totalBlocks.remove(bottom);
-
-        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, TreeSpecies.JUNGLE);
-        Utils.plugin.getServer()
-                .getScheduler()
-                .scheduleSyncDelayedTask(Utils.plugin, b,
-                        20 * delay);
-
-        if (Utils.plugin.getConfig()
-                .getInt("Sapling Replant.Time to Protect Sapling (Seconds)") > 0) {
-            Utils.plugin.saplingLocationList.add(bottom.getLocation());
-            Runnable X = new TreeAssistProtect(Utils.plugin,
-                    bottom.getLocation());
-
-            Utils.plugin.getServer()
-                    .getScheduler()
-                    .scheduleSyncDelayedTask(
-                            Utils.plugin,
-                            X,
-                            20 * Utils.plugin.getConfig()
-                                    .getInt("Sapling Replant.Time to Protect Sapling (Seconds)"));
-        }
-    }
-
-    @Override
-    protected boolean willBeDestroyed() {
-        return Utils.plugin.getConfig()
-                .getBoolean("Automatic Tree Destruction.Tree Types.Jungle");
-    }
-
-    @Override
-    protected boolean willReplant() {
-        return Utils.replantType(TreeSpecies.JUNGLE);
     }
 }

@@ -1,33 +1,28 @@
-package me.itsatacoshop247.TreeAssist.trees;
+package me.itsatacoshop247.TreeAssist.trees.wood;
 
-import me.itsatacoshop247.TreeAssist.TreeAssistProtect;
-import me.itsatacoshop247.TreeAssist.TreeAssistReplant;
 import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.core.Utils;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
-import org.bukkit.material.Tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AcaciaTree extends BaseTree {
-    public static Debugger debugger;
+public class AcaciaTree extends AbstractWoodenTree {
     private final List<Block> blocks = new ArrayList<>();
     private final List<Block> leafTops = new ArrayList<>();
 
     public AcaciaTree() {
+        super(TreeSpecies.ACACIA, "Acacia", "acacia");
     }
 
     @Override
     protected List<Block> calculate(final Block bottom, final Block top) {
-        debugger.i("size: " + blocks.size());
+        //debugger.i("size: " + blocks.size());
         for (Block block : leafTops) {
             for (BlockFace face : Utils.NEIGHBORFACES) {
                 blocks.add(block.getRelative(face));
@@ -38,47 +33,11 @@ public class AcaciaTree extends BaseTree {
         return blocks;
     }
 
-    protected boolean checkFail(Block block) {
-        //Tree tree = (Tree) block.getState().getData();
-
-        if (Math.abs(block.getX() - bottom.getX()) > 4 ||
-                Math.abs(block.getZ() - bottom.getZ()) > 4) {
-            return true;
-        }
-
-        int failCount = 0;
-        for (int cont = -4; cont < 5; cont++) {
-            if (block.getRelative(0, cont, 0).getType() == Material.LOG_2) {
-                failCount++;
-            }
-        }
-        if (failCount > 3) {
-            debug.i("fail count " + failCount + "! out!");
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    protected void debug() {
-        System.out.print("Tree: AcaciaTree");
-        System.out.print("logMat: " + Material.LOG_2);
-        System.out.print("species: " + TreeSpecies.ACACIA);
-        System.out.print("bottoms: null");
-
-        System.out.print("bottom: " + (bottom == null ? "null" : bottom.toString()));
-        System.out.print("top: " + (top == null ? "null" : top.toString()));
-        System.out.print("valid: " + valid);
-
-        System.out.print("removeBlocks: " + removeBlocks.size());
-        System.out.print("totalBlocks: " + totalBlocks.size());
-    }
-
     @Override
     protected Block getBottom(Block block) {
         int counter = 1;
         do {
-            if (block.getRelative(0, 0 - counter, 0).getType() == Material.LOG_2) {
+            if (block.getRelative(0, 0 - counter, 0).getType() == logMaterial) {
                 counter++;
             } else {
                 bottom = block.getRelative(0, 1 - counter, 0);
@@ -86,7 +45,7 @@ public class AcaciaTree extends BaseTree {
                 boolean foundDiagonal = false;
 
                 for (BlockFace face : Utils.NEIGHBORFACES) {
-                    if (bottom.getRelative(BlockFace.DOWN).getRelative(face).getType() == Material.LOG_2) {
+                    if (bottom.getRelative(BlockFace.DOWN).getRelative(face).getType() == logMaterial) {
                         bottom = bottom.getRelative(BlockFace.DOWN).getRelative(face);
                         block = block.getRelative(face);
                         foundDiagonal = true;
@@ -117,10 +76,10 @@ public class AcaciaTree extends BaseTree {
             //debugger.i("adding "+face+": " + Debugger.parse(block.getLocation()));
             blocks.add(block);
         }
-        if (block.getRelative(BlockFace.UP).getType() == Material.LOG_2) {
+        if (block.getRelative(BlockFace.UP).getType() == logMaterial) {
             return getDiagonalTop(block.getRelative(BlockFace.UP), face);
         }
-        if (block.getRelative(BlockFace.UP).getRelative(face).getType() == Material.LOG_2) {
+        if (block.getRelative(BlockFace.UP).getRelative(face).getType() == logMaterial) {
             return getDiagonalTop(block.getRelative(BlockFace.UP).getRelative(face), face);
         }
         // we are at the top
@@ -139,7 +98,7 @@ public class AcaciaTree extends BaseTree {
         Map<BlockFace, Block> checkMap = new HashMap<BlockFace, Block>();
 
         while (block.getY() + counter < maxY) {
-            if (block.getRelative(0, counter, 0).getType() != Material.LOG_2) {
+            if (block.getRelative(0, counter, 0).getType() != logMaterial) {
                 // reached non log,
                 top = block.getRelative(0, counter-1, 0);
                 if (!blocks.contains(top)) {
@@ -157,7 +116,7 @@ public class AcaciaTree extends BaseTree {
                     // first trunk, let's double check that there is no INSTANT branch
                     for (BlockFace face : Utils.NEIGHBORFACES) {
                         Block check = temp.getRelative(face);
-                        if (check.getType() == Material.LOG_2) {
+                        if (check.getType() == logMaterial) {
                             check = getDiagonalTop(check, face);
                             checkMap.put(face, check);
                         }
@@ -166,7 +125,7 @@ public class AcaciaTree extends BaseTree {
 
                 for (BlockFace face : Utils.NEIGHBORFACES) {
                     Block check = temp.getRelative(face);
-                    if (check.getRelative(BlockFace.UP).getType() == Material.LOG_2) {
+                    if (check.getRelative(BlockFace.UP).getType() == logMaterial) {
                         check = getDiagonalTop(check.getRelative(BlockFace.UP), face);
                         checkMap.put(face, check);
                     }
@@ -184,7 +143,7 @@ public class AcaciaTree extends BaseTree {
 
         for (BlockFace face : Utils.NEIGHBORFACES) {
             Block check = top.getRelative(face);
-            if (check.getRelative(BlockFace.UP).getType() == Material.LOG_2) {
+            if (check.getRelative(BlockFace.UP).getType() == logMaterial) {
                 check = getDiagonalTop(check.getRelative(BlockFace.UP), face);
                 checkMap.put(face, check);
             }
@@ -206,86 +165,5 @@ public class AcaciaTree extends BaseTree {
 
     @Override
     protected void getTrunks() {
-    }
-
-    @Override
-    protected void handleSaplingReplace(int delay) {
-        replaceSapling(delay, bottom);
-    }
-
-    @Override
-    protected boolean hasPerms(Player player) {
-        if (!Utils.plugin.getConfig().getBoolean("Main.Use Permissions")) {
-            return true;
-        }
-        return player.hasPermission("treeassist.destroy.acacia");
-    }
-
-    @Override
-    protected boolean isBottom(Block block) {
-        return block.equals(bottom);
-    }
-
-    @Override
-    protected int isLeaf(Block block) {
-        if (block.getType() == Material.LEAVES_2) {
-            Location bottomLoc = block.getLocation().clone();
-            if (bottom == null) {
-                return 0;
-            }
-            bottomLoc.setY(bottom.getY());
-            if (bottom.getLocation().distanceSquared(bottomLoc) > 25) {
-                return 0;
-            }
-            return 1;
-        }
-        return 0;
-    }
-
-    @Override
-    public boolean isValid() {
-        return valid;
-    }
-
-    private void replaceSapling(int delay, Block bottom) {
-        if (bottom == null) {
-            return;
-        }
-        // make sure that the block is not being removed later
-
-        removeBlocks.remove(bottom);
-        totalBlocks.remove(bottom);
-
-        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, Material.SAPLING, TreeSpecies.ACACIA.getData());
-        Utils.plugin.getServer()
-                .getScheduler()
-                .scheduleSyncDelayedTask(Utils.plugin, b,
-                        20 * delay);
-
-        if (Utils.plugin.getConfig()
-                .getInt("Sapling Replant.Time to Protect Sapling (Seconds)") > 0) {
-            Utils.plugin.saplingLocationList.add(bottom.getLocation());
-            Runnable X = new TreeAssistProtect(Utils.plugin,
-                    bottom.getLocation());
-
-            Utils.plugin.getServer()
-                    .getScheduler()
-                    .scheduleSyncDelayedTask(
-                            Utils.plugin,
-                            X,
-                            20 * Utils.plugin.getConfig()
-                                    .getInt("Sapling Replant.Time to Protect Sapling (Seconds)"));
-        }
-    }
-
-    @Override
-    protected boolean willBeDestroyed() {
-        return Utils.plugin.getConfig()
-                .getBoolean("Automatic Tree Destruction.Tree Types.Acacia");
-    }
-
-    @Override
-    protected boolean willReplant() {
-        return Utils.replantType(TreeSpecies.ACACIA);
     }
 }

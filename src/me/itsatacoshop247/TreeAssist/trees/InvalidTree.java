@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class InvalidTree extends BaseTree {
+public class InvalidTree extends AbstractGenericTree {
     public static Debugger debugger;
 
     public InvalidTree() {

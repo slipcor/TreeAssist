@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomTree extends BaseTree implements ISpecialTree {
+public class CustomTree extends AbstractGenericTree {
     public static List<?> customTreeBlocks = new ArrayList<>();
     public static List<?> customLogs = new ArrayList<>();
     public static List<?> customSaplings = new ArrayList<>();
@@ -173,8 +173,7 @@ public class CustomTree extends BaseTree implements ISpecialTree {
         }
     }
 
-    @Override
-    public void checkBlock(List<Block> list, Block block,
+    private void checkBlock(List<Block> list, Block block,
                            Block top, boolean deep, byte origData) {
 
         if (block.getType() != mat) {

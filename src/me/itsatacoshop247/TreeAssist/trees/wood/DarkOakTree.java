@@ -1,24 +1,25 @@
-package me.itsatacoshop247.TreeAssist.trees;
+package me.itsatacoshop247.TreeAssist.trees.wood;
 
 import me.itsatacoshop247.TreeAssist.TreeAssistProtect;
 import me.itsatacoshop247.TreeAssist.TreeAssistReplant;
-import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
 import org.bukkit.material.Tree;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DarkOakTree extends BaseTree implements INormalTree {
-    public static Debugger debugger;
+public class DarkOakTree extends AbstractWoodenTree {
     Block[] bottoms = null;
     private final List<Block> leaves = new ArrayList<>();
+
+    public DarkOakTree() {
+        super(TreeSpecies.DARK_OAK, "Dark Oak", "darkoak");
+    }
 
     @Override
     protected List<Block> calculate(final Block bottom, final Block top) {
@@ -43,7 +44,7 @@ public class DarkOakTree extends BaseTree implements INormalTree {
                     bottom.getWorld().getBlockAt(x + 1, bottom.getY(), z + 1),
                     bottom.getWorld().getBlockAt(x + 1, top.getY(), z + 1),
                     BlockFace.EAST, BlockFace.SOUTH, true);
-        } catch (NullPointerException npe) {
+        } catch (Exception e) {
         }
         list.addAll(leaves);
         return list;
@@ -53,14 +54,11 @@ public class DarkOakTree extends BaseTree implements INormalTree {
     // west = towards negative x
 
     private void checkBlock(List<Block> list, Block block, Block top, BlockFace x, BlockFace z, boolean deep) {
-
-        this.debugCount++;
-
         if (!Utils.plugin.getConfig()
                 .getBoolean("Automatic Tree Destruction.Tree Types.Dark Oak")) {
             return;
         }
-        debug.i("cB " + Debugger.parse(block.getLocation()));
+//      debug.i("cB " + Debugger.parse(block.getLocation()));
 
         if (block.getType() != Material.LOG_2) {
 //			debug.i("no log: " + block.getType().name());
@@ -114,7 +112,7 @@ public class DarkOakTree extends BaseTree implements INormalTree {
         checkBlock(list, block.getRelative(x).getRelative(z).getRelative(BlockFace.UP), top, x, z, false);
         checkBlock(list, block.getRelative(z).getRelative(BlockFace.UP), top, x, z, false);
 
-        // distinct changing of TOP support, because OAK
+        // distinct changing of TOP support, because DARK OAK
         if (block.getY() > top.getY() +3) {
 //			debug.i("over the top! (hah) out!");
             return;
@@ -123,10 +121,6 @@ public class DarkOakTree extends BaseTree implements INormalTree {
     }
 
     @Override
-    public void checkBlock(List<Block> list, Block block, Block top, boolean deep) {
-
-    }
-
     protected boolean checkFail(Block block) {
         // Tree tree = (Tree) block.getState().getData();
         // debug.i("["+block.hashCode()+"]"+ "checkFail!");
@@ -150,9 +144,7 @@ public class DarkOakTree extends BaseTree implements INormalTree {
 
     @Override
     protected void debug() {
-        System.out.print("Tree: DarkOakTree");
-        System.out.print("logMat: " + Material.LOG_2);
-        System.out.print("species: " + TreeSpecies.DARK_OAK);
+        super.debug();
         System.out.print("bottoms: ");
         for (Block b : bottoms) {
             if (b == null) {
@@ -161,13 +153,6 @@ public class DarkOakTree extends BaseTree implements INormalTree {
                 System.out.print(b.toString());
             }
         }
-
-        System.out.print("bottom: " + (bottom == null ? "null" : bottom.toString()));
-        System.out.print("top: " + (top == null ? "null" : top.toString()));
-        System.out.print("valid: " + valid);
-
-        System.out.print("removeBlocks: " + removeBlocks.size());
-        System.out.print("totalBlocks: " + totalBlocks.size());
     }
 
     @Override
@@ -196,7 +181,7 @@ public class DarkOakTree extends BaseTree implements INormalTree {
         } while (block.getY() - counter > 0);
 
         bottom = null;
-        return bottom;
+        return null;
     }
 
     @Override
@@ -231,7 +216,7 @@ public class DarkOakTree extends BaseTree implements INormalTree {
         int foundsum = 0;
 
         for (BlockFace face : Utils.NEIGHBORFACES) {
-            if (bottom.getRelative(face).getType() == Material.LOG_2 && j < 4) {
+            if (bottom.getRelative(face).getType() == logMaterial && j < 4) {
                 bottoms[j] = bottom.getRelative(face);
                 j++;
                 foundsum++;
@@ -249,41 +234,16 @@ public class DarkOakTree extends BaseTree implements INormalTree {
     @Override
     protected void handleSaplingReplace(int delay) {
         if (!Utils.plugin.getConfig().getBoolean(
-                "Sapling Replant.Tree Types to Replant.Dark Oak") || bottoms == null) {
-            debugger.i("no big spruce sapling !!!");
+                "Sapling Replant.Tree Types to Replant.Dark Oak") || (bottoms == null)) {
+            //debugger.i("no big spruce sapling !!!");
             return;
         }
         for (Block bottom : bottoms) {
-            replaceSapling(delay, bottom);
-            debugger.i("go !!!");
+            handleSaplingReplace(delay, bottom);
+            //debugger.i("go !!!");
         }
     }
 
-    private boolean hasDiagonals(Block block) {
-        // always remember, the block block is the TOP, and the TOP is one ABOVE the last found LOG!
-
-        // debug.i("checking for diagonal at y="+block.getY());
-
-        if (Material.LOG_2 == block.getType()) {
-            // debug.i("> UP");
-            return true;
-        }
-        for (BlockFace bf : Utils.NEIGHBORFACES) {
-            if (Material.LOG_2 == block.getRelative(bf).getType()) {
-                // debug.i("> "+bf.name());
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    protected boolean hasPerms(Player player) {
-        if (!Utils.plugin.getConfig().getBoolean("Main.Use Permissions")) {
-            return true;
-        }
-        return player.hasPermission("treeassist.destroy.darkoak");
-    }
     @Override
     protected boolean isBottom(Block block) {
         if (bottoms != null) {
@@ -323,60 +283,5 @@ public class DarkOakTree extends BaseTree implements INormalTree {
             return 1;
         }
         return 0;
-    }
-
-    @Override
-    public boolean isValid() {
-        return valid;
-    }
-
-    private void replaceSapling(int delay, Block bottom) {
-        if (bottom == null) {
-            return;
-        }
-        // make sure that the block is not being removed later
-
-        if (bottoms != null) {
-            for (Block b : bottoms) {
-                removeBlocks.remove(b);
-                totalBlocks.remove(b);
-            }
-        }
-
-        removeBlocks.remove(bottom);
-        totalBlocks.remove(bottom);
-
-        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, Material.SAPLING, TreeSpecies.DARK_OAK.getData());
-        Utils.plugin.getServer()
-                .getScheduler()
-                .scheduleSyncDelayedTask(Utils.plugin, b,
-                        20 * delay);
-
-        if (Utils.plugin.getConfig()
-                .getInt("Sapling Replant.Time to Protect Sapling (Seconds)") > 0) {
-            Utils.plugin.saplingLocationList.add(bottom.getLocation());
-            Runnable X = new TreeAssistProtect(Utils.plugin,
-                    bottom.getLocation());
-
-            Utils.plugin.getServer()
-                    .getScheduler()
-                    .scheduleSyncDelayedTask(
-                            Utils.plugin,
-                            X,
-                            20 * Utils.plugin.getConfig()
-                                    .getInt("Sapling Replant.Time to Protect Sapling (Seconds)"));
-        }
-    }
-
-    @Override
-    protected boolean willBeDestroyed() {
-        // debug.i("willbedestroyedcheck: " + Utils.plugin.getConfig().getBoolean("Automatic Tree Destruction.Tree Types.Dark Oak"));
-        return Utils.plugin.getConfig()
-                .getBoolean("Automatic Tree Destruction.Tree Types.Dark Oak");
-    }
-
-    @Override
-    protected boolean willReplant() {
-        return Utils.replantType(TreeSpecies.DARK_OAK);
     }
 }

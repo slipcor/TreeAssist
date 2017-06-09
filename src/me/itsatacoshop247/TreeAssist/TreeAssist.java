@@ -10,6 +10,12 @@ import me.itsatacoshop247.TreeAssist.core.Utils;
 import me.itsatacoshop247.TreeAssist.metrics.MetricsLite;
 import me.itsatacoshop247.TreeAssist.timers.CooldownCounter;
 import me.itsatacoshop247.TreeAssist.trees.*;
+import me.itsatacoshop247.TreeAssist.trees.mushroom.MushroomBrownTree;
+import me.itsatacoshop247.TreeAssist.trees.mushroom.MushroomRedTree;
+import me.itsatacoshop247.TreeAssist.trees.wood.AcaciaTree;
+import me.itsatacoshop247.TreeAssist.trees.wood.DarkOakTree;
+import me.itsatacoshop247.TreeAssist.trees.wood.OakTree;
+import me.itsatacoshop247.TreeAssist.trees.wood.SpruceTree;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -171,16 +177,10 @@ public class TreeAssist extends JavaPlugin {
             // Failed to submit the stats :-(
         }
 
-        BaseTree.debug = new Debugger(this, 1);
+        AbstractGenericTree.debug = new Debugger(this, 1);
         CustomTree.debugger = new Debugger(this, 2);
         InvalidTree.debugger = new Debugger(this, 3);
-        MushroomBrownTree.debugger = new Debugger(this, 4);
         OakTree.debugger = new Debugger(this, 5);
-        AcaciaTree.debugger = new Debugger(this, 6);
-        DarkOakTree.debugger = new Debugger(this, 7);
-        SpruceTree.debugger = new Debugger(this, 8);
-        BirchTree.debugger = new Debugger(this, 9);
-        MushroomRedTree.debugger = new Debugger(this, 10);
         Debugger.load(this, Bukkit.getConsoleSender());
 
 
@@ -245,7 +245,7 @@ public class TreeAssist extends JavaPlugin {
         }
     }
 
-    public void setCoolDown(Player player, BaseTree tree) {
+    public void setCoolDown(Player player, AbstractGenericTree tree) {
         int coolDown = getConfig().getInt("Automatic Tree Destruction.Cooldown (seconds)", 0);
         if (coolDown == 0 || tree == null || !tree.isValid() || coolDownOverrides.contains(player.getName())) {
             return;
