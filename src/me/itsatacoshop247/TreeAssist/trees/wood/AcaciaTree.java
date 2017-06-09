@@ -134,7 +134,7 @@ public class AcaciaTree extends AbstractWoodenTree {
             }
         }
 
-		debug.i("> straight trunk for " + counter + " blocks; y="+top.getY());
+		//debug.i("> straight trunk for " + counter + " blocks; y="+top.getY());
 
         leafTops.add(top);
 
@@ -158,7 +158,7 @@ public class AcaciaTree extends AbstractWoodenTree {
 
         top = top.getRelative(BlockFace.UP);
 
-		debug.i("final top should be at y="+top.getY());
+		  //debug.i("final top should be at y="+top.getY());
 
         return (top != null && leafCheck(top)) ? top : null;
     }

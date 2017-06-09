@@ -111,7 +111,7 @@ public abstract class AbstractWoodenTree extends AbstractGenericTree {
             }
         }
         if (failCount > 4) {
-            debug.i("fail count "+failCount+"! out!");
+            //debug.i("fail count "+failCount+"! out!");
             return true;
         }
         return false;

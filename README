@@ -1,3 +1,4 @@
+v5.11.42 - GitHub desktop is not searchable. Good to know. PSPad to the rescue! Fix breaking build
 v5.11.41 - remove unused debuggers
 v5.11.39 - several improvements, in the leaf decay enhancement and the block list
 v5.11.38 - catch another NPE in DarkOak implementation

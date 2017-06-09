@@ -64,7 +64,7 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
             for (int i = 0; i < efficiencyLevel; i++) {
                 efficiencyFactor /= 1.3F;
             }
-            debug.i("tool efficiency factor: " + efficiencyFactor);
+            //debug.i("tool efficiency factor: " + efficiencyFactor);
         }
 
         int numLogs = 0;
@@ -74,7 +74,7 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
             }
         }
 
-        debug.i("breakTime (" + removeBlocks.size() + " blocks): " + numLogs
+        //debug.i("breakTime (" + removeBlocks.size() + " blocks): " + numLogs
                 * singleTime * efficiencyFactor);
 
         return (int) (numLogs * singleTime * efficiencyFactor);
