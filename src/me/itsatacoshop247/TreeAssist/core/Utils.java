@@ -3,6 +3,7 @@ package me.itsatacoshop247.TreeAssist.core;
 import com.gmail.nossr50.api.AbilityAPI;
 import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import me.itsatacoshop247.TreeAssist.TreeAssist;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
 import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
@@ -527,7 +528,7 @@ public final class Utils {
         }
 
         Tree tree = (Tree) state;
-        int toAdd = ExperienceConfig.getInstance().getWoodcuttingTreeXP(tree.getSpecies());
+        int toAdd = ExperienceConfig.getInstance().getXp(SkillType.WOODCUTTING, tree);
         if (player.isOnline()) {
             AbstractGenericTree.debug.i("adding " + toAdd + " EXP!");
             ExperienceAPI.addXP(player, "Woodcutting", toAdd);
