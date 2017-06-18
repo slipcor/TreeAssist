@@ -57,7 +57,7 @@ public class SpruceTree extends AbstractWoodenTree {
                 .getBoolean("Automatic Tree Destruction.Tree Types.BigSpruce")) {
             return;
         }
-        //debug.i("cB " + Debugger.parse(block.getLocation()));
+        debug.i("cBxz " + Debugger.parse(block.getLocation()));
 
         if (bottoms == null) {
             return;
@@ -140,6 +140,7 @@ public class SpruceTree extends AbstractWoodenTree {
         int j = 1;
 
         if (bottom == null) {
+            //debug.i("gT: null");
             return;
         }
 
@@ -147,6 +148,7 @@ public class SpruceTree extends AbstractWoodenTree {
 
         for (BlockFace face : Utils.NEIGHBORFACES) {
             if (bottom.getRelative(face).getType() == Material.LOG && j < 4) {
+                //debug.i("gT found " + face.name());
                 bottoms[j] = bottom.getRelative(face);
                 j++;
                 foundsum++;
@@ -155,7 +157,8 @@ public class SpruceTree extends AbstractWoodenTree {
                 break;
             }
         }
-        if (foundsum < 4) {
+        if (foundsum < 3) {
+            //debug.i("gT found: "+foundsum);
             bottoms = null;
         }
     }
