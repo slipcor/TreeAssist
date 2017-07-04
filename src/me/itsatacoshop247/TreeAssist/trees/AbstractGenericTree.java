@@ -239,23 +239,39 @@ public abstract class AbstractGenericTree {
         }
 
 
-        if (!plugin.getConfig().getBoolean("Automatic Tree Destruction.When Sneaking")) {
-            if (event.getPlayer().isSneaking()) {
-                debug.i("Sneak prevention!");
-                if (plugin.getConfig().getBoolean("Sapling Replant.Enforce")) {
-                    maybeReplant(plugin, event, resultTree, player, block);
-                }
-                if (plugin.isForceAutoDestroy()) {
-                    resultTree.findYourBlocks(block);
-                    debug.i("But still, remove later, maybe");
-                    if (resultTree.isValid()) {
-                        resultTree.removeLater();
-                        debug.i("Not maybe. For sure!");
-                    }
-                    return resultTree;
-                }
-                return new InvalidTree();
+        if (!plugin.getConfig().getBoolean("Automatic Tree Destruction.When Sneaking") &&
+                event.getPlayer().isSneaking()) {
+            debug.i("Sneak prevention!");
+            if (plugin.getConfig().getBoolean("Sapling Replant.Enforce")) {
+                maybeReplant(plugin, event, resultTree, player, block);
             }
+            if (plugin.isForceAutoDestroy()) {
+                resultTree.findYourBlocks(block);
+                debug.i("But still, remove later, maybe");
+                if (resultTree.isValid()) {
+                    resultTree.removeLater();
+                    debug.i("Not maybe. For sure!");
+                }
+                return resultTree;
+            }
+            return new InvalidTree();
+        }
+        if (!plugin.getConfig().getBoolean("Automatic Tree Destruction.When Not Sneaking") &&
+                !event.getPlayer().isSneaking()) {
+            debug.i("Not-Sneak prevention!");
+            if (plugin.getConfig().getBoolean("Sapling Replant.Enforce")) {
+                maybeReplant(plugin, event, resultTree, player, block);
+            }
+            if (plugin.isForceAutoDestroy()) {
+                resultTree.findYourBlocks(block);
+                debug.i("But still, remove later, maybe");
+                if (resultTree.isValid()) {
+                    resultTree.removeLater();
+                    debug.i("Not maybe. For sure!");
+                }
+                return resultTree;
+            }
+            return new InvalidTree();
         }
 
         if (Utils.plugin.hasCoolDown(player)) {

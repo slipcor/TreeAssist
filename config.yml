@@ -18,6 +18,7 @@ Main:
 Automatic Tree Destruction:
   Required Lore: ''
   When Sneaking: true
+  When Not Sneaking: true
   Forced Removal: false
   Remove Leaves: true
   Initial Delay (seconds): 10

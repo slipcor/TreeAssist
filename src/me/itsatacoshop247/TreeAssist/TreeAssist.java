@@ -409,6 +409,7 @@ public class TreeAssist extends JavaPlugin {
         items.put("Main.Language", "en");
 
         items.put("Main.Auto Add To Inventory", "false");
+        items.put("Automatic Tree Destruction.When Not Sneaking", "true");
         return items;
     }
 
