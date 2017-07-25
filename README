@@ -1,3 +1,4 @@
+v5.11.48 - Address github issue #18 by verifying that a tree is actually big
 v5.11.47 - Add a toggle to disable the plugin when NOT sneaking "When Not Sneaking" - makes sense, right?
 v5.11.46 - Fix big spruce trees not being recognized properly
 v5.11.45 - Do not try to place saplings on invalid ground
