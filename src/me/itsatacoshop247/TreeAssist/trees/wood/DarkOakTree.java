@@ -24,7 +24,7 @@ public class DarkOakTree extends AbstractWoodenTree {
     @Override
     protected List<Block> calculate(final Block bottom, final Block top) {
         List<Block> list = new ArrayList<>();
-        try {
+        if (bottoms != null) {
             int x = Math.min(bottoms[0].getX(), Math.min(bottoms[1].getX(), bottoms[2].getX()));
             int z = Math.min(bottoms[0].getZ(), Math.min(bottoms[1].getZ(), bottoms[2].getZ()));
 
@@ -44,7 +44,6 @@ public class DarkOakTree extends AbstractWoodenTree {
                     bottom.getWorld().getBlockAt(x + 1, bottom.getY(), z + 1),
                     bottom.getWorld().getBlockAt(x + 1, top.getY(), z + 1),
                     BlockFace.EAST, BlockFace.SOUTH, true);
-        } catch (Exception e) {
         }
         list.addAll(leaves);
         return list;
