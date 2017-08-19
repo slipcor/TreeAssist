@@ -224,7 +224,7 @@ public class DarkOakTree extends AbstractWoodenTree {
                 break;
             }
         }
-        if (foundsum < 1) {
+        if (foundsum < 3) {
             bottoms = null;
             valid = false;
         }
