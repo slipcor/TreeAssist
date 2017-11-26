@@ -12,14 +12,17 @@ import me.itsatacoshop247.TreeAssist.trees.wood.*;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
+import org.bukkit.material.Wood;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -585,7 +588,17 @@ public abstract class AbstractGenericTree {
                 player.getInventory().addItem(block.getState().getData().toItemStack(1));
                 block.setType(Material.AIR);
             } else {
-                block.breakNaturally(tool);
+                if (tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
+                        && block.getType().toString().startsWith("HUGE_MUSH")) {
+                    Material mat = block.getType();
+                    byte b = block.getData();
+                    block.setType(Material.AIR);
+                    block.getWorld().dropItemNaturally(
+                            block.getLocation(),
+                            new ItemStack(mat, 1, b));
+                } else {
+                    block.breakNaturally(tool);
+                }
             }
             if (player != null) {
                 player.sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
