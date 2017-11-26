@@ -642,4 +642,27 @@ public final class Utils {
 	}
 
 	public static TreeAssist plugin;
+
+    public static int versionCompare(String theirs, String ours) {
+        String[] aTheirs = theirs.split(".");
+        String[] aOurs = ours.split(("."));
+        int i = 0;
+        while (i < aOurs.length) {
+            if (aTheirs.length<=i) {
+                return -1;
+            }
+            try {
+                int iTheirs = Integer.parseInt(aTheirs[i], 36);
+                int iOurs = Integer.parseInt(aOurs[i], 36);
+
+                if (iTheirs != iOurs) {
+                    return iTheirs - iOurs;
+                }
+            } catch (Exception e) {
+                return 0; // something fancy, assume special version that should be a snapshot
+            }
+            i++;
+        }
+        return 0;
+    }
 }

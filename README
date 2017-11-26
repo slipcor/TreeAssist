@@ -1,3 +1,4 @@
+v5.11.52 - Support more versions of coreprotect - let's hope they did not change much :O
 v5.11.51 - Allow for silk touch on mushrooms
 v5.11.50 - DarkOak also fixed for github issue #19 now - sorryyy
 v5.11.49 - Address github issue #19 by double checking the verification for big trees

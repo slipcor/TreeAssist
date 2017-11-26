@@ -26,7 +26,7 @@ public class CoreProtectBlockList implements BlockList {
 		}
 		       
 		// Check that a compatible version of CoreProtect is loaded
-		if (Double.parseDouble(plugin.getDescription().getVersion()) < 1.6){
+		if (Utils.versionCompare(plugin.getDescription().getVersion(), "1.6") < 0){
 		  return null;
 		}
 		       
