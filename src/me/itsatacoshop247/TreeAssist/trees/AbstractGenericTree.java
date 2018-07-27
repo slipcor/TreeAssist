@@ -589,11 +589,10 @@ public abstract class AbstractGenericTree {
                 if (tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
                         && Utils.isMushroom(block.getType())) {
                     Material mat = block.getType();
-                    byte b = block.getData();
                     block.setType(Material.AIR);
                     block.getWorld().dropItemNaturally(
                             block.getLocation(),
-                            new ItemStack(mat, 1, b));
+                            new ItemStack(mat, 1));
                 } else {
                     block.breakNaturally(tool);
                 }
