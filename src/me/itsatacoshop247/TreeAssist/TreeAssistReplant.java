@@ -36,7 +36,7 @@ public class TreeAssistReplant implements Runnable {
     public void run() {
         Material below = this.block.getRelative(BlockFace.DOWN).getType();
         if (plugin.isEnabled() &&
-                (below == Material.DIRT || below == Material.GRASS)) {
+                (below == Material.DIRT || below == Material.GRASS_BLOCK || below == Material.PODZOL)) {
             this.block.setType(mat);
             if (data < 0) {
                 BlockState state = block.getState();

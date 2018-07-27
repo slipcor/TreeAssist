@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MushroomBrownTree extends AbstractMushroomTree {
     public MushroomBrownTree() {
-        super(Material.LEGACY_HUGE_MUSHROOM_1, Material.BROWN_MUSHROOM, "Brown Shroom", "brownshroom");
+        super(Material.BROWN_MUSHROOM_BLOCK, Material.BROWN_MUSHROOM, "Brown Shroom", "brownshroom");
     }
 
     @Override

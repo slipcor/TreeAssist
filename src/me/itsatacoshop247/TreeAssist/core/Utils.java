@@ -32,6 +32,7 @@ public final class Utils {
     private static List<Material> logMaterials = new ArrayList<>();
     private static List<Material> leafMaterials = new ArrayList<>();
     private static List<Material> saplingMaterials = new ArrayList<>();
+    private static List<Material> mushroomMaterials = new ArrayList<>();
 
 	static {
         // elements
@@ -44,7 +45,7 @@ public final class Utils {
         // ground materials
 
         naturalMaterials.add(Material.STONE);
-        naturalMaterials.add(Material.GRASS);
+        naturalMaterials.add(Material.GRASS_BLOCK);
         naturalMaterials.add(Material.DIRT);
         naturalMaterials.add(Material.SAND);
         naturalMaterials.add(Material.TERRACOTTA);
@@ -54,6 +55,7 @@ public final class Utils {
         naturalMaterials.add(Material.WHITE_TERRACOTTA);
         naturalMaterials.add(Material.RED_TERRACOTTA);
         naturalMaterials.add(Material.MYCELIUM);
+        naturalMaterials.add(Material.PODZOL);
 
         // natural growing things
 
@@ -130,6 +132,12 @@ public final class Utils {
         saplingMaterials.add(Material.JUNGLE_SAPLING);
         saplingMaterials.add(Material.ACACIA_SAPLING);
         saplingMaterials.add(Material.DARK_OAK_SAPLING);
+        
+        // types of mushroom
+        
+        mushroomMaterials.add(Material.MUSHROOM_STEM);
+        mushroomMaterials.add(Material.BROWN_MUSHROOM_BLOCK);
+        mushroomMaterials.add(Material.RED_MUSHROOM_BLOCK);
 	}
 
 	public static List<Material> toolgood = Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE, Material.GOLDEN_AXE,
@@ -717,12 +725,24 @@ public final class Utils {
     	return logMaterials.contains(material);
     }
     
+    public static boolean isLegacyLog(Material material) {
+    	return isLog(material) && !isLegacyLog2(material);
+    }
+    
+    public static boolean isLegacyLog2(Material material) {
+    	return material == Material.ACACIA_LOG || material == Material.DARK_OAK_LOG;
+    }
+    
     public static boolean isLeaf(Material material) {
     	return leafMaterials.contains(material);
     }
     
     public static boolean isSapling(Material material) {
     	return saplingMaterials.contains(material);
+    }
+    
+    public static boolean isMushroom(Material material) {
+    	return mushroomMaterials.contains(material);
     }
     
     public static Material resolveLegacySapling(int damage) {
@@ -793,5 +813,11 @@ public final class Utils {
     		return Material.DARK_OAK_SAPLING;
     	else
     		return Material.OAK_SAPLING;
+    }
+    
+    public static Material findMushroomTreeType(Block block) {
+    	while(block.getType() == Material.MUSHROOM_STEM)
+    		block = block.getRelative(BlockFace.UP);
+    	return block.getType();
     }
 }

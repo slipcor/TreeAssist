@@ -58,9 +58,10 @@ public class AcaciaTree extends AbstractWoodenTree {
                 }
 
                 if (bottom.getRelative(BlockFace.DOWN).getType() != Material.DIRT &&
-                        bottom.getRelative(BlockFace.DOWN).getType() != Material.GRASS &&
+                        bottom.getRelative(BlockFace.DOWN).getType() != Material.GRASS_BLOCK &&
                         bottom.getRelative(BlockFace.DOWN).getType() != Material.CLAY &&
-                        bottom.getRelative(BlockFace.DOWN).getType() != Material.SAND) {
+                        bottom.getRelative(BlockFace.DOWN).getType() != Material.SAND &&
+                        bottom.getRelative(BlockFace.DOWN).getType() != Material.PODZOL) {
                     return null; // the tree is already broken.
                 }
                 return bottom;

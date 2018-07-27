@@ -57,8 +57,9 @@ public class CommandForceBreak extends AbstractCommand {
                         Block b = player.getLocation().add(x, y, z).getBlock();
                         if (Utils.isLog(b.getType())) {
                             if (b.getRelative(BlockFace.DOWN).getType() == Material.DIRT ||
-                                    b.getRelative(BlockFace.DOWN).getType() == Material.GRASS ||
-                                    b.getRelative(BlockFace.DOWN).getType() == Material.SAND) {
+                                    b.getRelative(BlockFace.DOWN).getType() == Material.GRASS_BLOCK ||
+                                    b.getRelative(BlockFace.DOWN).getType() == Material.SAND ||
+                                    b.getRelative(BlockFace.DOWN).getType() == Material.PODZOL) {
                                 BlockBreakEvent bbe = new BlockBreakEvent(b, player);
                                 Utils.plugin.getServer().getPluginManager().callEvent(bbe);
                             }

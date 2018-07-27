@@ -41,7 +41,8 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 		if ((block.getType() == Material.AIR || block.getType() == Material.SNOW) &&
 				(block.getRelative(BlockFace.DOWN).getType() == Material.DIRT ||
 						block.getRelative(BlockFace.DOWN).getType() == Material.MYCELIUM ||
-						block.getRelative(BlockFace.DOWN).getType() == Material.GRASS)) {
+						block.getRelative(BlockFace.DOWN).getType() == Material.GRASS_BLOCK ||
+						block.getRelative(BlockFace.DOWN).getType() == Material.PODZOL)) {
 
 			block.setType(Utils.resolveLegacySapling(drop.getItemStack().getData().getData()));
 			drop.remove();

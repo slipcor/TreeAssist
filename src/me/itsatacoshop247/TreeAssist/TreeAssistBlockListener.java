@@ -111,7 +111,7 @@ public class TreeAssistBlockListener implements Listener {
                 Tree tree = (Tree) data;
                 Block onebelow = block.getRelative(BlockFace.DOWN, 1);
                 Block oneabove = block.getRelative(BlockFace.UP, 1);
-                if (onebelow.getType() == Material.DIRT || onebelow.getType() == Material.GRASS) {
+                if (onebelow.getType() == Material.DIRT || onebelow.getType() == Material.GRASS_BLOCK || onebelow.getType() == Material.PODZOL) {
                     if (oneabove.getType() == Material.AIR || oneabove.getType() == logMat) {
                         Runnable b = new TreeAssistReplant(plugin, block, tree.getSpecies());
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, b, 20);

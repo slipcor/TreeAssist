@@ -65,8 +65,9 @@ public abstract class AbstractGenericTree {
                     player.sendMessage(Language.parse(MSG.INFO_SAPLING_PROTECTED));
                     event.setCancelled(true);
                 }
-            } else if (blockMat == Material.GRASS || blockMat == Material.DIRT
-                    || blockMat == Material.CLAY || blockMat == Material.SAND) {
+            } else if (blockMat == Material.GRASS_BLOCK || blockMat == Material.DIRT
+                    || blockMat == Material.CLAY || blockMat == Material.SAND
+                    || blockMat == Material.PODZOL) {
                 if (Utils.plugin.saplingLocationList.contains(block
                         .getRelative(BlockFace.UP, 1).getLocation())) {
                     if (player.getGameMode() == GameMode.CREATIVE) {
@@ -96,7 +97,6 @@ public abstract class AbstractGenericTree {
         }
 
         debug.i(type.name());
-
         switch (type) {
             case BIRCH:
                 return new BirchTree();
@@ -124,7 +124,7 @@ public abstract class AbstractGenericTree {
     }
 
     private static TreeType getTreeTypeByBlock(Block block) {
-        if (block.getType() == Material.LEGACY_LOG) {
+        if (Utils.isLegacyLog(block.getType())) {
             switch (block.getData()) {
                 case 0:
                 case 1:
@@ -143,19 +143,18 @@ public abstract class AbstractGenericTree {
                 default:
                     return null;
             }
-        } else if (block.getType() == Material.LEGACY_LOG_2) {
+        } else if (Utils.isLegacyLog2(block.getType())) {
             return block.getData() == 1 ? TreeType.DARK_OAK : TreeType.ACACIA;
         } else if (CustomTree.isCustomLog(block)) {
             return TreeType.CUSTOM;
         }
-        switch (block.getType()) {
-
-            case LEGACY_HUGE_MUSHROOM_1:
-                return TreeType.BROWN_SHROOM;
-            case LEGACY_HUGE_MUSHROOM_2:
-                return TreeType.RED_SHROOM;
+        switch (Utils.findMushroomTreeType(block)) {
+        	case BROWN_MUSHROOM_BLOCK:
+            	return TreeType.BROWN_SHROOM;
+            case RED_MUSHROOM_BLOCK:
+            	return TreeType.RED_SHROOM;
             default:
-                return null;
+            	return null;
         }
     }
 
@@ -456,7 +455,7 @@ public abstract class AbstractGenericTree {
         }
 
         Material below = block.getRelative(BlockFace.DOWN).getType();
-        if (!(below == Material.DIRT || below == Material.GRASS || below == Material.CLAY || below == Material.SAND || below == Material.MYCELIUM)) {
+        if (!(below == Material.DIRT || below == Material.GRASS_BLOCK || below == Material.CLAY || below == Material.SAND || below == Material.MYCELIUM || below == Material.PODZOL)) {
             debug.i("no valid ground: " + below);
             return resultTree;
         }
@@ -588,7 +587,7 @@ public abstract class AbstractGenericTree {
                 block.setType(Material.AIR);
             } else {
                 if (tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
-                        && block.getType().toString().startsWith("HUGE_MUSH")) {
+                        && Utils.isMushroom(block.getType())) {
                     Material mat = block.getType();
                     byte b = block.getData();
                     block.setType(Material.AIR);

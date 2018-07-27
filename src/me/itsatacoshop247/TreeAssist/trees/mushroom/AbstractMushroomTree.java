@@ -102,12 +102,14 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
     protected Block getBottom(Block block) {
         int counter = 1;
         do {
-            if (block.getRelative(0, 0 - counter, 0).getType() == blockMaterial) {
+            if (block.getRelative(0, 0 - counter, 0).getType() == blockMaterial ||
+            		block.getRelative(0, 0 - counter, 0).getType() == Material.MUSHROOM_STEM) {
                 counter++;
             } else {
                 bottom = block.getRelative(0, 1 - counter, 0);
                 if (bottom.getRelative(BlockFace.DOWN).getType() == Material.AIR
-                        || bottom.getRelative(BlockFace.DOWN).getType() == blockMaterial) {
+                        || bottom.getRelative(BlockFace.DOWN).getType() == blockMaterial
+                        || bottom.getRelative(BlockFace.DOWN).getType() == Material.MUSHROOM_STEM) {
                     return null; // the shroom is already broken.
                 }
                 return bottom;
@@ -127,6 +129,7 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
 
         while (block.getY() + counter < maxY) {
             if (block.getRelative(0, counter, 0).getType() != blockMaterial
+            		&& block.getRelative(0, counter, 0).getType() != Material.MUSHROOM_STEM
                     || counter > 13) {
                 top = block.getRelative(0, counter - 1, 0);
                 //debug.i("++");
