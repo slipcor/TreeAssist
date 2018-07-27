@@ -264,8 +264,7 @@ public class FlatFileBlockList implements BlockList {
                         final List<TreeBlock> removals = new ArrayList<TreeBlock>();
                         for (final TreeBlock block : blockMap.keySet()) {
                             final Block bukkitBlock = block.getBukkitBlock();
-                            if (bukkitBlock.getType() != Material.LOG &&
-                                    !bukkitBlock.getType().name().equals(Material.LOG_2)) {
+                            if (!Utils.isLog(bukkitBlock.getType())) {
                                 removals.add(block);
                             }
                         }

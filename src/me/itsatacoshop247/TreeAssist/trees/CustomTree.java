@@ -24,11 +24,11 @@ public class CustomTree extends AbstractGenericTree {
     }
 
     public static boolean isCustomLog(Block blockAt) {
-        return CustomTree.customLogs.contains(blockAt.getTypeId() + ":" + blockAt.getData()) || CustomTree.customLogs.contains(blockAt.getTypeId());
+        return CustomTree.customLogs.contains(blockAt.getType() + ":" + blockAt.getData()) || CustomTree.customLogs.contains(blockAt.getType());
     }
 
     public static boolean isCustomTreeBlock(Block blockAt) {
-        return CustomTree.customTreeBlocks.contains(blockAt.getTypeId() + ":" + blockAt.getData()) || CustomTree.customTreeBlocks.contains(blockAt.getTypeId());
+        return CustomTree.customTreeBlocks.contains(blockAt.getType() + ":" + blockAt.getData()) || CustomTree.customTreeBlocks.contains(blockAt.getType());
 
     }
 
@@ -113,9 +113,9 @@ public class CustomTree extends AbstractGenericTree {
         int pos = 0;
 
         for (Object o : customLogs) {
-            if (o.toString().contains(bottom.getTypeId() + ":" + bottom.getData())
+            if (o.toString().contains(bottom.getType() + ":" + bottom.getData())
                     ||
-                    o.toString().contains(String.valueOf(bottom.getTypeId()))) {
+                    o.toString().contains(String.valueOf(bottom.getType()))) {
                 break;
             }
             pos++;
@@ -129,10 +129,10 @@ public class CustomTree extends AbstractGenericTree {
 
                     if (value.contains(":")) {
                         String[] split = value.split(":");
-                        replaceSapling(Integer.parseInt(split[0]), delay,
+                        replaceSapling(split[0], delay,
                                 bottom, Byte.parseByte(split[1]));
                     } else {
-                        replaceSapling(Integer.parseInt(value), delay,
+                        replaceSapling(value, delay,
                                 bottom, (byte) 0);
                     }
                     break;
@@ -141,8 +141,8 @@ public class CustomTree extends AbstractGenericTree {
         }
     }
 
-    private void replaceSapling(int materialID, int delay, Block bottom, byte data) {
-        debug.i("replacing custom sapling: " + delay + " sec; " + materialID + ":" + data);
+    private void replaceSapling(String materialName, int delay, Block bottom, byte data) {
+        debug.i("replacing custom sapling: " + delay + " sec; " + materialName + ":" + data);
         if (bottom == null) {
             return;
         }
@@ -151,7 +151,7 @@ public class CustomTree extends AbstractGenericTree {
         removeBlocks.remove(bottom);
         totalBlocks.remove(bottom);
 
-        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, Material.getMaterial(materialID), data);
+        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, Material.getMaterial(materialName), data);
         Utils.plugin.getServer()
                 .getScheduler()
                 .scheduleSyncDelayedTask(Utils.plugin, b,

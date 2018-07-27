@@ -1,6 +1,7 @@
 name: TreeAssist
 main: me.itsatacoshop247.TreeAssist.TreeAssist
-version: 5.11.jenkins-build-number
+version: 6.0.jenkins-build-number
+api-version: 1.13
 author: itsatacoshop247
 description: TreeAssist
 softdepend: [mcMMO, Prism, CoreProtect, LogBlock]

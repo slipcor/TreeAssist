@@ -29,13 +29,15 @@ public final class Utils {
 
     // if it's not one of these blocks, it's safe to assume its a house/building
     public static List<Material> naturalMaterials = new ArrayList<>();
+    private static List<Material> logMaterials = new ArrayList<>();
+    private static List<Material> leafMaterials = new ArrayList<>();
+    private static List<Material> saplingMaterials = new ArrayList<>();
 
 	static {
         // elements
         naturalMaterials.add(Material.AIR);
         naturalMaterials.add(Material.FIRE);
         naturalMaterials.add(Material.WATER);
-        naturalMaterials.add(Material.STATIONARY_WATER);
         naturalMaterials.add(Material.SNOW_BLOCK);
         naturalMaterials.add(Material.SNOW);
 
@@ -45,41 +47,97 @@ public final class Utils {
         naturalMaterials.add(Material.GRASS);
         naturalMaterials.add(Material.DIRT);
         naturalMaterials.add(Material.SAND);
-        naturalMaterials.add(Material.STAINED_CLAY);
-        naturalMaterials.add(Material.MYCEL);
+        naturalMaterials.add(Material.TERRACOTTA);
+        naturalMaterials.add(Material.BROWN_TERRACOTTA);
+        naturalMaterials.add(Material.YELLOW_TERRACOTTA);
+        naturalMaterials.add(Material.ORANGE_TERRACOTTA);
+        naturalMaterials.add(Material.WHITE_TERRACOTTA);
+        naturalMaterials.add(Material.RED_TERRACOTTA);
+        naturalMaterials.add(Material.MYCELIUM);
 
         // natural growing things
 
-        naturalMaterials.add(Material.SAPLING);
-        naturalMaterials.add(Material.LEAVES);
-        naturalMaterials.add(Material.LEAVES_2);
-        naturalMaterials.add(Material.YELLOW_FLOWER);
-        naturalMaterials.add(Material.RED_ROSE);
-        naturalMaterials.add(Material.DOUBLE_PLANT);
+        naturalMaterials.add(Material.OAK_SAPLING);
+        naturalMaterials.add(Material.SPRUCE_SAPLING);
+        naturalMaterials.add(Material.BIRCH_SAPLING);
+        naturalMaterials.add(Material.JUNGLE_SAPLING);
+        naturalMaterials.add(Material.ACACIA_SAPLING);
+        naturalMaterials.add(Material.DARK_OAK_SAPLING);
+        naturalMaterials.add(Material.OAK_LEAVES);
+        naturalMaterials.add(Material.SPRUCE_LEAVES);
+        naturalMaterials.add(Material.BIRCH_LEAVES);
+        naturalMaterials.add(Material.JUNGLE_LEAVES);
+        naturalMaterials.add(Material.ACACIA_LEAVES);
+        naturalMaterials.add(Material.JUNGLE_LEAVES);
+        naturalMaterials.add(Material.DANDELION);
+        naturalMaterials.add(Material.POPPY);
+        naturalMaterials.add(Material.BLUE_ORCHID);
+        naturalMaterials.add(Material.ALLIUM);
+        naturalMaterials.add(Material.AZURE_BLUET);
+        naturalMaterials.add(Material.RED_TULIP);
+        naturalMaterials.add(Material.ORANGE_TULIP);
+        naturalMaterials.add(Material.WHITE_TULIP);
+        naturalMaterials.add(Material.PINK_TULIP);
+        naturalMaterials.add(Material.OXEYE_DAISY);
+        naturalMaterials.add(Material.SUNFLOWER);
+        naturalMaterials.add(Material.LILAC);
+        naturalMaterials.add(Material.TALL_GRASS);
+        naturalMaterials.add(Material.FERN);
+        naturalMaterials.add(Material.ROSE_BUSH);
+        naturalMaterials.add(Material.PEONY);
         naturalMaterials.add(Material.BROWN_MUSHROOM);
         naturalMaterials.add(Material.RED_MUSHROOM);
-        naturalMaterials.add(Material.LONG_GRASS);
+        naturalMaterials.add(Material.FERN);
         naturalMaterials.add(Material.DEAD_BUSH);
-        naturalMaterials.add(Material.SUGAR_CANE_BLOCK);
+        naturalMaterials.add(Material.SUGAR_CANE);
         naturalMaterials.add(Material.VINE);
-        naturalMaterials.add(Material.WATER_LILY);
-        naturalMaterials.add(Material.HUGE_MUSHROOM_1);
-        naturalMaterials.add(Material.HUGE_MUSHROOM_2);
-        naturalMaterials.add(Material.MELON_BLOCK);
+        naturalMaterials.add(Material.LILY_PAD);
+        naturalMaterials.add(Material.BROWN_MUSHROOM_BLOCK);
+        naturalMaterials.add(Material.RED_MUSHROOM_BLOCK);
+        naturalMaterials.add(Material.MUSHROOM_STEM);
+        naturalMaterials.add(Material.MELON);
         naturalMaterials.add(Material.PUMPKIN);
         naturalMaterials.add(Material.COCOA);
 
         // blocks that are used in farms
 
         naturalMaterials.add(Material.TORCH);
-        naturalMaterials.add(Material.RAILS);
+        naturalMaterials.add(Material.RAIL);
+        
+        // types of logs
+        
+        logMaterials.add(Material.OAK_LOG);
+        logMaterials.add(Material.SPRUCE_LOG);
+        logMaterials.add(Material.BIRCH_LOG);
+        logMaterials.add(Material.JUNGLE_LOG);
+        logMaterials.add(Material.ACACIA_LOG);
+        logMaterials.add(Material.DARK_OAK_LOG);
+        
+        // types of leaves
+        
+        leafMaterials.add(Material.OAK_LEAVES);
+        leafMaterials.add(Material.SPRUCE_LEAVES);
+        leafMaterials.add(Material.BIRCH_LEAVES);
+        leafMaterials.add(Material.JUNGLE_LEAVES);
+        leafMaterials.add(Material.ACACIA_LEAVES);
+        leafMaterials.add(Material.DARK_OAK_LEAVES);
+        
+        // types of saplings
+        
+        saplingMaterials.add(Material.OAK_SAPLING);
+        saplingMaterials.add(Material.SPRUCE_SAPLING);
+        saplingMaterials.add(Material.BIRCH_SAPLING);
+        saplingMaterials.add(Material.JUNGLE_SAPLING);
+        saplingMaterials.add(Material.ACACIA_SAPLING);
+        saplingMaterials.add(Material.DARK_OAK_SAPLING);
 	}
 
-	public static List<Integer> toolgood = Arrays.asList(271, 275, 258, 286,
-			279);
-	public static List<Integer> toolbad = Arrays.asList(256, 257, 267, 268,
-			269, 270, 272, 273, 274, 276, 277, 278, 283, 284, 285, 290, 291,
-			292, 293, 294);
+	public static List<Material> toolgood = Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE, Material.GOLDEN_AXE,
+			Material.DIAMOND_AXE);
+	public static List<Material> toolbad = Arrays.asList(Material.IRON_SHOVEL, Material.IRON_PICKAXE, Material.IRON_SWORD, Material.WOODEN_SWORD,
+			Material.WOODEN_SHOVEL, Material.WOODEN_PICKAXE, Material.STONE_SWORD, Material.STONE_SHOVEL, Material.STONE_PICKAXE,
+			Material.DIAMOND_SWORD, Material.DIAMOND_SHOVEL, Material.DIAMOND_PICKAXE, Material.GOLDEN_SWORD, Material.GOLDEN_SHOVEL,
+			Material.GOLDEN_PICKAXE, Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE, Material.GOLDEN_HOE, Material.DIAMOND_HOE);
 
 
     public static void removeCustomGroup(Player player) {
@@ -91,7 +149,9 @@ public final class Utils {
     }
 
     public static void removeRequiredTool(Player player) {
-        ItemStack inHand = player.getItemInHand();
+        ItemStack inHand = player.getInventory().getItemInMainHand();
+        if (inHand == null)
+        	inHand = player.getInventory().getItemInOffHand();
         if (inHand == null || inHand.getType() == Material.AIR) {
             player.sendMessage(Language.parse(MSG.ERROR_EMPTY_HAND));
             return;
@@ -103,12 +163,6 @@ public final class Utils {
         if (fromConfig.contains(inHand.getType().name())) {
             fromConfig.remove(inHand.getType().name());
             definition = inHand.getType().name();
-        } else if (fromConfig.contains(inHand.getTypeId())) {
-            fromConfig.remove(fromConfig.contains(inHand.getTypeId()));
-            definition = String.valueOf(fromConfig.contains(inHand.getTypeId()));
-        } else if (fromConfig.contains(String.valueOf(inHand.getTypeId()))) {
-            fromConfig.remove(String.valueOf(fromConfig.contains(inHand.getTypeId())));
-            definition = String.valueOf(fromConfig.contains(inHand.getTypeId()));
         } else {
             for (Object obj : fromConfig) {
                 if (!(obj instanceof String)) {
@@ -187,26 +241,26 @@ public final class Utils {
 
         for (int i = 0; i < CustomTree.customTreeBlocks.size(); i++) {
             Object cLog = CustomTree.customLogs.get(i);
-            if (cLog instanceof Integer) {
+            if (cLog instanceof Material) {
                 // LOG definition only has ID, no data!
-                int id = (Integer) cLog;
-                if (log.getTypeId() == id) {
+                Material id = (Material) cLog;
+                if (log.getType() == id) {
                     Object cLeaf = CustomTree.customTreeBlocks.get(i);
-                    if (cLeaf instanceof Integer) {
+                    if (cLeaf instanceof Material) {
                         // LEAF definition only has ID, no data!
-                        int leafId = (Integer) cLeaf;
-                        if (leafId == leaf.getTypeId()) {
+                        Material leafId = (Material) cLeaf;
+                        if (leafId == leaf.getType()) {
                             Object cSapling = CustomTree.customSaplings.get(i);
-                            if (cSapling instanceof Integer) {
+                            if (cSapling instanceof Material) {
                                 // SAPLING definition only has ID, no data!
-                                int saplingId = (Integer) cSapling;
-                                if (saplingId == sapling.getTypeId()) {
+                                Material saplingId = (Material) cSapling;
+                                if (saplingId == sapling.getType()) {
                                     player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
                                     return;
                                 }
-                                addLog(log.getTypeId() + ":" + log.getData().getData());
-                                addSapling(sapling.getTypeId() + ":" + sapling.getData().getData());
-                                addLeaf(leaf.getTypeId() + ":" + leaf.getData().getData());
+                                addLog(log.getType() + ":" + log.getData().getData());
+                                addSapling(sapling.getType() + ":" + sapling.getData().getData());
+                                addLeaf(leaf.getType() + ":" + leaf.getData().getData());
                                 plugin.saveConfig();
                                 plugin.reloadLists();
                                 player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
@@ -214,13 +268,13 @@ public final class Utils {
                             }
                             // SAPLING definition contains data!
                             String saplingDef = (String) cSapling;
-                            if (saplingDef.equals(sapling.getTypeId() + ":" + sapling.getData().getData())) {
+                            if (saplingDef.equals(sapling.getType() + ":" + sapling.getData().getData())) {
                                 player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
                                 return;
                             }
-                            addLog(log.getTypeId() + ":" + log.getData().getData());
-                            addSapling(sapling.getTypeId() + ":" + sapling.getData().getData());
-                            addLeaf(leaf.getTypeId() + ":" + leaf.getData().getData());
+                            addLog(log.getType() + ":" + log.getData().getData());
+                            addSapling(sapling.getType() + ":" + sapling.getData().getData());
+                            addLeaf(leaf.getType() + ":" + leaf.getData().getData());
                             plugin.saveConfig();
                             plugin.reloadLists();
                             player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
@@ -231,18 +285,18 @@ public final class Utils {
                     // LEAF definition contains data
 
                     String leafDef = (String) cLeaf;
-                    if (leafDef.equals(leaf.getTypeId() + ":" + leaf.getData().getData())) {
+                    if (leafDef.equals(leaf.getType() + ":" + leaf.getData().getData())) {
                         Object cSapling = CustomTree.customSaplings.get(i);
-                        if (cSapling instanceof Integer) {
+                        if (cSapling instanceof Material) {
                             // SAPLING definition only has ID, no data!
-                            int saplingId = (Integer) cSapling;
-                            if (saplingId == sapling.getTypeId()) {
+                            Material saplingId = (Material) cSapling;
+                            if (saplingId == sapling.getType()) {
                                 player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
                                 return;
                             }
-                            addLog(log.getTypeId() + ":" + log.getData().getData());
-                            addSapling(sapling.getTypeId() + ":" + sapling.getData().getData());
-                            addLeaf(leaf.getTypeId() + ":" + leaf.getData().getData());
+                            addLog(log.getType() + ":" + log.getData().getData());
+                            addSapling(sapling.getType() + ":" + sapling.getData().getData());
+                            addLeaf(leaf.getType() + ":" + leaf.getData().getData());
                             plugin.saveConfig();
                             plugin.reloadLists();
                             player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
@@ -250,13 +304,13 @@ public final class Utils {
                         }
                         // SAPLING definition contains data!
                         String saplingDef = (String) cSapling;
-                        if (saplingDef.equals(sapling.getTypeId() + ":" + sapling.getData().getData())) {
+                        if (saplingDef.equals(sapling.getType() + ":" + sapling.getData().getData())) {
                             player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
                             return;
                         }
-                        addLog(log.getTypeId() + ":" + log.getData().getData());
-                        addSapling(sapling.getTypeId() + ":" + sapling.getData().getData());
-                        addLeaf(leaf.getTypeId() + ":" + leaf.getData().getData());
+                        addLog(log.getType() + ":" + log.getData().getData());
+                        addSapling(sapling.getType() + ":" + sapling.getData().getData());
+                        addLeaf(leaf.getType() + ":" + leaf.getData().getData());
                         plugin.saveConfig();
                         plugin.reloadLists();
                         player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
@@ -268,23 +322,23 @@ public final class Utils {
             }
             // LOG definition contains data!
             String def = (String) cLog;
-            if (def.equals(log.getTypeId() + ":" + log.getData().getData())) {
+            if (def.equals(log.getType() + ":" + log.getData().getData())) {
                 Object cLeaf = CustomTree.customTreeBlocks.get(i);
-                if (cLeaf instanceof Integer) {
+                if (cLeaf instanceof Material) {
                     // LEAF definition only has ID, no data!
-                    int leafId = (Integer) cLeaf;
-                    if (leafId == leaf.getTypeId()) {
+                    Material leafId = (Material) cLeaf;
+                    if (leafId == leaf.getType()) {
                         Object cSapling = CustomTree.customSaplings.get(i);
-                        if (cSapling instanceof Integer) {
+                        if (cSapling instanceof Material) {
                             // SAPLING definition only has ID, no data!
-                            int saplingId = (Integer) cSapling;
-                            if (saplingId == sapling.getTypeId()) {
+                            Material saplingId = (Material) cSapling;
+                            if (saplingId == sapling.getType()) {
                                 player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
                                 return;
                             }
-                            addLog(log.getTypeId() + ":" + log.getData().getData());
-                            addSapling(sapling.getTypeId() + ":" + sapling.getData().getData());
-                            addLeaf(leaf.getTypeId() + ":" + leaf.getData().getData());
+                            addLog(log.getType() + ":" + log.getData().getData());
+                            addSapling(sapling.getType() + ":" + sapling.getData().getData());
+                            addLeaf(leaf.getType() + ":" + leaf.getData().getData());
                             plugin.saveConfig();
                             plugin.reloadLists();
                             player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
@@ -292,13 +346,13 @@ public final class Utils {
                         }
                         // SAPLING definition contains data!
                         String saplingDef = (String) cSapling;
-                        if (saplingDef.equals(sapling.getTypeId() + ":" + sapling.getData().getData())) {
+                        if (saplingDef.equals(sapling.getType() + ":" + sapling.getData().getData())) {
                             player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
                             return;
                         }
-                        addLog(log.getTypeId() + ":" + log.getData().getData());
-                        addSapling(sapling.getTypeId() + ":" + sapling.getData().getData());
-                        addLeaf(leaf.getTypeId() + ":" + leaf.getData().getData());
+                        addLog(log.getType() + ":" + log.getData().getData());
+                        addSapling(sapling.getType() + ":" + sapling.getData().getData());
+                        addLeaf(leaf.getType() + ":" + leaf.getData().getData());
                         plugin.saveConfig();
                         plugin.reloadLists();
                         player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
@@ -309,18 +363,18 @@ public final class Utils {
                 // LEAF definition contains data
 
                 String leafDef = (String) cLeaf;
-                if (leafDef.equals(leaf.getTypeId() + ":" + leaf.getData().getData())) {
+                if (leafDef.equals(leaf.getType() + ":" + leaf.getData().getData())) {
                     Object cSapling = CustomTree.customSaplings.get(i);
-                    if (cSapling instanceof Integer) {
+                    if (cSapling instanceof Material) {
                         // SAPLING definition only has ID, no data!
-                        int saplingId = (Integer) cSapling;
-                        if (saplingId == sapling.getTypeId()) {
+                        Material saplingId = (Material) cSapling;
+                        if (saplingId == sapling.getType()) {
                             player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
                             return;
                         }
-                        addLog(log.getTypeId() + ":" + log.getData().getData());
-                        addSapling(sapling.getTypeId() + ":" + sapling.getData().getData());
-                        addLeaf(leaf.getTypeId() + ":" + leaf.getData().getData());
+                        addLog(log.getType() + ":" + log.getData().getData());
+                        addSapling(sapling.getType() + ":" + sapling.getData().getData());
+                        addLeaf(leaf.getType() + ":" + leaf.getData().getData());
                         plugin.saveConfig();
                         plugin.reloadLists();
                         player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
@@ -328,13 +382,13 @@ public final class Utils {
                     }
                     // SAPLING definition contains data!
                     String saplingDef = (String) cSapling;
-                    if (saplingDef.equals(sapling.getTypeId() + ":" + sapling.getData().getData())) {
+                    if (saplingDef.equals(sapling.getType() + ":" + sapling.getData().getData())) {
                         player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
                         return;
                     }
-                    addLog(log.getTypeId() + ":" + log.getData().getData());
-                    addSapling(sapling.getTypeId() + ":" + sapling.getData().getData());
-                    addLeaf(leaf.getTypeId() + ":" + leaf.getData().getData());
+                    addLog(log.getType() + ":" + log.getData().getData());
+                    addSapling(sapling.getType() + ":" + sapling.getData().getData());
+                    addLeaf(leaf.getType() + ":" + leaf.getData().getData());
                     plugin.saveConfig();
                     plugin.reloadLists();
                     player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
@@ -343,9 +397,9 @@ public final class Utils {
                 continue;
             }
         }
-        addLog(log.getTypeId() + ":" + log.getData().getData());
-        addSapling(sapling.getTypeId() + ":" + sapling.getData().getData());
-        addLeaf(leaf.getTypeId() + ":" + leaf.getData().getData());
+        addLog(log.getType() + ":" + log.getData().getData());
+        addSapling(sapling.getType() + ":" + sapling.getData().getData());
+        addLeaf(leaf.getType() + ":" + leaf.getData().getData());
         plugin.saveConfig();
         plugin.reloadLists();
         player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
@@ -379,7 +433,9 @@ public final class Utils {
     }
 
     public static void addRequiredTool(Player player) {
-        ItemStack item = player.getItemInHand();
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item == null)
+        	item = player.getInventory().getItemInOffHand();
         if (item == null || item.getType() == Material.AIR) {
             player.sendMessage(Language.parse(MSG.ERROR_EMPTY_HAND));
             return;
@@ -417,14 +473,6 @@ public final class Utils {
         for (Object obj : fromConfig) {
             if (obj instanceof String) {
                 result.add(String.valueOf(obj));
-            } else if (obj instanceof Integer) {
-                Integer value = (Integer) obj;
-                try {
-                    Material mat = Material.getMaterial(value);
-                    result.add(mat.name());
-                } catch (Exception e) {
-                    result.add(String.valueOf(obj));
-                }
             }
         }
         result.add(entry.toString());
@@ -442,7 +490,7 @@ public final class Utils {
 	public static boolean isRequiredTool(final ItemStack inHand) {
 		List<?> fromConfig = Utils.plugin.getConfig().getList("Tools.Tools List");
 		if (fromConfig.contains(inHand.getType().name())
-				|| fromConfig.contains(inHand.getTypeId())) {
+				|| fromConfig.contains(inHand.getType().name())) {
 			return true;
 		}
 	
@@ -488,8 +536,8 @@ public final class Utils {
 	}
 
 	public static boolean isVanillaTool(final ItemStack itemStack) {
-		return (toolbad.contains(itemStack.getTypeId()) || toolgood
-				.contains(itemStack.getTypeId()));
+		return (toolbad.contains(itemStack.getType()) || toolgood
+				.contains(itemStack.getType()));
 	}
 
     public static String joinArray(final Object[] array, final String glue) {
@@ -664,5 +712,87 @@ public final class Utils {
             i++;
         }
         return 0;
+    }
+    
+    public static boolean isLog(Material material) {
+    	return logMaterials.contains(material);
+    }
+    
+    public static boolean isLeaf(Material material) {
+    	return leafMaterials.contains(material);
+    }
+    
+    public static boolean isSapling(Material material) {
+    	return saplingMaterials.contains(material);
+    }
+    
+    public static Material resolveLegacySapling(int damage) {
+    	switch(damage) {
+    	case 0:
+    		return Material.OAK_SAPLING;
+    	case 1:
+    		return Material.SPRUCE_SAPLING;
+    	case 2:
+    		return Material.BIRCH_SAPLING;
+    	case 3:
+    		return Material.JUNGLE_SAPLING;
+    	case 4:
+    		return Material.ACACIA_SAPLING;
+    	case 5:
+    		return Material.DARK_OAK_SAPLING;
+    	default:
+    		return Material.OAK_SAPLING;
+    	}
+    }
+    
+    public static Material getLogForSpecies(TreeSpecies species) {
+    	if(species == TreeSpecies.GENERIC)
+    		return Material.OAK_LOG;
+    	else if(species == TreeSpecies.REDWOOD)
+    		return Material.SPRUCE_LOG;
+    	else if(species == TreeSpecies.BIRCH)
+    		return Material.BIRCH_LOG;
+    	else if(species == TreeSpecies.JUNGLE)
+    		return Material.JUNGLE_LOG;
+    	else if(species == TreeSpecies.ACACIA)
+    		return Material.ACACIA_LOG;
+    	else if(species == TreeSpecies.DARK_OAK)
+    		return Material.DARK_OAK_LOG;
+    	else
+    		return Material.OAK_LOG;
+    }
+    
+    public static Material getLeavesForSpecies(TreeSpecies species) {
+    	if(species == TreeSpecies.GENERIC)
+    		return Material.OAK_LEAVES;
+    	else if(species == TreeSpecies.REDWOOD)
+    		return Material.SPRUCE_LEAVES;
+    	else if(species == TreeSpecies.BIRCH)
+    		return Material.BIRCH_LEAVES;
+    	else if(species == TreeSpecies.JUNGLE)
+    		return Material.JUNGLE_LEAVES;
+    	else if(species == TreeSpecies.ACACIA)
+    		return Material.ACACIA_LEAVES;
+    	else if(species == TreeSpecies.DARK_OAK)
+    		return Material.DARK_OAK_LEAVES;
+    	else
+    		return Material.OAK_LEAVES;
+    }
+    
+    public static Material getSaplingForSpecies(TreeSpecies species) {
+    	if(species == TreeSpecies.GENERIC)
+    		return Material.OAK_SAPLING;
+    	else if(species == TreeSpecies.REDWOOD)
+    		return Material.SPRUCE_SAPLING;
+    	else if(species == TreeSpecies.BIRCH)
+    		return Material.BIRCH_SAPLING;
+    	else if(species == TreeSpecies.JUNGLE)
+    		return Material.JUNGLE_SAPLING;
+    	else if(species == TreeSpecies.ACACIA)
+    		return Material.ACACIA_SAPLING;
+    	else if(species == TreeSpecies.DARK_OAK)
+    		return Material.DARK_OAK_SAPLING;
+    	else
+    		return Material.OAK_SAPLING;
     }
 }

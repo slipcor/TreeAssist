@@ -9,6 +9,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Item;
 
+import me.itsatacoshop247.TreeAssist.core.Utils;
+
 public class TreeAssistSaplingSelfPlant implements Runnable {
 	private final TreeAssist plugin;
 	private Item drop;
@@ -38,11 +40,10 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 		
 		if ((block.getType() == Material.AIR || block.getType() == Material.SNOW) &&
 				(block.getRelative(BlockFace.DOWN).getType() == Material.DIRT ||
-						block.getRelative(BlockFace.DOWN).getType() == Material.MYCEL ||
+						block.getRelative(BlockFace.DOWN).getType() == Material.MYCELIUM ||
 						block.getRelative(BlockFace.DOWN).getType() == Material.GRASS)) {
 
-			block.setType(drop.getItemStack().getType());
-			block.setData(drop.getItemStack().getData().getData());
+			block.setType(Utils.resolveLegacySapling(drop.getItemStack().getData().getData()));
 			drop.remove();
 		}
 	}

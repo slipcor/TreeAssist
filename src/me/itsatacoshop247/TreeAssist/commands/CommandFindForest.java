@@ -20,11 +20,11 @@ public class CommandFindForest extends AbstractCommand {
 
         biomeMap.put("ACACIA", Arrays.asList(new Biome[]{Biome.SAVANNA}));
         biomeMap.put("BIRCH", Arrays.asList(new Biome[]{Biome.BIRCH_FOREST, Biome.BIRCH_FOREST_HILLS}));
-        biomeMap.put("DARK_OAK", Arrays.asList(new Biome[]{Biome.ROOFED_FOREST}));
+        biomeMap.put("DARK_OAK", Arrays.asList(new Biome[]{Biome.DARK_FOREST}));
         biomeMap.put("OAK", Arrays.asList(new Biome[]{Biome.FOREST}));
         biomeMap.put("JUNGLE", Arrays.asList(new Biome[]{Biome.JUNGLE, Biome.JUNGLE_HILLS}));
-        biomeMap.put("SPRUCE", Arrays.asList(new Biome[]{Biome.TAIGA, Biome.REDWOOD_TAIGA}));
-        biomeMap.put("MUSHROOM", Arrays.asList(new Biome[]{Biome.MUSHROOM_ISLAND, Biome.MUSHROOM_ISLAND_SHORE}));
+        biomeMap.put("SPRUCE", Arrays.asList(new Biome[]{Biome.TAIGA, Biome.GIANT_TREE_TAIGA}));
+        biomeMap.put("MUSHROOM", Arrays.asList(new Biome[]{Biome.MUSHROOM_FIELDS, Biome.MUSHROOM_FIELD_SHORE}));
 
     }
 

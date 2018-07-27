@@ -26,13 +26,8 @@ public abstract class AbstractWoodenTree extends AbstractGenericTree {
         this.species = species;
         this.destroySetting = destroySetting;
         this.permissionString = permissionString;
-        if (species == TreeSpecies.DARK_OAK || species == TreeSpecies.ACACIA) {
-            logMaterial = Material.LOG_2;
-            leafMaterial = Material.LEAVES_2;
-        } else {
-            logMaterial = Material.LOG;
-            leafMaterial = Material.LEAVES;
-        }
+        this.logMaterial = Utils.getLogForSpecies(species);
+        this.leafMaterial = Utils.getLeavesForSpecies(species);
     }
 
     protected List<Block> calculate(final Block bottom, final Block top) {

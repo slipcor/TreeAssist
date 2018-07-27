@@ -25,11 +25,6 @@ public class CoreProtectBlockList implements BlockList {
 		  return null;
 		}
 		       
-		// Check that a compatible version of CoreProtect is loaded
-		if (Utils.versionCompare(plugin.getDescription().getVersion(), "1.6") < 0){
-		  return null;
-		}
-		       
 		// Check that the API is enabled
 		CoreProtectAPI protect = ((CoreProtect)plugin).getAPI();
         if (!protect.isEnabled()) {
@@ -50,8 +45,7 @@ public class CoreProtectBlockList implements BlockList {
 		if (protect == null) {
 			return false;
 		}
-		List<String[]> lookup = protect.performLookup(null, 60*60*24, 0,
-				block.getLocation(), null, null);
+		List<String[]> lookup = protect.performLookup(60*60*24, null, null, null, null, null, 0, block.getLocation());
 		
 		for (String[] value : lookup) {
 			ParseResult result = protect.parseResult(value);
@@ -91,7 +85,7 @@ public class CoreProtectBlockList implements BlockList {
 			return;
 		}
 		protect.logRemoval(player == null ? "TreeAssist" : player.getName(),
-				block.getLocation(), block.getTypeId(), block.getData());
+				block.getLocation(), block.getType(), block.getBlockData());
 	}
 
 }

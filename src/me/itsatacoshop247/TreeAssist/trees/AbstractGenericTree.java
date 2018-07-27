@@ -48,9 +48,8 @@ public abstract class AbstractGenericTree {
     private static void checkAndDoSaplingProtect(Player player, Block block,
                                                  BlockBreakEvent event) {
         Material blockMat = block.getType();
-        if (blockMat != Material.LOG && blockMat != Material.LOG_2
-                && !CustomTree.isCustomLog(block)) {
-            if (blockMat == Material.SAPLING) {
+        if (!Utils.isLog(blockMat) && !CustomTree.isCustomLog(block)) {
+            if (Utils.isSapling(blockMat)) {
                 if (Utils.plugin.getConfig().getBoolean(
                         "Sapling Replant.Block all breaking of Saplings")) {
                     player.sendMessage(
@@ -79,7 +78,7 @@ public abstract class AbstractGenericTree {
                     player.sendMessage(Language.parse(MSG.INFO_SAPLING_PROTECTED));
                     event.setCancelled(true);
                 }
-            } else if (blockMat != Material.SAPLING
+            } else if (!Utils.isSapling(blockMat)
                     && Utils.plugin.saplingLocationList.contains(block
                     .getLocation())) {
                 Utils.plugin.saplingLocationList.remove(block.getLocation());
@@ -125,7 +124,7 @@ public abstract class AbstractGenericTree {
     }
 
     private static TreeType getTreeTypeByBlock(Block block) {
-        if (block.getType() == Material.LOG) {
+        if (block.getType() == Material.LEGACY_LOG) {
             switch (block.getData()) {
                 case 0:
                 case 1:
@@ -144,16 +143,16 @@ public abstract class AbstractGenericTree {
                 default:
                     return null;
             }
-        } else if (block.getType() == Material.LOG_2) {
+        } else if (block.getType() == Material.LEGACY_LOG_2) {
             return block.getData() == 1 ? TreeType.DARK_OAK : TreeType.ACACIA;
         } else if (CustomTree.isCustomLog(block)) {
             return TreeType.CUSTOM;
         }
         switch (block.getType()) {
 
-            case HUGE_MUSHROOM_1:
+            case LEGACY_HUGE_MUSHROOM_1:
                 return TreeType.BROWN_SHROOM;
-            case HUGE_MUSHROOM_2:
+            case LEGACY_HUGE_MUSHROOM_2:
                 return TreeType.RED_SHROOM;
             default:
                 return null;
@@ -457,7 +456,7 @@ public abstract class AbstractGenericTree {
         }
 
         Material below = block.getRelative(BlockFace.DOWN).getType();
-        if (!(below == Material.DIRT || below == Material.GRASS || below == Material.CLAY || below == Material.SAND || below == Material.MYCEL)) {
+        if (!(below == Material.DIRT || below == Material.GRASS || below == Material.CLAY || below == Material.SAND || below == Material.MYCELIUM)) {
             debug.i("no valid ground: " + below);
             return resultTree;
         }
@@ -583,7 +582,7 @@ public abstract class AbstractGenericTree {
 
         if (chance > 99 || (new Random()).nextInt(100) < chance) {
             Utils.plugin.blockList.logBreak(block, player);
-            if (player != null && (block.getType() == Material.LOG || block.getType() == Material.LOG_2)
+            if (player != null && Utils.isLog(block.getType())
                     && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
                 player.getInventory().addItem(block.getState().getData().toItemStack(1));
                 block.setType(Material.AIR);
@@ -619,11 +618,10 @@ public abstract class AbstractGenericTree {
                             debug.i(">1 : " + data);
                             block.getWorld().dropItemNaturally(
                                     block.getLocation(),
-                                    new ItemStack(Material.LEAVES, 1, tree.getSpecies().getData()));
+                                    new ItemStack(Utils.getLeavesForSpecies(tree.getSpecies()), 1, tree.getSpecies().getData()));
                         } else {
                             try {
-                                Material mat = Material.valueOf(key
-                                        .toUpperCase());
+                                Material mat = Material.matchMaterial(key.toUpperCase());
                                 debug.i(">2 : " + mat.name());
                                 block.getWorld()
                                         .dropItemNaturally(block.getLocation(),
@@ -668,9 +666,9 @@ public abstract class AbstractGenericTree {
                 return; // no damage
             }
 
-            if (Utils.toolgood.contains(tool.getTypeId())) {
+            if (Utils.toolgood.contains(tool.getType())) {
                 tool.setDurability((short) (tool.getDurability() + 1));
-            } else if (Utils.toolbad.contains(tool.getTypeId())) {
+            } else if (Utils.toolbad.contains(tool.getType())) {
                 tool.setDurability((short) (tool.getDurability() + 2));
             }
         }
@@ -748,7 +746,7 @@ public abstract class AbstractGenericTree {
             @Override
             public void run() {
                 for (Block block : removeBlocks) {
-                    if (block.getType() == Material.SAPLING || block.getType() == Material.BROWN_MUSHROOM
+                    if (Utils.isSapling(block.getType()) || block.getType() == Material.BROWN_MUSHROOM
                             || block.getType() == Material.RED_MUSHROOM) {
                         debug.i("removeLater: skip breaking sapling");
                     } else if (!Utils.plugin.getConfig().getBoolean(
@@ -826,7 +824,7 @@ public abstract class AbstractGenericTree {
             public void run() {
                 if (offset < 0) {
                     for (Block block : removeBlocks) {
-                        if (block.getType() == Material.SAPLING || block.getType() == Material.BROWN_MUSHROOM
+                        if (Utils.isSapling(block.getType()) || block.getType() == Material.BROWN_MUSHROOM
                                 || block.getType() == Material.RED_MUSHROOM) {
                             debug.i("InstantRunner: skipping breaking a sapling");
                             continue;
@@ -846,7 +844,7 @@ public abstract class AbstractGenericTree {
                         	if (!event.isCancelled())
                         	{
                         		Utils.plugin.blockList.logBreak(block, player);
-                                if ((block.getType() == Material.LOG || block.getType() == Material.LOG_2)
+                                if (Utils.isLog(block.getType())
                                         && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
                                     player.getInventory().addItem(block.getState().getData().toItemStack(1));
                                     block.setType(Material.AIR);
@@ -870,7 +868,7 @@ public abstract class AbstractGenericTree {
                     removeBlocks.clear();
                 } else {
                     for (Block block : removeBlocks) {
-                        if (block.getType() == Material.SAPLING || block.getType() == Material.BROWN_MUSHROOM
+                        if (Utils.isSapling(block.getType()) || block.getType() == Material.BROWN_MUSHROOM
                                 || block.getType() == Material.RED_MUSHROOM) {
                             debug.i("InstantRunner: skipping breaking a sapling");
                             continue;
@@ -888,7 +886,7 @@ public abstract class AbstractGenericTree {
                                 Utils.plugin.getServer().getPluginManager().callEvent(event);
                                 if (!event.isCancelled()) {
                                     Utils.plugin.blockList.logBreak(block, player);
-                                    if ((block.getType() == Material.LOG || block.getType() == Material.LOG_2)
+                                    if (Utils.isLog(block.getType())
                                             && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
                                         player.getInventory().addItem(block.getState().getData().toItemStack(1));
                                         block.setType(Material.AIR);
@@ -933,7 +931,7 @@ public abstract class AbstractGenericTree {
             public void run() {
                 if (offset < 0) {
                     for (Block block : totalBlocks) {
-                        if (block.getType() == Material.SAPLING || block.getType() == Material.BROWN_MUSHROOM
+                        if (Utils.isSapling(block.getType()) || block.getType() == Material.BROWN_MUSHROOM
                                 || block.getType() == Material.RED_MUSHROOM) {
                             debug.i("CleanRunner: skipping breaking a sapling");
                         } else if (!Utils.plugin.getConfig().getBoolean(
@@ -954,7 +952,7 @@ public abstract class AbstractGenericTree {
                             Utils.plugin.getListener().breakRadiusLeaves(block);
                             fastDecaying = true;
                         }
-                        if (block.getType() == Material.SAPLING || block.getType() == Material.BROWN_MUSHROOM
+                        if (Utils.isSapling(block.getType()) || block.getType() == Material.BROWN_MUSHROOM
                                 || block.getType() == Material.RED_MUSHROOM) {
                             debug.i("CleanRunner: skipping breaking a sapling");
                             continue;
@@ -992,7 +990,7 @@ public abstract class AbstractGenericTree {
 
                 Block b = i.next();
                 if (block.getType() == Material.AIR ||
-                        block.getType() == Material.SAPLING || block.getType() == Material.BROWN_MUSHROOM
+                        Utils.isSapling(block.getType()) || block.getType() == Material.BROWN_MUSHROOM
                         || block.getType() == Material.RED_MUSHROOM) {
                     removeBlocks.remove(b);
                 }
@@ -1010,7 +1008,7 @@ public abstract class AbstractGenericTree {
 
             Block b = i.next();
             if (block.getType() == Material.AIR ||
-                    block.getType() == Material.SAPLING || block.getType() == Material.BROWN_MUSHROOM
+                    Utils.isSapling(block.getType()) || block.getType() == Material.BROWN_MUSHROOM
                     || block.getType() == Material.RED_MUSHROOM) {
                 totalBlocks.remove(b);
             }
@@ -1037,7 +1035,7 @@ public abstract class AbstractGenericTree {
         float singleTime;
 
         switch (element) {
-            case GOLD_AXE:
+            case GOLDEN_AXE:
                 singleTime = 0.25F;
                 break;
             case DIAMOND_AXE:
@@ -1049,7 +1047,7 @@ public abstract class AbstractGenericTree {
             case STONE_AXE:
                 singleTime = 0.75F;
                 break;
-            case WOOD_AXE:
+            case WOODEN_AXE:
                 singleTime = 1.5F;
                 break;
 

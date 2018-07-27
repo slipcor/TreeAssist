@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MushroomRedTree extends AbstractMushroomTree {
     public MushroomRedTree() {
-        super(Material.HUGE_MUSHROOM_2, Material.RED_MUSHROOM, "Red Shroom", "redshroom");
+        super(Material.LEGACY_HUGE_MUSHROOM_2, Material.RED_MUSHROOM, "Red Shroom", "redshroom");
     }
 
     @Override

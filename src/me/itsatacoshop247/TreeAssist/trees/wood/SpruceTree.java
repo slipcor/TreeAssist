@@ -63,7 +63,7 @@ public class SpruceTree extends AbstractWoodenTree {
             return;
         }
 
-        if (block.getType() != Material.LOG) {
+        if (!Utils.isLog(block.getType())) {
 //			debug.i("no log: " + block.getType().name());
             if (isLeaf(block) > 0) {
                 if (!leaves.contains(block)) {
@@ -81,7 +81,7 @@ public class SpruceTree extends AbstractWoodenTree {
             return;
         }
 
-        if (block.getRelative(0, 1, 0).getType() == Material.LOG) { // might
+        if (Utils.isLog(block.getRelative(0, 1, 0).getType())) { // might
             // be a
             // trunk
 //			debug.i("trunk?");
@@ -147,7 +147,7 @@ public class SpruceTree extends AbstractWoodenTree {
         int foundsum = 0;
 
         for (BlockFace face : Utils.NEIGHBORFACES) {
-            if (bottom.getRelative(face).getType() == Material.LOG && j < 4) {
+            if (Utils.isLog(bottom.getRelative(face).getType()) && j < 4) {
                 //debug.i("gT found " + face.name());
                 bottoms[j] = bottom.getRelative(face);
                 j++;

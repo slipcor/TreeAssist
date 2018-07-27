@@ -8,6 +8,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Sapling;
 
+import me.itsatacoshop247.TreeAssist.core.Utils;
+
 public class TreeAssistReplant implements Runnable {
     public final TreeAssist plugin;
     public Block block;
@@ -20,7 +22,7 @@ public class TreeAssistReplant implements Runnable {
         this.block = importBlock;
         this.species = species;
         this.data = -1;
-        this.mat = Material.SAPLING;
+        this.mat = Utils.getSaplingForSpecies(species);
     }
 
     public TreeAssistReplant(TreeAssist instance, Block importBlock, Material logMat, byte importData) {
@@ -43,8 +45,6 @@ public class TreeAssistReplant implements Runnable {
                 sap.setSpecies(species);
                 state.setData(sap);
                 state.update();
-            } else {
-                this.block.setData(this.data);
             }
             if (plugin.getConfig().getInt("Time to Block Sapling Growth (Seconds)") > 0) {
                 plugin.getListener().getAntiGrow().add(this.block, plugin.getConfig().getInt("Time to Block Sapling Growth (Seconds)"));

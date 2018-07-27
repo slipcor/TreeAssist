@@ -57,7 +57,7 @@ public class TreeAssistBlockListener implements Listener {
             if (this.isProtectTool(event.getPlayer().getItemInHand())) {
                 Block clicked = event.getClickedBlock();
 
-                if (clicked.getType() == Material.SAPLING) {
+                if (Utils.isSapling(clicked.getType())) {
                     if (plugin.saplingLocationList.contains(clicked.getLocation())) {
                         plugin.saplingLocationList.remove(clicked.getLocation());
                         event.getPlayer().sendMessage(
@@ -75,8 +75,7 @@ public class TreeAssistBlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (!plugin.config.getBoolean("Main.Ignore User Placed Blocks") &&
-                (event.getBlock().getType() == Material.LOG || event.getBlock().getType() == Material.LOG_2 ||
-                        CustomTree.isCustomLog(event.getBlock()))) {
+                (Utils.isLog(event.getBlock().getType()) || CustomTree.isCustomLog(event.getBlock()))) {
             if (plugin.config.getBoolean("Worlds.Enable Per World")) {
                 if (!plugin.config.getList("Worlds.Enabled Worlds").contains(event.getBlock().getWorld().getName())) {
                     return;
@@ -171,7 +170,7 @@ public class TreeAssistBlockListener implements Listener {
      * @param blockAt the block to check
      */
     private void breakIfLonelyLeaf(Block blockAt) {
-        if (blockAt.getType() != Material.LEAVES && !blockAt.getType().name().equals("LEAVES_2") && !CustomTree.isCustomTreeBlock(blockAt)) {
+        if (Utils.isLeaf(blockAt.getType()) && !CustomTree.isCustomTreeBlock(blockAt)) {
             return;
         }
         World world = blockAt.getWorld();
@@ -226,9 +225,9 @@ public class TreeAssistBlockListener implements Listener {
     }
 
     private int calcAir(Block blockAt) {
-        if (blockAt.getType() == Material.AIR || blockAt.getType() == Material.VINE || blockAt.getType() == Material.LEAVES || blockAt.getType() == Material.LEAVES_2) {
+        if (blockAt.getType() == Material.AIR || blockAt.getType() == Material.VINE || Utils.isLeaf(blockAt.getType())) {
             return 0;
-        } else if (blockAt.getType() == Material.LOG || blockAt.getType() == Material.LOG_2 || CustomTree.isCustomLog(blockAt)) {
+        } else if (Utils.isLog(blockAt.getType()) || CustomTree.isCustomLog(blockAt)) {
             return 5;
         } else {
             return 1;
@@ -246,7 +245,7 @@ public class TreeAssistBlockListener implements Listener {
     }
 
     public ItemStack getProtectionTool() {
-        ItemStack item = new ItemStack(Material.GOLD_HOE);
+        ItemStack item = new ItemStack(Material.GOLDEN_HOE);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(displayName);
         item.setItemMeta(meta);

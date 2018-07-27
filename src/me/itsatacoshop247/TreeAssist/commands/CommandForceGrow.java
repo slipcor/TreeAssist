@@ -47,7 +47,7 @@ public class CommandForceGrow extends AbstractCommand {
                 for (int y = -radius; y <= radius; y++) {
                     nextBlock:
                     for (int z = -radius; z <= radius; z++) {
-                        if (player.getLocation().add(x, y, z).getBlock().getType() == Material.SAPLING) {
+                        if (Utils.isSapling(player.getLocation().add(x, y, z).getBlock().getType())) {
                             Block block = player.getLocation().add(x, y, z).getBlock();
                             BlockState state = block.getState();
                             MaterialData data = state.getData();
@@ -75,8 +75,7 @@ public class CommandForceGrow extends AbstractCommand {
                                     continue nextBlock;
                                 }
                             }
-                            block.setType(Material.SAPLING);
-                            block.setData(specific);
+                            block.setType(Utils.resolveLegacySapling(specific));
                         }
                     }
                 }

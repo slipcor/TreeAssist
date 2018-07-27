@@ -36,7 +36,7 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
         float singleTime;
 
         switch (element) {
-            case GOLD_AXE:
+            case GOLDEN_AXE:
                 singleTime = 0.05F;
                 break;
             case DIAMOND_AXE:
@@ -48,7 +48,7 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
             case STONE_AXE:
                 singleTime = 0.1F;
                 break;
-            case WOOD_AXE:
+            case WOODEN_AXE:
                 singleTime = 0.15F;
                 break;
 
