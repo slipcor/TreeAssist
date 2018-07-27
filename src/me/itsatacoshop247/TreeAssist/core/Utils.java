@@ -489,8 +489,7 @@ public final class Utils {
 	 */
 	public static boolean isRequiredTool(final ItemStack inHand) {
 		List<?> fromConfig = Utils.plugin.getConfig().getList("Tools.Tools List");
-		if (fromConfig.contains(inHand.getType().name())
-				|| fromConfig.contains(inHand.getType().name())) {
+		if (fromConfig.contains(inHand.getType().name())) {
 			return true;
 		}
 	

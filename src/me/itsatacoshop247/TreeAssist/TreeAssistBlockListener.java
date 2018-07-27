@@ -170,7 +170,7 @@ public class TreeAssistBlockListener implements Listener {
      * @param blockAt the block to check
      */
     private void breakIfLonelyLeaf(Block blockAt) {
-        if (Utils.isLeaf(blockAt.getType()) && !CustomTree.isCustomTreeBlock(blockAt)) {
+        if (!Utils.isLeaf(blockAt.getType()) && !CustomTree.isCustomTreeBlock(blockAt)) {
             return;
         }
         World world = blockAt.getWorld();
