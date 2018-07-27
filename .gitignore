@@ -2,7 +2,6 @@
 .project
 /bin
 .DS_Store
-/lib
 .settings/
 /target
 .iml
