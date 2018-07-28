@@ -1,3 +1,12 @@
+v6.0.7 - Fixed a bug where mushroom blocks dropped from felling mushroom trees with silk touch would not stack
+v6.0.6 - Fixed a bug with felling mushroom trees growing on grass
+v6.0.5 - Fixed a bug with felling trees growing on podzol
+v6.0.4 - Fixed a bug where red mushroom trees drop brown mushrooms
+v6.0.3 - Fixed a bug where felled trees drop the wrong sapling
+v6.0.2 - Fixed a bug where red mushroom trees aren't fully cut down
+v6.0.1 - Update integration with CoreProtect API
+v6.0.0 - Update TreeAssist to natively support 1.13
+
 v5.11.52 - Support more versions of coreprotect - let's hope they did not change much :O
 v5.11.51 - Allow for silk touch on mushrooms
 v5.11.50 - DarkOak also fixed for github issue #19 now - sorryyy
