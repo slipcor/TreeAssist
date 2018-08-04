@@ -357,7 +357,7 @@ public abstract class AbstractGenericTree {
             }
 
             for (BlockFace face : Utils.NEIGHBORFACES) {
-                if (!Utils.naturalMaterials.contains(block.getRelative(
+                if (!Utils.isNatural(block.getRelative(
                         face).getType())) {
 
                     if (CustomTree.isCustomLog(block.getRelative(face)) ||

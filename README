@@ -1,3 +1,4 @@
+v6.0.8 - Fixed a bug with felling trees growing next to short grass, or hoppers/dispensers in tree farms
 v6.0.7 - Fixed a bug where mushroom blocks dropped from felling mushroom trees with silk touch would not stack
 v6.0.6 - Fixed a bug with felling mushroom trees growing on grass
 v6.0.5 - Fixed a bug with felling trees growing on podzol

@@ -28,7 +28,7 @@ public final class Utils {
 	}
 
     // if it's not one of these blocks, it's safe to assume its a house/building
-    public static List<Material> naturalMaterials = new ArrayList<>();
+    private static List<Material> naturalMaterials = new ArrayList<>();
     private static List<Material> logMaterials = new ArrayList<>();
     private static List<Material> leafMaterials = new ArrayList<>();
     private static List<Material> saplingMaterials = new ArrayList<>();
@@ -83,6 +83,7 @@ public final class Utils {
         naturalMaterials.add(Material.OXEYE_DAISY);
         naturalMaterials.add(Material.SUNFLOWER);
         naturalMaterials.add(Material.LILAC);
+        naturalMaterials.add(Material.GRASS);
         naturalMaterials.add(Material.TALL_GRASS);
         naturalMaterials.add(Material.FERN);
         naturalMaterials.add(Material.ROSE_BUSH);
@@ -105,6 +106,8 @@ public final class Utils {
 
         naturalMaterials.add(Material.TORCH);
         naturalMaterials.add(Material.RAIL);
+        naturalMaterials.add(Material.HOPPER);
+        naturalMaterials.add(Material.DISPENSER);
         
         // types of logs
         
@@ -719,6 +722,10 @@ public final class Utils {
             i++;
         }
         return 0;
+    }
+    
+    public static boolean isNatural(Material material) {
+    	return naturalMaterials.contains(material);
     }
     
     public static boolean isLog(Material material) {
