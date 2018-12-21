@@ -13,6 +13,7 @@ import java.util.List;
 
 public class CoreProtectBlockList implements BlockList {
 	private final CoreProtectAPI protect;
+	private static final int LOOKUP_TIME = 60*60*24;
 	
 	public CoreProtectBlockList() {
 		protect = getCoreProtect();
@@ -45,8 +46,8 @@ public class CoreProtectBlockList implements BlockList {
 		if (protect == null) {
 			return false;
 		}
-		List<String[]> lookup = protect.performLookup(60*60*24, null, null, null, null, null, 0, block.getLocation());
-		
+		List<String[]> lookup = protect.blockLookup(block, LOOKUP_TIME);
+
 		for (String[] value : lookup) {
 			ParseResult result = protect.parseResult(value);
 			if (result.getActionId() == 1) {
