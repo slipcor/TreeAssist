@@ -4,4 +4,5 @@
 .DS_Store
 .settings/
 /target
-.iml
+*.iml
+.idea
