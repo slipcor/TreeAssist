@@ -13,6 +13,7 @@ import java.util.List;
 
 public class CoreProtectBlockList implements BlockList {
 	private final CoreProtectAPI protect;
+	private static final int LOOKUP_TIME = 60*60*24;
 	
 	public CoreProtectBlockList() {
 		protect = getCoreProtect();
@@ -22,11 +23,6 @@ public class CoreProtectBlockList implements BlockList {
 		     
 		// Check that CoreProtect is loaded
 		if (plugin == null || !(plugin instanceof CoreProtect)) {
-		  return null;
-		}
-		       
-		// Check that a compatible version of CoreProtect is loaded
-		if (Utils.versionCompare(plugin.getDescription().getVersion(), "1.6") < 0){
 		  return null;
 		}
 		       
@@ -50,9 +46,8 @@ public class CoreProtectBlockList implements BlockList {
 		if (protect == null) {
 			return false;
 		}
-		List<String[]> lookup = protect.performLookup(null, 60*60*24, 0,
-				block.getLocation(), null, null);
-		
+		List<String[]> lookup = protect.blockLookup(block, LOOKUP_TIME);
+
 		for (String[] value : lookup) {
 			ParseResult result = protect.parseResult(value);
 			if (result.getActionId() == 1) {
@@ -91,7 +86,7 @@ public class CoreProtectBlockList implements BlockList {
 			return;
 		}
 		protect.logRemoval(player == null ? "TreeAssist" : player.getName(),
-				block.getLocation(), block.getTypeId(), block.getData());
+				block.getLocation(), block.getType(), block.getBlockData());
 	}
 
 }

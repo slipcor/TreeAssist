@@ -29,7 +29,7 @@ public class CommandForceBreak extends AbstractCommand {
 
             if (Utils.plugin.getConfig().getBoolean(
                     "Tools.Tree Destruction Require Tools")) {
-                if (!Utils.isRequiredTool(player.getItemInHand())) {
+                if (!Utils.isRequiredTool(player.getInventory().getItemInMainHand()) && !Utils.isRequiredTool(player.getInventory().getItemInOffHand())) {
                     sender.sendMessage(Language.parse(Language.MSG.ERROR_NOT_TOOL));
                     return;
                 }
@@ -55,11 +55,11 @@ public class CommandForceBreak extends AbstractCommand {
                     nextBlock:
                     for (int z = -radius; z <= radius; z++) {
                         Block b = player.getLocation().add(x, y, z).getBlock();
-                        if (b.getType() == Material.LOG
-                                || b.getType() == Material.LOG_2) {
+                        if (Utils.isLog(b.getType())) {
                             if (b.getRelative(BlockFace.DOWN).getType() == Material.DIRT ||
-                                    b.getRelative(BlockFace.DOWN).getType() == Material.GRASS ||
-                                    b.getRelative(BlockFace.DOWN).getType() == Material.SAND) {
+                                    b.getRelative(BlockFace.DOWN).getType() == Material.GRASS_BLOCK ||
+                                    b.getRelative(BlockFace.DOWN).getType() == Material.SAND ||
+                                    b.getRelative(BlockFace.DOWN).getType() == Material.PODZOL) {
                                 BlockBreakEvent bbe = new BlockBreakEvent(b, player);
                                 Utils.plugin.getServer().getPluginManager().callEvent(bbe);
                             }

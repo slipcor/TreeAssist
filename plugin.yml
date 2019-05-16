@@ -1,7 +1,9 @@
 name: TreeAssist
 main: me.itsatacoshop247.TreeAssist.TreeAssist
-version: 5.11.jenkins-build-number
+version: 6.0.10
+api-version: 1.13
 author: itsatacoshop247
+authors: [slipcor, pop4959]
 description: TreeAssist
 softdepend: [mcMMO, Prism, CoreProtect, LogBlock]
 dev-url: http://dev.bukkit.org/server-mods/tree-assist/

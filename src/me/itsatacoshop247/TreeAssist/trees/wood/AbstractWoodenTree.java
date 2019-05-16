@@ -26,13 +26,8 @@ public abstract class AbstractWoodenTree extends AbstractGenericTree {
         this.species = species;
         this.destroySetting = destroySetting;
         this.permissionString = permissionString;
-        if (species == TreeSpecies.DARK_OAK || species == TreeSpecies.ACACIA) {
-            logMaterial = Material.LOG_2;
-            leafMaterial = Material.LEAVES_2;
-        } else {
-            logMaterial = Material.LOG;
-            leafMaterial = Material.LEAVES;
-        }
+        this.logMaterial = Utils.getLogForSpecies(species);
+        this.leafMaterial = Utils.getLeavesForSpecies(species);
     }
 
     protected List<Block> calculate(final Block bottom, final Block top) {
@@ -142,9 +137,10 @@ public abstract class AbstractWoodenTree extends AbstractGenericTree {
 
                 bottom = block.getRelative(0, 1 - counter, 0);
                 if (bottom.getRelative(BlockFace.DOWN).getType() != Material.DIRT &&
-                        bottom.getRelative(BlockFace.DOWN).getType() != Material.GRASS &&
+                        bottom.getRelative(BlockFace.DOWN).getType() != Material.GRASS_BLOCK &&
                         bottom.getRelative(BlockFace.DOWN).getType() != Material.CLAY &&
-                        bottom.getRelative(BlockFace.DOWN).getType() != Material.SAND) {
+                        bottom.getRelative(BlockFace.DOWN).getType() != Material.SAND &&
+                        bottom.getRelative(BlockFace.DOWN).getType() != Material.PODZOL) {
                     return null; // the tree is already broken.
                 }
                 return bottom;

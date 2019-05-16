@@ -59,7 +59,7 @@ public class DarkOakTree extends AbstractWoodenTree {
         }
 //      debug.i("cB " + Debugger.parse(block.getLocation()));
 
-        if (block.getType() != Material.LOG_2) {
+        if (!Utils.isLog(block.getType())) {
 //			debug.i("no log: " + block.getType().name());
             if (isLeaf(block) > 0) {
                 if (!leaves.contains(block)) {
@@ -77,7 +77,7 @@ public class DarkOakTree extends AbstractWoodenTree {
             return;
         }
 
-        if (block.getRelative(0, 1, 0).getType() == Material.LOG_2) { // might
+        if (Utils.isLog(block.getRelative(0, 1, 0).getType())) { // might
             // be a
             // trunk
 //			debug.i("trunk?");
@@ -124,7 +124,7 @@ public class DarkOakTree extends AbstractWoodenTree {
         // Tree tree = (Tree) block.getState().getData();
         // debug.i("["+block.hashCode()+"]"+ "checkFail!");
 
-        while (block.getType() == Material.LOG_2) {
+        while (Utils.isLog(block.getType())) {
             block = block.getRelative(BlockFace.DOWN);
         }
         // debug.i("["+block.hashCode()+"]"+ "checkFail result based on type: "+block.getType());
@@ -158,21 +158,22 @@ public class DarkOakTree extends AbstractWoodenTree {
     protected Block getBottom(Block block) {
         int counter = 1;
         do {
-            if (block.getRelative(0, 0 - counter, 0).getType() == Material.LOG_2) {
+            if (Utils.isLog(block.getRelative(0, 0 - counter, 0).getType())) {
                 counter++;
             } else {
-                if (block.getRelative(0, 0, -1).getType() == Material.LOG_2) {
+                if (Utils.isLog(block.getRelative(0, 0, -1).getType())) {
                     block = block.getRelative(0, 0, -1);
                 }
-                if (block.getRelative(-1, 0, 0).getType() == Material.LOG_2) {
+                if (Utils.isLog(block.getRelative(-1, 0, 0).getType())) {
                     block = block.getRelative(-1, 0, 0);
                 }
 
                 bottom = block.getRelative(0, 1 - counter, 0);
                 if (bottom.getRelative(BlockFace.DOWN).getType() != Material.DIRT &&
-                        bottom.getRelative(BlockFace.DOWN).getType() != Material.GRASS &&
+                        bottom.getRelative(BlockFace.DOWN).getType() != Material.GRASS_BLOCK &&
                         bottom.getRelative(BlockFace.DOWN).getType() != Material.CLAY &&
-                        bottom.getRelative(BlockFace.DOWN).getType() != Material.SAND) {
+                        bottom.getRelative(BlockFace.DOWN).getType() != Material.SAND &&
+                        bottom.getRelative(BlockFace.DOWN).getType() != Material.PODZOL) {
                     return null; // the tree is already broken.
                 }
                 return bottom;
@@ -189,7 +190,7 @@ public class DarkOakTree extends AbstractWoodenTree {
         int counter = 1;
 
         while (block.getY() + counter < maxY) {
-            if (block.getRelative(0, counter, 0).getType() == Material.LEAVES_2) {
+            if (Utils.isLeaf(block.getRelative(0, counter, 0).getType())) {
                 top = block.getRelative(0, counter - 1, 0);
                 break;
             } else {
@@ -257,7 +258,7 @@ public class DarkOakTree extends AbstractWoodenTree {
 
     @Override
     protected int isLeaf(Block block) {
-        if (block.getType() == Material.LEAVES_2) {
+        if (Utils.isLeaf(block.getType())) {
             Location bottomLoc = block.getLocation().clone();
             if (bottoms == null) {
                 if (bottom == null) {
