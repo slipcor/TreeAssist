@@ -509,7 +509,7 @@ public final class Utils {
 				continue; // skip item IDs
 			}
 			String tool = (String) obj;
-			if (!tool.startsWith(inHand.getType().name())) {
+			if (!tool.equalsIgnoreCase(inHand.getType().name())) {
 				continue; // skip other names
 			}
 	
