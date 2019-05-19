@@ -1,3 +1,4 @@
+v6.0.55 - Fix plugin.yml typos
 v6.0.54 - Fixed a bug where items not explicitly in the tools list could be used to cut down a tree
 v6.0.53 - Please let's use the jenkins again
 v6.0.10 - Update bukkit version to 1.14 (still compatible with 1.13)

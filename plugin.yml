@@ -59,50 +59,50 @@ permissions:
       treeassist.tool: true
     default: op
   treeassist.addcustom:
-    descroption: allows to add a custom blocks group
+    description: allows to add a custom blocks group
     default: op
   treeassist.addtool:
-    descroption: allows to add a required tool
+    description: allows to add a required tool
     default: op
   treeassist.debug:
-    descroption: allows to debug
+    description: allows to debug
     default: op
   treeassist.findforest:
-    descroption: allows to find forest by tree type
+    description: allows to find forest by tree type
     default: op
   treeassist.forcebreak:
-    descroption: allows to force break trees
+    description: allows to force break trees
     default: op
   treeassist.forcegrow:
-    descroption: allows to force grow saplings
+    description: allows to force grow saplings
     default: op
   treeassist.noreplace:
-    descroption: allows to stop replacing saplings for some time
+    description: allows to stop replacing saplings for some time
     default: true
   treeassist.purge:
-    descroption: allows to purge the database or data.yml
+    description: allows to purge the database or data.yml
     default: op
   treeassist.reload:
-    descroption: allows to reload the TreeAssist config
+    description: allows to reload the TreeAssist config
     default: op
   treeassist.removecustom:
-    descroption: allows to remove a custom blocks group
+    description: allows to remove a custom blocks group
     default: op
   treeassist.removetool:
-    descroption: allows to remove a required tool
+    description: allows to remove a required tool
     default: op
   treeassist.replant:
-    descroption: allows to replant trees
+    description: allows to replant trees
     default: op
   treeassist.toggle:
-    descroption: allows to toggle TreeAssist usage
+    description: allows to toggle TreeAssist usage
     default: op
   treeassist.toggle.global:
-    descroption: allows to toggle global TreeAssist usage
+    description: allows to toggle global TreeAssist usage
     default: op
   treeassist.toggle.other:
-    descroption: allows to toggle TreeAssist usage for a player
+    description: allows to toggle TreeAssist usage for a player
     default: op
   treeassist.tool:
-    descroption: allows to gain the protection tool
+    description: allows to gain the protection tool
     default: op
