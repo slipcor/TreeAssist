@@ -10,6 +10,7 @@ dev-url: http://dev.bukkit.org/server-mods/tree-assist/
 commands:
   TreeAssist:
     description: Turn TreeAssist features on or off
+    aliases: ['ta']
     usage: You have no permissions to use this command!
 permissions:
   treeassist.destroy.*:

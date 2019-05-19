@@ -1,0 +1,143 @@
+# v5.X Changelog
+
+## v5.11 - tree implementation rewrite
+- v5.11.52 - Support more versions of coreprotect - let's hope they did not change much :O
+- v5.11.51 - Allow for silk touch on mushrooms
+- v5.11.50 - DarkOak also fixed for github issue #19 now - sorryyy
+- v5.11.49 - Address github issue #19 by double checking the verification for big trees
+- v5.11.48 - Address github issue #18 by verifying that a tree is actually big
+- v5.11.47 - Add a toggle to disable the plugin when NOT sneaking "When Not Sneaking" - makes sense, right?
+- v5.11.46 - Fix big spruce trees not being recognized properly
+- v5.11.45 - Do not try to place saplings on invalid ground
+- v5.11.44 - Try fixing an API change in mcMMO
+- v5.11.43 - This is why I normally do not work without an IDE - maybe finally fix build?
+- v5.11.42 - GitHub desktop is not searchable. Good to know. PSPad to the rescue! Fix breaking build
+- v5.11.41 - remove unused debuggers
+- v5.11.39 - several improvements, in the leaf decay enhancement and the block list
+- v5.11.38 - catch another NPE in DarkOak implementation
+- v5.11.37 - catch NPE in DarkOak Tree implementation, skip air blocks when removing later
+- v5.11.36 - rewrite of the tree implementation, a TON of duplicated code removed, tested in all environments, it SHOULD work
+
+## v5.10 - Minecraft 1.9
+- v5.10.35 - optimize dark oak tree determination - cut down the fat down to FIVE percent of the former checks
+- v5.10.34 - optimize big jungle tree determination - take the block checks down to 20% from before
+- v5.10.33 - optimize thin jungle tree determination
+- v5.10.32 - optimize acacia determination, let's not talk about statistics here, just take it :P
+- v5.10.31 - optimize birch and redwood tree determination, depending on the tree cutting down the block checks by up to 75%!
+- v5.10.30 - optimize birch and redwood tree determination, depending on the tree cutting down the block checks by up to 75%!
+- v5.10.29 - treat trees only as big if they actually are, and possibly remove double discovery of trees in some cases
+- v5.10.28 - fix the pom and compiling by adding mcMMO to libs
+- v5.10.27 - add "Auto Add To Inventory" to allow for even easier harvesting
+- v5.10.26 - split Dark Oak and Acacia handling - fix dark oak overhangings not being removed
+- v5.10.25 - implement command "findforest" to find a certain wood type (1000 block radius) - fix command reply for OPs using no arguments
+- v5.10.24 - implement a new way of saving data files. Actually the system before seems to not have worked properly. Imports old and last versions!
+- v5.10.23 - address github issue #6 - saplings change to oak when forcegrow fails
+- v5.10.22 - attempt to catch the race condition noted in issue #3 - thanks to @aikar and @SidShakal
+- v5.10.21 - finish up github issue #4 - tested in a tiny environment. Backups are being made but use with caution!
+- v5.10.20 - address github issue #5
+- v5.10.19 - address github issue #3 partially and implement github issue #4
+- v5.10.18 - try to fix a client display bug - with brute force
+- v5.10.17 - push this version to jenkins, fix an issue about disappearing items in 1.10, backwards compatible to 1.9!
+- v5.10.4 - add more keywords to start and stop debugging
+- v5.10.3 - add cooldown override for forcebreak
+- v5.10.2 - add forcebreak, forcegrow, including permissions and messages
+- v5.10.1 - pull all fixes from the 1.8 branch and fix mcMMO config reading
+
+## v5.9 - MC 1.8
+- v5.9.12 - ONLY FOR 1.9 !!!
+- v5.9.11 - add commands "addcustom" and "removecustom" - setting the first three items to custom block group (SAPLING, LOG, LEAF)
+- v5.9.10 - revert the API update, because Spigot did not do that, or did revert it
+- v5.9.9 - ignore some number errors in the data.yml parsing , remove them
+- v5.9.8 - revert back to including libs - seems we cannot rely on those maven repos :P
+- v5.9.7 - prevent StackOverflow for now, I will have to look into this in detail, but later
+- v5.9.6 - yeah. finally fixed LogBlock
+- v5.9.5 - -
+- v5.9.4 - fix LogBlock?
+- v5.9.3 - one last chance for LogBlock
+- v5.9.2 - update to Java 7 and Spigot 1.8.8
+
+## v5.8 - Welcome to Maven
+- v5.8.91 - address bukkit issue #276
+- v5.8.90 - pull things by uroskn - thanks, dude! - aaand fixing a logic bug about DURABILITY. Thanks, serpi90!
+- v5.8.89 - issue fixed, updated README!
+- v5.8.88 - still debugging
+- v5.8.87 - fix a CCE
+- v5.8.86 - debug again .... for acacia!
+- v5.8.85 - fix a messup about custom drops
+- v5.8.84 - debug to the rescue!
+- v5.8.83 - if this fixes the issue, bukkit is broken. seriously.
+- v5.8.82 - fix language twist
+- v5.8.81 - add language support! Main.Language !
+- v5.8.80 - fix the internal blocklist not properly reading blocks
+- v5.8.79 - add Sapling Growth Prevention - USE WITH CAUTION!
+- v5.8.78 - fix toggle command logic display - it said "enabled" when it actually disabled -.-
+- v5.8.77 - address DBO ticket #232 (needed lore is not checked correctly)
+- v5.8.76 - support DURABILITY enchantment :)
+- v5.8.75 - fix another CCE because of bukkit not fully supporting minecraft 1.7 trees
+- v5.8.74 - partially revert the internal rewrite. 1.7 trees are not fully supported by bukkit. Fixed for now!
+- v5.8.73 - revert default behaviour. You need to set Main.Initial Delay to true before the delay is used!
+- v5.8.72 - fix "Initial Delay" for Auto Destruct. This defaulted to 10 seconds but never worked. Now it does. Beware!
+- v5.8.71 - add "Automatic Tree Destruction.Required Lore" - require a special lore for the tool to work
+- v5.8.70 - add /treeassist purge global - removes entries of blocks in invalid worlds or not of type LOG and LOG_2
+- v5.8.69 - finish the addition!
+- v5.8.68 - how about we actually add the timestamp?
+- v5.8.67 - add /ta purge [days|worldname] to remove unneeded blocklist entries
+- v5.8.66 - support global toggle - addresses github issue #236
+- v5.8.65 - allow to disable the plugin when sneaking
+- v5.8.64 - finally fix the NPE from #58
+- v5.8.63 - fix the fact that new tools break. Thanks, TNTUP!
+- v5.8.62 - fix the fix
+- v5.8.61 - fully move to Prism 2.0
+- v5.8.60 - support Prism 2.0 --> "Prism2"
+- v5.8.58 - fix another NPE
+- v5.8.57 - fix NPE in modded trees fail check
+- v5.8.56 - add /treeassist noreplant - don't replant saplings for configured time
+- v5.8.55 - readd libraries
+- v5.8.54 - fix negative durability hacks
+- v5.8.53 - add /treeassist protecttool - protect individual saplings!
+- v5.8.52 - add a world parameter to the toggle command
+- v5.8.51 - add 'Main.Toggle Default' to default to disabled TA by default
+- v5.8.50 - disable block null spam, not necessary!
+- v5.8.49 - address github issue #21 - NPE in the 1.7 leaf range fix
+- v5.8.48 - fix an NPE in the sapling replace detection
+- v5.8.47 - apply the radius hackfix to 1.7 tree leaves
+- v5.8.46 - fix impossible NPE
+- v5.8.45 - tweak greed fix
+- v5.8.44 - fix big tree greed; add config setting to NOT remove leaves
+- v5.8.43 - attempt to not extinct dark oak forests
+- v5.8.42 - fix breaking of shrooms
+- v5.8.41 - fix fast leaf decay
+- v5.8.39 - fix the CME issues!
+- v5.8.38 - hackfix github issue #38 until I have time to implement a proper solution
+- v5.8.36 - remove debug output for dev.bukkit.org release
+- v5.8.34 - actually support more logging plugins than Prism :P
+- v5.8.33 - add
+- v5.8.32 - check if the bottom blocks are set before comparing them - addresses github issue #14
+- v5.8.31 - fix the BaseTree ENUM order -.-
+- v5.8.30 - try to fix popping saplings
+- v5.8.29 - actually read the sapling delay config setting
+- v5.8.28 - add command /treeassist toggle [player]
+- v5.8.27 - add sapling replant enforcing for when people have no perms or …
+- v5.8.26 - add big spruce tree determination, fix bottom block …
+- v5.8.25 - allow creative players to break saplings
+- v5.8.24 - allow to replant saplings despite using Tree Feller
+- v5.8.22 - re-support automated removal for sapling replant setups
+- v5.8.21 - finish #20 by hackfixing leaves
+- v5.8.20 - support Bukkit 1.6 servers!
+- v5.8.19 - only replace shrooms where appropriate :)
+- v5.8.18 - only allow (vanilla) saplings on dirt, grass, clay
+- v5.8.17 - properly set the bottom to null if the tree has been cut …
+- v5.8.16 - remove strange default values introduced in commit …
+- v5.8.15 - use less deprecated methods, add missing 1.7 permission …
+- v5.8.14 - Bukkit 1.7 support - finishes off 99.9% of all vanilla trees!
+- v5.8.13 - Now it might be almost done. At least 95% of all trees work :)
+- v5.8.12 - Fix little mistakes (1.7 compatibility not done!)
+- v5.8.11 - attempt to support 1.7
+- v5.8.10 - code cleanup, untweak leaf detection a little bit
+- v5.8.9 - also replace saplings that don't have data value
+- v5.8.8 - add even more debug
+- v5.8.7 - properly calculate the resulting sapling ID
+- v5.8.6 - add a bit more custom block debug
+- v5.8.5 - replace saplings for modded trees
+- v5.8.4 - fix an evil comparation messup remnant :)
+- v5.8.2 - build with proper artifact values
