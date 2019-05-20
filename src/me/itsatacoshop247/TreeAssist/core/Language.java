@@ -18,6 +18,7 @@ public final class Language {
         ERROR_ADDTOOL_OTHER("error.addtool.other", "&cSomething went wrong trying to add the required tool: %1%"),
         ERROR_CUSTOM_LISTS("error.custom.lists", "&cSomething is wrong with your custom lists. Please fix them! They need have to same item count!"),
         ERROR_CUSTOM_EXISTS("error.custom.exists", "&cThis custom block group definition already exists!"),
+        ERROR_CUSTOM_NOT_FOUND("error.custom.notfound", "&cThis custom block group definition does not exists"),
         ERROR_CUSTOM_EXPLANATION("error.custom.explanation", "&cYou need to have three items in you first hotbar slots. &e1) SAPLING - 2) LOG - 3) LEAVES"),
         ERROR_DATA_YML("error.data_yml", "&cYou have a messed up data.yml - fix or remove it!"),
         ERROR_EMPTY_HAND("error.emptyhand", "&cYou don't have an item in your hand"),

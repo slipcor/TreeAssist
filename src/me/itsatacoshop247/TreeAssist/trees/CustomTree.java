@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomTree extends AbstractGenericTree {
-    public static List<?> customTreeBlocks = new ArrayList<>();
-    public static List<?> customLogs = new ArrayList<>();
-    public static List<?> customSaplings = new ArrayList<>();
+    public static List<String> customTreeBlocks = new ArrayList<>();
+    public static List<String> customLogs = new ArrayList<>();
+    public static List<String> customSaplings = new ArrayList<>();
     public static Debugger debugger;
     private final Material mat;
 
@@ -24,11 +24,11 @@ public class CustomTree extends AbstractGenericTree {
     }
 
     public static boolean isCustomLog(Block blockAt) {
-        return CustomTree.customLogs.contains(blockAt.getType() + ":" + blockAt.getData()) || CustomTree.customLogs.contains(blockAt.getType());
+        return CustomTree.customLogs.contains(blockAt.getType());
     }
 
     public static boolean isCustomTreeBlock(Block blockAt) {
-        return CustomTree.customTreeBlocks.contains(blockAt.getType() + ":" + blockAt.getData()) || CustomTree.customTreeBlocks.contains(blockAt.getType());
+        return CustomTree.customTreeBlocks.contains(blockAt.getType());
 
     }
 
@@ -112,10 +112,8 @@ public class CustomTree extends AbstractGenericTree {
         debug.i("handling custom sapling replace");
         int pos = 0;
 
-        for (Object o : customLogs) {
-            if (o.toString().contains(bottom.getType() + ":" + bottom.getData())
-                    ||
-                    o.toString().contains(String.valueOf(bottom.getType()))) {
+        for (String s : customLogs) {
+            if (s.equals(bottom.getType().toString())) {
                 break;
             }
             pos++;
@@ -123,26 +121,20 @@ public class CustomTree extends AbstractGenericTree {
         debug.i("pos: " + pos + "/" + customLogs.size() + " (" + customSaplings.size() + ")");
 
         if (pos < customLogs.size()) {
-            for (Object o : customSaplings) {
+            for (String s : customSaplings) {
                 if (--pos < 0) {
-                    String value = o.toString();
+                    Material value = Material.matchMaterial(s);
 
-                    if (value.contains(":")) {
-                        String[] split = value.split(":");
-                        replaceSapling(split[0], delay,
-                                bottom, Byte.parseByte(split[1]));
-                    } else {
-                        replaceSapling(value, delay,
-                                bottom, (byte) 0);
-                    }
+                    replaceSapling(value, delay,
+                                bottom);
                     break;
                 }
             }
         }
     }
 
-    private void replaceSapling(String materialName, int delay, Block bottom, byte data) {
-        debug.i("replacing custom sapling: " + delay + " sec; " + materialName + ":" + data);
+    private void replaceSapling(Material material, int delay, Block bottom) {
+        debug.i("replacing custom sapling: " + delay + " sec; " + material.toString());
         if (bottom == null) {
             return;
         }
@@ -151,7 +143,7 @@ public class CustomTree extends AbstractGenericTree {
         removeBlocks.remove(bottom);
         totalBlocks.remove(bottom);
 
-        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, Material.getMaterial(materialName), data);
+        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, material);
         Utils.plugin.getServer()
                 .getScheduler()
                 .scheduleSyncDelayedTask(Utils.plugin, b,

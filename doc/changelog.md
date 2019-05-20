@@ -1,6 +1,8 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.57 - Implement addcustom and removecustom in accordance to the 1.13 API - everything is based on strings like minecraft:dirt, should work backwards compatibly with properly defined material values!
+- v6.0.56 - Fix mushroom implementation 1.13 compatibility
 - v6.0.55 - Fix plugin.yml typos
 - v6.0.54 - Fixed a bug where items not explicitly in the tools list could be used to cut down a tree
 - v6.0.53 - Please let's use the jenkins again

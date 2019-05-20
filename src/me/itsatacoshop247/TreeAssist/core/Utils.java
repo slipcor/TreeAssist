@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -157,6 +158,42 @@ public final class Utils {
             player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_LISTS));
             return;
         }
+
+        final ItemStack sapling = player.getInventory().getItem(0);
+        if (sapling == null || sapling.getType() == Material.AIR) {
+            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXPLANATION));
+            return;
+        }
+        final ItemStack log = player.getInventory().getItem(1);
+        if (log == null || log.getType() == Material.AIR) {
+            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXPLANATION));
+            return;
+        }
+        final ItemStack leaf = player.getInventory().getItem(2);
+        if (leaf == null || leaf.getType() == Material.AIR) {
+            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXPLANATION));
+            return;
+        }
+
+        for (int i = 0; i < CustomTree.customTreeBlocks.size(); i++) {
+            Material customMaterial = Material.matchMaterial(CustomTree.customLogs.get(i));
+            if (customMaterial != null && log.getType() == customMaterial) {
+                Material customLeaf = Material.matchMaterial(CustomTree.customTreeBlocks.get(i));
+                if (customLeaf != null && customLeaf == leaf.getType()) {
+                    Material customSapling = Material.matchMaterial(CustomTree.customSaplings.get(i));
+                    if (customSapling != null && customSapling == sapling.getType()) {
+                        removeLeaf(i);
+                        removeLog(i);
+                        removeSapling(i);
+                        plugin.saveConfig();
+                        plugin.reloadLists();
+                        player.sendMessage(Language.parse(MSG.INFO_CUSTOM_REMOVED));
+                        return;
+                    }
+                }
+            }
+        }
+        player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_NOT_FOUND));
     }
 
     public static void removeRequiredTool(Player player) {
@@ -232,6 +269,8 @@ public final class Utils {
     public static void addCustomGroup(Player player) {
         if (CustomTree.customTreeBlocks.size() != CustomTree.customLogs.size() ||
                 CustomTree.customLogs.size() != CustomTree.customSaplings.size()) {
+            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_LISTS));
+            return;
         }
 
         final ItemStack sapling = player.getInventory().getItem(0);
@@ -251,196 +290,51 @@ public final class Utils {
         }
 
         for (int i = 0; i < CustomTree.customTreeBlocks.size(); i++) {
-            Object cLog = CustomTree.customLogs.get(i);
-            if (cLog instanceof Material) {
-                // LOG definition only has ID, no data!
-                Material id = (Material) cLog;
-                if (log.getType() == id) {
-                    Object cLeaf = CustomTree.customTreeBlocks.get(i);
-                    if (cLeaf instanceof Material) {
-                        // LEAF definition only has ID, no data!
-                        Material leafId = (Material) cLeaf;
-                        if (leafId == leaf.getType()) {
-                            Object cSapling = CustomTree.customSaplings.get(i);
-                            if (cSapling instanceof Material) {
-                                // SAPLING definition only has ID, no data!
-                                Material saplingId = (Material) cSapling;
-                                if (saplingId == sapling.getType()) {
-                                    player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
-                                    return;
-                                }
-                                addLog(log.getType() + ":" + log.getData().getData());
-                                addSapling(sapling.getType() + ":" + sapling.getData().getData());
-                                addLeaf(leaf.getType() + ":" + leaf.getData().getData());
-                                plugin.saveConfig();
-                                plugin.reloadLists();
-                                player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
-                                return;
-                            }
-                            // SAPLING definition contains data!
-                            String saplingDef = (String) cSapling;
-                            if (saplingDef.equals(sapling.getType() + ":" + sapling.getData().getData())) {
-                                player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
-                                return;
-                            }
-                            addLog(log.getType() + ":" + log.getData().getData());
-                            addSapling(sapling.getType() + ":" + sapling.getData().getData());
-                            addLeaf(leaf.getType() + ":" + leaf.getData().getData());
-                            plugin.saveConfig();
-                            plugin.reloadLists();
-                            player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
-                            return;
-                        }
-                        continue;
-                    }
-                    // LEAF definition contains data
-
-                    String leafDef = (String) cLeaf;
-                    if (leafDef.equals(leaf.getType() + ":" + leaf.getData().getData())) {
-                        Object cSapling = CustomTree.customSaplings.get(i);
-                        if (cSapling instanceof Material) {
-                            // SAPLING definition only has ID, no data!
-                            Material saplingId = (Material) cSapling;
-                            if (saplingId == sapling.getType()) {
-                                player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
-                                return;
-                            }
-                            addLog(log.getType() + ":" + log.getData().getData());
-                            addSapling(sapling.getType() + ":" + sapling.getData().getData());
-                            addLeaf(leaf.getType() + ":" + leaf.getData().getData());
-                            plugin.saveConfig();
-                            plugin.reloadLists();
-                            player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
-                            return;
-                        }
-                        // SAPLING definition contains data!
-                        String saplingDef = (String) cSapling;
-                        if (saplingDef.equals(sapling.getType() + ":" + sapling.getData().getData())) {
-                            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
-                            return;
-                        }
-                        addLog(log.getType() + ":" + log.getData().getData());
-                        addSapling(sapling.getType() + ":" + sapling.getData().getData());
-                        addLeaf(leaf.getType() + ":" + leaf.getData().getData());
-                        plugin.saveConfig();
-                        plugin.reloadLists();
-                        player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
-                        return;
-                    }
-                    continue;
-                }
-                continue;
-            }
-            // LOG definition contains data!
-            String def = (String) cLog;
-            if (def.equals(log.getType() + ":" + log.getData().getData())) {
-                Object cLeaf = CustomTree.customTreeBlocks.get(i);
-                if (cLeaf instanceof Material) {
-                    // LEAF definition only has ID, no data!
-                    Material leafId = (Material) cLeaf;
-                    if (leafId == leaf.getType()) {
-                        Object cSapling = CustomTree.customSaplings.get(i);
-                        if (cSapling instanceof Material) {
-                            // SAPLING definition only has ID, no data!
-                            Material saplingId = (Material) cSapling;
-                            if (saplingId == sapling.getType()) {
-                                player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
-                                return;
-                            }
-                            addLog(log.getType() + ":" + log.getData().getData());
-                            addSapling(sapling.getType() + ":" + sapling.getData().getData());
-                            addLeaf(leaf.getType() + ":" + leaf.getData().getData());
-                            plugin.saveConfig();
-                            plugin.reloadLists();
-                            player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
-                            return;
-                        }
-                        // SAPLING definition contains data!
-                        String saplingDef = (String) cSapling;
-                        if (saplingDef.equals(sapling.getType() + ":" + sapling.getData().getData())) {
-                            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
-                            return;
-                        }
-                        addLog(log.getType() + ":" + log.getData().getData());
-                        addSapling(sapling.getType() + ":" + sapling.getData().getData());
-                        addLeaf(leaf.getType() + ":" + leaf.getData().getData());
-                        plugin.saveConfig();
-                        plugin.reloadLists();
-                        player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
-                        return;
-                    }
-                    continue;
-                }
-                // LEAF definition contains data
-
-                String leafDef = (String) cLeaf;
-                if (leafDef.equals(leaf.getType() + ":" + leaf.getData().getData())) {
-                    Object cSapling = CustomTree.customSaplings.get(i);
-                    if (cSapling instanceof Material) {
-                        // SAPLING definition only has ID, no data!
-                        Material saplingId = (Material) cSapling;
-                        if (saplingId == sapling.getType()) {
-                            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
-                            return;
-                        }
-                        addLog(log.getType() + ":" + log.getData().getData());
-                        addSapling(sapling.getType() + ":" + sapling.getData().getData());
-                        addLeaf(leaf.getType() + ":" + leaf.getData().getData());
-                        plugin.saveConfig();
-                        plugin.reloadLists();
-                        player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
-                        return;
-                    }
-                    // SAPLING definition contains data!
-                    String saplingDef = (String) cSapling;
-                    if (saplingDef.equals(sapling.getType() + ":" + sapling.getData().getData())) {
+            Material customLog = Material.matchMaterial(CustomTree.customLogs.get(i));
+            if (customLog != null && log.getType() == customLog) {
+                Material customLeaf = Material.matchMaterial(CustomTree.customTreeBlocks.get(i));
+                if (customLeaf != null && customLeaf == leaf.getType()) {
+                    Material customSapling = Material.matchMaterial(CustomTree.customSaplings.get(i));
+                    if (customSapling != null && customSapling == sapling.getType()) {
                         player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
                         return;
                     }
-                    addLog(log.getType() + ":" + log.getData().getData());
-                    addSapling(sapling.getType() + ":" + sapling.getData().getData());
-                    addLeaf(leaf.getType() + ":" + leaf.getData().getData());
-                    plugin.saveConfig();
-                    plugin.reloadLists();
-                    player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
-                    return;
                 }
-                continue;
             }
         }
-        addLog(log.getType() + ":" + log.getData().getData());
-        addSapling(sapling.getType() + ":" + sapling.getData().getData());
-        addLeaf(leaf.getType() + ":" + leaf.getData().getData());
+        addLog(log.getType());
+        addSapling(sapling.getType());
+        addLeaf(leaf.getType());
         plugin.saveConfig();
         plugin.reloadLists();
         player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
     }
 
-    private static void addLog(String val) {
-        List<String> values = new ArrayList<String>();
-        for (Object o : CustomTree.customLogs) {
-            values.add(String.valueOf(o));
+    private static void addLog(Material mat) {
+        List<String> values = new ArrayList<>();
+        for (String s : CustomTree.customLogs) {
+            values.add(s);
         }
-        values.add(val);
-        plugin.getConfig().set("Modding.Custom Logs", values);
+        values.add(mat.getKey().getNamespace()+":"+mat.getKey().getKey());
+        plugin.getTreeAssistConfig().set("Modding.Custom Logs", values);
     }
 
-    private static void addSapling(String val) {
-        List<String> values = new ArrayList<String>();
-        for (Object o : CustomTree.customSaplings) {
-            values.add(String.valueOf(o));
+    private static void addSapling(Material mat) {
+        List<String> values = new ArrayList<>();
+        for (String s : CustomTree.customSaplings) {
+            values.add(s);
         }
-        values.add(val);
-        plugin.getConfig().set("Modding.Custom Saplings", values);
+        values.add(mat.getKey().getNamespace()+":"+mat.getKey().getKey());
+        plugin.getTreeAssistConfig().set("Modding.Custom Saplings", values);
     }
 
-    private static void addLeaf(String val) {
-        List<String> values = new ArrayList<String>();
-        for (Object o : CustomTree.customTreeBlocks) {
-            values.add(String.valueOf(o));
+    private static void addLeaf(Material mat) {
+        List<String> values = new ArrayList<>();
+        for (String s : CustomTree.customTreeBlocks) {
+            values.add(s);
         }
-        values.add(val);
-        plugin.getConfig().set("Modding.Custom Tree Blocks", values);
+        values.add(mat.getKey().getNamespace()+":"+mat.getKey().getKey());
+        plugin.getTreeAssistConfig().set("Modding.Custom Tree Blocks", values);
     }
 
     public static void addRequiredTool(Player player) {
@@ -619,32 +513,24 @@ public final class Utils {
 		return AbilityAPI.treeFellerEnabled(player);
 	}
 
-	/**
-	 * Should the given data be replanted?
-	 * 
-	 * @param data
-	 *            the log data
-	 * @return if a sapling should be replanted
-	 */
-	public static boolean replantType(byte data) {
-        if (data == 0) {
-            return Utils.plugin.getConfig()
-                    .getBoolean("Sapling Replant.Tree Types to Replant.Acacia");
-        }
-        if (data == 1) {
-            return Utils.plugin.getConfig()
-                    .getBoolean("Sapling Replant.Tree Types to Replant.Dark Oak");
-        }
-        if (data == 99) {
+    /**
+     * Should the given material be replanted?
+     *
+     * @param material
+     *            the log material
+     * @return if a sapling should be replanted
+     */
+    public static boolean replantType(Material material) {
+        if (material == Material.BROWN_MUSHROOM_BLOCK) {
             return Utils.plugin.getConfig()
                     .getBoolean("Sapling Replant.Tree Types to Replant.Brown Shroom");
         }
-        if (data == 100) {
+        if (material == Material.RED_MUSHROOM_BLOCK) {
             return Utils.plugin.getConfig()
                     .getBoolean("Sapling Replant.Tree Types to Replant.Red Shroom");
         }
-		return false;
-	}
+        return false;
+    }
 
     /**
      * Should the given species be replanted?
@@ -682,20 +568,19 @@ public final class Utils {
     }
 
 
-	public static void initiateList(String string, List<Integer> validTypes) {
+	public static void initiateList(String string, List<String> validTypes) {
 		for (Object obj : Utils.plugin.getConfig().getList(string)) {
 			if (obj instanceof Integer) {
-				validTypes.add((Integer) obj);
 				continue;
 			}
 			if (obj.equals("LIST ITEMS GO HERE")) {
 				List<Object> list = new ArrayList<Object>();
-				list.add(-1);
+				list.add("INVALID");
 				Utils.plugin.getConfig().set(string, list);
 				Utils.plugin.saveConfig();
 				break;
 			}
-			validTypes.add(Integer.parseInt(((String) obj).split(":")[0]));
+			validTypes.add(((String) obj).split(":")[0]);
 		}
 	}
 
@@ -751,6 +636,39 @@ public final class Utils {
     public static boolean isMushroom(Material material) {
     	return mushroomMaterials.contains(material);
     }
+
+    private static void removeLog(int number) {
+        List<String> values = new ArrayList<>();
+        int pos = 0;
+        for (String s : CustomTree.customLogs) {
+            if (number != pos++) {
+                values.add(s);
+            }
+        }
+        plugin.getTreeAssistConfig().set("Modding.Custom Logs", values);
+    }
+
+    private static void removeSapling(int number) {
+        List<String> values = new ArrayList<>();
+        int pos = 0;
+        for (String s : CustomTree.customSaplings) {
+            if (number != pos++) {
+                values.add(s);
+            }
+        }
+        plugin.getTreeAssistConfig().set("Modding.Custom Saplings", values);
+    }
+
+    private static void removeLeaf(int number) {
+        List<String> values = new ArrayList<>();
+        int pos = 0;
+        for (String s : CustomTree.customTreeBlocks) {
+            if (number != pos++) {
+                values.add(s);
+            }
+        }
+        plugin.getTreeAssistConfig().set("Modding.Custom Tree Blocks", values);
+    }
     
     public static Material resolveLegacySapling(int damage) {
     	switch(damage) {
@@ -803,6 +721,27 @@ public final class Utils {
     		return Material.DARK_OAK_LEAVES;
     	else
     		return Material.OAK_LEAVES;
+    }
+
+    /**
+     * For backwards compatibility, we make sure that we only load strings!
+     *
+     * @param config the config to access
+     * @param node the node to list
+     * @return a sanitized string list
+     */
+    public static List<String> getStringList(FileConfiguration config, String node) {
+        List<String> result = new ArrayList<>();
+        List<?> list = config.getList(node);
+        if (list == null) {
+            return result;
+        }
+        for (Object o : list) {
+            if (o instanceof String) {
+                result.add((String) o);
+            }
+        }
+        return result;
     }
     
     public static Material getSaplingForSpecies(TreeSpecies species) {

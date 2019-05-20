@@ -155,8 +155,7 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
 
         Material saplingMat = itemMaterial;
 
-        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, saplingMat,
-                (byte) 0);
+        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, saplingMat);
         Utils.plugin.getServer().getScheduler()
                 .scheduleSyncDelayedTask(Utils.plugin, b, 20 * delay);
 
@@ -209,7 +208,7 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
 
     @Override
     protected boolean willReplant() {
-        if (!Utils.replantType((byte) blockMaterial.getId())) {
+        if (!Utils.replantType(blockMaterial)) {
             return false;
         }
         return true;

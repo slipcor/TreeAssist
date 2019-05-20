@@ -25,10 +25,10 @@ public class TreeAssistReplant implements Runnable {
         this.mat = Utils.getSaplingForSpecies(species);
     }
 
-    public TreeAssistReplant(TreeAssist instance, Block importBlock, Material logMat, byte importData) {
+    public TreeAssistReplant(TreeAssist instance, Block importBlock, Material logMat) {
         this.plugin = instance;
         this.block = importBlock;
-        this.data = importData;
+        this.data = 0;
         this.mat = logMat;
     }
 

@@ -60,6 +60,10 @@ public class TreeAssist extends JavaPlugin {
         return 0;
     }
 
+    public FileConfiguration getTreeAssistConfig() {
+        return config;
+    }
+
     public TreeAssistBlockListener getListener() {
         return listener;
     }
@@ -414,9 +418,9 @@ public class TreeAssist extends JavaPlugin {
     }
 
     public void reloadLists() {
-        CustomTree.customTreeBlocks = config.getList("Modding.Custom Tree Blocks");
-        CustomTree.customLogs = config.getList("Modding.Custom Logs");
-        CustomTree.customSaplings = config.getList("Modding.Custom Saplings");
+        CustomTree.customTreeBlocks = Utils.getStringList(config, "Modding.Custom Tree Blocks");
+        CustomTree.customLogs = Utils.getStringList(config, "Modding.Custom Logs");
+        CustomTree.customSaplings = Utils.getStringList(config, "Modding.Custom Saplings");
     }
 
     /**
