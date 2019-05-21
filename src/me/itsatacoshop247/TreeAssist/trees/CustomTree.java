@@ -24,11 +24,21 @@ public class CustomTree extends AbstractGenericTree {
     }
 
     public static boolean isCustomLog(Block blockAt) {
-        return CustomTree.customLogs.contains(blockAt.getType());
+        for (String s : CustomTree.customLogs) {
+            if (blockAt.getType().equals(Material.matchMaterial(s))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean isCustomTreeBlock(Block blockAt) {
-        return CustomTree.customTreeBlocks.contains(blockAt.getType());
+        for (String s : CustomTree.customTreeBlocks) {
+            if (blockAt.getType().equals(Material.matchMaterial(s))) {
+                return true;
+            }
+        }
+        return false;
 
     }
 
@@ -113,7 +123,7 @@ public class CustomTree extends AbstractGenericTree {
         int pos = 0;
 
         for (String s : customLogs) {
-            if (s.equals(bottom.getType().toString())) {
+            if (bottom.getType().equals(Material.matchMaterial(s))) {
                 break;
             }
             pos++;

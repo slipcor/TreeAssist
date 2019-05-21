@@ -66,7 +66,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.56 - Implement addcustom and removecustom in accordance to the 1.13 API - everything is based on strings like minecraft:dirt, should work backwards compatibly with properly defined material values!
+- v6.0.58 - Finalize the custom tree system so it is operational for now. TODO: replace lists with nested lists for clearer definition linking
 - [read more](doc/changelog.md)
 
 ***

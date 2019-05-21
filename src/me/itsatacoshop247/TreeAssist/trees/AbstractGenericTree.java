@@ -125,6 +125,7 @@ public abstract class AbstractGenericTree {
 
     private static TreeType getTreeTypeByBlock(Block block) {
         if (Utils.isLegacyLog(block.getType())) {
+            debug.i("legacy block");
             switch (block.getData()) {
                 case 0:
                 case 1:
@@ -144,8 +145,10 @@ public abstract class AbstractGenericTree {
                     return null;
             }
         } else if (Utils.isLegacyLog2(block.getType())) {
+            debug.i("legacy block #2");
             return block.getData() == 1 ? TreeType.DARK_OAK : TreeType.ACACIA;
         } else if (CustomTree.isCustomLog(block)) {
+            debug.i("custom block");
             return TreeType.CUSTOM;
         }
         switch (Utils.findMushroomTreeType(block)) {
