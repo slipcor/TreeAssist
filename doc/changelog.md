@@ -1,7 +1,8 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
-- v6.0.58 - Finalize the custom tree system so it is operational for now. TODO: replace lists with nested lists for clearer definition linking
+- v6.0.59 - Custom tree definitions now are in a list of lists in the config, grouped together properly and saved together, in the file and in the API
+- v6.0.58 - Finalize the custom tree system so it is operational for now.
 - v6.0.57 - Implement addcustom and removecustom in accordance to the 1.13 API - everything is based on strings like minecraft:dirt, should work backwards compatibly with properly defined material values!
 - v6.0.56 - Fix mushroom implementation 1.13 compatibility
 - v6.0.55 - Fix plugin.yml typos

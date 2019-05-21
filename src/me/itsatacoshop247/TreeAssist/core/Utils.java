@@ -153,12 +153,6 @@ public final class Utils {
 
 
     public static void removeCustomGroup(Player player) {
-        if (CustomTree.customTreeBlocks.size() != CustomTree.customLogs.size() ||
-                CustomTree.customLogs.size() != CustomTree.customSaplings.size()) {
-            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_LISTS));
-            return;
-        }
-
         final ItemStack sapling = player.getInventory().getItem(0);
         if (sapling == null || sapling.getType() == Material.AIR) {
             player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXPLANATION));
@@ -175,16 +169,13 @@ public final class Utils {
             return;
         }
 
-        for (int i = 0; i < CustomTree.customTreeBlocks.size(); i++) {
-            Material customMaterial = Material.matchMaterial(CustomTree.customLogs.get(i));
-            if (customMaterial != null && log.getType() == customMaterial) {
-                Material customLeaf = Material.matchMaterial(CustomTree.customTreeBlocks.get(i));
-                if (customLeaf != null && customLeaf == leaf.getType()) {
-                    Material customSapling = Material.matchMaterial(CustomTree.customSaplings.get(i));
-                    if (customSapling != null && customSapling == sapling.getType()) {
-                        removeLeaf(i);
-                        removeLog(i);
-                        removeSapling(i);
+        for (int i = 0; i < CustomTree.customTreeDefinitions.size(); i++) {
+            CustomTreeDefinition definition = CustomTree.customTreeDefinitions.get(i);
+
+            if (log.getType() == definition.getLog()) {
+                if (leaf.getType() == definition.getLeaf()) {
+                    if (sapling.getType() == definition.getSapling()) {
+                        removeCustomTreeDefinition(i);
                         plugin.saveConfig();
                         plugin.reloadLists();
                         player.sendMessage(Language.parse(MSG.INFO_CUSTOM_REMOVED));
@@ -267,12 +258,6 @@ public final class Utils {
     }
 
     public static void addCustomGroup(Player player) {
-        if (CustomTree.customTreeBlocks.size() != CustomTree.customLogs.size() ||
-                CustomTree.customLogs.size() != CustomTree.customSaplings.size()) {
-            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_LISTS));
-            return;
-        }
-
         final ItemStack sapling = player.getInventory().getItem(0);
         if (sapling == null || sapling.getType() == Material.AIR) {
             player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXPLANATION));
@@ -289,52 +274,31 @@ public final class Utils {
             return;
         }
 
-        for (int i = 0; i < CustomTree.customTreeBlocks.size(); i++) {
-            Material customLog = Material.matchMaterial(CustomTree.customLogs.get(i));
-            if (customLog != null && log.getType() == customLog) {
-                Material customLeaf = Material.matchMaterial(CustomTree.customTreeBlocks.get(i));
-                if (customLeaf != null && customLeaf == leaf.getType()) {
-                    Material customSapling = Material.matchMaterial(CustomTree.customSaplings.get(i));
-                    if (customSapling != null && customSapling == sapling.getType()) {
+        for (CustomTreeDefinition definition : CustomTree.customTreeDefinitions) {
+            if (log.getType() == definition.getLog()) {
+                if (leaf.getType() == definition.getLeaf()) {
+                    if (sapling.getType() == definition.getSapling()) {
                         player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
                         return;
                     }
                 }
             }
         }
-        addLog(log.getType());
-        addSapling(sapling.getType());
-        addLeaf(leaf.getType());
+        addCustomTreeDefinition(sapling.getType(), log.getType(), leaf.getType());
         plugin.saveConfig();
         plugin.reloadLists();
         player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
     }
 
-    private static void addLog(Material mat) {
-        List<String> values = new ArrayList<>();
-        for (String s : CustomTree.customLogs) {
-            values.add(s);
-        }
-        values.add(mat.getKey().getNamespace()+":"+mat.getKey().getKey());
-        plugin.getTreeAssistConfig().set("Modding.Custom Logs", values);
-    }
+    private static void addCustomTreeDefinition(Material sapling, Material log, Material leaf) {
+        List<List<String>> values = new ArrayList<>();
 
-    private static void addSapling(Material mat) {
-        List<String> values = new ArrayList<>();
-        for (String s : CustomTree.customSaplings) {
-            values.add(s);
+        CustomTree.customTreeDefinitions.add(new CustomTreeDefinition(sapling, log, leaf));
+        for (CustomTreeDefinition definition : CustomTree.customTreeDefinitions) {
+            values.add(definition.getList());
         }
-        values.add(mat.getKey().getNamespace()+":"+mat.getKey().getKey());
-        plugin.getTreeAssistConfig().set("Modding.Custom Saplings", values);
-    }
 
-    private static void addLeaf(Material mat) {
-        List<String> values = new ArrayList<>();
-        for (String s : CustomTree.customTreeBlocks) {
-            values.add(s);
-        }
-        values.add(mat.getKey().getNamespace()+":"+mat.getKey().getKey());
-        plugin.getTreeAssistConfig().set("Modding.Custom Tree Blocks", values);
+        plugin.getTreeAssistConfig().set("Modding.Custom Tree Definitions", values);
     }
 
     public static void addRequiredTool(Player player) {
@@ -637,37 +601,15 @@ public final class Utils {
     	return mushroomMaterials.contains(material);
     }
 
-    private static void removeLog(int number) {
-        List<String> values = new ArrayList<>();
-        int pos = 0;
-        for (String s : CustomTree.customLogs) {
-            if (number != pos++) {
-                values.add(s);
-            }
-        }
-        plugin.getTreeAssistConfig().set("Modding.Custom Logs", values);
-    }
+    private static void removeCustomTreeDefinition(int number) {
+        List<List<String>> values = new ArrayList<>();
 
-    private static void removeSapling(int number) {
-        List<String> values = new ArrayList<>();
-        int pos = 0;
-        for (String s : CustomTree.customSaplings) {
-            if (number != pos++) {
-                values.add(s);
-            }
+        CustomTree.customTreeDefinitions.remove(number);
+        for (CustomTreeDefinition definition : CustomTree.customTreeDefinitions) {
+            values.add(definition.getList());
         }
-        plugin.getTreeAssistConfig().set("Modding.Custom Saplings", values);
-    }
 
-    private static void removeLeaf(int number) {
-        List<String> values = new ArrayList<>();
-        int pos = 0;
-        for (String s : CustomTree.customTreeBlocks) {
-            if (number != pos++) {
-                values.add(s);
-            }
-        }
-        plugin.getTreeAssistConfig().set("Modding.Custom Tree Blocks", values);
+        plugin.getTreeAssistConfig().set("Modding.Custom Tree Definitions", values);
     }
     
     public static Material resolveLegacySapling(int damage) {
@@ -722,27 +664,6 @@ public final class Utils {
     	else
     		return Material.OAK_LEAVES;
     }
-
-    /**
-     * For backwards compatibility, we make sure that we only load strings!
-     *
-     * @param config the config to access
-     * @param node the node to list
-     * @return a sanitized string list
-     */
-    public static List<String> getStringList(FileConfiguration config, String node) {
-        List<String> result = new ArrayList<>();
-        List<?> list = config.getList(node);
-        if (list == null) {
-            return result;
-        }
-        for (Object o : list) {
-            if (o instanceof String) {
-                result.add((String) o);
-            }
-        }
-        return result;
-    }
     
     public static Material getSaplingForSpecies(TreeSpecies species) {
     	if(species == TreeSpecies.GENERIC)
@@ -765,5 +686,30 @@ public final class Utils {
     	while(block.getType() == Material.MUSHROOM_STEM)
     		block = block.getRelative(BlockFace.UP);
     	return block.getType();
+    }
+
+    public static void reloadCustomDefinitions(FileConfiguration config) {
+        List<?> list = config.getList("Modding.Custom Tree Definitions");
+
+        CustomTree.customTreeDefinitions.clear();
+
+        if (list != null) {
+            for (Object o : list) {
+                if (o instanceof List) {
+                    List<?> innerList = (List<?>) o;
+                    if (innerList.size() == 3) {
+                        Material sapling = Material.matchMaterial((String) innerList.get(0));
+                        Material log = Material.matchMaterial((String) innerList.get(1));
+                        Material leaf = Material.matchMaterial((String) innerList.get(2));
+
+                        if (sapling != null && log != null && leaf != null) {
+                            CustomTree.customTreeDefinitions.add(new CustomTreeDefinition(sapling, log, leaf));
+                        }
+                    }
+                } else {
+                    System.out.println(o.getClass());
+                }
+            }
+        }
     }
 }

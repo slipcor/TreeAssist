@@ -66,7 +66,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.58 - Finalize the custom tree system so it is operational for now. TODO: replace lists with nested lists for clearer definition linking
+- v6.0.59 - Custom tree definitions now are in a list of lists in the config, grouped together properly and saved together, in the file and in the API
 - [read more](doc/changelog.md)
 
 ***

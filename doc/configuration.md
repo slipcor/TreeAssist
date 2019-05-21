@@ -90,10 +90,11 @@ This is the default configuation file.
       Handler Plugin Name: TreeAssist
     Modding:
       Disable Durability Fix: false
-      Custom Logs:
-      - -1
-      Custom Tree Blocks:
-      - -1
-      Custom Saplings:
-      - -1
+    Custom Tree Definitions:
+    - - minecraft:birch_sapling
+      - minecraft:birch_log
+      - minecraft:birch_leaves
+    # be careful formatting here. the first hyphen aligns vertically with the C of Custom and starts a definition,
+    # then each next hyphen indicates each sub setting.
+    # Another definition requires another double hyphen on the level of the C of Custom
     Debug: none

@@ -2,6 +2,7 @@ package me.itsatacoshop247.TreeAssist.trees;
 
 import me.itsatacoshop247.TreeAssist.TreeAssistProtect;
 import me.itsatacoshop247.TreeAssist.TreeAssistReplant;
+import me.itsatacoshop247.TreeAssist.core.CustomTreeDefinition;
 import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import org.bukkit.Material;
@@ -13,9 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomTree extends AbstractGenericTree {
-    public static List<String> customTreeBlocks = new ArrayList<>();
-    public static List<String> customLogs = new ArrayList<>();
-    public static List<String> customSaplings = new ArrayList<>();
+
+    public static List<CustomTreeDefinition> customTreeDefinitions = new ArrayList<>();
     public static Debugger debugger;
     private final Material mat;
 
@@ -24,8 +24,8 @@ public class CustomTree extends AbstractGenericTree {
     }
 
     public static boolean isCustomLog(Block blockAt) {
-        for (String s : CustomTree.customLogs) {
-            if (blockAt.getType().equals(Material.matchMaterial(s))) {
+        for (CustomTreeDefinition def : CustomTree.customTreeDefinitions) {
+            if (blockAt.getType().equals(def.getLog())) {
                 return true;
             }
         }
@@ -33,8 +33,8 @@ public class CustomTree extends AbstractGenericTree {
     }
 
     public static boolean isCustomTreeBlock(Block blockAt) {
-        for (String s : CustomTree.customTreeBlocks) {
-            if (blockAt.getType().equals(Material.matchMaterial(s))) {
+        for (CustomTreeDefinition def : CustomTree.customTreeDefinitions) {
+            if (blockAt.getType().equals(def.getLeaf())) {
                 return true;
             }
         }
@@ -122,20 +122,18 @@ public class CustomTree extends AbstractGenericTree {
         debug.i("handling custom sapling replace");
         int pos = 0;
 
-        for (String s : customLogs) {
-            if (bottom.getType().equals(Material.matchMaterial(s))) {
+        for (CustomTreeDefinition def : customTreeDefinitions) {
+            if (bottom.getType().equals(def.getLog())) {
                 break;
             }
             pos++;
         }
-        debug.i("pos: " + pos + "/" + customLogs.size() + " (" + customSaplings.size() + ")");
+        debug.i("pos: " + pos + "/" + customTreeDefinitions.size());
 
-        if (pos < customLogs.size()) {
-            for (String s : customSaplings) {
+        if (pos < customTreeDefinitions.size()) {
+            for (CustomTreeDefinition def : customTreeDefinitions) {
                 if (--pos < 0) {
-                    Material value = Material.matchMaterial(s);
-
-                    replaceSapling(value, delay,
+                    replaceSapling(def.getSapling(), delay,
                                 bottom);
                     break;
                 }

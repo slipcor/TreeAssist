@@ -2,20 +2,12 @@ package me.itsatacoshop247.TreeAssist;
 
 import me.itsatacoshop247.TreeAssist.blocklists.*;
 import me.itsatacoshop247.TreeAssist.commands.*;
-import me.itsatacoshop247.TreeAssist.core.Debugger;
-import me.itsatacoshop247.TreeAssist.core.Language;
+import me.itsatacoshop247.TreeAssist.core.*;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
-import me.itsatacoshop247.TreeAssist.core.TreeBlock;
-import me.itsatacoshop247.TreeAssist.core.Utils;
 import me.itsatacoshop247.TreeAssist.metrics.MetricsLite;
 import me.itsatacoshop247.TreeAssist.timers.CooldownCounter;
 import me.itsatacoshop247.TreeAssist.trees.*;
-import me.itsatacoshop247.TreeAssist.trees.mushroom.MushroomBrownTree;
-import me.itsatacoshop247.TreeAssist.trees.mushroom.MushroomRedTree;
-import me.itsatacoshop247.TreeAssist.trees.wood.AcaciaTree;
-import me.itsatacoshop247.TreeAssist.trees.wood.DarkOakTree;
 import me.itsatacoshop247.TreeAssist.trees.wood.OakTree;
-import me.itsatacoshop247.TreeAssist.trees.wood.SpruceTree;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -187,10 +179,6 @@ public class TreeAssist extends JavaPlugin {
         OakTree.debugger = new Debugger(this, 5);
         Debugger.load(this, Bukkit.getConsoleSender());
 
-
-        initiateList("Modding.Custom Logs");
-        initiateList("Modding.Custom Tree Blocks");
-
         if (!getConfig().getBoolean("Main.Ignore User Placed Blocks")) {
             String pluginName = getConfig().getString(
                     "Placed Blocks.Handler Plugin Name", "TreeAssist");
@@ -308,18 +296,6 @@ public class TreeAssist extends JavaPlugin {
         }
     }
 
-    private void initiateList(String string) {
-        for (Object obj : config.getList(string)) {
-            if (obj.equals("LIST ITEMS GO HERE")) {
-                List<Object> list = new ArrayList<Object>();
-                list.add(-1);
-                config.set(string, list);
-                saveConfig();
-                break;
-            }
-        }
-    }
-
     private HashMap<String, String> loadConfigurables(HashMap<String, String> items) {
         //Pre-5.0
         items.put("Main.Automatic Tree Destruction", "true");
@@ -353,11 +329,6 @@ public class TreeAssist extends JavaPlugin {
 
         //5.2 additions
         items.put("Main.Destroy Only Blocks Above", "false");
-
-        //5.3 additions
-        items.put("Modding.Custom Logs", "LIST");
-        items.put("Modding.Custom Tree Blocks", "LIST");
-        items.put("Modding.Custom Saplings", "LIST");
 
         //5.4 additions
         items.put("Automatic Tree Destruction.Tree Types.BigJungle", "true");
@@ -414,13 +385,15 @@ public class TreeAssist extends JavaPlugin {
 
         items.put("Main.Auto Add To Inventory", "false");
         items.put("Automatic Tree Destruction.When Not Sneaking", "true");
+
+        //6.0 additions
+        items.put("Modding.Custom Tree Definitions", "CustomTreeDefinitions");
+
         return items;
     }
 
     public void reloadLists() {
-        CustomTree.customTreeBlocks = Utils.getStringList(config, "Modding.Custom Tree Blocks");
-        CustomTree.customLogs = Utils.getStringList(config, "Modding.Custom Logs");
-        CustomTree.customSaplings = Utils.getStringList(config, "Modding.Custom Saplings");
+        Utils.reloadCustomDefinitions(config);
     }
 
     /**
@@ -461,6 +434,10 @@ public class TreeAssist extends JavaPlugin {
                     this.config.addDefault(item.getKey(), Integer.parseInt(item.getValue()));
                 } else if (isDouble(item.getValue())) {
                     this.config.addDefault(item.getKey(), Double.parseDouble(item.getValue()));
+                } else if (item.getValue().equals("CustomTreeDefinitions")){
+                    List<List<String>> entry = new ArrayList<>();
+                    entry.add(new CustomTreeDefinition(Material.BIRCH_SAPLING, Material.BIRCH_LOG, Material.BIRCH_LEAVES).getList());
+                    this.config.addDefault(item.getKey(), entry);
                 } else {
                     this.config.addDefault(item.getKey(), item.getValue());
                 }
