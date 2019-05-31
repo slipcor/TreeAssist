@@ -4,6 +4,7 @@ import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -63,5 +64,9 @@ public abstract class AbstractCommand {
             map.put(sMain, this);
         }
         list.add(this);
+    }
+
+    public List<String> completeTab(String[] args) {
+        return new ArrayList<>(); // we have no arguments
     }
 }

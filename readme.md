@@ -66,7 +66,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.60 - Custom tree definitions now are in a list of lists in the config, grouped together properly and saved together, in the file and in the API
+- v6.0.61 - Add bStats and a working command autocomplete system
 - [read more](doc/changelog.md)
 
 ***

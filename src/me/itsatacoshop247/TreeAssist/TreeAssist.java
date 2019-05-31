@@ -166,12 +166,7 @@ public class TreeAssist extends JavaPlugin {
         }
         reloadLists();
 
-        try {
-            MetricsLite metrics = new MetricsLite(this);
-            metrics.start();
-        } catch (IOException e) {
-            // Failed to submit the stats :-(
-        }
+        MetricsLite metrics = new MetricsLite(this);
 
         AbstractGenericTree.debug = new Debugger(this, 1);
         CustomTree.debugger = new Debugger(this, 2);
@@ -199,8 +194,14 @@ public class TreeAssist extends JavaPlugin {
         blockList.initiate();
 
         loadCommands();
+        //getCommand("treeassist").setTabCompleter(this);
 
         Language.init(this, config.getString("Main.Language", "en"));
+    }
+
+    @Override
+    public List<String> onTabComplete(final CommandSender sender, final Command cmd, final String alias, final String[] args) {
+        return TabComplete.getMatches(sender, commandList, args);
     }
 
     private void loadCommands() {

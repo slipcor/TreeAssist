@@ -76,6 +76,31 @@ public class CommandFindForest extends AbstractCommand {
     }
 
     @Override
+    public List<String> completeTab(String[] args) {
+        List<String> results = new ArrayList<>();
+
+        if (args.length < 2 || args[1].equals("")) {
+            // list first argument possibilities
+            results.addAll(biomeMap.keySet());
+
+            Collections.sort(results);
+            return results;
+        }
+
+        if (args.length > 2) {
+            return results; // don't go too far!
+        }
+
+        for (String treeType : biomeMap.keySet()) {
+            if (treeType.startsWith(args[1].toUpperCase())) {
+                results.add(treeType);
+            }
+        }
+        Collections.sort(results);
+        return results;
+    }
+
+    @Override
     public List<String> getMain() {
         return Collections.singletonList("findforest");
     }

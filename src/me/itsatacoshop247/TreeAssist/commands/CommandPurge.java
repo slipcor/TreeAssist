@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,6 +44,49 @@ public class CommandPurge extends AbstractCommand {
         } else {
             sender.sendMessage(Language.parse(Language.MSG.ERROR_ONLY_TREEASSIST_BLOCKLIST));
         }
+    }
+
+    @Override
+    public List<String> completeTab(String[] args) {
+        List<String> results = new ArrayList<>();
+
+        if (args.length < 2 || args[1].equals("")) {
+            // list first argument possibilities
+            results.add("global");
+
+            List<String> worlds = new ArrayList<>();
+
+            for (World world : Bukkit.getServer().getWorlds()) {
+                worlds.add(world.getName());
+            }
+
+            Collections.sort(worlds);
+
+            results.addAll(worlds);
+            return results;
+        }
+
+        if (args.length > 2) {
+            return results; // don't go too far!
+        }
+
+        // we started typing a world, probably
+
+        if ("global".startsWith(args[1].toLowerCase())) {
+            results.add("global");
+        }
+        List<String> worlds = new ArrayList<>();
+
+        for (World world : Bukkit.getServer().getWorlds()) {
+            if (world.getName().toLowerCase().startsWith(args[1].toLowerCase())) {
+                worlds.add(world.getName());
+            }
+        }
+
+        Collections.sort(worlds);
+        results.addAll(worlds);
+
+        return results;
     }
 
     @Override

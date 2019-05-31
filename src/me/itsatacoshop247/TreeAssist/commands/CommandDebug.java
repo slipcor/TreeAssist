@@ -5,6 +5,7 @@ import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,6 +32,31 @@ public class CommandDebug extends AbstractCommand {
             }
             Debugger.load(Utils.plugin, sender);
         }
+    }
+
+    @Override
+    public List<String> completeTab(String[] args) {
+        List<String> results = new ArrayList<>();
+
+        if (args.length < 2 || args[1].equals("")) {
+            // list first argument possibilities
+            results.add("on");
+            results.add("off");
+            return results;
+        }
+
+        if (args.length > 2) {
+            return results; // don't go too far!
+        }
+
+        // we started typing!
+        if ("on".startsWith(args[1].toLowerCase())) {
+            results.add("on");
+        }
+        if ("off".startsWith(args[1].toLowerCase())) {
+            results.add("off");
+        }
+        return results;
     }
 
     @Override
