@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.62 - Update to an mcMMO version that is more suitable (1.5 => 2.1)
 - v6.0.61 - Add bStats and a working command autocomplete system
 - v6.0.60 - Custom tree definitions now are in a list of lists in the config, grouped together properly and saved together, in the file and in the API
 - v6.0.58 - Finalize the custom tree system so it is operational for now.

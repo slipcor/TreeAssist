@@ -66,7 +66,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.61 - Add bStats and a working command autocomplete system
+- v6.0.62 - Update to an mcMMO version that is more suitable (1.5 => 2.1)
 - [read more](doc/changelog.md)
 
 ***

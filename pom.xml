@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>com.gmail.nossr50.mcMMO</groupId>
 			<artifactId>mcMMO</artifactId>
-			<version>1.5.07</version>
+			<version>2.1.65</version>
 			<type>jar</type>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/mcMMO.jar</systemPath>
