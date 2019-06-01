@@ -201,6 +201,11 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
     }
 
     @Override
+    protected boolean isLog(Material type) {
+        return type == blockMaterial ||  type == Material.MUSHROOM_STEM;
+    }
+
+    @Override
     public boolean isValid() {
         return valid;
     }

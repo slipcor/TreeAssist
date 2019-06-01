@@ -55,7 +55,7 @@ public class JungleBigTree extends AbstractWoodenTree {
         }
         //debug.i("cB " + Debugger.parse(block.getLocation()));
 
-        if (!Utils.isLog(block.getType())) {
+        if (!this.isLog(block.getType())) {
 //			debug.i("no log: " + block.getType().name());
             if (isLeaf(block) > 0) {
                 if (!leaves.contains(block)) {
@@ -73,7 +73,7 @@ public class JungleBigTree extends AbstractWoodenTree {
             return;
         }
 
-        if (Utils.isLog(block.getRelative(0, 1, 0).getType())) { // might
+        if (this.isLog(block.getRelative(0, 1, 0).getType())) { // might
             // be a
             // trunk
 //			debug.i("trunk?");
@@ -111,14 +111,14 @@ public class JungleBigTree extends AbstractWoodenTree {
             // west: -x
 
             if (x == BlockFace.WEST && z == BlockFace.NORTH) {
-                if (block.getZ() == bottom.getZ() && !Utils.isLog(block.getRelative(0, 0, 1).getType())) {
+                if (block.getZ() == bottom.getZ() && !this.isLog(block.getRelative(0, 0, 1).getType())) {
                     // on the NORTH X axis -> to the WEST of the trunk log, check the SOUTH relative and one above
                     checkBlock(list, block.getRelative(0, 0, 1), top, x, z, false);
                     checkBlock(list, block.getRelative(0, 1, 1), top, x, z, false);
 
                     checkBlock(list, block.getRelative(-1, 0, 1), top, x, z, false);
                     checkBlock(list, block.getRelative(-1, 1, 1), top, x, z, false);
-                } else if (block.getX() == bottom.getX() && !Utils.isLog(block.getRelative(1, 0, 0).getType())) {
+                } else if (block.getX() == bottom.getX() && !this.isLog(block.getRelative(1, 0, 0).getType())) {
                     // on the WEST Z axis, -> to the NORTH of the trunk log, check the EAST relative and one above
                     checkBlock(list, block.getRelative(1, 0, 0), top, x, z, false);
                     checkBlock(list, block.getRelative(1, 1, 0), top, x, z, false);
@@ -127,14 +127,14 @@ public class JungleBigTree extends AbstractWoodenTree {
                     checkBlock(list, block.getRelative(1, 1, -1), top, x, z, false);
                 }
             } else if (x == BlockFace.EAST && z == BlockFace.NORTH) {
-                if (block.getX() == bottom.getX()+1 && !Utils.isLog(block.getRelative(-1, 0, 0).getType())) {
+                if (block.getX() == bottom.getX()+1 && !this.isLog(block.getRelative(-1, 0, 0).getType())) {
                     // on the EAST Z axis, -> to the NORTH of the trunk log, check the WEST relative and one above
                     checkBlock(list, block.getRelative(-1, 0, 0), top, x, z, false);
                     checkBlock(list, block.getRelative(-1, 1, 0), top, x, z, false);
 
                     checkBlock(list, block.getRelative(-1, 0, -1), top, x, z, false);
                     checkBlock(list, block.getRelative(-1, 1, -1), top, x, z, false);
-                } else if (block.getZ() == bottom.getZ() && !Utils.isLog(block.getRelative(0, 0, 1).getType())) {
+                } else if (block.getZ() == bottom.getZ() && !this.isLog(block.getRelative(0, 0, 1).getType())) {
                     // on the NORTH X axis -> to the EAST of the trunk log, check the SOUTH relative and one above
                     checkBlock(list, block.getRelative(0, 0, 1), top, x, z, false);
                     checkBlock(list, block.getRelative(0, 1, 1), top, x, z, false);
@@ -143,14 +143,14 @@ public class JungleBigTree extends AbstractWoodenTree {
                     checkBlock(list, block.getRelative(1, 1, 1), top, x, z, false);
                 }
             } else if (x == BlockFace.EAST && z == BlockFace.SOUTH) {
-                if (block.getZ() == bottom.getZ()+1 && !Utils.isLog(block.getRelative(0, 0, -1).getType())) {
+                if (block.getZ() == bottom.getZ()+1 && !this.isLog(block.getRelative(0, 0, -1).getType())) {
                     // on the SOUTH X axis -> to the EAST of the trunk log, check the NORTH relative and one above
                     checkBlock(list, block.getRelative(0, 0, -1), top, x, z, false);
                     checkBlock(list, block.getRelative(0, 1, -1), top, x, z, false);
 
                     checkBlock(list, block.getRelative(1, 0, -1), top, x, z, false);
                     checkBlock(list, block.getRelative(1, 1, -1), top, x, z, false);
-                } else if (block.getX() == bottom.getX()+1 && !Utils.isLog(block.getRelative(-1, 0, 0).getType())) {
+                } else if (block.getX() == bottom.getX()+1 && !this.isLog(block.getRelative(-1, 0, 0).getType())) {
                     // on the EAST Z axis, -> to the SOUTH of the trunk log, check the WEST relative and one above
                     checkBlock(list, block.getRelative(-1, 0, 0), top, x, z, false);
                     checkBlock(list, block.getRelative(-1, 1, 0), top, x, z, false);
@@ -159,14 +159,14 @@ public class JungleBigTree extends AbstractWoodenTree {
                     checkBlock(list, block.getRelative(-1, 1, 1), top, x, z, false);
                 }
             } else if (x == BlockFace.WEST && z == BlockFace.SOUTH) {
-                if (block.getX() == bottom.getX() && !Utils.isLog(block.getRelative(1, 0, 0).getType())) {
+                if (block.getX() == bottom.getX() && !this.isLog(block.getRelative(1, 0, 0).getType())) {
                     // on the WEST Z axis, -> to the SOUTH of the trunk log, check the EAST relative and one above
                     checkBlock(list, block.getRelative(1, 0, 0), top, x, z, false);
                     checkBlock(list, block.getRelative(1, 1, 0), top, x, z, false);
 
                     checkBlock(list, block.getRelative(1, 0, 1), top, x, z, false);
                     checkBlock(list, block.getRelative(1, 1, 1), top, x, z, false);
-                } else if (block.getZ() == bottom.getZ()+1 && !Utils.isLog(block.getRelative(0, 0, -1).getType())) {
+                } else if (block.getZ() == bottom.getZ()+1 && !this.isLog(block.getRelative(0, 0, -1).getType())) {
                     // on the SOUTH X axis -> to the WEST of the trunk log, check the NORTH relative and one above
                     checkBlock(list, block.getRelative(0, 0, -1), top, x, z, false);
                     checkBlock(list, block.getRelative(0, 1, -1), top, x, z, false);
@@ -213,14 +213,14 @@ public class JungleBigTree extends AbstractWoodenTree {
     protected Block getBottom(Block block) {
         int min = Utils.plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above") ? block.getY() : 0;
         int counter = 1;
-        do {
-            if (Utils.isLog(block.getRelative(0, 0 - counter, 0).getType())) {
+        while (block.getY() - counter >= min) {
+            if (this.isLog(block.getRelative(0, 0 - counter, 0).getType())) {
                 counter++;
             } else {
-                if (Utils.isLog(block.getRelative(0, 0, -1).getType())) {
+                if (this.isLog(block.getRelative(0, 0, -1).getType())) {
                     block = block.getRelative(0, 0, -1);
                 }
-                if (Utils.isLog(block.getRelative(-1, 0, 0).getType())) {
+                if (this.isLog(block.getRelative(-1, 0, 0).getType())) {
                     block = block.getRelative(-1, 0, 0);
                 }
 
@@ -257,7 +257,7 @@ public class JungleBigTree extends AbstractWoodenTree {
         int foundsum = 0;
 
         for (BlockFace face : Utils.NEIGHBORFACES) {
-            if (Utils.isLog(bottom.getRelative(face).getType()) && j < 4) {
+            if (this.isLog(bottom.getRelative(face).getType()) && j < 4) {
                 bottoms[j] = bottom.getRelative(face);
                 j++;
                 foundsum++;

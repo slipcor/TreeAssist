@@ -1,6 +1,7 @@
 package me.itsatacoshop247.TreeAssist.trees;
 
 import me.itsatacoshop247.TreeAssist.core.Debugger;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -35,6 +36,11 @@ public class InvalidTree extends AbstractGenericTree {
     @Override
     protected List<Block> calculate(Block bottom, Block top) {
         return null;
+    }
+
+    @Override
+    protected boolean isLog(Material type) {
+        return false;
     }
 
     @Override

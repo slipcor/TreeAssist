@@ -21,7 +21,7 @@ public class OakTree extends AbstractWoodenTree {
     public void checkBlock(List<Block> list, Block block,
                            Block top, boolean deep) {
         //debug.i("cB " + Debugger.parse(block.getLocation()));
-        if (!Utils.isLog(block.getType())) {
+        if (!this.isLog(block.getType())) {
 //			debug.i("no log: " + block.getType().name());
             if (isLeaf(block) > 0) {
                 if (!leaves.contains(block)) {
@@ -48,7 +48,7 @@ public class OakTree extends AbstractWoodenTree {
         }
 
 
-        if (Utils.isLog(block.getRelative(0, 1, 0).getType())) { // might
+        if (this.isLog(block.getRelative(0, 1, 0).getType())) { // might
             // be a
             // trunk
 //			debug.i("trunk?");

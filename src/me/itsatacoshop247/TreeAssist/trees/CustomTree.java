@@ -43,6 +43,11 @@ public class CustomTree extends AbstractGenericTree {
     }
 
     @Override
+    protected boolean isLog(Material type) {
+        return type == mat;
+    }
+
+    @Override
     public boolean isValid() {
         return valid;
     }

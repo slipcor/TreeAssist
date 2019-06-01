@@ -59,7 +59,7 @@ public class DarkOakTree extends AbstractWoodenTree {
         }
 //      debug.i("cB " + Debugger.parse(block.getLocation()));
 
-        if (!Utils.isLog(block.getType())) {
+        if (!this.isLog(block.getType())) {
 //			debug.i("no log: " + block.getType().name());
             if (isLeaf(block) > 0) {
                 if (!leaves.contains(block)) {
@@ -77,7 +77,7 @@ public class DarkOakTree extends AbstractWoodenTree {
             return;
         }
 
-        if (Utils.isLog(block.getRelative(0, 1, 0).getType())) { // might
+        if (this.isLog(block.getRelative(0, 1, 0).getType())) { // might
             // be a
             // trunk
 //			debug.i("trunk?");
@@ -124,7 +124,7 @@ public class DarkOakTree extends AbstractWoodenTree {
         // Tree tree = (Tree) block.getState().getData();
         // debug.i("["+block.hashCode()+"]"+ "checkFail!");
 
-        while (Utils.isLog(block.getType())) {
+        while (this.isLog(block.getType())) {
             block = block.getRelative(BlockFace.DOWN);
         }
         // debug.i("["+block.hashCode()+"]"+ "checkFail result based on type: "+block.getType());
@@ -158,14 +158,14 @@ public class DarkOakTree extends AbstractWoodenTree {
     protected Block getBottom(Block block) {
         int min = Utils.plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above") ? block.getY() : 0;
         int counter = 1;
-        do {
-            if (Utils.isLog(block.getRelative(0, 0 - counter, 0).getType())) {
+        while (block.getY() - counter >= min) {
+            if (this.isLog(block.getRelative(0, 0 - counter, 0).getType())) {
                 counter++;
             } else {
-                if (Utils.isLog(block.getRelative(0, 0, -1).getType())) {
+                if (this.isLog(block.getRelative(0, 0, -1).getType())) {
                     block = block.getRelative(0, 0, -1);
                 }
-                if (Utils.isLog(block.getRelative(-1, 0, 0).getType())) {
+                if (this.isLog(block.getRelative(-1, 0, 0).getType())) {
                     block = block.getRelative(-1, 0, 0);
                 }
 

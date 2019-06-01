@@ -229,6 +229,10 @@ public abstract class AbstractWoodenTree extends AbstractGenericTree {
         }
         return 0;
     }
+    @Override
+    protected boolean isLog(Material type) {
+        return type == logMaterial;
+    }
 
     @Override
     public boolean isValid() {

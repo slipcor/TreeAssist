@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.64 - implement implementation method to check for log types and use where appropriate
 - v6.0.63 - rewrite the bottom block logic by introducing a sapling block logic - this will help with "Destroy Only Blocks Above" finally doing what it should
 - v6.0.62 - Update to an mcMMO version that is more suitable (1.5 => 2.1)
 - v6.0.61 - Add bStats and a working command autocomplete system

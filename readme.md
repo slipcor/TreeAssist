@@ -66,7 +66,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.63 - rewrite the bottom block logic by introducing a sapling block logic - this will help with "Destroy Only Blocks Above" finally doing what it should
+- v6.0.64 - implement implementation method to check for log types and use where appropriate
 - [read more](doc/changelog.md)
 
 ***
