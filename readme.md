@@ -66,7 +66,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.64 - implement implementation method to check for log types and use where appropriate
+- v6.0.65 - fix acacia bottom determination
 - [read more](doc/changelog.md)
 
 ***

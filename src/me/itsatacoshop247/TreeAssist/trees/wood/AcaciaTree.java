@@ -22,6 +22,25 @@ public class AcaciaTree extends AbstractWoodenTree {
         super(TreeSpecies.ACACIA, "Acacia", "acacia");
     }
 
+    private void addTrunk(List<Block> blocks) {
+        findSaplingBlock(bottom);
+        Block block = saplingBlock;
+
+        while (!blocks.contains(block) && isLog(block.getType())) {
+            blocks.add(block);
+            block = block.getRelative(BlockFace.UP);
+            if (!isLog(block.getType())) {
+                for (BlockFace face : Utils.NEIGHBORFACES) {
+                    Block neighbor = block.getRelative(face);
+                    if (isLog(neighbor.getType()) && !blocks.contains(neighbor)) {
+                        block = neighbor;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     protected List<Block> calculate(final Block bottom, final Block top) {
         //debugger.i("size: " + blocks.size());
@@ -31,6 +50,9 @@ public class AcaciaTree extends AbstractWoodenTree {
                 blocks.add(block.getRelative(face).getRelative(BlockFace.UP));
             }
             blocks.add(block.getRelative(BlockFace.UP));
+        }
+        if (!Utils.plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above")) {
+            addTrunk(blocks);
         }
         return blocks;
     }
