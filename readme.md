@@ -66,7 +66,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.65 - fix acacia bottom determination
+- v6.0.66 - actually use the sapling blocks we calculated
 - [read more](doc/changelog.md)
 
 ***

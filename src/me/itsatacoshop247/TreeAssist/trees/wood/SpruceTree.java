@@ -176,7 +176,7 @@ public class SpruceTree extends AbstractWoodenTree {
                 //debugger.i("go !!!");
             }
         }
-        handleSaplingReplace(delay, bottom);
+        handleSaplingReplace(delay, saplingBlock);
     }
 
     @Override

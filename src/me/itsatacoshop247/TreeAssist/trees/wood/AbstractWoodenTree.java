@@ -174,7 +174,7 @@ public abstract class AbstractWoodenTree extends AbstractGenericTree {
 
     @Override
     protected void handleSaplingReplace(int delay) {
-        handleSaplingReplace(delay, bottom);
+        handleSaplingReplace(delay, saplingBlock);
     }
 
     protected void handleSaplingReplace(int delay, Block bottom) {

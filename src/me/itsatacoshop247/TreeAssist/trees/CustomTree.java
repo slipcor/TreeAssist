@@ -128,7 +128,7 @@ public class CustomTree extends AbstractGenericTree {
         int pos = 0;
 
         for (CustomTreeDefinition def : customTreeDefinitions) {
-            if (bottom.getType().equals(def.getLog())) {
+            if (saplingBlock.getType().equals(def.getLog())) {
                 break;
             }
             pos++;
@@ -139,7 +139,7 @@ public class CustomTree extends AbstractGenericTree {
             for (CustomTreeDefinition def : customTreeDefinitions) {
                 if (--pos < 0) {
                     replaceSapling(def.getSapling(), delay,
-                                bottom);
+                            saplingBlock);
                     break;
                 }
             }

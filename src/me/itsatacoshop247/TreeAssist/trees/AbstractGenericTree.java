@@ -508,6 +508,19 @@ public abstract class AbstractGenericTree {
                     debug.i("not the needed bottom!");
                 }
             }
+        } else {
+            if (!plugin.getConfig().getBoolean("Main.Sapling Replant")) {
+                debug.i("no sapling replant!");
+            }
+            if (event.isCancelled()) {
+                debug.i("event cancelled!");
+            }
+            if (!resultTree.willReplant()) {
+                debug.i("tree will not replant!");
+            }
+            if (resultTree.willReplant()) {
+                debug.i("NOREPLACE: " + plugin.getListener().isNoReplace(player.getName()));
+            }
         }
         return null;
     }

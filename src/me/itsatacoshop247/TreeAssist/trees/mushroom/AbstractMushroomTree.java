@@ -155,20 +155,20 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
     protected void handleSaplingReplace(int delay) {
         // make sure that the block is not being removed later
 
-        removeBlocks.remove(bottom);
-        totalBlocks.remove(bottom);
+        removeBlocks.remove(saplingBlock);
+        totalBlocks.remove(saplingBlock);
 
         Material saplingMat = itemMaterial;
 
-        Runnable b = new TreeAssistReplant(Utils.plugin, bottom, saplingMat);
+        Runnable b = new TreeAssistReplant(Utils.plugin, saplingBlock, saplingMat);
         Utils.plugin.getServer().getScheduler()
                 .scheduleSyncDelayedTask(Utils.plugin, b, 20 * delay);
 
         if (Utils.plugin.getConfig().getInt(
                 "Sapling Replant.Time to Protect Sapling (Seconds)") > 0) {
-            Utils.plugin.saplingLocationList.add(bottom.getLocation());
+            Utils.plugin.saplingLocationList.add(saplingBlock.getLocation());
             Runnable X = new TreeAssistProtect(Utils.plugin,
-                    bottom.getLocation());
+                    saplingBlock.getLocation());
 
             Utils.plugin
                     .getServer()
