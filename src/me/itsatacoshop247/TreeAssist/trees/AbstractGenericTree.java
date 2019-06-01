@@ -38,8 +38,9 @@ public abstract class AbstractGenericTree {
     protected List<Block> removeBlocks = new ArrayList<Block>();
     protected List<Block> totalBlocks = new ArrayList<Block>();
 
-    protected Block bottom;
-    protected Block top;
+    protected Block bottom; // the bottom block - used to check from where to break
+    protected Block saplingBlock; // the sapling block - sometimes even under the bottom block!
+    protected Block top; // the top block - used to check where to stop breaking
 
     protected boolean fastDecaying = false;
 
@@ -313,9 +314,7 @@ public abstract class AbstractGenericTree {
             return resultTree;
         }
 
-        if (!plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above")) {
-            resultTree.bottom = resultTree.getBottom(block);
-        }
+        resultTree.bottom = resultTree.getBottom(block);
 
         if (resultTree.bottom == null) {
             debug.i("bottom is null!");
@@ -457,7 +456,10 @@ public abstract class AbstractGenericTree {
             }
         }
 
-        Material below = block.getRelative(BlockFace.DOWN).getType();
+        resultTree.findSaplingBlock(block);
+
+        Material below = resultTree.saplingBlock.getRelative(BlockFace.DOWN).getType();
+
         if (!(below == Material.DIRT || below == Material.GRASS_BLOCK || below == Material.CLAY || below == Material.SAND || below == Material.MYCELIUM || below == Material.PODZOL)) {
             debug.i("no valid ground: " + below);
             return resultTree;
@@ -509,6 +511,27 @@ public abstract class AbstractGenericTree {
         }
         return null;
     }
+
+    protected AbstractGenericTree findSaplingBlock(Block block) {
+        Block newBlock = block;
+        int count = 5;
+        saplingBlock = block; // assume we are already there
+        while (this.isLog(newBlock.getType()) || newBlock.getType() == Material.AIR) {
+            if (--count <= 0) {
+
+                debug.i("this is probably not a tree!!");
+                return new InvalidTree();
+            }
+            if (this.isLog(newBlock.getType())) {
+                saplingBlock = newBlock; // override sapling block
+                debug.i("Overriding saplingBlock to " + Debugger.parse(newBlock.getLocation()));
+            }
+            newBlock = newBlock.getRelative(BlockFace.DOWN);
+            debug.i("sliding down: " + Debugger.parse(newBlock.getLocation()));
+        }
+        return this;
+    }
+    abstract protected boolean isLog(Material type);
 
     abstract protected void debug();
 
@@ -797,9 +820,7 @@ public abstract class AbstractGenericTree {
         if (removeBlocks.size() == 0) {
             removeBlocks = calculate(bottom, top);
             debug.i("recalculated tree of size: " + removeBlocks.size());
-            removeBlocks.remove(bottom);
         }
-        removeBlocks.remove(bottom);
 
         debug.i("size: " + removeBlocks.size());
         debug.i("from: " + bottom.getY());

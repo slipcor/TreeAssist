@@ -129,8 +129,9 @@ public abstract class AbstractWoodenTree extends AbstractGenericTree {
 
     @Override
     protected Block getBottom(Block block) {
+        int min = Utils.plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above") ? block.getY() : 0;
         int counter = 1;
-        do {
+        while (block.getY() - counter >= min) {
             if (block.getRelative(0, 0 - counter, 0).getType() == logMaterial) {
                 counter++;
             } else {
@@ -145,7 +146,11 @@ public abstract class AbstractWoodenTree extends AbstractGenericTree {
                 }
                 return bottom;
             }
-        } while (block.getY() - counter > 0);
+        }
+
+        if (Utils.plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above")) {
+            return bottom; // if we destroy above we can assume we have nothing to lose down there
+        } // otherwise we assume that we tried to go too far down and return a non-tree!
 
         bottom = null;
         return null;

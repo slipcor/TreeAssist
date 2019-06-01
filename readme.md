@@ -66,7 +66,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.62 - Update to an mcMMO version that is more suitable (1.5 => 2.1)
+- v6.0.63 - rewrite the bottom block logic by introducing a sapling block logic - this will help with "Destroy Only Blocks Above" finally doing what it should
 - [read more](doc/changelog.md)
 
 ***

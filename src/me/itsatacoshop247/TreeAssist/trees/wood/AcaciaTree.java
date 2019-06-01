@@ -2,6 +2,8 @@ package me.itsatacoshop247.TreeAssist.trees.wood;
 
 import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.core.Utils;
+import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
+import me.itsatacoshop247.TreeAssist.trees.InvalidTree;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
@@ -33,10 +35,43 @@ public class AcaciaTree extends AbstractWoodenTree {
         return blocks;
     }
 
+    protected AbstractGenericTree findSaplingBlock(Block block) {
+        Block newBlock = block;
+        int count = 5;
+        saplingBlock = block; // assume we are already there
+        while (this.isLog(newBlock.getType()) || newBlock.getType() == Material.AIR) {
+            if (--count <= 0) {
+
+                debug.i("this is probably not a tree!!");
+                return new InvalidTree();
+            }
+            if (this.isLog(newBlock.getType())) {
+                saplingBlock = newBlock; // override sapling block
+                debug.i("Overriding saplingBlock to " + Debugger.parse(newBlock.getLocation()));
+            }
+            newBlock = newBlock.getRelative(BlockFace.DOWN);
+            if (!this.isLog(newBlock.getType())) {
+                // let's have a look around!
+
+                for (BlockFace face : Utils.NEIGHBORFACES) {
+                    if (newBlock.getRelative(face).getType() == logMaterial) {
+                        newBlock = newBlock.getRelative(face);
+                    }
+                }
+            }
+            debug.i("sliding down: " + Debugger.parse(newBlock.getLocation()));
+        }
+        return this;
+    }
+
     @Override
     protected Block getBottom(Block block) {
+        int min = Utils.plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above") ? block.getY() : 0;
+
+        debug.i("lowest block will be: " + min);
+
         int counter = 1;
-        do {
+        while (block.getY() - counter >= min) {
             if (block.getRelative(0, 0 - counter, 0).getType() == logMaterial) {
                 counter++;
             } else {
@@ -66,7 +101,11 @@ public class AcaciaTree extends AbstractWoodenTree {
                 }
                 return bottom;
             }
-        } while (block.getY() - counter > 0);
+        }
+
+        if (Utils.plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above")) {
+            return bottom; // if we destroy above we can assume we have nothing to lose down there
+        } // otherwise we assume that we tried to go too far down and return a non-tree!
 
         bottom = null;
         return bottom;
@@ -90,6 +129,27 @@ public class AcaciaTree extends AbstractWoodenTree {
 
     @Override
     protected Block getTop(Block block) {
+        if (!Utils.plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above")) {
+            // we need to first go down to find the actual bottom, otherwise this never gets calculated properly
+            boolean bottom = false; // assume we are not at the base yet
+
+            while (!bottom) {
+                bottom = true;
+                if (block.getRelative(BlockFace.DOWN).getType() == logMaterial) {
+                    bottom = false;
+                    block = block.getRelative(BlockFace.DOWN);
+                    continue;
+                }
+                for (BlockFace face : Utils.NEIGHBORFACES) {
+                    if (block.getRelative(BlockFace.DOWN).getRelative(face).getType() == logMaterial) {
+                        bottom = false;
+                        block = block.getRelative(BlockFace.DOWN).getRelative(face);
+                    }
+                }
+            }
+        }
+
+
         int maxY = block.getWorld().getMaxHeight() + 10;
         int counter = 1;
 

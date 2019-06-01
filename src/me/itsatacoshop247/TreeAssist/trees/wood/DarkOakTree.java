@@ -156,6 +156,7 @@ public class DarkOakTree extends AbstractWoodenTree {
 
     @Override
     protected Block getBottom(Block block) {
+        int min = Utils.plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above") ? block.getY() : 0;
         int counter = 1;
         do {
             if (Utils.isLog(block.getRelative(0, 0 - counter, 0).getType())) {
@@ -178,7 +179,11 @@ public class DarkOakTree extends AbstractWoodenTree {
                 }
                 return bottom;
             }
-        } while (block.getY() - counter > 0);
+        }
+
+        if (Utils.plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above")) {
+            return bottom; // if we destroy above we can assume we have nothing to lose down there
+        } // otherwise we assume that we tried to go too far down and return a non-tree!
 
         bottom = null;
         return null;
