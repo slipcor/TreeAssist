@@ -35,6 +35,10 @@ Automatic Tree Destruction:
     Acacia: true
     Dark Oak: true
   Cooldown (seconds): 0
+  Increases Statistics: false
+Block Statistics:
+  Pickup: false
+  Mine Block: false
 Auto Plant Dropped Saplings:
   Chance (percent): 10
   Delay (seconds): 5

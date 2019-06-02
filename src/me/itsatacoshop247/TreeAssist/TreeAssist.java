@@ -390,6 +390,9 @@ public class TreeAssist extends JavaPlugin {
         //6.0 additions
         items.put("Modding.Custom Tree Definitions", "CustomTreeDefinitions");
 
+        items.put("Block Statistics.Pickup", "false");
+        items.put("Block Statistics.Mine Block", "false");
+
         return items;
     }
 

@@ -9,20 +9,15 @@ import me.itsatacoshop247.TreeAssist.events.TATreeBrokenEvent;
 import me.itsatacoshop247.TreeAssist.trees.mushroom.MushroomBrownTree;
 import me.itsatacoshop247.TreeAssist.trees.mushroom.MushroomRedTree;
 import me.itsatacoshop247.TreeAssist.trees.wood.*;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.TreeSpecies;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
-import org.bukkit.material.Wood;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -572,13 +567,14 @@ public abstract class AbstractGenericTree {
 
     /**
      * Break a block and apply damage to the tool
-     *
-     * @param block  the block to break
-     * @param tool   the item held to break with
-     * @param player the breaking player
+     *  @param block  the block to break
+     *  @param tool   the item held to break with
+     *  @param player the breaking player
+     *  @param statPickup should we increment the minecraft PICKUP statistic value?
+     *  @param statMineBlock should we increment the minecraft MINE_BLOCK statistic value?
      */
     private void breakBlock(final Block block, final ItemStack tool,
-                            final Player player) {
+                            final Player player, boolean statPickup, boolean statMineBlock) {
     	
     	if ((tool != null) && (tool.getDurability() > tool.getType().getMaxDurability())) return;
 
@@ -620,8 +616,16 @@ public abstract class AbstractGenericTree {
 
         if (chance > 99 || (new Random()).nextInt(100) < chance) {
             Utils.plugin.blockList.logBreak(block, player);
+
+            if (player != null && statMineBlock) {
+                player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+            }
+
             if (player != null && Utils.isLog(block.getType())
                     && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
+                if (statPickup) {
+                    player.incrementStatistic(Statistic.PICKUP, block.getType());
+                }
                 player.getInventory().addItem(block.getState().getData().toItemStack(1));
                 block.setType(Material.AIR);
             } else {
@@ -853,6 +857,9 @@ public abstract class AbstractGenericTree {
 
         Utils.plugin.setCoolDown(player, this);
 
+        final boolean statPickup = Utils.plugin.getConfig().getBoolean("Block Statistics.Pickup");
+        final boolean statMineBlock = Utils.plugin.getConfig().getBoolean("Block Statistics.Mine Block");
+
         class InstantRunner extends BukkitRunnable {
 
             @Override
@@ -890,7 +897,7 @@ public abstract class AbstractGenericTree {
                             }
                         } else {
                             debug.i("InstantRunner: 1");
-                            breakBlock(block, tool, player);
+                            breakBlock(block, tool, player, statPickup, statMineBlock);
                             if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
 
                                 debug.i("removing item: " + player.getItemInHand().getType().name() +
@@ -932,7 +939,7 @@ public abstract class AbstractGenericTree {
                                 }
                             } else {
                                 debug.i("InstantRunner: 2b");
-                                breakBlock(block, tool, player);
+                                breakBlock(block, tool, player, statPickup, statMineBlock);
                                 if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
                                     debug.i("removing item: " + player.getItemInHand().getType().name() +
                                             " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
@@ -978,7 +985,7 @@ public abstract class AbstractGenericTree {
                             fastDecaying = true;
                         }
                         debug.i("CleanRunner: 1");
-                        breakBlock(block, null, null);
+                        breakBlock(block, null, null, false, false);
                     }
                     removeBlocks.clear();
                 } else {
@@ -993,7 +1000,7 @@ public abstract class AbstractGenericTree {
                             continue;
                         }
                         debug.i("CleanRunner: 2");
-                        breakBlock(block, null, null);
+                        breakBlock(block, null, null, false, false);
                         totalBlocks.remove(block);
                         return;
                     }

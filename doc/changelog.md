@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.68 - "Block Statistics" config nodes for Pickup and Block Mine statistics, defaulting to false!
 - v6.0.67 - more sapling block fixes - in some cases the bottom block would stay
 - v6.0.66 - actually use the sapling blocks we calculated
 - v6.0.65 - fix acacia bottom determination

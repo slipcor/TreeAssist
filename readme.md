@@ -19,6 +19,7 @@ It also will take down an entire tree when it is enabled in the config.
 ### Options
 
 - Faster leaf decay
+- Incrementing of minecraft block break / pickup statistics
 - Require certain tool for automated destruction or sapling replanting
 - Require lore tool for automated destruction or sapling replanting
 - Require breaking of bottom block for automated destruction or sapling replanting
@@ -66,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.67 - more sapling block fixes - in some cases the bottom block would stay
+- v6.0.68 - "Block Statistics" config nodes for Pickup and Block Mine statistics, defaulting to false!
 - [read more](doc/changelog.md)
 
 ***
