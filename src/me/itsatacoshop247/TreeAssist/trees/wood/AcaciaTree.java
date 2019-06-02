@@ -70,6 +70,9 @@ public class AcaciaTree extends AbstractWoodenTree {
             if (this.isLog(newBlock.getType())) {
                 saplingBlock = newBlock; // override sapling block
                 debug.i("Overriding saplingBlock to " + Debugger.parse(newBlock.getLocation()));
+                if (!Utils.plugin.getConfig().getBoolean("Main.Destroy Only Blocks Above")) {
+                    blocks.add(saplingBlock);
+                }
             }
             newBlock = newBlock.getRelative(BlockFace.DOWN);
             if (!this.isLog(newBlock.getType())) {

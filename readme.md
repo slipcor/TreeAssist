@@ -66,7 +66,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.66 - actually use the sapling blocks we calculated
+- v6.0.67 - more sapling block fixes - in some cases the bottom block would stay
 - [read more](doc/changelog.md)
 
 ***

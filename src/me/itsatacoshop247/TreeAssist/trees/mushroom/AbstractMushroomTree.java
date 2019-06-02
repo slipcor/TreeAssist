@@ -153,10 +153,6 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
 
     @Override
     protected void handleSaplingReplace(int delay) {
-        // make sure that the block is not being removed later
-
-        removeBlocks.remove(saplingBlock);
-        totalBlocks.remove(saplingBlock);
 
         Material saplingMat = itemMaterial;
 

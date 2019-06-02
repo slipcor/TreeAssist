@@ -182,10 +182,6 @@ public abstract class AbstractWoodenTree extends AbstractGenericTree {
             //debugger.i("no null sapling !!!");
             return;
         }
-        // make sure that the block is not being removed later
-
-        removeBlocks.remove(bottom);
-        totalBlocks.remove(bottom);
 
         Runnable b = new TreeAssistReplant(Utils.plugin, bottom, species);
         Utils.plugin.getServer()

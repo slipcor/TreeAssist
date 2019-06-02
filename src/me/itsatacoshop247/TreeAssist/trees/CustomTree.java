@@ -151,10 +151,6 @@ public class CustomTree extends AbstractGenericTree {
         if (bottom == null) {
             return;
         }
-        // make sure that the block is not being removed later
-
-        removeBlocks.remove(bottom);
-        totalBlocks.remove(bottom);
 
         Runnable b = new TreeAssistReplant(Utils.plugin, bottom, material);
         Utils.plugin.getServer()
