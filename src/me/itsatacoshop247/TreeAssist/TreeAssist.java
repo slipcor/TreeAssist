@@ -393,6 +393,8 @@ public class TreeAssist extends JavaPlugin {
         items.put("Block Statistics.Pickup", "false");
         items.put("Block Statistics.Mine Block", "false");
 
+        items.put("Placed Blocks.Handler Lookup Time", "86400");
+
         return items;
     }
 

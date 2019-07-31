@@ -13,10 +13,11 @@ import java.util.List;
 
 public class CoreProtectBlockList implements BlockList {
 	private final CoreProtectAPI protect;
-	private static final int LOOKUP_TIME = 60*60*24;
+	private final int LOOKUP_TIME;
 	
 	public CoreProtectBlockList() {
 		protect = getCoreProtect();
+		LOOKUP_TIME = Utils.plugin.getConfig().getInt("Placed Blocks.Handler Lookup Time", 60*60*24);
 	}
 	private CoreProtectAPI getCoreProtect() {
 		Plugin plugin = Bukkit.getPluginManager().getPlugin("CoreProtect");
@@ -43,7 +44,7 @@ public class CoreProtectBlockList implements BlockList {
 
 	@Override
 	public boolean isPlayerPlaced(Block block) {
-		if (protect == null) {
+		if (protect == null || LOOKUP_TIME <= 0) {
 			return false;
 		}
 		List<String[]> lookup = protect.blockLookup(block, LOOKUP_TIME);
