@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FlatFileBlockList implements BlockList {
+public class FlatFileBlockList extends EmptyBlockList {
     private Map<RegionKey, Map<TreeBlock, Long>> mymap = new HashMap<RegionKey, Map<TreeBlock, Long>>();
 
     /**
@@ -64,6 +64,10 @@ public class FlatFileBlockList implements BlockList {
             }
             return this.world.equals(theOther.world);
         }
+    }
+
+    public FlatFileBlockList() {
+        super();
     }
 
     /**
@@ -218,7 +222,14 @@ public class FlatFileBlockList implements BlockList {
             return false;
         }
         final Map<TreeBlock, Long> cc = getChunkMap(block);
-        return cc.containsKey(new TreeBlock(block, 0));
+
+        if (!cc.containsKey(new TreeBlock(block, 0))) {
+            return false;
+        }
+
+        long value = cc.get(new TreeBlock(block, 0));
+
+        return value + (lookupTime * 1000L) > System.currentTimeMillis();
     }
 
     @Override

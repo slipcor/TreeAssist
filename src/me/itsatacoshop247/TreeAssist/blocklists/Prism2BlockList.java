@@ -14,9 +14,10 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class Prism2BlockList implements BlockList {
+public class Prism2BlockList extends EmptyBlockList {
 	private final Prism prism;
 	public Prism2BlockList() {
+		super();
 		if (Bukkit.getPluginManager().isPluginEnabled("Prism")) {
 			prism = (Prism) Bukkit.getPluginManager().getPlugin("Prism");
 		} else {
@@ -47,6 +48,7 @@ public class Prism2BlockList implements BlockList {
 		parameters.addActionType("entity-explode");
 		
 		parameters.setLimit(1); // LOOKUP = Most recent actions first.
+		parameters.setSinceTime(System.currentTimeMillis() - (lookupTime*1000L) );
 		
 		ActionsQuery aq = new ActionsQuery(prism);
 		QueryResult lookupResult = aq.lookup( parameters );

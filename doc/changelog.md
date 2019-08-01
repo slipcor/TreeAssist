@@ -1,6 +1,8 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.70 - Expand lookup time to all Block Lists
+- v6.0.69 - Implement lookup time for Core Protect
 - v6.0.68 - "Block Statistics" config nodes for Pickup and Block Mine statistics, defaulting to false!
 - v6.0.67 - more sapling block fixes - in some cases the bottom block would stay
 - v6.0.66 - actually use the sapling blocks we calculated

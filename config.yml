@@ -88,6 +88,7 @@ Custom Drops:
   GOLDEN_APPLE: 0.0
 Placed Blocks:
   Handler Plugin Name: TreeAssist
+  Handler Lookup Time: 86400
 Modding:
   Disable Durability Fix: false
   Custom Tree Definitions:

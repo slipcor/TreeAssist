@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.68 - "Block Statistics" config nodes for Pickup and Block Mine statistics, defaulting to false!
+- v6.0.70 - Expand lookup time to all Block Lists
 - [read more](doc/changelog.md)
 
 ***

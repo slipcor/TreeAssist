@@ -12,11 +12,12 @@ import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
 
-public class LogBlockBlockList implements BlockList {
+public class LogBlockBlockList extends EmptyBlockList {
 	private final LogBlock logBlock;
 	private Consumer lbconsumer = null;
 	
 	public LogBlockBlockList() {
+		super();
 		if (Bukkit.getPluginManager().isPluginEnabled("LogBlock")) {
 			logBlock = (LogBlock) Bukkit.getPluginManager().getPlugin("LogBlock");
 		} else {
@@ -42,6 +43,7 @@ public class LogBlockBlockList implements BlockList {
 		params.loc = block.getLocation();
 		params.needType = true;
 		params.world = block.getWorld();
+		params.since = lookupTime / 60; // minutes
 
 		try {
 		    for (BlockChange bc : logBlock.getBlockChanges(params)) {

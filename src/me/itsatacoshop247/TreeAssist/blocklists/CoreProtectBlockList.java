@@ -11,14 +11,14 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
-public class CoreProtectBlockList implements BlockList {
+public class CoreProtectBlockList extends EmptyBlockList {
 	private final CoreProtectAPI protect;
-	private int lookupTime;
 	
 	public CoreProtectBlockList() {
+		super();
 		protect = getCoreProtect();
-		lookupTime = Utils.plugin.getConfig().getInt("Placed Blocks.Handler Lookup Time", 60*60*24);
 	}
+
 	private CoreProtectAPI getCoreProtect() {
 		Plugin plugin = Bukkit.getPluginManager().getPlugin("CoreProtect");
 		     
