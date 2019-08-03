@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.70 - Expand lookup time to all Block Lists
+- v6.0.71 - disable check by setting lookup time to <= 0. Even if the result is the same this actually skips database lookups!
 - [read more](doc/changelog.md)
 
 ***

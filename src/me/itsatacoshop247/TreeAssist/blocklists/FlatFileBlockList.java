@@ -218,7 +218,7 @@ public class FlatFileBlockList extends EmptyBlockList {
 
     @Override
     public boolean isPlayerPlaced(final Block block) {
-        if (block == null) {
+        if (block == null || lookupTime <= 0) {
             return false;
         }
         final Map<TreeBlock, Long> cc = getChunkMap(block);
@@ -403,10 +403,6 @@ public class FlatFileBlockList extends EmptyBlockList {
             mymap.remove(key);
         }
         return total;
-    }
-
-    @Override
-    public void save() {
     }
 
     @Override

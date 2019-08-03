@@ -34,7 +34,7 @@ public class LogBlockBlockList extends EmptyBlockList {
 
 	@Override
 	public boolean isPlayerPlaced(Block block) {
-		if (logBlock == null) {
+		if (logBlock == null || lookupTime <= 0) {
 			return false;
 		}
 		QueryParams params = new QueryParams(logBlock);
@@ -55,23 +55,6 @@ public class LogBlockBlockList extends EmptyBlockList {
 		    // Do nothing or throw an error if you want
 		}
 		return false;
-	}
-
-	@Override
-	public void addBlock(Block block) {
-		// prism does that
-	}
-
-	@Override
-	public void removeBlock(Block block) {
-	}
-
-	@Override
-	public void save() {
-	}
-
-	@Override
-	public void save(boolean force) {
 	}
 
 	@Override

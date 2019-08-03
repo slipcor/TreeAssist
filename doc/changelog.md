@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.71 - disable check by setting lookup time to <= 0. Even if the result is the same this actually skips database lookups!
 - v6.0.70 - Expand lookup time to all Block Lists
 - v6.0.69 - Implement lookup time for Core Protect
 - v6.0.68 - "Block Statistics" config nodes for Pickup and Block Mine statistics, defaulting to false!

@@ -34,7 +34,7 @@ public class Prism2BlockList extends EmptyBlockList {
 
 	@Override
 	public boolean isPlayerPlaced(Block block) {
-		if (prism == null) {
+		if (prism == null || lookupTime <= 0) {
 			return false;
 		}
 		QueryParameters parameters = new QueryParameters();
@@ -65,24 +65,6 @@ public class Prism2BlockList extends EmptyBlockList {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void addBlock(Block block) {
-		// prism does that
-	}
-
-	@Override
-	public void removeBlock(Block block) {
-		// prism does that
-	}
-
-	@Override
-	public void save() {
-	}
-
-	@Override
-	public void save(boolean force) {
 	}
 
 	@Override

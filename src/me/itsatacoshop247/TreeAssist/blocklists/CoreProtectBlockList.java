@@ -62,26 +62,6 @@ public class CoreProtectBlockList extends EmptyBlockList {
 	}
 
 	@Override
-	public void addBlock(Block block) {
-		// plugin does that
-	}
-
-	@Override
-	public void removeBlock(Block block) {
-		// plugin does that
-	}
-
-	@Override
-	public void save() {
-		// plugin does that
-	}
-
-	@Override
-	public void save(boolean force) {
-		// plugin does that
-	}
-
-	@Override
 	public void logBreak(Block block, Player player) {
 		if (protect == null) {
 			return;
