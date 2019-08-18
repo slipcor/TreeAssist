@@ -399,6 +399,9 @@ public class TreeAssist extends JavaPlugin {
     }
 
     public void reloadLists() {
+        if (Utils.updateToolNames(config)) {
+            saveConfig();
+        }
         Utils.reloadCustomDefinitions(config);
     }
 

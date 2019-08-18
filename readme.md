@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.71 - disable check by setting lookup time to <= 0. Even if the result is the same this actually skips database lookups!
+- v6.0.72 - change default tools to 1.13 material names (woodEN and goldEN axe) - add converter for these nodes. Please check your lists for outdated names :)
 - [read more](doc/changelog.md)
 
 ***

@@ -711,4 +711,45 @@ public final class Utils {
             }
         }
     }
+
+    public static boolean updateToolNames(FileConfiguration config) {
+        List<?> list = config.getList("Tools.Tools List");
+
+        List<String> newList = new ArrayList<>();
+
+        boolean updating = false;
+
+        for (Object o : list) {
+            if (o instanceof String) {
+                String value = (String) o;
+
+                if (value.equals("WOOD_AXE")) {
+                    newList.add("WOODEN_AXE");
+                    updating = true;
+                } else if (value.equals("GOLD_AXE")) {
+                    newList.add("GOLDEN_AXE");
+                    updating = true;
+                } else {
+                    newList.add(value);
+                }
+            }
+        }
+
+        if (config.getInt("Tools.Drop Chance.WOOD_AXE", 0) > 0) {
+            config.set("Tools.Drop Chance.WOODEN_AXE", config.getInt("Tools.Drop Chance.WOOD_AXE"));
+            config.set("Tools.Drop Chance.WOOD_AXE", null);
+            updating = true;
+        }
+
+        if (config.getInt("Tools.Drop Chance.GOLD_AXE", 0) > 0) {
+            config.set("Tools.Drop Chance.GOLDEN_AXE", config.getInt("Tools.Drop Chance.GOLD_AXE"));
+            config.set("Tools.Drop Chance.GOLD_AXE", null);
+            updating = true;
+        }
+
+        if (updating) {
+            config.set("Tools.Tools List", newList);
+        }
+        return updating;
+    }
 }
