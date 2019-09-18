@@ -12,9 +12,10 @@ import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Tree;
@@ -22,6 +23,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public final class Utils {
@@ -34,6 +36,10 @@ public final class Utils {
     private static List<Material> leafMaterials = new ArrayList<>();
     private static List<Material> saplingMaterials = new ArrayList<>();
     private static List<Material> mushroomMaterials = new ArrayList<>();
+
+    private static Boolean useFallingBlock = null;
+
+    private static List<FallingBlock> fallingBlocks = new ArrayList<>();
 
 	static {
         // elements
@@ -751,5 +757,51 @@ public final class Utils {
             config.set("Tools.Tools List", newList);
         }
         return updating;
+    }
+
+    public static void breakBlock(Player player, Block block) {
+        breakBlock(player, block, null);
+    }
+
+    public static void breakBlock(Block block) {
+        breakBlock(null, block, null);
+    }
+
+    public static void breakBlock(Player player, Block block, ItemStack tool) {
+        if (useFallingBlock == null) {
+            useFallingBlock = Utils.plugin.getConfig().getBoolean("Main.Use Falling Blocks", false);
+            System.out.println(useFallingBlock);
+        }
+
+        if (useFallingBlock) {
+            Collection<ItemStack> drops = tool == null ? block.getDrops() : block.getDrops(tool);
+
+            BlockData data = block.getBlockData();
+
+            block.setType(Material.AIR);
+
+            FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), data);
+
+            fallingBlocks.add(falling);
+
+            if (player != null) {
+                player.sendBlockChange(block.getLocation(), block.getBlockData());
+            }
+
+            for(ItemStack item : drops) {
+                block.getWorld().dropItemNaturally(block.getLocation(), item);
+            }
+        } else {
+            block.breakNaturally(tool);
+        }
+    }
+
+    public static boolean removeIfFallen(final Entity item) {
+        if (fallingBlocks.contains(item)) {
+            fallingBlocks.remove(item);
+            item.remove();
+            return true;
+        }
+        return false;
     }
 }

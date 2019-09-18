@@ -395,6 +395,8 @@ public class TreeAssist extends JavaPlugin {
 
         items.put("Placed Blocks.Handler Lookup Time", "86400");
 
+        items.put("Main.Use Falling Blocks", "false");
+
         return items;
     }
 

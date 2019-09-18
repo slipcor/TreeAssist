@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.73 - make trees literally fall down - off by default for testing, happy falling!
 - v6.0.72 - change default tools to 1.13 material names (woodEN and goldEN axe) - add converter for these nodes. Please check your lists for outdated names :)
 - v6.0.71 - disable check by setting lookup time to <= 0. Even if the result is the same this actually skips database lookups!
 - v6.0.70 - Expand lookup time to all Block Lists

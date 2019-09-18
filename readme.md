@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.72 - change default tools to 1.13 material names (woodEN and goldEN axe) - add converter for these nodes. Please check your lists for outdated names :)
+- v6.0.73 - make trees literally fall down - off by default for testing, happy falling!
 - [read more](doc/changelog.md)
 
 ***

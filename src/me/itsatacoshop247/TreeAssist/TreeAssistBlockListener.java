@@ -11,11 +11,15 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.StructureGrowEvent;
@@ -149,6 +153,22 @@ public class TreeAssistBlockListener implements Listener {
         }
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onPickUpEvent(EntityPickupItemEvent event) {
+        if (event.getItem() instanceof FallingBlock) {
+            if (Utils.removeIfFallen(event.getItem())) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemDespawn(ItemDespawnEvent event) {
+        if (event.getEntity() instanceof FallingBlock) {
+            Utils.removeIfFallen(event.getEntity());
+        }
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (!plugin.getConfig().getBoolean("Main.Toggle Default")) {
@@ -160,6 +180,16 @@ public class TreeAssistBlockListener implements Listener {
     public void onStructureGrow(StructureGrowEvent event) {
         if (antiGrow.contains(event.getLocation())) {
             event.setCancelled(true);
+        }
+    }
+
+
+    @EventHandler(ignoreCancelled = true)
+    public void onChangeBlock(EntityChangeBlockEvent event) {
+        if (event.getEntity() instanceof FallingBlock) {
+            if (Utils.removeIfFallen(event.getEntity())) {
+                event.setCancelled(true);
+            }
         }
     }
 
@@ -192,9 +222,11 @@ public class TreeAssistBlockListener implements Listener {
         Utils.plugin.getServer().getPluginManager().callEvent(event);
         if (!event.isCancelled()) {
         	Utils.plugin.blockList.logBreak(blockAt, null);
-        	blockAt.breakNaturally();
+        	Utils.breakBlock(blockAt);
         }
     }
+
+
 
     /**
      * enforces an 8 block radius FloatingLeaf removal
@@ -208,7 +240,7 @@ public class TreeAssistBlockListener implements Listener {
             return;
         }
         Utils.plugin.blockList.logBreak(blockAt, null);
-        blockAt.breakNaturally();
+        Utils.breakBlock(blockAt);
         World world = blockAt.getWorld();
         int x = blockAt.getX();
         int y = blockAt.getY();

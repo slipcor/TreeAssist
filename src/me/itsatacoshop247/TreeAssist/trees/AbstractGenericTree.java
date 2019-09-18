@@ -637,7 +637,7 @@ public abstract class AbstractGenericTree {
                             block.getLocation(),
                             new ItemStack(mat, 1));
                 } else {
-                    block.breakNaturally(tool);
+                    Utils.breakBlock(player, block, tool);
                 }
             }
             if (player != null) {
@@ -804,7 +804,7 @@ public abstract class AbstractGenericTree {
                         if (!event.isCancelled())
                         {
                         	Utils.plugin.blockList.logBreak(block, null);
-                        	block.breakNaturally();
+                            Utils.breakBlock(block);
                         }
                     }
                     removeBlocks.remove(block);
@@ -891,7 +891,7 @@ public abstract class AbstractGenericTree {
                                     player.getInventory().addItem(block.getState().getData().toItemStack(1));
                                     block.setType(Material.AIR);
                                 } else {
-                                    block.breakNaturally();
+                                    Utils.breakBlock(player, block);
                                 }
                                 player.sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
                             }
@@ -933,7 +933,7 @@ public abstract class AbstractGenericTree {
                                         player.getInventory().addItem(block.getState().getData().toItemStack(1));
                                         block.setType(Material.AIR);
                                     } else {
-                                        block.breakNaturally();
+                                        Utils.breakBlock(player, block);
                                     }
                                     player.sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
                                 }
