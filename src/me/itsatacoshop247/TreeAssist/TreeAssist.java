@@ -351,8 +351,8 @@ public class TreeAssist extends JavaPlugin {
 
         //5.7.1 additions
         items.put("Tools.Drop Chance.DIAMOND_AXE", "100");
-        items.put("Tools.Drop Chance.WOOD_AXE", "100");
-        items.put("Tools.Drop Chance.GOLD_AXE", "100");
+        items.put("Tools.Drop Chance.WOODEN_AXE", "100");
+        items.put("Tools.Drop Chance.GOLDEN_AXE", "100");
         items.put("Tools.Drop Chance.IRON_AXE", "100");
         items.put("Tools.Drop Chance.STONE_AXE", "100");
 

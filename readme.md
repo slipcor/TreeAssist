@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.73 - make trees literally fall down - off by default for testing, happy falling!
+- v6.0.74 - remove "wood_axe" and "gold_axe" remnants
 - [read more](doc/changelog.md)
 
 ***
