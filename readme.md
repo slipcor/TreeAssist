@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.74 - remove "wood_axe" and "gold_axe" remnants
+- v6.0.75 - remove debug outputs that we do not need
 - [read more](doc/changelog.md)
 
 ***

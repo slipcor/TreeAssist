@@ -76,19 +76,4 @@ public class CommandTree<T> {
         }
         return false;
     }
-/*
-    public void debug(final int level) {
-        final StringBuffer c = new StringBuffer();
-        for (int pos=0; pos<level; pos++) {
-            c.append('-');
-        }
-        System.out.println("");
-        System.out.println("-----------");
-        System.out.print(c.toString()+"key:");
-        System.out.println(key);
-        System.out.print(c.toString()+"children:");
-        for (final CommandTree<T> child : children) {
-            child.debug(level+1);
-        }
-    }*/
 }

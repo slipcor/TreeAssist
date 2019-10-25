@@ -770,7 +770,6 @@ public final class Utils {
     public static void breakBlock(Player player, Block block, ItemStack tool) {
         if (useFallingBlock == null) {
             useFallingBlock = Utils.plugin.getConfig().getBoolean("Main.Use Falling Blocks", false);
-            System.out.println(useFallingBlock);
         }
 
         if (useFallingBlock) {

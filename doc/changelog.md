@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.75 - remove debug outputs that we do not need
 - v6.0.74 - remove "wood_axe" and "gold_axe" remnants
 - v6.0.73 - make trees literally fall down - off by default for testing, happy falling!
 - v6.0.72 - change default tools to 1.13 material names (woodEN and goldEN axe) - add converter for these nodes. Please check your lists for outdated names :)

@@ -770,7 +770,6 @@ public abstract class AbstractGenericTree {
 
     protected void removeLater() {
         removeBlocks = calculate(bottom, top);
-        //System.out.println("1:"+this.debugCount);
 
         final int delay = Utils.plugin.getConfig().getBoolean("Main.Initial Delay") ? Utils.plugin.getConfig().getInt(
                 "Automatic Tree Destruction.Initial Delay (seconds)") * 20 : 0;
