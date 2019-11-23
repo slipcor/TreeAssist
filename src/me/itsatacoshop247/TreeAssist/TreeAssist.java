@@ -38,6 +38,7 @@ public class TreeAssist extends JavaPlugin {
 
     public boolean Enabled = true;
     public boolean mcMMO = false;
+    public boolean jobs = false;
 
     File configFile;
     FileConfiguration config;
@@ -140,6 +141,7 @@ public class TreeAssist extends JavaPlugin {
 
     public void onEnable() {
         checkMcMMO();
+        checkJobs();
 
         Utils.plugin = this;
         ConfigurationSerialization.registerClass(TreeBlock.class);
@@ -275,6 +277,14 @@ public class TreeAssist extends JavaPlugin {
         }
     }
 
+    private void checkJobs() {
+        if (getConfig().getBoolean("Main.Use Jobs if Available")) {
+            this.jobs = getServer().getPluginManager().isPluginEnabled("Jobs");
+        } else {
+            this.jobs = false;
+        }
+    }
+
     private void copy(InputStream in, File file) {
         try {
             OutputStream out = new FileOutputStream(file);
@@ -396,6 +406,8 @@ public class TreeAssist extends JavaPlugin {
         items.put("Placed Blocks.Handler Lookup Time", "86400");
 
         items.put("Main.Use Falling Blocks", "false");
+
+        items.put("Main.Use Jobs if Available", "true");
 
         return items;
     }

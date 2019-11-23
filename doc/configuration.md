@@ -18,6 +18,7 @@ This is the default configuation file.
       Sapling Replant: true
       Toggle Default: true
       Use mcMMO if Available: true
+      Use Jobs if Available: true
       Use Permissions: false
     Automatic Tree Destruction:
       Required Lore: ''

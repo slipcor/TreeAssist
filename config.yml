@@ -14,6 +14,7 @@ Main:
   Sapling Replant: true
   Toggle Default: true
   Use mcMMO if Available: true
+  Use Jobs if Available: true
   Use Permissions: false
   Use Falling Blocks: false
 Automatic Tree Destruction:

@@ -597,10 +597,14 @@ public abstract class AbstractGenericTree {
         if (!leaf && Utils.plugin.mcMMO && player != null) {
             debug.i("Adding mcMMO EXP!");
             Utils.mcMMOaddExp(player, block);
+        } else if (!leaf && Utils.plugin.jobs && player != null) {
+            debug.i("Adding Jobs EXP!");
+            Utils.JobsaddExp(player, block);
         } else if (!leaf) {
             debug.i("mat: " + maat.name());
             debug.i("data: " + data);
             debug.i("mcMMO: " + Utils.plugin.mcMMO);
+            debug.i("jobs: " + Utils.plugin.jobs);
             debug.i("player: " + String.valueOf(player));
         }
 

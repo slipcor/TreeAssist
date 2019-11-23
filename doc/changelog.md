@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.76 - add support for Jobs reborn
 - v6.0.75 - remove debug outputs that we do not need
 - v6.0.74 - remove "wood_axe" and "gold_axe" remnants
 - v6.0.73 - make trees literally fall down - off by default for testing, happy falling!

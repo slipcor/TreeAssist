@@ -1,5 +1,8 @@
 package me.itsatacoshop247.TreeAssist.core;
 
+import com.gamingmesh.jobs.Jobs;
+import com.gamingmesh.jobs.actions.BlockActionInfo;
+import com.gamingmesh.jobs.container.*;
 import com.gmail.nossr50.api.AbilityAPI;
 import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -413,6 +416,12 @@ public final class Utils {
 		return (toolbad.contains(itemStack.getType()) || toolgood
 				.contains(itemStack.getType()));
 	}
+
+    public static void JobsaddExp(Player player, Block block) {
+        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
+        BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
+	    Jobs.action(jPlayer, bInfo, block);
+    }
 
     public static String joinArray(final Object[] array, final String glue) {
         final StringBuilder result = new StringBuilder("");
