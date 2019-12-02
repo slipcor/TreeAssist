@@ -6,6 +6,8 @@ import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import me.itsatacoshop247.TreeAssist.events.TATreeBrokenEvent;
+import me.itsatacoshop247.TreeAssist.externals.JobsHook;
+import me.itsatacoshop247.TreeAssist.externals.mcMMOHook;
 import me.itsatacoshop247.TreeAssist.trees.mushroom.MushroomBrownTree;
 import me.itsatacoshop247.TreeAssist.trees.mushroom.MushroomRedTree;
 import me.itsatacoshop247.TreeAssist.trees.wood.*;
@@ -295,7 +297,7 @@ public abstract class AbstractGenericTree {
 
         resultTree.bottom = block;
         resultTree.top = block;
-        if (Utils.mcMMOTreeFeller(player)) {
+        if (Utils.plugin.mcMMO && mcMMOHook.mcMMOTreeFeller(player)) {
             debug.i("MCMMO Tree Feller!");
             maybeReplant(plugin, event, resultTree, player, block);
             if (plugin.isForceAutoDestroy()) {
@@ -596,10 +598,10 @@ public abstract class AbstractGenericTree {
         }
         if (!leaf && Utils.plugin.mcMMO && player != null) {
             debug.i("Adding mcMMO EXP!");
-            Utils.mcMMOaddExp(player, block);
+            mcMMOHook.mcMMOaddExp(player, block);
         } else if (!leaf && Utils.plugin.jobs && player != null) {
             debug.i("Adding Jobs EXP!");
-            Utils.JobsaddExp(player, block);
+            JobsHook.addJobsExp(player, block);
         } else if (!leaf) {
             debug.i("mat: " + maat.name());
             debug.i("data: " + data);

@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.76 - add support for Jobs reborn
+- v6.0.77 - make sure config values for mcMMO and Jobs are read - only try to load mcMMO and Jobs if required and requested
 - [read more](doc/changelog.md)
 
 ***

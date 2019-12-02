@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.77 - make sure config values for mcMMO and Jobs are read - only try to load mcMMO and Jobs if required and requested
 - v6.0.76 - add support for Jobs reborn
 - v6.0.75 - remove debug outputs that we do not need
 - v6.0.74 - remove "wood_axe" and "gold_axe" remnants

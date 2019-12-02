@@ -140,8 +140,6 @@ public class TreeAssist extends JavaPlugin {
     }
 
     public void onEnable() {
-        checkMcMMO();
-        checkJobs();
 
         Utils.plugin = this;
         ConfigurationSerialization.registerClass(TreeBlock.class);
@@ -161,6 +159,9 @@ public class TreeAssist extends JavaPlugin {
         //check for defaults to set newly
 
         this.updateConfig();
+
+        checkMcMMO();
+        checkJobs();
 
         getServer().getPluginManager().registerEvents(listener, this);
         if (config.getBoolean("Main.Auto Plant Dropped Saplings")) {

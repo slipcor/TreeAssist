@@ -1,15 +1,7 @@
 package me.itsatacoshop247.TreeAssist.core;
 
-import com.gamingmesh.jobs.Jobs;
-import com.gamingmesh.jobs.actions.BlockActionInfo;
-import com.gamingmesh.jobs.container.*;
-import com.gmail.nossr50.api.AbilityAPI;
-import com.gmail.nossr50.api.ExperienceAPI;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import me.itsatacoshop247.TreeAssist.TreeAssist;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
-import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
 import me.itsatacoshop247.TreeAssist.trees.CustomTree;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -20,9 +12,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
-import org.bukkit.material.Tree;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -417,12 +406,6 @@ public final class Utils {
 				.contains(itemStack.getType()));
 	}
 
-    public static void JobsaddExp(Player player, Block block) {
-        JobsPlayer jPlayer = Jobs.getPlayerManager().getJobsPlayer(player);
-        BlockActionInfo bInfo = new BlockActionInfo(block, ActionType.BREAK);
-	    Jobs.action(jPlayer, bInfo, block);
-    }
-
     public static String joinArray(final Object[] array, final String glue) {
         final StringBuilder result = new StringBuilder("");
         for (final Object o : array) {
@@ -435,61 +418,10 @@ public final class Utils {
         return result.substring(glue.length());
     }
 
-	/**
-	 * Add mcMMO exp for destroying a block
-	 * 
-	 * @param player
-	 *            the player to give exp
-	 * @param block
-	 *            the block being destroyed
-	 */
-	public static void mcMMOaddExp(Player player, Block block) {
-		Plugin mcmmo = Utils.plugin.getServer().getPluginManager().getPlugin("mcMMO");
-
-		if (player == null) {
-            AbstractGenericTree.debug.i("no Player!!");
-            return;
-        }
-
-        MaterialData state = block.getState().getData();
-
-        if (!(state instanceof Tree)) {
-            AbstractGenericTree.debug.i("no Tree!!");
-            return;
-        }
-
-        int toAdd = ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, block.getType());
-        if (player.isOnline()) {
-            AbstractGenericTree.debug.i("adding " + toAdd + " EXP!");
-            ExperienceAPI.addXP(player, "Woodcutting", toAdd);
-        } else {
-            AbstractGenericTree.debug.i("adding " + toAdd + " offline EXP!");
-            ExperienceAPI.addRawXPOffline(player.getName(), "Woodcutting", mcmmo.getConfig()
-                    .getInt("Experience.Woodcutting.Dark_Oak"));
-        }
-    }
-
 	public final static BlockFace[] NEIGHBORFACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST,
 	BlockFace.NORTH_EAST,BlockFace.SOUTH_EAST,BlockFace.NORTH_WEST,BlockFace.SOUTH_WEST};
 	
-	
-	/**
-	 * check if a player is using the tree feller ability atm
-	 * 
-	 * @param player
-	 *            the player to check
-	 * @return if a player is using tree feller
-	 */
-	public static boolean mcMMOTreeFeller(Player player) {
-		boolean isMcMMOEnabled = Utils.plugin.getServer().getPluginManager()
-				.isPluginEnabled("mcMMO");
-	
-		if (!isMcMMOEnabled) {
-			return false;
-		}
-	
-		return AbilityAPI.treeFellerEnabled(player);
-	}
+
 
     /**
      * Should the given material be replanted?
