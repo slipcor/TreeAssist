@@ -732,7 +732,11 @@ public final class Utils {
                 block.getWorld().dropItemNaturally(block.getLocation(), item);
             }
         } else {
-            block.breakNaturally(tool);
+            if (tool == null) {
+                block.breakNaturally();
+            } else {
+                block.breakNaturally(tool);
+            }
         }
     }
 

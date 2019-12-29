@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.77 - make sure config values for mcMMO and Jobs are read - only try to load mcMMO and Jobs if required and requested
+- v6.0.78 - prevent a NullPointerException that for some reason exists now - addresses #37 and probably more
 - [read more](doc/changelog.md)
 
 ***
