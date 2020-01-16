@@ -5,6 +5,7 @@ import me.itsatacoshop247.TreeAssist.TreeAssistReplant;
 import me.itsatacoshop247.TreeAssist.core.CustomTreeDefinition;
 import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.core.Utils;
+import me.itsatacoshop247.TreeAssist.events.TASaplingReplaceEvent;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -149,6 +150,14 @@ public class CustomTree extends AbstractGenericTree {
     private void replaceSapling(Material material, int delay, Block bottom) {
         debug.i("replacing custom sapling: " + delay + " sec; " + material.toString());
         if (bottom == null) {
+            return;
+        }
+
+        TASaplingReplaceEvent event = new TASaplingReplaceEvent(bottom, material.name());
+        Utils.plugin.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            debug.i("CustomTree.replaceSapling() was cancelled!");
             return;
         }
 

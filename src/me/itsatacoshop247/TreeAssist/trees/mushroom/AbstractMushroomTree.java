@@ -3,6 +3,7 @@ package me.itsatacoshop247.TreeAssist.trees.mushroom;
 import me.itsatacoshop247.TreeAssist.TreeAssistProtect;
 import me.itsatacoshop247.TreeAssist.TreeAssistReplant;
 import me.itsatacoshop247.TreeAssist.core.Utils;
+import me.itsatacoshop247.TreeAssist.events.TASaplingReplaceEvent;
 import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -155,6 +156,14 @@ public abstract class AbstractMushroomTree extends AbstractGenericTree {
     protected void handleSaplingReplace(int delay) {
 
         Material saplingMat = itemMaterial;
+
+        TASaplingReplaceEvent event = new TASaplingReplaceEvent(saplingBlock, saplingMat.name());
+        Utils.plugin.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            debug.i("AbstractMushroomTree.handleSaplingReplace() was cancelled!");
+            return;
+        }
 
         Runnable b = new TreeAssistReplant(Utils.plugin, saplingBlock, saplingMat);
         Utils.plugin.getServer().getScheduler()

@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.78 - prevent a NullPointerException that for some reason exists now - addresses #37 and probably more
+- v6.0.79 - add worldguard support - restrict usage with custom flags "treeassist-autochop" and "treeassist-replant" - adds #38
 - [read more](doc/changelog.md)
 
 ***

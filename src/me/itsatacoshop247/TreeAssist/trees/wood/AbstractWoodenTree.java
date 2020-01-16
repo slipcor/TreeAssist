@@ -3,6 +3,7 @@ package me.itsatacoshop247.TreeAssist.trees.wood;
 import me.itsatacoshop247.TreeAssist.TreeAssistProtect;
 import me.itsatacoshop247.TreeAssist.TreeAssistReplant;
 import me.itsatacoshop247.TreeAssist.core.Utils;
+import me.itsatacoshop247.TreeAssist.events.TASaplingReplaceEvent;
 import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
@@ -180,6 +181,14 @@ public abstract class AbstractWoodenTree extends AbstractGenericTree {
     protected void handleSaplingReplace(int delay, Block bottom) {
         if (bottom == null) {
             //debugger.i("no null sapling !!!");
+            return;
+        }
+
+        TASaplingReplaceEvent event = new TASaplingReplaceEvent(bottom, species.name());
+        Utils.plugin.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            debug.i("AbstractWoodenTree.handleSaplingReplace() was cancelled!");
             return;
         }
 

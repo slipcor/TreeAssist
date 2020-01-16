@@ -4,6 +4,7 @@ import me.itsatacoshop247.TreeAssist.blocklists.*;
 import me.itsatacoshop247.TreeAssist.commands.*;
 import me.itsatacoshop247.TreeAssist.core.*;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
+import me.itsatacoshop247.TreeAssist.externals.WorldGuardListener;
 import me.itsatacoshop247.TreeAssist.metrics.MetricsLite;
 import me.itsatacoshop247.TreeAssist.timers.CooldownCounter;
 import me.itsatacoshop247.TreeAssist.trees.*;
@@ -45,6 +46,7 @@ public class TreeAssist extends JavaPlugin {
 
     public BlockList blockList;
     public TreeAssistBlockListener listener;
+    public WorldGuardListener worldGuard = null;
 
     public int getCoolDown(Player player) {
         if (hasCoolDown(player)) {
@@ -141,27 +143,12 @@ public class TreeAssist extends JavaPlugin {
 
     public void onEnable() {
 
-        Utils.plugin = this;
-        ConfigurationSerialization.registerClass(TreeBlock.class);
-
-        this.configFile = new File(getDataFolder(), "config.yml");
-        try {
-            firstRun();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        this.config = new YamlConfiguration();
-
-        this.listener = new TreeAssistBlockListener(this);
-
-        loadYamls();
-        config.options().copyDefaults(true);
-        //check for defaults to set newly
-
-        this.updateConfig();
-
         checkMcMMO();
         checkJobs();
+
+        if (worldGuard != null) {
+            getServer().getPluginManager().registerEvents(worldGuard, this);
+        }
 
         getServer().getPluginManager().registerEvents(listener, this);
         if (config.getBoolean("Main.Auto Plant Dropped Saplings")) {
@@ -175,6 +162,7 @@ public class TreeAssist extends JavaPlugin {
         CustomTree.debugger = new Debugger(this, 2);
         InvalidTree.debugger = new Debugger(this, 3);
         OakTree.debugger = new Debugger(this, 5);
+        TreeAssistBlockListener.debug = new Debugger(this, 6);
         Debugger.load(this, Bukkit.getConsoleSender());
 
         if (!getConfig().getBoolean("Main.Ignore User Placed Blocks")) {
@@ -200,6 +188,30 @@ public class TreeAssist extends JavaPlugin {
         //getCommand("treeassist").setTabCompleter(this);
 
         Language.init(this, config.getString("Main.Language", "en"));
+    }
+
+    @Override
+    public void onLoad() {
+        Utils.plugin = this;
+        ConfigurationSerialization.registerClass(TreeBlock.class);
+
+        this.configFile = new File(getDataFolder(), "config.yml");
+        try {
+            firstRun();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.config = new YamlConfiguration();
+
+        this.listener = new TreeAssistBlockListener(this);
+
+        loadYamls();
+        config.options().copyDefaults(true);
+        //check for defaults to set newly
+
+        this.updateConfig();
+
+        checkWorldGuard();
     }
 
     @Override
@@ -283,6 +295,12 @@ public class TreeAssist extends JavaPlugin {
             this.jobs = getServer().getPluginManager().isPluginEnabled("Jobs");
         } else {
             this.jobs = false;
+        }
+    }
+
+    private void checkWorldGuard() {
+        if (getConfig().getBoolean("Main.Use WorldGuard if Available") && getServer().getPluginManager().getPlugin("WorldGuard") != null) {
+            worldGuard = new WorldGuardListener();
         }
     }
 
@@ -409,6 +427,8 @@ public class TreeAssist extends JavaPlugin {
         items.put("Main.Use Falling Blocks", "false");
 
         items.put("Main.Use Jobs if Available", "true");
+
+        items.put("Main.Use WorldGuard if Available", "false");
 
         return items;
     }

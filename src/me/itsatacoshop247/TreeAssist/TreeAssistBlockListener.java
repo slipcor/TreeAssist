@@ -1,9 +1,11 @@
 package me.itsatacoshop247.TreeAssist;
 
+import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import me.itsatacoshop247.TreeAssist.events.TALeafDecay;
+import me.itsatacoshop247.TreeAssist.events.TASaplingReplaceEvent;
 import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
 import me.itsatacoshop247.TreeAssist.trees.CustomTree;
 import org.bukkit.ChatColor;
@@ -37,6 +39,7 @@ public class TreeAssistBlockListener implements Listener {
     public TreeAssist plugin;
     private final Map<String, Long> noreplace = new HashMap<String, Long>();
     private final TreeAssistAntiGrow antiGrow;
+    public static Debugger debug;
 
     public TreeAssistBlockListener(TreeAssist instance) {
         plugin = instance;
@@ -101,7 +104,7 @@ public class TreeAssistBlockListener implements Listener {
         checkFire(event, event.getBlock());
     }
 
-    private void checkFire(Cancellable event, Block block) {
+    private void checkFire(Cancellable unused, Block block) {
 
         if (plugin.config.getBoolean("Sapling Replant.Replant When Tree Burns Down") && plugin.Enabled) {
             if (plugin.config.getBoolean("Worlds.Enable Per World")) {
@@ -117,6 +120,12 @@ public class TreeAssistBlockListener implements Listener {
                 Block oneabove = block.getRelative(BlockFace.UP, 1);
                 if (onebelow.getType() == Material.DIRT || onebelow.getType() == Material.GRASS_BLOCK || onebelow.getType() == Material.PODZOL) {
                     if (oneabove.getType() == Material.AIR || oneabove.getType() == logMat) {
+                        TASaplingReplaceEvent event = new TASaplingReplaceEvent(block, tree.getSpecies().name());
+                        Utils.plugin.getServer().getPluginManager().callEvent(event);
+                        if (event.isCancelled()) {
+                            debug.i("TreeAssistBlockListener.checkFire() Sapling Replant was cancelled!");
+                            return;
+                        }
                         Runnable b = new TreeAssistReplant(plugin, block, tree.getSpecies());
                         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, b, 20);
                     }
