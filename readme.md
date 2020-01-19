@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.80 - include sapling self replanting in the WorldGuard replant flag
+- v6.0.81 - instantiate the self replant debugger
 - [read more](doc/changelog.md)
 
 ***

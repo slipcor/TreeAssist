@@ -163,6 +163,7 @@ public class TreeAssist extends JavaPlugin {
         InvalidTree.debugger = new Debugger(this, 3);
         OakTree.debugger = new Debugger(this, 5);
         TreeAssistBlockListener.debug = new Debugger(this, 6);
+        TreeAssistSpawnListener.debug = new Debugger(this, 7);
         Debugger.load(this, Bukkit.getConsoleSender());
 
         if (!getConfig().getBoolean("Main.Ignore User Placed Blocks")) {
