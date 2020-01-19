@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.79 - add worldguard support - restrict usage with custom flags "treeassist-autochop" and "treeassist-replant" - adds #38
+- v6.0.80 - include sapling self replanting in the WorldGuard replant flag
 - [read more](doc/changelog.md)
 
 ***

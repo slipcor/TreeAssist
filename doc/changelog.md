@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.80 - include sapling self replanting in the WorldGuard replant flag
 - v6.0.79 - add worldguard support - restrict usage with custom flags "treeassist-autochop" and "treeassist-replant" - adds #38
 - v6.0.78 - prevent a NullPointerException that for some reason exists now - addresses #37 and probably more
 - v6.0.77 - make sure config values for mcMMO and Jobs are read - only try to load mcMMO and Jobs if required and requested
