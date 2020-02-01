@@ -410,6 +410,7 @@ public class FlatFileBlockList extends EmptyBlockList {
         for (final RegionKey key : mymap.keySet()) {
             saveData(key, force);
         }
+        mymap.clear();
     }
 
     /**

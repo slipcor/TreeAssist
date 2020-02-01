@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.81 - instantiate the self replant debugger
+- v6.0.82 - clear the region save queue after writing - much less writing, a bit more reading
 - [read more](doc/changelog.md)
 
 ***

@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.82 - clear the region save queue after writing - much less writing, a bit more reading
 - v6.0.81 - instantiate the self replant debugger
 - v6.0.80 - include sapling self replanting in the WorldGuard replant flag
 - v6.0.79 - add worldguard support - restrict usage with custom flags "treeassist-autochop" and "treeassist-replant" - adds #38
