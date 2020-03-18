@@ -25,7 +25,6 @@ public class CommandFindForest extends AbstractCommand {
         biomeMap.put("JUNGLE", Arrays.asList(new Biome[]{Biome.JUNGLE, Biome.JUNGLE_HILLS}));
         biomeMap.put("SPRUCE", Arrays.asList(new Biome[]{Biome.TAIGA, Biome.GIANT_TREE_TAIGA}));
         biomeMap.put("MUSHROOM", Arrays.asList(new Biome[]{Biome.MUSHROOM_FIELDS, Biome.MUSHROOM_FIELD_SHORE}));
-
     }
 
     @Override
@@ -55,24 +54,27 @@ public class CommandFindForest extends AbstractCommand {
 
         Player player = (Player) sender;
 
-        for (int diff = 1; diff < 20; diff++) {
-            for (int x = -diff; x <= diff; x += 1 + (diff / 5)) {
-                for (int z = -diff; z <= diff; z += 1 + (diff / 5)) {
-                    Block block = player.getLocation().getBlock().getRelative(x * 50, 0, z * 50);
-                    while (block.getType() != Material.AIR) {
-                        block = block.getRelative(BlockFace.UP);
-                    }
-                    if (biomes.contains(block.getBiome())) {
-                        player.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_FINDFOREST,
-                                block.getX() + "/" + block.getY() + "/" + block.getZ()));
-                        return;
+        int distanceSquared = Integer.MAX_VALUE;
+        Block foundBlock = null;
+
+        for (int x = -20; x <= 20; x += 1 + (Math.abs(x) / 5)) {
+            for (int z = -20; z <= 20; z += 1 + (Math.abs(z) / 5)) {
+                Block block = player.getLocation().getBlock().getRelative(x * 50, 0, z * 50);
+
+                if (biomes.contains(block.getBiome())) {
+                    if (block.getLocation().distanceSquared(player.getLocation()) < distanceSquared) {
+                        distanceSquared = (int) block.getLocation().distanceSquared(player.getLocation());
+                        foundBlock = block;
                     }
                 }
             }
         }
-
-        sender.sendMessage(Language.parse(Language.MSG.ERROR_FINDFOREST, args[0]));
-
+        if (distanceSquared < Integer.MAX_VALUE) {
+            player.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_FINDFOREST,
+                    foundBlock.getX() + "/" + foundBlock.getY() + "/" + foundBlock.getZ()));
+        } else {
+            sender.sendMessage(Language.parse(Language.MSG.ERROR_FINDFOREST, args[0]));
+        }
     }
 
     @Override

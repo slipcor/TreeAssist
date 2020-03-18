@@ -44,21 +44,34 @@ public class CoreProtectBlockList extends EmptyBlockList {
 
 	@Override
 	public boolean isPlayerPlaced(Block block) {
+		return false;
+
+		/*
+
+		temporarily disabled until we find a way to distinguish between manually placing a block and doing it by growing a tree
+
 		if (protect == null || lookupTime <= 0) {
 			return false;
 		}
 		List<String[]> lookup = protect.blockLookup(block, lookupTime);
 
+		// results are newest first
 		for (String[] value : lookup) {
 			ParseResult result = protect.parseResult(value);
-			if (result.getActionId() == 1) {
-				return true; // lately placed
+
+			if (result.getPlayer().equals("#tree")) {
+				break;
+			}
+
+			if (result.getActionId() == 1 && Utils.isLog(result.getBlockData().getMaterial()) && !result.isRolledBack()) {
+				break; // lately placed a log
 			}
 			if (result.getActionId() == 0) {
-				return false; // lately removed again
+				break; // lately removed again
 			}
 		}
 		return false;
+		*/
 	}
 
 	@Override

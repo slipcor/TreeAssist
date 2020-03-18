@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.82 - clear the region save queue after writing - much less writing, a bit more reading
+- v6.0.83 - significantly improve the biome finder, disable user placed blocks for CoreProtect as it always returns trees grown as placed blocks 
 - [read more](doc/changelog.md)
 
 ***
