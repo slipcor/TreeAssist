@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.85 - remove mcMMO-classic support attempt from POM
+- v6.0.86 - check that mcMMO is generally enabled before looking for its classes!
 - [read more](doc/changelog.md)
 
 ***

@@ -286,8 +286,10 @@ public class TreeAssist extends JavaPlugin {
     private void checkMcMMO() {
         if (getConfig().getBoolean("Main.Use mcMMO if Available")) {
             try {
-                Class.forName("com.gmail.nossr50.datatypes.skills.PrimarySkillType");
-                this.mcMMO = getServer().getPluginManager().isPluginEnabled("mcMMO");
+                if (getServer().getPluginManager().isPluginEnabled("mcMMO")) {
+                    Class.forName("com.gmail.nossr50.datatypes.skills.PrimarySkillType");
+                    this.mcMMO = true;
+                }
             } catch (ClassNotFoundException e) {
                 Utils.plugin.getLogger().warning("mcMMO classic is not supported, please update to mcMMO 2.X!");
                 this.mcMMO = false;

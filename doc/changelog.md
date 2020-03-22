@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.86 - check that mcMMO is generally enabled before looking for its classes!
 - v6.0.85 - remove mcMMO-classic support attempt from POM
 - v6.0.84 - check for mcMMO-classic and display warning
 - v6.0.83 - significantly improve the biome finder, disable user placed blocks for CoreProtect as it always returns trees grown as placed blocks
