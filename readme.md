@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.84 - check for mcMMO-classic and display warning 
+- v6.0.85 - remove mcMMO-classic support attempt from POM
 - [read more](doc/changelog.md)
 
 ***
