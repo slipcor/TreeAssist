@@ -3,7 +3,7 @@ package me.itsatacoshop247.TreeAssist.externals;
 import com.gmail.nossr50.api.AbilityAPI;
 import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
 import org.bukkit.block.Block;
@@ -37,7 +37,7 @@ public class mcMMOHook {
             return;
         }
 
-        int toAdd = ExperienceConfig.getInstance().getXp(PrimarySkillType.WOODCUTTING, block.getType());
+        int toAdd = ExperienceConfig.getInstance().getXp(SkillType.WOODCUTTING, state);
         if (player.isOnline()) {
             AbstractGenericTree.debug.i("adding " + toAdd + " EXP!");
             ExperienceAPI.addXP(player, "Woodcutting", toAdd);
