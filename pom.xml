@@ -43,7 +43,7 @@
 		<dependency>
 			<groupId>com.gmail.nossr50.mcMMO</groupId>
 			<artifactId>mcMMO</artifactId>
-			<version>2.1.65</version>
+			<version>1.5.07</version>
 			<type>jar</type>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/mcMMO.jar</systemPath>
@@ -99,7 +99,7 @@
 	<build>
 		<defaultGoal>clean package install</defaultGoal>
 		<sourceDirectory>${basedir}/src</sourceDirectory>
-        <finalName>TreeAssist</finalName>
+        <finalName>TreeAssist-classic</finalName>
 
 		<resources>
 			<resource>
