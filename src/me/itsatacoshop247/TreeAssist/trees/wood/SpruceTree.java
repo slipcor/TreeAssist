@@ -157,7 +157,7 @@ public class SpruceTree extends AbstractWoodenTree {
                 break;
             }
         }
-        if (foundsum < 3) {
+        if (foundsum == 1) {
             //debug.i("gT found: "+foundsum);
             bottoms = null;
         }

@@ -567,6 +567,22 @@ public abstract class AbstractGenericTree {
 
     abstract public boolean isValid();
 
+    protected void callExternals(Block block, Player player) {
+        boolean leaf = isLeaf(block) > 0;
+
+        if (!leaf && Utils.plugin.mcMMO && player != null) {
+            debug.i("Adding mcMMO EXP!");
+            mcMMOHook.mcMMOaddExp(player, block);
+        } else if (!leaf && Utils.plugin.jobs && player != null) {
+            debug.i("Adding Jobs EXP!");
+            JobsHook.addJobsExp(player, block);
+        } else if (!leaf) {
+            debug.i("mcMMO: " + Utils.plugin.mcMMO);
+            debug.i("jobs: " + Utils.plugin.jobs);
+            debug.i("player: " + String.valueOf(player));
+        }
+    }
+
     /**
      * Break a block and apply damage to the tool
      *  @param block  the block to break
@@ -596,19 +612,8 @@ public abstract class AbstractGenericTree {
         } else {
             tree = null;
         }
-        if (!leaf && Utils.plugin.mcMMO && player != null) {
-            debug.i("Adding mcMMO EXP!");
-            mcMMOHook.mcMMOaddExp(player, block);
-        } else if (!leaf && Utils.plugin.jobs && player != null) {
-            debug.i("Adding Jobs EXP!");
-            JobsHook.addJobsExp(player, block);
-        } else if (!leaf) {
-            debug.i("mat: " + maat.name());
-            debug.i("data: " + data);
-            debug.i("mcMMO: " + Utils.plugin.mcMMO);
-            debug.i("jobs: " + Utils.plugin.jobs);
-            debug.i("player: " + String.valueOf(player));
-        }
+
+        callExternals(block, player);
 
         int chance = 100;
 
@@ -891,6 +896,9 @@ public abstract class AbstractGenericTree {
                         	if (!event.isCancelled())
                         	{
                         		Utils.plugin.blockList.logBreak(block, player);
+
+                                callExternals(block, player);
+
                                 if (Utils.isLog(block.getType())
                                         && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
                                     player.getInventory().addItem(block.getState().getData().toItemStack(1));
@@ -932,6 +940,9 @@ public abstract class AbstractGenericTree {
                                 TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
                                 Utils.plugin.getServer().getPluginManager().callEvent(event);
                                 if (!event.isCancelled()) {
+
+                                    callExternals(block, player);
+
                                     Utils.plugin.blockList.logBreak(block, player);
                                     if (Utils.isLog(block.getType())
                                             && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {

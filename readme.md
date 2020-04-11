@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.86 - check that mcMMO is generally enabled before looking for its classes!
+- v6.0.87 - expand mcMMO and Jobs EXP gain logic, several cases were uncovered! Also remove safeguard for spruce detection, this addresses issues #43 and #44
 - [read more](doc/changelog.md)
 
 ***
