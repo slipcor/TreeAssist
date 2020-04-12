@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.88 - allow both mcMMO and Jobs to be used at the same time - addresses #43
+- v6.0.89 - who merged the classic branch? not me. time to burn it!
 - [read more](doc/changelog.md)
 
 ***

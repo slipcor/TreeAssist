@@ -1,6 +1,7 @@
 # v6.X Changelog
 
 ## v6.0 - Minecraft 1.13
+- v6.0.89 - who merged the classic branch? not me. time to burn it!
 - v6.0.88 - allow both mcMMO and Jobs to be used at the same time - addresses #43
 - v6.0.87 - expand mcMMO and Jobs EXP gain logic, several cases were uncovered! Also remove safeguard for spruce detection, this addresses issues #43 and #44
 - v6.0.86 - check that mcMMO is generally enabled before looking for its classes!
