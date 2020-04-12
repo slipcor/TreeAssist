@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.87 - expand mcMMO and Jobs EXP gain logic, several cases were uncovered! Also remove safeguard for spruce detection, this addresses issues #43 and #44
+- v6.0.88 - allow both mcMMO and Jobs to be used at the same time - addresses #43
 - [read more](doc/changelog.md)
 
 ***

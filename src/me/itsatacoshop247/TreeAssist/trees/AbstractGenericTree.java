@@ -570,13 +570,17 @@ public abstract class AbstractGenericTree {
     protected void callExternals(Block block, Player player) {
         boolean leaf = isLeaf(block) > 0;
 
-        if (!leaf && Utils.plugin.mcMMO && player != null) {
-            debug.i("Adding mcMMO EXP!");
-            mcMMOHook.mcMMOaddExp(player, block);
-        } else if (!leaf && Utils.plugin.jobs && player != null) {
-            debug.i("Adding Jobs EXP!");
-            JobsHook.addJobsExp(player, block);
-        } else if (!leaf) {
+        if (!leaf && player != null) {
+            if (Utils.plugin.mcMMO) {
+                debug.i("Adding mcMMO EXP!");
+                mcMMOHook.mcMMOaddExp(player, block);
+            }
+
+            if (Utils.plugin.jobs) {
+                debug.i("Adding Jobs EXP!");
+                JobsHook.addJobsExp(player, block);
+            }
+        } else {
             debug.i("mcMMO: " + Utils.plugin.mcMMO);
             debug.i("jobs: " + Utils.plugin.jobs);
             debug.i("player: " + String.valueOf(player));
