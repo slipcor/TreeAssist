@@ -1,0 +1,109 @@
+name: TreeAssist
+main: me.itsatacoshop247.TreeAssist.TreeAssist
+version: 6.0.jenkins-build-number
+api-version: 1.13
+author: itsatacoshop247
+authors: [slipcor, pop4959]
+description: TreeAssist
+softdepend: [mcMMO, Prism, CoreProtect, LogBlock, Jobs, WorldGuard]
+dev-url: http://dev.bukkit.org/server-mods/tree-assist/
+commands:
+  TreeAssist:
+    description: Turn TreeAssist features on or off
+    aliases: ['ta']
+    usage: You have no permissions to use this command!
+permissions:
+  treeassist.destroy.*:
+    description: allows to use tree-assist for all trees
+    children:
+      treeassist.destroy.birch: true
+      treeassist.destroy.jungle: true
+      treeassist.destroy.oak: true
+      treeassist.destroy.spruce: true
+      treeassist.destroy.acacia: true
+      treeassist.destroy.darkoak: true
+      treeassist.destroy.brownshroom: true
+      treeassist.destroy.redshroom: true
+    default: false
+  treeassist.destroy.birch:
+    description: allows to use tree-assist for birch trees
+  treeassist.destroy.jungle:
+    description: allows to use tree-assist for jungle trees
+  treeassist.destroy.oak:
+    description: allows to use tree-assist for oak trees
+  treeassist.destroy.spruce:
+    description: allows to use tree-assist for spruce trees
+  treeassist.destroy.acacia:
+    description: allows to use tree-assist for acacia trees
+  treeassist.destroy.darkoak:
+    description: allows to use tree-assist for dark oak trees
+  treeassist.destroy.brownshroom:
+    description: allows to use tree-assist for brown shrooms
+  treeassist.destroy.redshroom:
+    description: allows to use tree-assist for red shrooms
+  treeassist.commands:
+    description: allows to use all tree-assist commands
+    children:
+      treeassist.addcustom: true
+      treeassist.addtool: true
+      treeassist.debug: true
+      treeassist.findforest: true
+      treeassist.forcebreak: true
+      treeassist.forcegrow: true
+      treeassist.noreplace: true
+      treeassist.purge: true
+      treeassist.reload: true
+      treeassist.removecustom: true
+      treeassist.removetool: true
+      treeassist.replant: true
+      treeassist.toggle: true
+      treeassist.tool: true
+    default: op
+  treeassist.addcustom:
+    description: allows to add a custom blocks group
+    default: op
+  treeassist.addtool:
+    description: allows to add a required tool
+    default: op
+  treeassist.debug:
+    description: allows to debug
+    default: op
+  treeassist.findforest:
+    description: allows to find forest by tree type
+    default: op
+  treeassist.forcebreak:
+    description: allows to force break trees
+    default: op
+  treeassist.forcegrow:
+    description: allows to force grow saplings
+    default: op
+  treeassist.noreplace:
+    description: allows to stop replacing saplings for some time
+    default: true
+  treeassist.purge:
+    description: allows to purge the database or data.yml
+    default: op
+  treeassist.reload:
+    description: allows to reload the TreeAssist config
+    default: op
+  treeassist.removecustom:
+    description: allows to remove a custom blocks group
+    default: op
+  treeassist.removetool:
+    description: allows to remove a required tool
+    default: op
+  treeassist.replant:
+    description: allows to replant trees
+    default: op
+  treeassist.toggle:
+    description: allows to toggle TreeAssist usage
+    default: op
+  treeassist.toggle.global:
+    description: allows to toggle global TreeAssist usage
+    default: op
+  treeassist.toggle.other:
+    description: allows to toggle TreeAssist usage for a player
+    default: op
+  treeassist.tool:
+    description: allows to gain the protection tool
+    default: op

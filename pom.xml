@@ -101,21 +101,7 @@
 		<sourceDirectory>${basedir}/src</sourceDirectory>
         <finalName>TreeAssist</finalName>
 
-		<resources>
-			<resource>
-				<targetPath>.</targetPath>
-				<filtering>true</filtering>
-				<directory>${basedir}</directory>
-				<includes>
-					<include>config.yml</include>
-					<include>plugin.yml</include>
-					<include>data.yml</include>
-				</includes>
-			</resource>
-		</resources>
-
 		<plugins>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
