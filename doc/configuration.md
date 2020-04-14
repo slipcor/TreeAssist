@@ -3,8 +3,6 @@
 This is the default configuation file.
 
     Main:
-      Apply Full Tool Damage: true # false will prevent tool damage
-      Auto Add To Inventory: false
       Auto Plant Dropped Saplings: false # spawned saplings will automatically turn into placed saplings
       Automatic Tree Destruction: true
       Destroy Only Blocks Above: false # true will leave tree stumps if you don't break the bottom block
@@ -13,7 +11,6 @@ This is the default configuation file.
       Force Break Max Radius: 30
       Force Grow Max Radius: 30
       Ignore User Placed Blocks: false
-      Initial Delay: false
       Language: en
       Sapling Replant: true
       Toggle Default: true
@@ -21,11 +18,14 @@ This is the default configuation file.
       Use Jobs if Available: true
       Use Permissions: false
     Automatic Tree Destruction:
+      Apply Full Tool Damage: true # false will prevent tool damage
+      Auto Add To Inventory: false
       Required Lore: ''
       When Sneaking: true
       When Not Sneaking: true
       Forced Removal: false # even if we lack the tool or did not break the bottom block (if needed) the plugin will remove the tree for cosmetic reasons
       Remove Leaves: true
+      Initial Delay: false
       Initial Delay (seconds): 10
       Delay (ticks): 0 # delay in between block deletions, if your server is affected by lag by the plugin's insta-removal
       Tree Types: # here you can turn off the automatic destruction for single tree types

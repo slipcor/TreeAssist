@@ -1,0 +1,19 @@
+Custom Drops:
+  'minecraft:red_mushroom_block': 0.01
+Custom Drop Chance:
+  DIAMOND_AXE: 100
+  GOLDEN_AXE: 75
+  IRON_AXE: 50
+  STONE_AXE: 25
+  WOODEN_AXE: 10
+Replant: 'minecraft:red_mushroom'
+Blocks:
+  Materials:
+  - 'minecraft:red_mushroom_block'
+  Top:
+    Radius: 1
+    Edges: true
+  Middle:
+    Radius: 2
+    Air: true
+# default: shape flat, no edges, no air allowed

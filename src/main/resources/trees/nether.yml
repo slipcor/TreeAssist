@@ -1,0 +1,31 @@
+Children:
+- 'crimson_fungus'
+- 'warped_fungus'
+- 'thick_crimson_fungus'
+- 'thick_warped_fungus'
+Custom Drops:
+  NETHERRACK: 0.01
+Custom Drop Chance:
+  DIAMOND_HOE: 100
+  GOLDEN_HOE: 75
+  IRON_HOE: 50
+  STONE_HOE: 25
+  WOODEN_HOE: 10
+Ground Blocks:
+- 'minecraft:netherrack'
+Tools List:
+- 'DIAMOND_HOE'
+- 'WOODEN_HOE'
+- 'GOLDEN_HOE'
+- 'IRON_HOE'
+- 'STONE_HOE'
+Natural Blocks:
+- 'minecraft:crimson_nylium'
+- 'minecraft:warped_nylium'
+- 'minecraft:shroomlight'
+- 'minecraft:crimson_fungus'
+- 'minecraft:warped_fungus'
+- 'minecraft:twisting_vines'
+- 'minecraft:weeping_vines'
+- 'minecraft:crimson_roots'
+- 'minecraft:warped_roots'

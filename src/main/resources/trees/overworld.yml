@@ -1,0 +1,75 @@
+Children:
+  - 'large_oak'
+  - 'oak'
+  - 'tall_spruce'
+  - 'spruce'
+  - 'birch'
+  - 'large_jungle'
+  - 'jungle'
+  - 'acacia'
+  - 'dark_oak'
+Custom Drops:
+  APPLE: 0.1
+  GOLDEN_APPLE: 0.0
+Custom Drop Chance:
+  DIAMOND_AXE: 100
+  GOLDEN_AXE: 100
+  IRON_AXE: 100
+  STONE_AXE: 100
+  WOODEN_AXE: 100
+Tools List:
+- 'DIAMOND_AXE'
+- 'WOODEN_AXE'
+- 'GOLDEN_AXE'
+- 'IRON_AXE'
+- 'STONE_AXE'
+Blocks:
+  Materials:
+  - 'minecraft:bee_nest'
+Ground Blocks:
+- 'minecraft:podzol'
+- 'minecraft:mycelium'
+- 'minecraft:grass_block'
+- 'minecraft:dirt'
+- 'minecraft:coarse_dirt'
+- 'minecraft:sand'
+Natural Blocks:
+- 'minecraft:air'
+- 'minecraft:water'
+- 'minecraft:fire'
+- 'minecraft:snow'
+- 'minecraft:snow_block'
+- 'minecraft:stone'
+- 'minecraft:grass_block'
+- 'minecraft:dirt'
+- 'minecraft:coarse_dirt'
+- 'minecraft:sand'
+- 'minecraft:terracotta'
+- '*_terracotta'
+- 'minecraft:mycelium'
+- 'minecraft:podzol'
+- '*_sapling'
+- '*_leaves'
+- 'minecraft:dandelion'
+- '*_tulip'
+- 'minecraft:poppy'
+- '*_orchid'
+- 'minecraft:allium'
+- 'minecraft:azure-bluet'
+- 'minecraft:oxeye_daisy'
+- 'minecraft:lilac'
+- 'minecraft:grass'
+- 'minecraft:tall_grass'
+- 'minecraft:fern'
+- 'minecraft:dead_bush'
+- 'minecraft:sugar_cane'
+- '*_mushroom_block'
+- 'minecraft:mushroom_stem'
+- 'minecraft:melon'
+- 'minecraft:pumpkin'
+- 'minecraft:bee_nest'
+- 'minecraft:cococa'
+- 'minecraft:torch'
+- 'minecraft:rail'
+- 'minecraft:hopper'
+- 'minecraft:dispenser'

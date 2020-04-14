@@ -1,0 +1,22 @@
+Children:
+- 'mushroom-red'
+- 'mushroom-brown'
+Custom Drops:
+  'minecraft:mushroom_stem': 0.01
+Custom Drop Chance:
+  DIAMOND_AXE: 100
+  GOLDEN_AXE: 75
+  IRON_AXE: 50
+  STONE_AXE: 25
+  WOODEN_AXE: 10
+Ground Blocks:
+- 'minecraft:podzol'
+- 'minecraft:mycelium'
+- 'minecraft:grass_block'
+- 'minecraft:dirt'
+- 'minecraft:coarse_dirt'
+Trunk:
+  Minimum Height: 5
+  Maximum Height: 14
+  Materials:
+  - 'minecraft:mushroon_stem'

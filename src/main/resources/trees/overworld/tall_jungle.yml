@@ -1,0 +1,27 @@
+Custom Drops:
+  'minecraft:jungle_leaves': 0.01
+Custom Drop Chance:
+  DIAMOND_AXE: 100
+  GOLDEN_AXE: 75
+  IRON_AXE: 50
+  STONE_AXE: 25
+  WOODEN_AXE: 10
+Replant: 'minecraft:jungle_sapling'
+Trunk:
+  Thickness: 2
+  Materials:
+  - 'minecraft:jungle_log'
+  Branch:
+    Diagonal: true
+# special case: branch can go diagonally
+Blocks:
+  Materials:
+  - 'minecraft:jungle_leaves'
+  - 'minecraft:cocoa'
+  Top:
+    Height: 2
+    Radius: 3
+  Middle:
+    Radius: 2
+    Air: true
+# defaults: uneven bottom = false, air = false, no edges on leaves

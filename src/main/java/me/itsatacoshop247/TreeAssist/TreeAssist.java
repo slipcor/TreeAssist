@@ -340,7 +340,7 @@ public class TreeAssist extends JavaPlugin {
         items.put("Main.Automatic Tree Destruction", "true");
         items.put("Main.Use Permissions", "false");
         items.put("Main.Sapling Replant", "true");
-        items.put("Main.Apply Full Tool Damage", "true");
+        items.put("Automatic Tree Destruction.Apply Full Tool Damage", "true");
         items.put("Main.Ignore User Placed Blocks", "false");
         items.put("Main.Use mcMMO if Available", "true");
         items.put("Automatic Tree Destruction.Tree Types.Birch", "true");
@@ -355,7 +355,9 @@ public class TreeAssist extends JavaPlugin {
         items.put("Sapling Replant.Delay until Sapling is replanted (seconds) (minimum 1 second)", "1");
         items.put("Tools.Sapling Replant Require Tools", "true");
         items.put("Tools.Tree Destruction Require Tools", "true");
-        items.put("Tools.Tools List", "LIST");
+
+        //items.put("Tools.Tools List", "LIST"); //TODO: needs to go into tree definitions
+
         items.put("Worlds.Enable Per World", "false");
         items.put("Worlds.Enabled Worlds", "LIST");
         items.put("Config Help", "dev.bukkit.org/server-mods/tree-assist/pages/config-walkthrough/");
@@ -398,8 +400,8 @@ public class TreeAssist extends JavaPlugin {
         items.put("Automatic Tree Destruction.Cooldown (seconds)", "0");
 
         //5.7.3 additions
-        items.put("Custom Drops.APPLE", "0.1");
-        items.put("Custom Drops.GOLDEN_APPLE", "0.0");
+        // items.put("Custom Drops.APPLE", "0.1");        //TODO needs to go into tree definitions
+        // items.put("Custom Drops.GOLDEN_APPLE", "0.0"); //TODO needs to go into tree definitions
 
         //5.8 additions
         items.put("Placed Blocks.Handler Plugin Name", "TreeAssist");
@@ -417,12 +419,12 @@ public class TreeAssist extends JavaPlugin {
 
         items.put("Automatic Tree Destruction.When Sneaking", "true");
         items.put("Automatic Tree Destruction.Required Lore", "");
-        items.put("Main.Initial Delay", "false");
+        items.put("Automatic Tree Destruction.Initial Delay", "false");
 
         items.put("Sapling Replant.Time to Block Sapling Growth (Seconds)", "0");
         items.put("Main.Language", "en");
 
-        items.put("Main.Auto Add To Inventory", "false");
+        items.put("Automatic Tree Destruction.Auto Add To Inventory", "false");
         items.put("Automatic Tree Destruction.When Not Sneaking", "true");
 
         //6.0 additions
@@ -438,6 +440,8 @@ public class TreeAssist extends JavaPlugin {
         items.put("Main.Use Jobs if Available", "true");
 
         items.put("Main.Use WorldGuard if Available", "false");
+
+        items.put("Version", "6.0");
 
         return items;
     }
@@ -500,6 +504,7 @@ public class TreeAssist extends JavaPlugin {
         if (num > 0) {
             getLogger().info(num + " missing items added to config file.");
         }
+        ConfigUpdater.check(config);
         this.saveConfig();
     }
 }

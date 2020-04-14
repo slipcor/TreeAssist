@@ -1,0 +1,22 @@
+Custom Drops:
+  'minecraft:oak_leaves': 0.01
+Custom Drop Chance:
+  DIAMOND_AXE: 100
+  GOLDEN_AXE: 75
+  IRON_AXE: 50
+  STONE_AXE: 25
+  WOODEN_AXE: 10
+Replant: 'minecraft:oak_sapling'
+Trunk:
+  Materials:
+  - 'minecraft:oak_log'
+Blocks:
+  Materials:
+  - 'minecraft:oak_leaves'
+  Top:
+    Height: 3
+    Radius: 2
+  Middle:
+    Radius: 2
+    Air: true
+# defaults: uneven bottom = false, air = false, no edges on leaves

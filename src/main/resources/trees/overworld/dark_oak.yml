@@ -1,0 +1,27 @@
+Custom Drops:
+  'minecraft:dark_oak_leaves': 0.01
+Custom Drop Chance:
+  DIAMOND_AXE: 100
+  GOLDEN_AXE: 75
+  IRON_AXE: 50
+  STONE_AXE: 25
+  WOODEN_AXE: 10
+Replant: 'minecraft:dark_oak_sapling'
+Trunk:
+  Thickness: 2
+  Materials:
+  - 'minecraft:dark_oak_log'
+  Uneven Bottom: true
+  Radius: 2
+  Air: true
+  Edges: true
+# special case: can have air AND logs in the diagonal edges
+Blocks:
+  Materials:
+  - 'minecraft:dark_oak_leaves'
+  Top:
+    Height: 2
+    Radius: 3
+  Middle:
+    Radius: 4
+# defaults: uneven bottom = false, air = false, no edges on leaves

@@ -380,7 +380,7 @@ public abstract class AbstractGenericTree {
             if (!plugin.isDisabled(player.getWorld().getName(), player.getName())) {
                 success = resultTree.willBeDestroyed();
                 damage = plugin.getConfig().getBoolean(
-                        "Main.Apply Full Tool Damage");
+                        "Automatic Tree Destruction.Apply Full Tool Damage");
             } else {
                 debug.i("plugin is disabled for player!");
             }
@@ -637,7 +637,7 @@ public abstract class AbstractGenericTree {
             }
 
             if (player != null && Utils.isLog(block.getType())
-                    && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
+                    && Utils.plugin.getConfig().getBoolean("Automatic Tree Destruction.Auto Add To Inventory", false)) {
                 if (statPickup) {
                     player.incrementStatistic(Statistic.PICKUP, block.getType());
                 }
@@ -786,7 +786,7 @@ public abstract class AbstractGenericTree {
     protected void removeLater() {
         removeBlocks = calculate(bottom, top);
 
-        final int delay = Utils.plugin.getConfig().getBoolean("Main.Initial Delay") ? Utils.plugin.getConfig().getInt(
+        final int delay = Utils.plugin.getConfig().getBoolean("Automatic Tree Destruction.Initial Delay") ? Utils.plugin.getConfig().getInt(
                 "Automatic Tree Destruction.Initial Delay (seconds)") * 20 : 0;
         final int offset = Utils.plugin.getConfig().getInt(
                 "Automatic Tree Destruction.Delay (ticks)");
@@ -861,7 +861,7 @@ public abstract class AbstractGenericTree {
             removeRemovals(removeBlocks, totalBlocks);
         }
 
-        final int delay = Utils.plugin.getConfig().getBoolean("Main.Initial Delay") ? Utils.plugin.getConfig().getInt(
+        final int delay = Utils.plugin.getConfig().getBoolean("Automatic Tree Destruction.Initial Delay") ? Utils.plugin.getConfig().getInt(
                 "Automatic Tree Destruction.Initial Delay (seconds)") * 20 : 0;
         final int offset = Utils.plugin.getConfig().getInt(
                 "Automatic Tree Destruction.Delay (ticks)");
@@ -904,7 +904,7 @@ public abstract class AbstractGenericTree {
                                 callExternals(block, player);
 
                                 if (Utils.isLog(block.getType())
-                                        && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
+                                        && Utils.plugin.getConfig().getBoolean("Automatic Tree Destruction.Auto Add To Inventory", false)) {
                                     player.getInventory().addItem(block.getState().getData().toItemStack(1));
                                     block.setType(Material.AIR);
                                 } else {
@@ -949,7 +949,7 @@ public abstract class AbstractGenericTree {
 
                                     Utils.plugin.blockList.logBreak(block, player);
                                     if (Utils.isLog(block.getType())
-                                            && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
+                                            && Utils.plugin.getConfig().getBoolean("Automatic Tree Destruction.Auto Add To Inventory", false)) {
                                         player.getInventory().addItem(block.getState().getData().toItemStack(1));
                                         block.setType(Material.AIR);
                                     } else {
