@@ -12,4 +12,5 @@ Blocks:
   - 'minecraft:brown_mushroom_block'
   Top:
     Radius: 3
-# default: shape flat, edges: no, no middle
+  Middle:
+    Radius: 0

@@ -13,6 +13,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,6 +33,8 @@ public final class Utils {
     private static Boolean useFallingBlock = null;
 
     private static List<FallingBlock> fallingBlocks = new ArrayList<>();
+
+    public static List<TreeConfig> treeDefinitions = new ArrayList<>();
 
 	static {
         // elements
@@ -655,6 +658,28 @@ public final class Utils {
                 } else {
                     System.out.println(o.getClass());
                 }
+            }
+        }
+    }
+
+    public static void reloadTreeDefinitions(FileConfiguration config) {
+        List<String> list = config.getStringList("Trees");
+
+        if (list.size() < 1) {
+            list.add("overworld");
+            list.add("mushroom");
+            list.add("nether");
+        }
+
+        treeDefinitions.clear();
+        for (String entry : list) {
+            TreeConfig parent = new TreeConfig(new File(plugin.getDataFolder().getPath() + "/trees/" + entry + ".yml"));
+            parent.load();
+            for (String child : parent.getStringList(TreeConfig.CFG.CHILDREN, new ArrayList<>())) {
+                TreeConfig childConfig = new TreeConfig(new File(plugin.getDataFolder().getPath() + "/trees/" + entry + "/" + child + ".yml"));
+                childConfig.load();
+                childConfig.loadDefaults(parent);
+                treeDefinitions.add(childConfig);
             }
         }
     }

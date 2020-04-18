@@ -4,8 +4,7 @@ Trunk:
   - 'minecraft:warped_stem'
   - 'minecraft:shroomlight'
   - 'minecraft:warped_wart_block'
-  Radius: 3
-  Air: true
+  Thickness: 3
   Edges: true
 # special case: can have air AND logs in the diagonal edges
 Blocks:
@@ -17,6 +16,5 @@ Blocks:
     Radius: 4
     Air: true
   Middle:
-    Radius: 4
+    Radius: 3
     Air: true
-# defaults: uneven bottom = false, air = false, no edges on leaves

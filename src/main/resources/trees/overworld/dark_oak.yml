@@ -13,15 +13,12 @@ Trunk:
   - 'minecraft:dark_oak_log'
   Uneven Bottom: true
   Radius: 2
-  Air: true
   Edges: true
-# special case: can have air AND logs in the diagonal edges
 Blocks:
   Materials:
   - 'minecraft:dark_oak_leaves'
   Top:
     Height: 2
-    Radius: 3
   Middle:
-    Radius: 4
+    Radius: 3
 # defaults: uneven bottom = false, air = false, no edges on leaves

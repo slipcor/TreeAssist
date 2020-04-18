@@ -14,6 +14,4 @@ Blocks:
     Radius: 1
     Edges: true
   Middle:
-    Radius: 2
     Air: true
-# default: shape flat, no edges, no air allowed

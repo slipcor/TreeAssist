@@ -4,8 +4,6 @@ Trunk:
   - 'minecraft:crimson_stem'
   - 'minecraft:shroomlight'
   - 'minecraft:nether_wart_block'
-  Radius: 1
-# special case: can have air AND logs in the diagonal edges
 Blocks:
   Materials:
   - 'minecraft:nether_wart_block'
@@ -15,6 +13,5 @@ Blocks:
     Radius: 3
     Air: true
   Middle:
-    Radius: 3
+    Radius: 2
     Air: true
-# defaults: uneven bottom = false, air = false, no edges on leaves

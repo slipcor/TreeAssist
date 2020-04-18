@@ -85,3 +85,7 @@ Modding:
     - minecraft:birch_leaves
 Debug: none
 Version: 6.0
+Trees:
+- overworld
+- nether
+- mushroom

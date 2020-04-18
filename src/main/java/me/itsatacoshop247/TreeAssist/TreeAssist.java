@@ -22,13 +22,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.*;
 import java.util.*;
 
-
-//Running changelog
-
-//- Tree destruction will only destory the main blocks Type ID. E.G. if a Oak Tree branch hits a jungle tree branch, the Oak Tree will not destroy the jungle Branch and vice-versa
-//- Fixed Blocks dissapearing when used to destroy a tree.
-//- Config autoupdates
-
 public class TreeAssist extends JavaPlugin {
     public List<Location> saplingLocationList = new ArrayList<Location>();
     private final Map<String, List<String>> disabledMap = new HashMap<String, List<String>>();
@@ -451,6 +444,29 @@ public class TreeAssist extends JavaPlugin {
             saveConfig();
         }
         Utils.reloadCustomDefinitions(config);
+        if (!new File(getDataFolder().getPath(), "trees").exists()) {
+            saveResource("trees/overworld.yml", false);
+            saveResource("trees/overworld/acacia.yml", false);
+            saveResource("trees/overworld/birch.yml", false);
+            saveResource("trees/overworld/dark_oak.yml", false);
+            saveResource("trees/overworld/jungle.yml", false);
+            saveResource("trees/overworld/oak.yml", false);
+            saveResource("trees/overworld/spruce.yml", false);
+            saveResource("trees/overworld/tall_jungle.yml", false);
+            saveResource("trees/overworld/tall_oak.yml", false);
+            saveResource("trees/overworld/tall_spruce.yml", false);
+
+            saveResource("trees/nether.yml", false);
+            saveResource("trees/nether/crimson_fungus.yml", false);
+            saveResource("trees/nether/thick_crimson_fungus.yml", false);
+            saveResource("trees/nether/warped_fungus.yml", false);
+            saveResource("trees/nether/thick_warped_fungus.yml", false);
+
+            saveResource("trees/mushroom.yml", false);
+            saveResource("trees/mushroom/mushroom-brown.yml", false);
+            saveResource("trees/mushroom/mushroom-red.yml", false);
+        }
+        Utils.reloadTreeDefinitions(config);
     }
 
     /**

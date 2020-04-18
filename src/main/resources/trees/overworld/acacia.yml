@@ -11,14 +11,12 @@ Trunk:
   Materials:
   - 'minecraft:acacia_log'
   Diagonal: true
-  Branch:
-    Diagonal: true
-# special case: diagonals, even in branches
+  Branch: true
+# special case: diagonals, even in trunk
 Blocks:
   Materials:
   - 'minecraft:acacia_leaves'
   Top:
     Radius: 4
-  Canope:
+  Cap:
     Radius: 4
-# defaults: uneven bottom = false, air = false, no edges on leaves

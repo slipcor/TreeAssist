@@ -14,9 +14,4 @@ Blocks:
   Materials:
   - 'minecraft:spruce_leaves'
   Top:
-    Height: 3
     Radius: 2
-  Middle:
-    Radius: 2
-    Air: true
-# defaults: uneven bottom = false, air = false, no edges on leaves

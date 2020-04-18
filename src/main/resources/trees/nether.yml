@@ -13,7 +13,7 @@ Custom Drop Chance:
   WOODEN_HOE: 10
 Ground Blocks:
 - 'minecraft:netherrack'
-Tools List:
+Tool List:
 - 'DIAMOND_HOE'
 - 'WOODEN_HOE'
 - 'GOLDEN_HOE'

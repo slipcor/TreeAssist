@@ -17,7 +17,3 @@ Blocks:
   Top:
     Height: 2
     Radius: 2
-  Middle:
-    Radius: 2
-    Air: true
-# defaults: uneven bottom = false, air = false, no edges on leaves

@@ -11,17 +11,13 @@ Trunk:
   Thickness: 2
   Materials:
   - 'minecraft:jungle_log'
-  Branch:
-    Diagonal: true
-# special case: branch can go diagonally
+  Branch: true
 Blocks:
   Materials:
   - 'minecraft:jungle_leaves'
   - 'minecraft:cocoa'
   Top:
     Height: 2
-    Radius: 3
   Middle:
     Radius: 2
     Air: true
-# defaults: uneven bottom = false, air = false, no edges on leaves

@@ -9,6 +9,12 @@ Custom Drop Chance:
   IRON_AXE: 50
   STONE_AXE: 25
   WOODEN_AXE: 10
+Tool List:
+- 'DIAMOND_AXE'
+- 'WOODEN_AXE'
+- 'GOLDEN_AXE'
+- 'IRON_AXE'
+- 'STONE_AXE'
 Ground Blocks:
 - 'minecraft:podzol'
 - 'minecraft:mycelium'
@@ -20,3 +26,8 @@ Trunk:
   Maximum Height: 14
   Materials:
   - 'minecraft:mushroon_stem'
+Blocks:
+  Top:
+    Height: 1
+  Middle:
+    Radius: 0

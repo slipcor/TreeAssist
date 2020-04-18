@@ -1,23 +1,23 @@
 Children:
-  - 'large_oak'
-  - 'oak'
-  - 'tall_spruce'
-  - 'spruce'
-  - 'birch'
-  - 'large_jungle'
-  - 'jungle'
-  - 'acacia'
-  - 'dark_oak'
+- 'tall_oak'
+- 'oak'
+- 'tall_spruce'
+- 'spruce'
+- 'birch'
+- 'tall_jungle'
+- 'jungle'
+- 'acacia'
+- 'dark_oak'
 Custom Drops:
-  APPLE: 0.1
-  GOLDEN_APPLE: 0.0
+  APPLE: 0.01
+  GOLDEN_APPLE: 0.001
 Custom Drop Chance:
   DIAMOND_AXE: 100
   GOLDEN_AXE: 100
   IRON_AXE: 100
   STONE_AXE: 100
   WOODEN_AXE: 100
-Tools List:
+Tool List:
 - 'DIAMOND_AXE'
 - 'WOODEN_AXE'
 - 'GOLDEN_AXE'
