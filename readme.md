@@ -74,8 +74,11 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Phoning home
 
-By default, the server contacts my private server for information purposes. It sends your port, IP (for proper server counting), and the plugin version.
-That's it! If you want to disable that, set "tracker" to false in the config!
+By default, the server contacts www.bstats.org to notify that you are using my plugin.
+
+Please refer to their website to learn about what they collect and how they handle the data.
+
+If you want to disable the tracker, set "enabled" to false in __/plugins/bStats/config.yml__ !
 
 ***
 
