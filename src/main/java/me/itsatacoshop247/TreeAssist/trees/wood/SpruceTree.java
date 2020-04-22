@@ -24,25 +24,14 @@ public class SpruceTree extends AbstractWoodenTree {
         if (bottoms == null) {
             checkBlock(list, bottom, top, true);
         } else {
-            int x = Math.min(bottoms[0].getX(), Math.min(bottoms[1].getX(), bottoms[2].getX()));
-            int z = Math.min(bottoms[0].getZ(), Math.min(bottoms[1].getZ(), bottoms[2].getZ()));
-
-            checkBlock(list,
-                    bottom.getWorld().getBlockAt(x, bottom.getY(), z),
-                    bottom.getWorld().getBlockAt(x, top.getY(), z),
-                    BlockFace.WEST, BlockFace.NORTH, true);
-            checkBlock(list,
-                    bottom.getWorld().getBlockAt(x+1, bottom.getY(), z),
-                    bottom.getWorld().getBlockAt(x+1, top.getY(), z),
-                    BlockFace.EAST, BlockFace.NORTH, true);
-            checkBlock(list,
-                    bottom.getWorld().getBlockAt(x, bottom.getY(), z+1),
-                    bottom.getWorld().getBlockAt(x, top.getY(), z+1),
-                    BlockFace.WEST, BlockFace.SOUTH, true);
-            checkBlock(list,
-                    bottom.getWorld().getBlockAt(x+1, bottom.getY(), z+1),
-                    bottom.getWorld().getBlockAt(x+1, top.getY(), z+1),
-                    BlockFace.EAST, BlockFace.SOUTH, true);
+            for (Block b : bottoms) {
+                if (b != null) {
+                    checkBlock(list,
+                            bottom.getWorld().getBlockAt(b.getX(), bottom.getY(), b.getZ()),
+                            bottom.getWorld().getBlockAt(b.getX(), top.getY(), b.getZ()),
+                            BlockFace.WEST, BlockFace.NORTH, true);
+                }
+            }
         }
         list.addAll(leaves);
         return list;
@@ -172,7 +161,9 @@ public class SpruceTree extends AbstractWoodenTree {
                 return;
             }
             for (Block bottom : bottoms) {
-                handleSaplingReplace(delay, bottom);
+                if (bottom != null) {
+                    handleSaplingReplace(delay, bottom);
+                }
                 //debugger.i("go !!!");
             }
         }
