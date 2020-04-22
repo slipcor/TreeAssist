@@ -67,7 +67,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.89 - who merged the classic branch? not me. time to burn it!
+- v6.0.90 - address a NPE because of the new support of not 4-trunk spruce
 - [read more](doc/changelog.md)
 
 ***
