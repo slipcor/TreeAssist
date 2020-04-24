@@ -79,6 +79,7 @@ public class TreeConfig {
         TRUNK_MAXIMUM_HEIGHT("Trunk.Maximum Height", 30),
         TRUNK_MATERIALS("Trunk.Materials", new ArrayList<>()), // the expected materials part of the tree trunk
         TRUNK_THICKNESS("Trunk.Thickness", 1), // This value is also used for radius calculation!
+        TRUNK_RADIUS("Trunk.Radius", 1),
         TRUNK_UNEVEN_BOTTOM("Trunk.Uneven Bottom", false), // Can saplings/lowest trunks be on different Y?
 
         REPLANT("Replant", "String"),
@@ -187,6 +188,9 @@ public class TreeConfig {
         try {
             cfg.load(configFile);
             reloadMaps();
+
+            TreeCalculator.allTrunks.addAll(TreeCalculator.getMaterials(this, TreeConfig.CFG.TRUNK_MATERIALS));
+            TreeCalculator.allExtras.addAll(TreeCalculator.getMaterials(this, TreeConfig.CFG.BLOCKS_MATERIALS));
             return true;
         } catch (final Exception e) {
             e.printStackTrace();

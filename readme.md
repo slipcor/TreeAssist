@@ -67,7 +67,13 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.89 - who merged the classic branch? not me. time to burn it!
+- v7.0-SNAPSHOT:
+  Support of thin single trees, automated removal of trunk logs. Still working on:
+  - detecting and removing branches
+  - detecting our own vs other extra blocks, removal
+  - thick trees
+  - tree farms (intersecting trees, preventing that we cut into other trees)
+  - implement configuration settings about when and how to remove trees automatically or to clean up
 - [read more](doc/changelog.md)
 
 ***

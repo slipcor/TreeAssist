@@ -671,6 +671,9 @@ public final class Utils {
             list.add("nether");
         }
 
+        TreeCalculator.allTrunks.clear();
+        TreeCalculator.allExtras.clear();
+
         treeDefinitions.clear();
         for (String entry : list) {
             TreeConfig parent = new TreeConfig(new File(plugin.getDataFolder().getPath() + "/trees/" + entry + ".yml"));

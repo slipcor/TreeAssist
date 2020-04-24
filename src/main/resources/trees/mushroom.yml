@@ -25,7 +25,7 @@ Trunk:
   Minimum Height: 5
   Maximum Height: 14
   Materials:
-  - 'minecraft:mushroon_stem'
+  - 'minecraft:mushroom_stem'
 Blocks:
   Top:
     Height: 1

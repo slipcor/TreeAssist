@@ -1,9 +1,7 @@
 package me.itsatacoshop247.TreeAssist;
 
-import me.itsatacoshop247.TreeAssist.core.Debugger;
-import me.itsatacoshop247.TreeAssist.core.Language;
+import me.itsatacoshop247.TreeAssist.core.*;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
-import me.itsatacoshop247.TreeAssist.core.Utils;
 import me.itsatacoshop247.TreeAssist.events.TALeafDecay;
 import me.itsatacoshop247.TreeAssist.events.TASaplingReplaceEvent;
 import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
@@ -30,10 +28,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.Tree;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class TreeAssistBlockListener implements Listener {
     public TreeAssist plugin;
@@ -142,6 +137,37 @@ public class TreeAssistBlockListener implements Listener {
             return;
         }
 
+        if (!TreeCalculator.allTrunks.contains(event.getBlock().getType())) {
+            System.out.println("Not a tree block: " + event.getBlock().getType());
+        }
+
+        for (TreeConfig config : Utils.treeDefinitions) {
+            System.out.println(config);
+            List<String> list = config.getStringList(TreeConfig.CFG.TRUNK_MATERIALS, new ArrayList<>());
+            for (String matName : list) {
+                Material mat = Material.matchMaterial(matName);
+                System.out.println("checking for material " + mat);
+                if (event.getBlock().getType().equals(mat)) {
+                    Block block = TreeCalculator.validate(event.getBlock(), config);
+                    if (block != null) {
+                        System.out.println("Tree found for Material " + matName);
+
+                        //TODO now do something nice
+
+                        if (TreeCalculator.verifyShape(config, block)) {
+                            System.out.print("Tree matches " + matName);
+
+
+                            return;
+                        }
+                        System.out.print("Shape does not match " + matName);
+                    }
+                }
+            }
+        }
+
+        /*
+
         Set<AbstractGenericTree> myTrees = new HashSet<AbstractGenericTree>();
         for (AbstractGenericTree tree : trees) {
             myTrees.add(tree);
@@ -160,6 +186,7 @@ public class TreeAssistBlockListener implements Listener {
         if (tree.isValid()) {
             trees.add(tree);
         }
+        */
     }
 
     @EventHandler(ignoreCancelled = true)
