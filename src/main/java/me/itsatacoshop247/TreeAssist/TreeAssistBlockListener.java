@@ -154,7 +154,9 @@ public class TreeAssistBlockListener implements Listener {
 
                         //TODO now do something nice
 
-                        if (TreeCalculator.verifyShape(config, block)) {
+                        TreeStructure trunk = TreeCalculator.calculateShape(config, block, false);
+
+                        if (trunk != null) {
                             System.out.print("Tree matches " + matName);
 
 

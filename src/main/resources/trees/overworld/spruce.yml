@@ -15,3 +15,5 @@ Blocks:
   - 'minecraft:spruce_leaves'
   Top:
     Radius: 2
+  Middle:
+    Radius: 4

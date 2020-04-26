@@ -145,7 +145,7 @@ public class TreeCalculator {
 
     }
 
-    public static boolean verifyShape(TreeConfig config, Block bottom) {
+    public static TreeStructure calculateShape(TreeConfig config, Block bottom, Boolean onlyTrunk) {
         List<Material> trunkBlocks = getMaterials(config, TreeConfig.CFG.TRUNK_MATERIALS);
 
         // System.out.print("Trunk mats: ");
@@ -179,36 +179,64 @@ public class TreeCalculator {
             if (trunkBlocks.contains(westMat) || trunkBlocks.contains(eastMat) || trunkBlocks.contains(northMat) || trunkBlocks.contains(southMat)) {
                 //TODO: implement
                 System.out.println("We ignore thick ones / farms for now!");
-                return false;
+                return null;
             }
 
             // single trunk, that should be easy, right?
             List<Block> trunk = findTrunk(bottom, trunkBlocks, extraBlocks, naturalBlocks, diagonal);
 
             if (trunk == null) {
-
+                // no tree found, nothing to remove!
             } else {
                 debug("Tree of size " + trunk.size() + " found!");
+
+                if (onlyTrunk) {
+                    // this will be used by other trees being broken checking OUR trunk for leaf distance and alike
+                    return new TreeStructure(trunk);
+                }
+
+                if (trunk.size() > config.getInt(TreeConfig.CFG.TRUNK_MAXIMUM_HEIGHT)) {
+                    Utils.plugin.getLogger().warning("Higher than maximum!");
+                } else if (trunk.size() < config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT)) {
+                    Utils.plugin.getLogger().warning("Lower than minimum!");
+                }
+
+                List<Block> extras = getExtras(trunk, trunkBlocks, extraBlocks, naturalBlocks, config);
+
+                if (extras == null || extras.size() < 10) {
+                    return null;
+                }
+
+                /*
+                if (branches) {
+                    List<Block> branch = getBranches(trunk, trunkBlocks, extraBlocks, naturalBlocks);
+                    trunk.addAll(branch);
+
+
+                }*/
 
                 for (Block tree : trunk) {
                     tree.breakNaturally();
                 }
 
-                return true;
+                for (Block leaf : extras) {
+                    leaf.breakNaturally();
+                }
+
+                bottom.setType(Material.matchMaterial(config.getString(TreeConfig.CFG.REPLANT)));
+
+                return new TreeStructure(trunk, extras);
             }
 
         }
 
         //TODO: implement
         System.out.println("We ignore thick ones for now!");
-        return false;
+        return null;
 
 
 
         /*
-        GROUND_BLOCKS("Ground Blocks", new ArrayList<>()), // the allowed blocks below the tree trunk
-
-        BLOCKS_MATERIALS("Blocks.Materials", new ArrayList<>()), // the expected blocks part of the tree, next to the trunk
 
         BLOCKS_CAP_HEIGHT("Blocks.Cap.Height", 2), // Branch Topping Leaves Height
         BLOCKS_CAP_RADIUS("Blocks.Cap.Radius", 3), // Branch Topping Leaves Radius
@@ -226,9 +254,6 @@ public class TreeCalculator {
         TRUNK_DIAGONAL("Trunk.Diagonal", false), // Trunk can move diagonally even (Acacia)
         TRUNK_RADIUS("Trunk.Radius", 1),
         TRUNK_EDGES("Trunk.Edges", false), // Trunk can have extra on the edges (Dark Oak)
-        TRUNK_MINIMUM_HEIGHT("Trunk.Minimum Height", 4),
-        TRUNK_MAXIMUM_HEIGHT("Trunk.Maximum Height", 30),
-        TRUNK_MATERIALS("Trunk.Materials", new ArrayList<>()), // the expected materials part of the tree trunk
         TRUNK_THICKNESS("Trunk.Thickness", 1), // This value is also used for radius calculation!
         TRUNK_UNEVEN_BOTTOM("Trunk.Uneven Bottom", false), // Can saplings/lowest trunks be on different Y?
 
@@ -238,7 +263,139 @@ public class TreeCalculator {
          */
     }
 
-    private static List<Block> findTrunk(Block bottom, List<Material> trunkBlocks, List<Material> extraBlocks, List<Material> naturalBlocks, boolean trunkDiagonally) {
+
+    /**
+     * This only works for 1x1 trunks, it checks in all directions !!
+     * @param trunk
+     * @param trunkBlocks
+     * @param extraBlocks
+     * @param naturalBlocks
+     * @return
+     */
+    private static List<Block> getExtras(List<Block> trunk,
+                                         List<Material> trunkBlocks, List<Material> extraBlocks, List<Material> naturalBlocks,
+                                         TreeConfig config) {
+        List<Block> result = new ArrayList<>();
+
+        int radiusM = config.getInt(TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS);
+
+        boolean edgesM = config.getBoolean(TreeConfig.CFG.BLOCKS_MIDDLE_EDGES);
+        boolean airM = config.getBoolean(TreeConfig.CFG.BLOCKS_MIDDLE_AIR);
+
+        Block roof = null;
+
+        BlockFace[] neighbors = new BlockFace[]{BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
+
+        for (Block block : trunk) {
+            roof = block;
+
+            for (BlockFace face : neighbors) {
+                if (isInvalid(result, block.getRelative(face), face, radiusM, 1, true, edgesM, airM, trunkBlocks, extraBlocks, naturalBlocks)) {
+                    return null;
+                }
+            }
+        }
+
+        //TODO: check extras for proximity of other trunks?
+        int radiusT = config.getInt(TreeConfig.CFG.BLOCKS_TOP_RADIUS);
+        int heightT = config.getInt(TreeConfig.CFG.BLOCKS_TOP_HEIGHT);
+        boolean airT = config.getBoolean(TreeConfig.CFG.BLOCKS_TOP_AIR);
+
+        boolean edgesT = config.getBoolean(TreeConfig.CFG.BLOCKS_TOP_EDGES);
+
+        for (int y=1; y<=heightT; y++) {
+            Block checkBlock = roof.getRelative(0, y, 0);
+            Material checkMaterial = checkBlock.getType();
+
+            if (checkMaterial != Material.AIR) {
+                if (extraBlocks.contains(checkMaterial)) {
+                    result.add(checkBlock);
+
+                    for (BlockFace face : neighbors) {
+                        if (isInvalid(result, checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, trunkBlocks, extraBlocks, naturalBlocks)) {
+                            return null;
+                        }
+                    }
+                } else if (
+                        !naturalBlocks.contains(checkMaterial) &&
+                                !trunkBlocks.contains(checkMaterial) &&
+                                !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
+                    debug("Invalid block found: " + checkMaterial);
+                    return null;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Check for invalid going into a certain direction
+     * @param list the list to add checked extra blocks to
+     * @param checkBlock the currently checked block
+     * @param direction the direction to go
+     * @param expansion the total distance we have to travel
+     * @param progress the progress travelling
+     * @param trunkBlocks valid trunk block materials
+     * @param extraBlocks vaild extra block materials
+     * @param naturalBlocks valid natural block materials
+     * @return if everything is fine. False if an invalid block was found
+     */
+    private static boolean isInvalid(List<Block> list, Block checkBlock, BlockFace direction,
+                                     int expansion, int progress, boolean first, boolean edges, boolean air,
+                                     List<Material> trunkBlocks, List<Material> extraBlocks, List<Material> naturalBlocks) {
+        Material checkMaterial = checkBlock.getType();
+
+        if (air || checkMaterial != Material.AIR) {
+            boolean found = air;
+            if (extraBlocks.contains(checkMaterial)) {
+                list.add(checkBlock);
+                found = true;
+            }
+
+            if (found) {
+                if (first) {
+                    boolean shorter = !edges && (progress == expansion);
+                    if (direction == BlockFace.EAST || direction == BlockFace.WEST) {
+                        // expand to north/south direction
+                        if (isInvalid(list, checkBlock.getRelative(BlockFace.SOUTH), BlockFace.SOUTH, shorter ? progress - 1 : progress, 1, false, edges, air,
+                                trunkBlocks, extraBlocks, naturalBlocks) ||
+                                isInvalid(list, checkBlock.getRelative(BlockFace.NORTH), BlockFace.NORTH, progress, 1, false, edges, air,
+                                        trunkBlocks, extraBlocks, naturalBlocks)){
+                            return true;
+                        }
+                    } else {
+                        // expand to east/west direction
+                        if (isInvalid(list, checkBlock.getRelative(BlockFace.EAST), BlockFace.EAST, progress, 1, false, edges, air,
+                                trunkBlocks, extraBlocks, naturalBlocks) ||
+                                isInvalid(list, checkBlock.getRelative(BlockFace.WEST), BlockFace.WEST, progress, 1, false, edges, air,
+                                        trunkBlocks, extraBlocks, naturalBlocks)){
+                            return true;
+                        }
+                    }
+                }
+                // expand, if we can
+                if (progress < expansion) {
+                    if (isInvalid(list, checkBlock.getRelative(direction), direction, expansion, progress + 1, first, edges, air,
+                            trunkBlocks, extraBlocks, naturalBlocks)) {
+                        return true;
+                    }
+                }
+            } else if (
+                    !naturalBlocks.contains(checkMaterial) &&
+                            !trunkBlocks.contains(checkMaterial) &&
+                            !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
+                debug("Invalid block found: " + checkMaterial);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static List<Block> findTrunk(
+            Block bottom,
+            List<Material> trunkBlocks, List<Material> extraBlocks, List<Material> naturalBlocks,
+            boolean trunkDiagonally) {
         List<Block> result = new ArrayList<>();
 
         Block checkBlock = bottom;
@@ -290,7 +447,7 @@ public class TreeCalculator {
         if (allExtras.contains(checkBlock.getType())) {
             debug("We hit the roof!");
 
-            // we hit the ground and no problems
+            // we hit the roof and no problems
             return result;
         }
 

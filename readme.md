@@ -68,7 +68,8 @@ It also will take down an entire tree when it is enabled in the config.
 ## Changelog
 
 - v7.0-SNAPSHOT:
-  Support of thin single trees, automated removal of trunk logs. Still working on:
+  Support of thin single trees, automated removal of trunk logs. 
+  Leaves also get removed. Still working on:
   - detecting and removing branches
   - detecting our own vs other extra blocks, removal
   - thick trees
