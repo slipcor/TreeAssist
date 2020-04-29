@@ -137,7 +137,7 @@ public class TreeAssistBlockListener implements Listener {
             return;
         }
 
-        if (!TreeCalculator.allTrunks.contains(event.getBlock().getType())) {
+        if (!TreeStructure.allTrunks.contains(event.getBlock().getType())) {
             System.out.println("Not a tree block: " + event.getBlock().getType());
         }
 
@@ -154,9 +154,9 @@ public class TreeAssistBlockListener implements Listener {
 
                         //TODO now do something nice
 
-                        TreeStructure trunk = TreeCalculator.calculateShape(config, block, false);
+                        TreeStructure trunk = new TreeStructure(config, block, false);
 
-                        if (trunk != null) {
+                        if (trunk.isValid()) {
                             System.out.print("Tree matches " + matName);
 
 

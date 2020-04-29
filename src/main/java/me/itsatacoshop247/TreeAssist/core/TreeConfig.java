@@ -189,8 +189,8 @@ public class TreeConfig {
             cfg.load(configFile);
             reloadMaps();
 
-            TreeCalculator.allTrunks.addAll(TreeCalculator.getMaterials(this, TreeConfig.CFG.TRUNK_MATERIALS));
-            TreeCalculator.allExtras.addAll(TreeCalculator.getMaterials(this, TreeConfig.CFG.BLOCKS_MATERIALS));
+            TreeStructure.allTrunks.addAll(getMaterials(TreeConfig.CFG.TRUNK_MATERIALS));
+            TreeStructure.allExtras.addAll(getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS));
             return true;
         } catch (final Exception e) {
             e.printStackTrace();
@@ -374,6 +374,24 @@ public class TreeConfig {
         final String path = cfg.getNode();
         final String result = strings.get(path);
         return result == null ? def : result;
+    }
+
+    /**
+     * Retrieve a list of materials from the value maps
+     *
+     * @param cfg the node of the value
+     * @return a list of materials (can contain null)
+     */
+    public List<Material> getMaterials(CFG cfg) {
+        List<String> list = getStringList(cfg, new ArrayList<>());
+
+        List<Material> matList = new ArrayList<>();
+
+        for (String matName : list) {
+            matList.add(Material.matchMaterial(matName));
+        }
+
+        return matList;
     }
 
     public Set<String> getKeys(final String path) {

@@ -671,8 +671,8 @@ public final class Utils {
             list.add("nether");
         }
 
-        TreeCalculator.allTrunks.clear();
-        TreeCalculator.allExtras.clear();
+        TreeStructure.allTrunks.clear();
+        TreeStructure.allExtras.clear();
 
         treeDefinitions.clear();
         for (String entry : list) {

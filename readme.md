@@ -68,12 +68,15 @@ It also will take down an entire tree when it is enabled in the config.
 ## Changelog
 
 - v7.0-SNAPSHOT:
-  Support of thin single trees, automated removal of trunk logs. 
-  Leaves also get removed. Still working on:
-  - detecting and removing branches
-  - detecting our own vs other extra blocks, removal
+  Working:
+  - thin trees
+  - automated removal of trunk logs
+  - most branches work
+  - leaves get removed.
+  - neighbor trees leaves do not get cut in (worst case we only remove a trunk and leave all leaves)
+  Still working on:
+  - detecting and removing all branches properly without infinite loops
   - thick trees
-  - tree farms (intersecting trees, preventing that we cut into other trees)
   - implement configuration settings about when and how to remove trees automatically or to clean up
 - [read more](doc/changelog.md)
 
