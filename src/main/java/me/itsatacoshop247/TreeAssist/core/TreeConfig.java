@@ -74,7 +74,6 @@ public class TreeConfig {
 
         TRUNK_BRANCH("Trunk.Branch", false),
         TRUNK_DIAGONAL("Trunk.Diagonal", false), // Trunk can move diagonally even (Acacia)
-        TRUNK_EDGES("Trunk.Edges", false), // Trunk can have extra on the edges (Dark Oak)
         TRUNK_MINIMUM_HEIGHT("Trunk.Minimum Height", 4),
         TRUNK_MAXIMUM_HEIGHT("Trunk.Maximum Height", 30),
         TRUNK_MATERIALS("Trunk.Materials", new ArrayList<>()), // the expected materials part of the tree trunk

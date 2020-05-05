@@ -13,7 +13,7 @@ Trunk:
   - 'minecraft:dark_oak_log'
   Uneven Bottom: true
   Radius: 2
-  Edges: true
+  Branch: true
 Blocks:
   Materials:
   - 'minecraft:dark_oak_leaves'

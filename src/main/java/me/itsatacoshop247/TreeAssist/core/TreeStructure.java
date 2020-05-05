@@ -20,10 +20,16 @@ public class TreeStructure {
     private Map<Block, List<Block>> branchMap;
     private List<Block> extras;
 
+    private final List<Block> checkedBlocks = new ArrayList<>();
+
     private boolean trunkDiagonally;
     private boolean valid = true;
 
     private TreeConfig config;
+    private Block northWestBlock;
+    private Block northEastBlock;
+    private Block southWestBlock;
+    private Block southEastBlock;
 
     public boolean isValid() {
         return valid;
@@ -62,17 +68,6 @@ public class TreeStructure {
         boolean branches = config.getBoolean(TreeConfig.CFG.TRUNK_BRANCH);
 
         if (thickness == 1) {
-            // check for other trunks around
-            Material westMat = bottom.getRelative(BlockFace.WEST).getType();
-            Material eastMat = bottom.getRelative(BlockFace.EAST).getType();
-            Material northMat = bottom.getRelative(BlockFace.NORTH).getType();
-            Material southMat = bottom.getRelative(BlockFace.SOUTH).getType();
-            if (trunkBlocks.contains(westMat) || trunkBlocks.contains(eastMat) || trunkBlocks.contains(northMat) || trunkBlocks.contains(southMat)) {
-                //TODO: implement
-                System.out.println("We ignore thick ones / farms for now!");
-                valid = false;
-                return;
-            }
 
             // single trunk, that should be easy, right?
             trunk = findTrunk();
@@ -81,71 +76,203 @@ public class TreeStructure {
                 // no tree found, nothing to remove!
                 valid = false;
                 return;
-            } else {
-                debug("Tree of size " + trunk.size() + " found!");
+            }
+            debug("Tree of size " + trunk.size() + " found!");
 
-                if (onlyTrunk) {
-                    // this will be used by other trees being broken checking OUR trunk for leaf distance and alike
-                    return;
-                }
-
-                if (trunk.size() > config.getInt(TreeConfig.CFG.TRUNK_MAXIMUM_HEIGHT)) {
-                    Utils.plugin.getLogger().warning("Higher than maximum!");
-                } else if (trunk.size() < config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT)) {
-                    Utils.plugin.getLogger().warning("Lower than minimum!");
-                }
-
-                otherTrunks = new ArrayList<>();
-
-                branchMap = new HashMap<>();
-
-                if (branches) {
-                    getBranches();
-
-                    System.out.println("branch blocks: " + countBranches());
-                }
-
-                if (otherTrunks.isEmpty()) {
-                    System.out.println("No other trunks found, checking again!");
-                    findOtherTrunks();
-                    if (!otherTrunks.isEmpty()) {
-                        System.out.println("Found other trunks: " + otherTrunks.size());
-                    }
-                }
-
-                getExtras();
-
-                if (extras == null || (extras.size() < 10 && !isClose(otherTrunks) )) {
-                    valid = false;
-                    return;
-                }
-
-                for (Block tree : trunk) {
-                    tree.breakNaturally();
-                }
-
-                for (Block leaf : extras) {
-                    leaf.breakNaturally();
-                }
-                for (List<Block> blocks : branchMap.values()) {
-                    if (blocks != null) {
-                        for (Block b : blocks) {
-                            b.breakNaturally();
-                        }
-                    }
-                }
-
-                bottom.setType(Material.matchMaterial(config.getString(TreeConfig.CFG.REPLANT)));
-
+            if (onlyTrunk) {
+                // this will be used by other trees being broken checking OUR trunk for leaf distance and alike
                 return;
             }
 
+            if (trunk.size() > config.getInt(TreeConfig.CFG.TRUNK_MAXIMUM_HEIGHT)) {
+                Utils.plugin.getLogger().warning("Higher than maximum!");
+            } else if (trunk.size() < config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT)) {
+                Utils.plugin.getLogger().warning("Lower than minimum!");
+            }
+
+            otherTrunks = new ArrayList<>();
+
+            branchMap = new HashMap<>();
+
+            if (branches) {
+                getBranches();
+
+                System.out.println("branch blocks: " + countBranches());
+            }
+
+            if (otherTrunks.isEmpty()) {
+                System.out.println("No other trunks found, checking again!");
+                findOtherTrunks();
+                if (!otherTrunks.isEmpty()) {
+                    System.out.println("Found other trunks: " + otherTrunks.size());
+                }
+            }
+
+            getExtras();
+
+            if (extras == null || (extras.size() < 10 && !isClose(otherTrunks) )) {
+                valid = false;
+                return;
+            }
+
+            for (Block tree : trunk) {
+                tree.breakNaturally();
+            }
+
+            for (Block leaf : extras) {
+                leaf.breakNaturally();
+            }
+            for (List<Block> blocks : branchMap.values()) {
+                if (blocks != null) {
+                    for (Block b : blocks) {
+                        b.breakNaturally();
+                    }
+                }
+            }
+
+            bottom.setType(Material.matchMaterial(config.getString(TreeConfig.CFG.REPLANT)));
+
+            return;
+
         }
 
-        //TODO: implement
-        System.out.println("We ignore thick ones for now!");
-        valid = false;
+        if (thickness > 2) {
 
+            // we have a big amount of blocks, so we need to be really edgy
+
+            // west << X >> east
+
+        /*
+          north
+          ^^^^^
+            z
+          vvvvv
+          south
+
+         */
+
+
+            // check for other trunks around
+            Material westMat = bottom.getRelative(BlockFace.WEST).getType();
+            Material eastMat = bottom.getRelative(BlockFace.EAST).getType();
+            Material northMat = bottom.getRelative(BlockFace.NORTH).getType();
+            Material southMat = bottom.getRelative(BlockFace.SOUTH).getType();
+            if (trunkBlocks.contains(westMat) || trunkBlocks.contains(eastMat) || trunkBlocks.contains(northMat) || trunkBlocks.contains(southMat)) {
+                int found = 0;
+                if (trunkBlocks.contains(westMat)) {
+                    found++;
+                }
+                if (trunkBlocks.contains(eastMat)) {
+                    found++;
+                }
+                if (trunkBlocks.contains(northMat)) {
+                    found++;
+                }
+                if (trunkBlocks.contains(southMat)) {
+                    found++;
+                }
+
+                if (found > 4)
+
+
+                    System.out.println("We ignore thick ones / farms for now!");
+                valid = false;
+                return;
+            }
+            return;
+        }
+        // thickness 2
+
+        Block checkBlock = config.getBoolean(TreeConfig.CFG.TRUNK_UNEVEN_BOTTOM) ? bottom.getRelative(BlockFace.UP) : bottom;
+
+        BlockFace[] faces = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST,
+                BlockFace.NORTH_EAST,BlockFace.SOUTH_EAST,BlockFace.NORTH_WEST,BlockFace.SOUTH_WEST};
+
+        List<Block> trunks = new ArrayList<>();
+
+        trunks.add(bottom);
+
+        for (BlockFace face : faces) {
+            Block nextBlock = checkBlock.getRelative(face);
+            while (trunkBlocks.contains(nextBlock.getType())) {
+                nextBlock = nextBlock.getRelative(BlockFace.DOWN);
+            }
+            if (groundBlocks.contains(nextBlock.getType())) {
+                trunks.add(nextBlock.getRelative(BlockFace.UP));
+            }
+        }
+
+        if (trunks.size() != 4) {
+            System.out.println("We do not have 4 trunks, we found " + trunks.size() + "!");
+            valid = false;
+        }
+
+        // single trunk, that should be easy, right?
+        trunk = findTrunks(trunks);
+
+        if (trunk == null) {
+            // no tree found, nothing to remove!
+            valid = false;
+            return;
+        }
+        debug("Tree of size " + trunk.size() + " found!");
+
+        if (onlyTrunk) {
+            // this will be used by other trees being broken checking OUR trunk for leaf distance and alike
+            return;
+        }
+
+        if (trunk.size() > config.getInt(TreeConfig.CFG.TRUNK_MAXIMUM_HEIGHT)) {
+            Utils.plugin.getLogger().warning("Higher than maximum!");
+        } else if (trunk.size() < config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT)) {
+            Utils.plugin.getLogger().warning("Lower than minimum!");
+        }
+
+        otherTrunks = new ArrayList<>();
+
+        branchMap = new HashMap<>();
+
+        if (branches) {
+            getBranches(trunks);
+
+            System.out.println("branch blocks: " + countBranches());
+        }
+
+        if (otherTrunks.isEmpty()) {
+            System.out.println("No other trunks found, checking again!");
+            findOtherTrunks();
+            if (!otherTrunks.isEmpty()) {
+                System.out.println("Found other trunks: " + otherTrunks.size());
+            }
+        }
+
+        getExtras(trunks);
+
+        if (extras == null || (extras.size() < 10 && !isClose(otherTrunks) )) {
+            valid = false;
+            return;
+        }
+
+        for (Block tree : trunk) {
+            tree.breakNaturally();
+        }
+
+        for (Block leaf : extras) {
+            leaf.breakNaturally();
+        }
+        for (List<Block> blocks : branchMap.values()) {
+            if (blocks != null) {
+                for (Block b : blocks) {
+                    b.breakNaturally();
+                }
+            }
+        }
+
+        for (Block block : trunks) {
+            block.setType(Material.matchMaterial(config.getString(TreeConfig.CFG.REPLANT)));
+        }
+
+        return;
 
 
         /*
@@ -241,6 +368,31 @@ public class TreeStructure {
         return null;
     }
 
+    private List<Block> findTrunks(List<Block> trunks) {
+        List<Block> result = new ArrayList<>();
+
+        for (Block checkBlock : trunks) {
+
+            while (debugContain(trunkBlocks, checkBlock.getType())) {
+                result.add(checkBlock);
+
+                checkBlock = checkBlock.getRelative(BlockFace.UP);
+            }
+
+            if (allExtras.contains(checkBlock.getType())) {
+                debug("We hit the roof!");
+
+                // we hit the roof and no problems
+                continue;
+            }
+
+            debug("We did not find a roof block. not a valid tree!");
+            return null;
+        }
+
+        return result;
+    }
+
     private boolean debugContain(List<Material> list, Material needle) {
         return list.contains(needle);
 
@@ -318,6 +470,125 @@ public class TreeStructure {
         return result;
     }
 
+    private void getBranches(List<Block> trunks) {
+
+        boolean first = true;
+
+        calculateBottoms(trunks);
+
+        for (Block block : trunk) {
+            if (first) {
+                first = false;
+                continue;
+            }
+
+            BlockFace[] directions = getFaces(block);
+
+            for (BlockFace face : directions) {
+                Block checkBlock = block.getRelative(face);
+                if (trunkBlocks.contains(checkBlock.getType())) {
+                    List<Block> branch = new ArrayList<>();
+                    if (invalidBranch(checkBlock, branch, face)) {
+                        trunk.clear();
+                        branchMap.clear();
+                        return;
+                    }
+                    branchMap.put(checkBlock, branch);
+                } else if (!allExtras.contains(checkBlock.getType())
+                        && !allTrunks.contains(checkBlock.getType())
+                        && !naturalBlocks.contains(checkBlock.getType())) {
+                    System.out.println("invalid block 2: " + checkBlock.getType());
+                    trunk.clear();
+                    branchMap.clear();
+                    return;
+                }
+            }
+        }
+    }
+
+    static Map<BlockFace, BlockFace[]> continuations = new EnumMap<>(BlockFace.class);
+
+    static {
+        continuations.put(BlockFace.EAST, new BlockFace[]{BlockFace.EAST});
+        continuations.put(BlockFace.NORTH, new BlockFace[]{BlockFace.NORTH});
+        continuations.put(BlockFace.SOUTH, new BlockFace[]{BlockFace.SOUTH});
+        continuations.put(BlockFace.WEST, new BlockFace[]{BlockFace.WEST});
+
+        continuations.put(BlockFace.NORTH_EAST, new BlockFace[]{BlockFace.NORTH, BlockFace.EAST});
+        continuations.put(BlockFace.NORTH_WEST, new BlockFace[]{BlockFace.NORTH, BlockFace.WEST});
+        continuations.put(BlockFace.SOUTH_EAST, new BlockFace[]{BlockFace.SOUTH, BlockFace.EAST});
+        continuations.put(BlockFace.SOUTH_WEST, new BlockFace[]{BlockFace.SOUTH, BlockFace.WEST});
+    }
+
+    private boolean calculateBottoms(List<Block> bottoms) {
+
+        int minX = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE;
+        int minZ = Integer.MAX_VALUE;
+        int maxZ = Integer.MIN_VALUE;
+
+        for (Block block : bottoms) {
+            if (block.getX() <= minX) {
+                if (block.getZ() <= minZ) {
+                    northWestBlock = block;
+                    minX = block.getX();
+                    minZ = block.getZ();
+                }
+                if (block.getZ() >= maxZ) {
+                    southWestBlock = block;
+                    minX = block.getX();
+                    maxZ = block.getZ();
+                }
+            }
+            if (block.getX() >= maxX) {
+                if (block.getZ() <= minZ) {
+                    northEastBlock = block;
+                    maxX = block.getX();
+                    minZ = block.getZ();
+                }
+                if (block.getZ() >= maxZ) {
+                    southEastBlock = block;
+                    maxX = block.getX();
+                    maxZ = block.getZ();
+                }
+            }
+        }
+
+        Set<Block> set = new HashSet<>();
+
+        set.add(northWestBlock);
+        set.add(southWestBlock);
+        set.add(northEastBlock);
+        set.add(southEastBlock);
+
+        return set.size() == 4;
+    }
+
+    private BlockFace[] getFaces(Block checkBlock) {
+        if (
+                checkBlock.getX() == northWestBlock.getX() &&
+                checkBlock.getZ() == northWestBlock.getZ()) {
+            return continuations.get(BlockFace.NORTH_WEST);
+        }
+        if (
+                checkBlock.getX() == northEastBlock.getX() &&
+                checkBlock.getZ() == northEastBlock.getZ()) {
+            return continuations.get(BlockFace.NORTH_EAST);
+        }
+        if (
+                checkBlock.getX() == southWestBlock.getX() &&
+                checkBlock.getZ() == southWestBlock.getZ()) {
+            return continuations.get(BlockFace.SOUTH_WEST);
+        }
+        if (
+                checkBlock.getX() == southEastBlock.getX() &&
+                checkBlock.getZ() == southEastBlock.getZ()) {
+            return continuations.get(BlockFace.SOUTH_EAST);
+        }
+
+        return new BlockFace[0];
+    }
+
     private void getBranches() {
 
         boolean first = true;
@@ -357,9 +628,13 @@ public class TreeStructure {
      * @param checkBlock the block to start checking
      * @param result the resulting branch List
      * @param direction the direction the branch would start
-     * @return something went wrong
+     * @return whether something went wrong
      */
     private boolean invalidBranch(Block checkBlock, List<Block> result, BlockFace direction) {
+        if (checkedBlocks.contains(checkBlock)) {
+            return false;
+        }
+        checkedBlocks.add(checkBlock);
         BlockFace[] diagonals = validDiagonals.get(direction);
 
         Material mat = checkBlock.getType();
@@ -381,7 +656,8 @@ public class TreeStructure {
                 System.out.println("Continuing branch " + direction + " to " + face);
                 if (
                         invalidBranch(checkBlock.getRelative(face), result, direction) ||
-                        invalidBranch(checkBlock.getRelative(face).getRelative(BlockFace.UP), result, direction)) {
+                                invalidBranch(checkBlock.getRelative(face).getRelative(BlockFace.UP), result, direction) ||
+                                invalidBranch(checkBlock.getRelative(face).getRelative(BlockFace.DOWN), result, direction)) {
                     result.clear();
                     return true;
                 }
@@ -412,6 +688,70 @@ public class TreeStructure {
                 new BlockFace[] {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.NORTH_EAST, BlockFace.SOUTH_EAST, BlockFace.EAST});
         validDiagonals.put(BlockFace.WEST,
                 new BlockFace[] {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.NORTH_WEST, BlockFace.SOUTH_WEST, BlockFace.WEST});
+    }
+
+    /**
+     * Checking only in trunk facing directions
+     */
+    private void getExtras(List<Block> trunks) {
+        extras = new ArrayList<>();
+
+        int radiusM = config.getInt(TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS);
+
+        boolean edgesM = config.getBoolean(TreeConfig.CFG.BLOCKS_MIDDLE_EDGES);
+        boolean airM = config.getBoolean(TreeConfig.CFG.BLOCKS_MIDDLE_AIR);
+
+        Block roof = null;
+
+        BlockFace[] neighbors = new BlockFace[]{BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
+
+        for (Block block : trunk) {
+            roof = block;
+
+            for (BlockFace face : neighbors) {
+                if (isInvalid(block.getRelative(face), face, radiusM, 1, true, edgesM, airM, radiusM)) {
+                    valid = false;
+                    return;
+                }
+            }
+        }
+
+        if (roof == null) {
+            debug("No more blocks found!");
+            valid = false;
+            return;
+        }
+
+        int radiusT = config.getInt(TreeConfig.CFG.BLOCKS_TOP_RADIUS);
+        int heightT = config.getInt(TreeConfig.CFG.BLOCKS_TOP_HEIGHT);
+        boolean airT = config.getBoolean(TreeConfig.CFG.BLOCKS_TOP_AIR);
+
+        boolean edgesT = config.getBoolean(TreeConfig.CFG.BLOCKS_TOP_EDGES);
+
+        for (int y=1; y<=heightT; y++) {
+            Block checkBlock = roof.getRelative(0, y, 0);
+            Material checkMaterial = checkBlock.getType();
+
+            if (checkMaterial != Material.AIR) {
+                if (extraBlocks.contains(checkMaterial)) {
+                    extras.add(checkBlock);
+
+                    for (BlockFace face : neighbors) {
+                        if (isInvalid(checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, radiusT)) {
+                            valid = false;
+                            return;
+                        }
+                    }
+                } else if (
+                        !naturalBlocks.contains(checkMaterial) &&
+                                !trunkBlocks.contains(checkMaterial) &&
+                                !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
+                    debug("Invalid block found: " + checkMaterial);
+                    valid = false;
+                    return;
+                }
+            }
+        }
     }
 
     /**
