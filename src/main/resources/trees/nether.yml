@@ -32,4 +32,5 @@ Natural Blocks:
 - 'minecraft:air'
 - 'minecraft:cave_air'
 - 'minecraft:void_air'
+Automatic Tree Destruction: true
 Version: 7.0

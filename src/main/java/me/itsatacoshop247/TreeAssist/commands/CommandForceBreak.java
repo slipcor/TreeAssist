@@ -1,7 +1,9 @@
 package me.itsatacoshop247.TreeAssist.commands;
 
+import me.itsatacoshop247.TreeAssist.core.Config;
 import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Utils;
+import net.royawesome.jlibnoise.module.combiner.Max;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,20 +29,12 @@ public class CommandForceBreak extends AbstractCommand {
         if (sender instanceof Player) {
             final Player player = (Player) sender;
 
-            if (Utils.plugin.getConfig().getBoolean(
-                    "Tools.Tree Destruction Require Tools")) {
-                if (!Utils.isRequiredTool(player.getInventory().getItemInMainHand()) && !Utils.isRequiredTool(player.getInventory().getItemInOffHand())) {
-                    sender.sendMessage(Language.parse(Language.MSG.ERROR_NOT_TOOL));
-                    return;
-                }
-            }
-
-            int radius = Utils.plugin.getConfig().getInt("Main.Force Break Default Radius", 10);
+            int radius = Utils.plugin.getTreeAssistConfig().getInt(Config.CFG.MAIN_FORCE_BREAK_DEFAULT_RADIUS, 10);
 
             if (args.length > 1) {
                 try {
                     radius = Math.max(1, Integer.parseInt(args[1]));
-                    int configValue = Utils.plugin.getConfig().getInt("Main.Force Break Max Radius", 30);
+                    int configValue = Utils.plugin.getTreeAssistConfig().getInt(Config.CFG.MAIN_FORCE_BREAK_MAX_RADIUS, 30);
                     if (radius > configValue) {
                         sender.sendMessage(Language.parse(Language.MSG.ERROR_OUT_OF_RANGE, String.valueOf(configValue)));
                     }
@@ -73,7 +67,7 @@ public class CommandForceBreak extends AbstractCommand {
                 public void run() {
                     Utils.plugin.setCoolDownOverride(player.getName(), false);
                 }
-            }, Math.min(10, Utils.plugin.getConfig().getInt("Automatic Tree Destruction.Initial Delay (seconds)", 10) + 10) * 20);
+            }, Math.min(10, Utils.plugin.getTreeAssistConfig().getInt(Config.CFG.AUTOMATIC_TREE_DESTRUCTION_INITIAL_DELAY_TIME, 10) + 10) * 20);
 
             return;
         }

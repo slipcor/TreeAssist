@@ -1,5 +1,6 @@
 package me.itsatacoshop247.TreeAssist.commands;
 
+import me.itsatacoshop247.TreeAssist.core.Config;
 import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import org.bukkit.Material;
@@ -30,12 +31,12 @@ public class CommandForceGrow extends AbstractCommand {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            int radius = Utils.plugin.getConfig().getInt("Main.Force Grow Default Radius", 10);
+            int radius = Utils.plugin.getTreeAssistConfig().getInt(Config.CFG.MAIN_FORCE_GROW_DEFAULT_RADIUS, 10);
 
             if (args.length > 1) {
                 try {
                     radius = Math.max(1, Integer.parseInt(args[1]));
-                    int configValue = Utils.plugin.getConfig().getInt("Main.Force Grow Max Radius", 30);
+                    int configValue = Utils.plugin.getTreeAssistConfig().getInt(Config.CFG.MAIN_FORCE_GROW_MAX_RADIUS, 30);
                     if (radius > configValue) {
                         sender.sendMessage(Language.parse(Language.MSG.ERROR_OUT_OF_RANGE, String.valueOf(configValue)));
                     }

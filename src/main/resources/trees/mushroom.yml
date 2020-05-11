@@ -79,4 +79,5 @@ Blocks:
     Height: 1
   Middle:
     Radius: 0
+Automatic Tree Destruction: true
 Version: 7.0

@@ -3,6 +3,7 @@ package me.itsatacoshop247.TreeAssist;
 import java.util.HashSet;
 import java.util.Set;
 
+import me.itsatacoshop247.TreeAssist.core.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,7 +23,7 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 		drop = item;
 		items.add(drop);
 		
-		int delay = plugin.getConfig().getInt("Auto Plant Dropped Saplings.Delay (seconds)", 5);
+		int delay = plugin.getTreeAssistConfig().getInt(Config.CFG.AUTO_PLANT_DROPPED_SAPLINGS_DELAY_, 5);
 		if (delay < 1) {
 			delay = 1;
 		}

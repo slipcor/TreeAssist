@@ -69,9 +69,8 @@ It also will take down an entire tree when it is enabled in the config.
 
 - v7.0-SNAPSHOT:
   Working:
-  - thin trees, thick spruce, dark oak and jungle trees
-  - automated removal of trunk logs
-  - branches work, leaves get removed.
+  - all trees
+  - automated removal of trunk logs, branches and some leaves
   - neighbor trees leaves do not get cut in (worst case we only remove a trunk and leave all leaves)
   Still working on:
   - implement configuration settings about when and how to remove trees automatically or to clean up

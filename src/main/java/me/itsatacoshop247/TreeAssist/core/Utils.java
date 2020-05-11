@@ -2,7 +2,6 @@ package me.itsatacoshop247.TreeAssist.core;
 
 import me.itsatacoshop247.TreeAssist.TreeAssist;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
-import me.itsatacoshop247.TreeAssist.trees.CustomTree;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
@@ -18,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Utils {
 	private Utils() {
@@ -153,42 +154,7 @@ public final class Utils {
 			Material.GOLDEN_PICKAXE, Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE, Material.GOLDEN_HOE, Material.DIAMOND_HOE);
 
 
-    public static void removeCustomGroup(Player player) {
-        final ItemStack sapling = player.getInventory().getItem(0);
-        if (sapling == null || sapling.getType() == Material.AIR) {
-            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXPLANATION));
-            return;
-        }
-        final ItemStack log = player.getInventory().getItem(1);
-        if (log == null || log.getType() == Material.AIR) {
-            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXPLANATION));
-            return;
-        }
-        final ItemStack leaf = player.getInventory().getItem(2);
-        if (leaf == null || leaf.getType() == Material.AIR) {
-            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXPLANATION));
-            return;
-        }
-
-        for (int i = 0; i < CustomTree.customTreeDefinitions.size(); i++) {
-            CustomTreeDefinition definition = CustomTree.customTreeDefinitions.get(i);
-
-            if (log.getType() == definition.getLog()) {
-                if (leaf.getType() == definition.getLeaf()) {
-                    if (sapling.getType() == definition.getSapling()) {
-                        removeCustomTreeDefinition(i);
-                        plugin.saveConfig();
-                        plugin.reloadLists();
-                        player.sendMessage(Language.parse(MSG.INFO_CUSTOM_REMOVED));
-                        return;
-                    }
-                }
-            }
-        }
-        player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_NOT_FOUND));
-    }
-
-    public static void removeRequiredTool(Player player) {
+    public static void removeRequiredTool(Player player, TreeConfig treeConfig) {
         ItemStack inHand = player.getInventory().getItemInMainHand();
         if (inHand == null)
         	inHand = player.getInventory().getItemInOffHand();
@@ -199,7 +165,7 @@ public final class Utils {
 
         String definition = null;
 
-        List<?> fromConfig = Utils.plugin.getConfig().getList("Tools.Tools List");
+        List<String> fromConfig = treeConfig.getStringList(TreeConfig.CFG.TOOL_LIST, new ArrayList<>());
         if (fromConfig.contains(inHand.getType().name())) {
             fromConfig.remove(inHand.getType().name());
             definition = inHand.getType().name();
@@ -258,51 +224,8 @@ public final class Utils {
 
     }
 
-    public static void addCustomGroup(Player player) {
-        final ItemStack sapling = player.getInventory().getItem(0);
-        if (sapling == null || sapling.getType() == Material.AIR) {
-            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXPLANATION));
-            return;
-        }
-        final ItemStack log = player.getInventory().getItem(1);
-        if (log == null || log.getType() == Material.AIR) {
-            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXPLANATION));
-            return;
-        }
-        final ItemStack leaf = player.getInventory().getItem(2);
-        if (leaf == null || leaf.getType() == Material.AIR) {
-            player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXPLANATION));
-            return;
-        }
-
-        for (CustomTreeDefinition definition : CustomTree.customTreeDefinitions) {
-            if (log.getType() == definition.getLog()) {
-                if (leaf.getType() == definition.getLeaf()) {
-                    if (sapling.getType() == definition.getSapling()) {
-                        player.sendMessage(Language.parse(MSG.ERROR_CUSTOM_EXISTS));
-                        return;
-                    }
-                }
-            }
-        }
-        addCustomTreeDefinition(sapling.getType(), log.getType(), leaf.getType());
-        plugin.saveConfig();
-        plugin.reloadLists();
-        player.sendMessage(Language.parse(MSG.INFO_CUSTOM_ADDED));
-    }
-
-    private static void addCustomTreeDefinition(Material sapling, Material log, Material leaf) {
-        List<List<String>> values = new ArrayList<>();
-
-        CustomTree.customTreeDefinitions.add(new CustomTreeDefinition(sapling, log, leaf));
-        for (CustomTreeDefinition definition : CustomTree.customTreeDefinitions) {
-            values.add(definition.getList());
-        }
-
-        plugin.getTreeAssistConfig().set("Modding.Custom Tree Definitions", values);
-    }
-
-    public static void addRequiredTool(Player player) {
+    public static void addRequiredTool(Player player, TreeConfig treeConfig) {
+        //TODO: find out which tree to alter
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item == null)
         	item = player.getInventory().getItemInOffHand();
@@ -310,7 +233,7 @@ public final class Utils {
             player.sendMessage(Language.parse(MSG.ERROR_EMPTY_HAND));
             return;
         }
-        if (isRequiredTool(item)) {
+        if (isRequiredTool(item, treeConfig)) {
             player.sendMessage(Language.parse(MSG.ERROR_ADDTOOL_ALREADY));
             return;
         }
@@ -339,15 +262,16 @@ public final class Utils {
             found = true;
         }
         List<String> result = new ArrayList<String>();
-        List<?> fromConfig = Utils.plugin.getConfig().getList("Tools.Tools List");
+
+        List<?> fromConfig = treeConfig.getStringList(TreeConfig.CFG.TOOL_LIST, new ArrayList<>());
         for (Object obj : fromConfig) {
             if (obj instanceof String) {
                 result.add(String.valueOf(obj));
             }
         }
         result.add(entry.toString());
-        Utils.plugin.getConfig().set("Tools.Tools List", result);
-        Utils.plugin.saveConfig();
+        treeConfig.getYamlConfiguration().set("Tools.Tools List", result);
+        treeConfig.save();
         player.sendMessage(Language.parse(MSG.SUCCESSFUL_ADDTOOL, entry.toString()));
     }
 
@@ -362,8 +286,8 @@ public final class Utils {
 	 *            the held item
 	 * @return if the player has a needed tool
 	 */
-	public static boolean isRequiredTool(final ItemStack inHand) {
-		List<?> fromConfig = Utils.plugin.getConfig().getList("Tools.Tools List");
+	public static boolean isRequiredTool(final ItemStack inHand, TreeConfig treeConfig) {
+		List<String> fromConfig = treeConfig.getStringList(TreeConfig.CFG.TOOL_LIST, new ArrayList<>());
 		if (fromConfig.contains(inHand.getType().name())) {
 			return true;
 		}
@@ -438,6 +362,7 @@ public final class Utils {
      *            the log material
      * @return if a sapling should be replanted
      */
+    @Deprecated
     public static boolean replantType(Material material) {
         if (material == Material.BROWN_MUSHROOM_BLOCK) {
             return Utils.plugin.getConfig()
@@ -457,6 +382,7 @@ public final class Utils {
      *            the tree species
      * @return if a sapling should be replanted
      */
+    @Deprecated
     public static boolean replantType(TreeSpecies species) {
         if (species == TreeSpecies.GENERIC) {
             return Utils.plugin.getConfig()
@@ -484,23 +410,6 @@ public final class Utils {
         }
         return false;
     }
-
-
-	public static void initiateList(String string, List<String> validTypes) {
-		for (Object obj : Utils.plugin.getConfig().getList(string)) {
-			if (obj instanceof Integer) {
-				continue;
-			}
-			if (obj.equals("LIST ITEMS GO HERE")) {
-				List<Object> list = new ArrayList<Object>();
-				list.add("INVALID");
-				Utils.plugin.getConfig().set(string, list);
-				Utils.plugin.saveConfig();
-				break;
-			}
-			validTypes.add(((String) obj).split(":")[0]);
-		}
-	}
 
 	public static TreeAssist plugin;
 
@@ -553,17 +462,6 @@ public final class Utils {
     
     public static boolean isMushroom(Material material) {
     	return mushroomMaterials.contains(material);
-    }
-
-    private static void removeCustomTreeDefinition(int number) {
-        List<List<String>> values = new ArrayList<>();
-
-        CustomTree.customTreeDefinitions.remove(number);
-        for (CustomTreeDefinition definition : CustomTree.customTreeDefinitions) {
-            values.add(definition.getList());
-        }
-
-        plugin.getTreeAssistConfig().set("Modding.Custom Tree Definitions", values);
     }
     
     public static Material resolveLegacySapling(int damage) {
@@ -642,41 +540,14 @@ public final class Utils {
     	return block.getType();
     }
 
-    public static void reloadCustomDefinitions(FileConfiguration config) {
-        List<?> list = config.getList("Modding.Custom Tree Definitions");
-
-        CustomTree.customTreeDefinitions.clear();
-
-        if (list != null) {
-            for (Object o : list) {
-                if (o instanceof List) {
-                    List<?> innerList = (List<?>) o;
-                    if (innerList.size() == 3) {
-                        Material sapling = Material.matchMaterial((String) innerList.get(0));
-                        Material log = Material.matchMaterial((String) innerList.get(1));
-                        Material leaf = Material.matchMaterial((String) innerList.get(2));
-
-                        if (sapling != null && log != null && leaf != null) {
-                            CustomTree.customTreeDefinitions.add(new CustomTreeDefinition(sapling, log, leaf));
-                        }
-                    }
-                } else {
-                    System.out.println(o.getClass());
-                }
-            }
-        }
-    }
-
-    public static void reloadTreeDefinitions(FileConfiguration config) {
-        List<String> list = config.getStringList("Trees");
+    public static void reloadTreeDefinitions(Config config) {
+        List<String> list = config.getYamlConfiguration().getStringList("Trees");
 
         if (list.size() < 1) {
             list.add("overworld");
             list.add("mushroom");
             list.add("nether");
         }
-
-        boolean changes = false;
 
         TreeStructure.allTrunks.clear();
         TreeStructure.allExtras.clear();
@@ -692,50 +563,8 @@ public final class Utils {
                 TreeConfigUpdater.check(childConfig, entry + "/" + child);
                 childConfig.load();
                 childConfig.loadDefaults(parent);
-                treeDefinitions.add(childConfig);
             }
         }
-    }
-
-    public static boolean updateToolNames(FileConfiguration config) {
-        List<?> list = config.getList("Tools.Tools List");
-
-        List<String> newList = new ArrayList<>();
-
-        boolean updating = false;
-
-        for (Object o : list) {
-            if (o instanceof String) {
-                String value = (String) o;
-
-                if (value.equals("WOOD_AXE")) {
-                    newList.add("WOODEN_AXE");
-                    updating = true;
-                } else if (value.equals("GOLD_AXE")) {
-                    newList.add("GOLDEN_AXE");
-                    updating = true;
-                } else {
-                    newList.add(value);
-                }
-            }
-        }
-
-        if (config.getInt("Tools.Drop Chance.WOOD_AXE", 0) > 0) {
-            config.set("Tools.Drop Chance.WOODEN_AXE", config.getInt("Tools.Drop Chance.WOOD_AXE"));
-            config.set("Tools.Drop Chance.WOOD_AXE", null);
-            updating = true;
-        }
-
-        if (config.getInt("Tools.Drop Chance.GOLD_AXE", 0) > 0) {
-            config.set("Tools.Drop Chance.GOLDEN_AXE", config.getInt("Tools.Drop Chance.GOLD_AXE"));
-            config.set("Tools.Drop Chance.GOLD_AXE", null);
-            updating = true;
-        }
-
-        if (updating) {
-            config.set("Tools.Tools List", newList);
-        }
-        return updating;
     }
 
     public static void breakBlock(Player player, Block block) {
@@ -748,7 +577,7 @@ public final class Utils {
 
     public static void breakBlock(Player player, Block block, ItemStack tool) {
         if (useFallingBlock == null) {
-            useFallingBlock = Utils.plugin.getConfig().getBoolean("Main.Use Falling Blocks", false);
+            useFallingBlock = Utils.plugin.getTreeAssistConfig().getBoolean(Config.CFG.MAIN_USE_FALLING_BLOCKS);
         }
 
         if (useFallingBlock) {
@@ -778,11 +607,85 @@ public final class Utils {
         }
     }
 
+    /**
+     * thanks to filbert66 for this determination method!
+     *
+     * @param tool the itemstack being used
+     * @return the seconds that it will take to destroy
+     */
+    public static int calculateCooldown(ItemStack tool, List<Block> blockList) {
+
+        Material element = (tool != null ? tool.getType() : null);
+
+        float singleTime;
+
+        switch (element) {
+            case GOLDEN_AXE:
+                singleTime = 0.25F;
+                break;
+            case DIAMOND_AXE:
+                singleTime = 0.4F;
+                break;
+            case IRON_AXE:
+                singleTime = 0.5F;
+                break;
+            case STONE_AXE:
+                singleTime = 0.75F;
+                break;
+            case WOODEN_AXE:
+                singleTime = 1.5F;
+                break;
+
+            default:
+                singleTime = 3.0F;
+                break;
+        }
+
+        float efficiencyFactor = 1.0F;
+        if (tool != null && tool.hasItemMeta()) {
+            int efficiencyLevel = tool.getItemMeta().getEnchantLevel(
+                    Enchantment.DIG_SPEED);
+            for (int i = 0; i < efficiencyLevel; i++) {
+                efficiencyFactor /= 1.3F;
+            }
+        }
+
+        int numLogs = 0;
+        for (Block b : blockList) {
+            if (isLeaf(b.getType())) {
+                numLogs++;
+            }
+        }
+
+        return (int) (numLogs * singleTime * efficiencyFactor);
+    }
+
     public static boolean removeIfFallen(final Entity item) {
         if (fallingBlocks.contains(item)) {
             fallingBlocks.remove(item);
             item.remove();
             return true;
+        }
+        return false;
+    }
+
+    public static boolean matchContains(List<String> list, String needle, boolean partial) {
+        if (list.contains(needle)) {
+            // the entry is contained perfectly
+            return true;
+        }
+        for (String entry : list) {
+            if (partial && entry.contains(needle)) {
+                return true;
+            }
+            if (entry.contains("*")) {
+                String compare = entry.replace("*", "");
+                if (needle.contains(compare)) {
+                    return true;
+                }
+            } else if (entry.equals(needle)) {
+                return true;
+            }
         }
         return false;
     }

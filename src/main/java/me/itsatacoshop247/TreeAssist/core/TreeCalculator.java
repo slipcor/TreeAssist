@@ -14,56 +14,13 @@ public class TreeCalculator {
 
     private static boolean debugContain(List<Material> list, Material needle) {
         return list.contains(needle);
-
-        /*
-
-        if (needle == null) {
-            System.out.println("NULL");
-            return false;
-        }
-        for (Material m : list) {
-            if (m != null) {
-                boolean found = (needle.equals(m));
-                System.out.println(m + "; " + m.name() + "; " + needle + "; " + needle.name() + " => " + found);
-                if (found) {
-                    return found;
-                }
-            }
-        }
-        return false;
-
-        */
-    }
-
-    public static void debugPrint(List<Material> source) {
-        for (Material m : source) {
-            if (m != null) {
-                System.out.print(m.name() + ",");
-            }
-        }
-        System.out.println();
     }
 
     public static Block validate(Block block, TreeConfig config) {
         List<Material> trunkBlocks = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
-
-        // System.out.print("Trunk mats: ");
-        // debugPrint(trunkBlocks);
-
         List<Material> extraBlocks = config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS);
-
-        // System.out.print("Block mats: ");
-        // debugPrint(extraBlocks);
-
         List<Material> naturalBlocks = config.getMaterials(TreeConfig.CFG.NATURAL_BLOCKS);
-
-        // System.out.print("Natural mats: ");
-        // debugPrint(naturalBlocks);
-
         List<Material> groundBlocks = config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS);
-
-        // System.out.print("Ground mats: ");
-        // debugPrint(groundBlocks);
 
         Block checkBlock = block;
 

@@ -9,58 +9,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class TreeConfig {
+public class Config {
     private final YamlConfiguration cfg;
     private final File configFile;
     private final Map<String, Boolean> booleans;
     private final Map<String, Integer> ints;
     private final Map<String, Double> doubles;
     private final Map<String, String> strings;
-
-    public void loadDefaults(TreeConfig parent) {
-        for (CFG c : CFG.values()) {
-            if (c.type.equals("string")) {
-                cfg.addDefault(c.node, getString(c, parent.getString(c)));
-            } else if (c.type.equals("boolean")) {
-                cfg.addDefault(c.node, getBoolean(c, parent.getBoolean(c)));
-            } else if (c.type.equals("int")) {
-                cfg.addDefault(c.node, getInt(c, parent.getInt(c)));
-            } else if (c.type.equals("double")) {
-                cfg.addDefault(c.node, getDouble(c, parent.getDouble(c)));
-            } else if (c.type.equals("list")) {
-                cfg.addDefault(c.node, getStringList(c, parent.getStringList(c, new ArrayList<>())));
-            } else if (c.type.equals("map")) {
-                ConfigurationSection cs = parent.getYamlConfiguration().getConfigurationSection(c.node);
-
-                if (cs != null) {
-                    for (String key : cs.getKeys(false)) {
-                        String subPath = c.node + "." + key;
-                        if (cfg.get(subPath) == null) {
-                            // child does not inherit
-                            cfg.addDefault(subPath, parent.getYamlConfiguration().get(subPath));
-                        }
-                    }
-                }
-
-                cs = cfg.getConfigurationSection(c.node);
-
-                if (cs != null) {
-                    for (String key : cs.getKeys(false)) {
-                        String subPath = c.node + "." + key;
-                        cfg.addDefault(subPath, cfg.get(subPath));
-                    }
-                }
-            }
-        }
-    }
-
-    public void preLoad() {
-        try {
-            cfg.load(configFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void save() {
         try {
@@ -71,42 +26,62 @@ public class TreeConfig {
     }
 
     public enum CFG {
-        CHILDREN("Children", new ArrayList<>()),
-        CUSTOM_DROPS("Custom Drops", new HashMap<>()),
-        CUSTOM_DROP_CHANCE("Custom Drop Chance", new HashMap<>()),
-        GROUND_BLOCKS("Ground Blocks", new ArrayList<>()), // the allowed blocks below the tree trunk
+        MAIN_AUTO_PLANT_DROPPED_SAPLINGS("Main.Auto Plant Dropped Saplings", false), //TODO: check
+        MAIN_AUTOMATIC_TREE_DESTRUCTION("Main.Automatic Tree Destruction", true), //TODO: check
+        MAIN_DESTROY_ONLY_BLOCKS_ABOVE("Main.Destroy Only Blocks Above", false), //TODO: check
+        MAIN_FORCE_BREAK_DEFAULT_RADIUS("Main.Force Break Default Radius", 10), //TODO: check
+        MAIN_FORCE_GROW_DEFAULT_RADIUS("Main.Force Grow Default Radius", 10), //TODO: check
+        MAIN_FORCE_BREAK_MAX_RADIUS("Main.Force Break Max Radius", 30), //TODO: check
+        MAIN_FORCE_GROW_MAX_RADIUS("Main.Force Grow Max Radius", 30), //TODO: check
+        MAIN_IGNORE_USER_PLACED_BLOCKS("Main.Ignore User Placed Blocks", false), //TODO: check
+        MAIN_LANGUAGE("Main.Language", "en"), //TODO: check
+        MAIN_SAPLING_REPLANT("Main.Sapling Replant", true), //TODO: check
+        MAIN_TOGGLE_DEFAULT("Main.Toggle Default", true), //TODO: check
+        MAIN_USE_MCMMO_IF_AVAILABLE("Main.Use mcMMO if Available", true), //TODO: check
+        MAIN_USE_JOBS_IF_AVAILABLE("Main.Use Jobs if Available", true), //TODO: check
+        MAIN_USE_WORLDGUARD_IF_AVAILABLE("Main.Use WorldGuard if Available", false), //TODO: check
+        MAIN_USE_PERMISSIONS("Main.Use Permissions", false), //TODO: check
+        MAIN_USE_FALLING_BLOCKS("Main.Use Falling Blocks", false), //TODO: check
 
-        BLOCKS_MATERIALS("Blocks.Materials", new ArrayList<>()), // the expected blocks part of the tree, next to the trunk
+        AUTOMATIC_TREE_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE("Automatic Tree Destruction.Apply Full Tool Damage", true), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Tree Destruction.Auto Add To Inventory", false), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_COOLDOWN("Automatic Tree Destruction.Cooldown (seconds)", 0), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_DELAY("Automatic Tree Destruction.Delay (ticks)", 0), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_FORCED_REMOVAL("Automatic Tree Destruction.Forced Removal", false), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_INCREASES_STATISTICS("Automatic Tree Destruction.Increases Statistics", false), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_INITIAL_DELAY("Automatic Tree Destruction.Initial Delay", false), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_INITIAL_DELAY_TIME("Automatic Tree Destruction.Initial Delay (seconds)", 10), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_REMOVE_LEAVES("Automatic Tree Destruction.Remove Leaves", true), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_REQUIRED_LORE("Automatic Tree Destruction.Required Lore",""), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_WHEN_SNEAKING("Automatic Tree Destruction.When Sneaking", true), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_WHEN_NOT_SNEAKING("Automatic Tree Destruction.When Not Sneaking", true), //TODO: check
+        BLOCK_STATISTICS_MINE_BLOCK("Block Statistics.Mine Block", false), //TODO: check
+        BLOCK_STATISTICS_PICKUP("Block Statistics.Pickup", false), //TODO: check
+        AUTO_PLANT_DROPPED_SAPLINGS_CHANCE("Auto Plant Dropped Saplings.Chance (percent)", 10), //TODO: check
+        AUTO_PLANT_DROPPED_SAPLINGS_DELAY_("Auto Plant Dropped Saplings.Delay (seconds)", 5), //TODO: check
+        LEAF_DECAY_FAST_LEAF_DECAY("Leaf Decay.Fast Leaf Decay", true), //TODO: check
+        SAPLING_REPLANT_BLOCK_ALL_BREAKING_OF_SAPLINGS("Sapling Replant.Block all breaking of Saplings", false), //TODO: check
+        SAPLING_REPLANT_BOTTOM_BLOCK_HAS_TO_BE_BROKEN_FIRST("Sapling Replant.Bottom Block has to be Broken First", true), //TODO: check
+        SAPLING_REPLANT_COMMAND_TIME_DELAY("Sapling Replant.Command Time Delay (Seconds)", 30), //TODO: check
+        SAPLING_REPLANT_DELAY_UNTIL_SAPLING_IS_REPLANTED("Sapling Replant.Delay until Sapling is replanted (seconds) (minimum 1 second)", 1), //TODO: check
+        SAPLING_REPLANT_ENFORCE("Sapling Replant.Enforce", false), //TODO: check
+        SAPLING_REPLANT_REPLANT_WHEN_TREE_BURNS_DOWN("Sapling Replant.Replant When Tree Burns Down", true), //TODO: check
+        SAPLING_REPLANT_TIME_TO_PROTECT_SAPLING("Sapling Replant.Time to Protect Sapling (Seconds)", 0), //TODO: check
+        SAPLING_REPLANT_TIME_TO_BLOCK_SAPLING_GROWTH("Sapling Replant.Time to Block Sapling Growth (Seconds)", 0), //TODO: check
+        TOOLS_SAPLING_REPLANT_REQUIRE_TOOLS("Tools.Sapling Replant Require Tools", true), //TODO: check
+        TOOLS_TREE_DESTRUCTION_REQUIRE_TOOLS("Tools.Tree Destruction Require Tools", true), //TODO: check
+        WORLDS_ENABLE_PER_WORLD("Worlds.Enable Per World", false), //TODO: check
+        WORLD_ENABLED_WORLDS("Worlds.Enabled Worlds", new ArrayList<>(Arrays.asList("world", "world2"))), //TODO: check
 
-        BLOCKS_CAP_HEIGHT("Blocks.Cap.Height", 2), // Branch Topping Leaves Height
-        BLOCKS_CAP_RADIUS("Blocks.Cap.Radius", 3), // Branch Topping Leaves Radius
+        PLACED_BLOCKS_HANDLER_PLUGIN_NAME("Placed Blocks.Handler Plugin Name", "TreeAssist"), //TODO: check
+        PLACED_BLOCKS_HANDLER_LOOKUP_TIME("Placed Blocks.Handler Lookup Time", 86400), //TODO: check
 
-        BLOCKS_MIDDLE_AIR("Blocks.Middle.Air", false), // allow air pockets?
-        BLOCKS_MIDDLE_EDGES("Blocks.Middle.Edges", false), // would edges be populated?
-        BLOCKS_MIDDLE_RADIUS("Blocks.Middle.Radius", 2), // the tree middle leaf radius (radius starts away from trunk!)
+        MODDING_DISABLE_DURABILITY_FIX("Modding.Disable Durability Fix", false), //TODO: check
 
-        BLOCKS_TOP_AIR("Blocks.Top.Air", false), // allow air pockets?
-        BLOCKS_TOP_EDGES("Blocks.Top.Edges", false), // would edges be populated?
-        BLOCKS_TOP_RADIUS("Blocks.Top.Radius", 3), // the tree top leaf radius
-        BLOCKS_TOP_HEIGHT("Blocks.Top.Height", 3),
+        VERSION("Version", 6.0),
+        TREES("Trees", new ArrayList<>(Arrays.asList("overworld", "nether", "mushroom")));
 
-        TRUNK_BRANCH("Trunk.Branch", false),
-        TRUNK_DIAGONAL("Trunk.Diagonal", false), // Trunk can move diagonally even (Acacia)
-        TRUNK_MINIMUM_HEIGHT("Trunk.Minimum Height", 4),
-        TRUNK_MAXIMUM_HEIGHT("Trunk.Maximum Height", 30),
-        TRUNK_MATERIALS("Trunk.Materials", new ArrayList<>()), // the expected materials part of the tree trunk
-        TRUNK_THICKNESS("Trunk.Thickness", 1), // This value is also used for radius calculation!
-        TRUNK_RADIUS("Trunk.Radius", 1),
-        TRUNK_UNEVEN_BOTTOM("Trunk.Uneven Bottom", false), // Can saplings/lowest trunks be on different Y?
 
-        AUTOMATIC_DESTRUCTION("Automatic Tree Destruction", true), // Will we attempt to automatically destroy?
-
-        REPLANT("Replant", "String"),
-        TOOL_LIST("Tool List", new ArrayList<>()),
-        NATURAL_BLOCKS("Natural Blocks", new ArrayList<>()), // blocks that are okay to have around trees
-
-        VERSION("Version", 7.0)
-        ; //
 
         private final String node;
         private final Object value;
@@ -188,7 +163,7 @@ public class TreeConfig {
      *
      * @param configFile a YAML file
      */
-    public TreeConfig (final File configFile) {
+    public Config(final File configFile) {
         Utils.plugin.getLogger().info("Loading tree config file: " + configFile.getAbsolutePath().replace(Utils.plugin.getDataFolder().getAbsolutePath(), ""));
 
         cfg = new YamlConfiguration();
@@ -209,9 +184,6 @@ public class TreeConfig {
         try {
             cfg.load(configFile);
             reloadMaps();
-
-            TreeStructure.allTrunks.addAll(getMaterials(TreeConfig.CFG.TRUNK_MATERIALS));
-            TreeStructure.allExtras.addAll(getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS));
             return true;
         } catch (final Exception e) {
             e.printStackTrace();
@@ -226,9 +198,9 @@ public class TreeConfig {
      */
     public void reloadMaps() {
         // known exceptions
-        String[] exceptions = {"Custom Drop Chance",
-                "Blocks", "Blocks.Cap", "Blocks.Top", "Blocks.Middle",
-                "Trunk", "Trunk.Branch"};
+        String[] exceptions = {"Main",
+                "Automatic Tree Destruction", "Block Statistics", "Auto Plant Dropped Saplings", "Leaf Decay",
+                "Sapling Replant", "Tools", "Worlds", "Placed Blocks", "Modding"};
 
         root: for (final String s : cfg.getKeys(true)) {
             final Object object = cfg.get(s);
@@ -248,28 +220,6 @@ public class TreeConfig {
                 for (String test : exceptions) {
                     if (s.equals(test)) {
                         continue root;
-                    }
-                }
-
-                String[] materialPaths = { "Custom Drops.", "Custom Drop Chance."};
-
-                for (String test : materialPaths) {
-                    if (s.startsWith(test)) {
-                        String material = s.replace(test, "");
-                        try {
-                            Material testMaterial = Material.matchMaterial(material, false);
-                            if (testMaterial != null) {
-                                continue root;
-                            }
-                            testMaterial = Material.matchMaterial(material, true);
-                            if (testMaterial != null) {
-                                Utils.plugin.getLogger().warning("Legacy name used: " + material + " is now " + testMaterial.name());
-                                continue root;
-                            }
-                            Utils.plugin.getLogger().warning("No valid material " + material + " in node " + s);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                     }
                 }
 

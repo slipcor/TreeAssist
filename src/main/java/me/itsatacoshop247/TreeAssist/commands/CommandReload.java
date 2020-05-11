@@ -19,8 +19,7 @@ public class CommandReload extends AbstractCommand {
             return;
         }
         Utils.plugin.blockList.save(true);
-        Utils.plugin.reloadConfig();
-        Utils.plugin.loadYamls();
+        Utils.plugin.getTreeAssistConfig().load();
         Utils.plugin.reloadLists();
         sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_RELOAD));
     }

@@ -1,5 +1,6 @@
 package me.itsatacoshop247.TreeAssist;
 
+import me.itsatacoshop247.TreeAssist.core.Config;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
@@ -46,8 +47,8 @@ public class TreeAssistReplant implements Runnable {
                 state.setData(sap);
                 state.update();
             }
-            if (plugin.getConfig().getInt("Time to Block Sapling Growth (Seconds)") > 0) {
-                plugin.getListener().getAntiGrow().add(this.block, plugin.getConfig().getInt("Time to Block Sapling Growth (Seconds)"));
+            if (plugin.getTreeAssistConfig().getInt(Config.CFG.SAPLING_REPLANT_TIME_TO_BLOCK_SAPLING_GROWTH) > 0) {
+                plugin.getListener().getAntiGrow().add(this.block, plugin.getTreeAssistConfig().getInt(Config.CFG.SAPLING_REPLANT_TIME_TO_BLOCK_SAPLING_GROWTH));
             }
         }
     }

@@ -2,6 +2,7 @@ package me.itsatacoshop247.TreeAssist;
 
 import java.util.Random;
 
+import me.itsatacoshop247.TreeAssist.core.Config;
 import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.events.TASaplingReplaceEvent;
 import org.bukkit.entity.Item;
@@ -37,7 +38,7 @@ public class TreeAssistSpawnListener implements Listener {
 			}
 
 			if ((new Random()).nextInt(100) < 
-					plugin.getConfig().getInt("Auto Plant Dropped Saplings.Chance (percent)",10)) {
+					plugin.getTreeAssistConfig().getInt(Config.CFG.AUTO_PLANT_DROPPED_SAPLINGS_CHANCE,10)) {
 				new TreeAssistSaplingSelfPlant(plugin, drop);
 			}
 		}

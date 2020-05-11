@@ -8,6 +8,7 @@ import java.util.*;
 
 public class TreeStructure {
     public static List<Material> allTrunks = new ArrayList<>();
+    public static Debugger debug;
     static List<Material> allExtras = new ArrayList<>();
 
     public Block bottom;

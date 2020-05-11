@@ -4,8 +4,6 @@ import me.itsatacoshop247.TreeAssist.core.*;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
 import me.itsatacoshop247.TreeAssist.events.TALeafDecay;
 import me.itsatacoshop247.TreeAssist.events.TASaplingReplaceEvent;
-import me.itsatacoshop247.TreeAssist.trees.AbstractGenericTree;
-import me.itsatacoshop247.TreeAssist.trees.CustomTree;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -43,7 +41,7 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onLeavesDecay(LeavesDecayEvent event) {
-        if (plugin.config.getBoolean("Leaf Decay.Fast Leaf Decay") && plugin.Enabled) {
+        if (plugin.getTreeAssistConfig().getBoolean(Config.CFG.LEAF_DECAY_FAST_LEAF_DECAY) && plugin.Enabled) {
             Block block = event.getBlock();
             World world = block.getWorld();
             if (!plugin.isActive(world)) {
@@ -76,10 +74,10 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (!plugin.config.getBoolean("Main.Ignore User Placed Blocks") &&
-                (Utils.isLog(event.getBlock().getType()) || CustomTree.isCustomLog(event.getBlock()))) {
-            if (plugin.config.getBoolean("Worlds.Enable Per World")) {
-                if (!plugin.config.getList("Worlds.Enabled Worlds").contains(event.getBlock().getWorld().getName())) {
+        if (!plugin.getTreeAssistConfig().getBoolean(Config.CFG.MAIN_IGNORE_USER_PLACED_BLOCKS) &&
+                (Utils.isLog(event.getBlock().getType()))) {
+            if (plugin.getTreeAssistConfig().getBoolean(Config.CFG.WORLDS_ENABLE_PER_WORLD)) {
+                if (!plugin.getTreeAssistConfig().getStringList(Config.CFG.WORLD_ENABLED_WORLDS, new ArrayList<>()).contains(event.getBlock().getWorld().getName())) {
                     return;
                 }
             }
@@ -101,9 +99,9 @@ public class TreeAssistBlockListener implements Listener {
 
     private void checkFire(Cancellable unused, Block block) {
 
-        if (plugin.config.getBoolean("Sapling Replant.Replant When Tree Burns Down") && plugin.Enabled) {
-            if (plugin.config.getBoolean("Worlds.Enable Per World")) {
-                if (!plugin.config.getList("Worlds.Enabled Worlds").contains(block.getWorld().getName())) {
+        if (plugin.getTreeAssistConfig().getBoolean(Config.CFG.SAPLING_REPLANT_REPLANT_WHEN_TREE_BURNS_DOWN) && plugin.Enabled) {
+            if (plugin.getTreeAssistConfig().getBoolean(Config.CFG.WORLDS_ENABLE_PER_WORLD)) {
+                if (!plugin.getTreeAssistConfig().getStringList(Config.CFG.WORLD_ENABLED_WORLDS, new ArrayList<>()).contains(block.getWorld().getName())) {
                     return;
                 }
             }
@@ -129,7 +127,7 @@ public class TreeAssistBlockListener implements Listener {
         }
     }
 
-    protected final static Set<AbstractGenericTree> trees = new HashSet<AbstractGenericTree>();
+    protected final static Set<TreeStructure> trees = new HashSet<>();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
@@ -209,7 +207,7 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (!plugin.getConfig().getBoolean("Main.Toggle Default")) {
+        if (!plugin.getTreeAssistConfig().getBoolean(Config.CFG.MAIN_TOGGLE_DEFAULT)) {
             plugin.toggleGlobal(event.getPlayer().getName());
         }
     }
@@ -238,7 +236,7 @@ public class TreeAssistBlockListener implements Listener {
      * @param blockAt the block to check
      */
     private void breakIfLonelyLeaf(Block blockAt) {
-        if (!Utils.isLeaf(blockAt.getType()) && !CustomTree.isCustomTreeBlock(blockAt)) {
+        if (!Utils.isLeaf(blockAt.getType())) {
             return;
         }
         World world = blockAt.getWorld();
@@ -298,7 +296,7 @@ public class TreeAssistBlockListener implements Listener {
     private int calcAir(Block blockAt) {
         if (Utils.isAir(blockAt.getType()) || blockAt.getType() == Material.VINE || Utils.isLeaf(blockAt.getType())) {
             return 0;
-        } else if (Utils.isLog(blockAt.getType()) || CustomTree.isCustomLog(blockAt)) {
+        } else if (Utils.isLog(blockAt.getType())) {
             return 5;
         } else {
             return 1;

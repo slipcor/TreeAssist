@@ -26,17 +26,6 @@ Automatic Tree Destruction:
   Initial Delay (seconds): 10
   Remove Leaves: true
   Required Lore: ''
-  Tree Types:
-    Birch: true
-    Jungle: true
-    BigJungle: true
-    BigSpruce: true
-    Oak: true
-    Spruce: true
-    Brown Shroom: true
-    Red Shroom: true
-    Acacia: true
-    Dark Oak: true
   When Sneaking: true
   When Not Sneaking: true
 Block Statistics:
@@ -56,16 +45,6 @@ Sapling Replant:
   Replant When Tree Burns Down: true
   Time to Protect Sapling (Seconds): 0
   Time to Block Sapling Growth (Seconds): 0
-  Tree Types to Replant:
-    Birch: true
-    Jungle: true
-    BigJungle: true
-    Oak: true
-    Spruce: true
-    Brown Shroom: true
-    Red Shroom: true
-    Acacia: true
-    Dark Oak: true
 Tools:
   Sapling Replant Require Tools: true
   Tree Destruction Require Tools: true
@@ -79,10 +58,6 @@ Placed Blocks:
   Handler Lookup Time: 86400
 Modding:
   Disable Durability Fix: false
-  Custom Tree Definitions:
-  - - minecraft:birch_sapling
-    - minecraft:birch_log
-    - minecraft:birch_leaves
 Debug: none
 Version: 6.0
 Trees:
