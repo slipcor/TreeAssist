@@ -74,8 +74,6 @@ It also will take down an entire tree when it is enabled in the config.
   - branches work, leaves get removed.
   - neighbor trees leaves do not get cut in (worst case we only remove a trunk and leave all leaves)
   Still working on:
-  - thick jungle needs leaf tweaks
-  - tall oak trees need branch checking
   - implement configuration settings about when and how to remove trees automatically or to clean up
 - [read more](doc/changelog.md)
 
