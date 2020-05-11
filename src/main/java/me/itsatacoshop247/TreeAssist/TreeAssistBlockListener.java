@@ -114,7 +114,7 @@ public class TreeAssistBlockListener implements Listener {
                 Block onebelow = block.getRelative(BlockFace.DOWN, 1);
                 Block oneabove = block.getRelative(BlockFace.UP, 1);
                 if (onebelow.getType() == Material.DIRT || onebelow.getType() == Material.GRASS_BLOCK || onebelow.getType() == Material.PODZOL) {
-                    if (oneabove.getType() == Material.AIR || oneabove.getType() == logMat) {
+                    if (Utils.isAir(oneabove.getType()) || oneabove.getType() == logMat) {
                         TASaplingReplaceEvent event = new TASaplingReplaceEvent(block, tree.getSpecies().name());
                         Utils.plugin.getServer().getPluginManager().callEvent(event);
                         if (event.isCancelled()) {
@@ -294,8 +294,9 @@ public class TreeAssistBlockListener implements Listener {
         }
     }
 
+    @Deprecated
     private int calcAir(Block blockAt) {
-        if (blockAt.getType() == Material.AIR || blockAt.getType() == Material.VINE || Utils.isLeaf(blockAt.getType())) {
+        if (Utils.isAir(blockAt.getType()) || blockAt.getType() == Material.VINE || Utils.isLeaf(blockAt.getType())) {
             return 0;
         } else if (Utils.isLog(blockAt.getType()) || CustomTree.isCustomLog(blockAt)) {
             return 5;

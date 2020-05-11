@@ -78,3 +78,7 @@ Natural Blocks:
 - 'minecraft:jungle_sapling'
 - 'minecraft:dark_oak_sapling'
 - 'minecraft:acacia_sapling'
+- 'minecraft:vine'
+- 'minecraft:cave_air'
+- 'minecraft:void_air'
+Version: 8.0

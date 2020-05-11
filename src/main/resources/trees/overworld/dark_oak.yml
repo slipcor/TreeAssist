@@ -21,4 +21,4 @@ Blocks:
     Height: 2
   Middle:
     Radius: 3
-# defaults: uneven bottom = false, air = false, no edges on leaves
+Version: 7.0

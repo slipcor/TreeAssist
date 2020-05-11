@@ -2,9 +2,11 @@ package me.itsatacoshop247.TreeAssist.core;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class TreeConfig {
@@ -52,6 +54,22 @@ public class TreeConfig {
         }
     }
 
+    public void preLoad() {
+        try {
+            cfg.load(configFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void save() {
+        try {
+            cfg.save(configFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public enum CFG {
         CHILDREN("Children", new ArrayList<>()),
         CUSTOM_DROPS("Custom Drops", new HashMap<>()),
@@ -83,7 +101,9 @@ public class TreeConfig {
 
         REPLANT("Replant", "String"),
         TOOL_LIST("Tool List", new ArrayList<>()),
-        NATURAL_BLOCKS("Natural Blocks", new ArrayList<>()) // blocks that are okay to have around trees
+        NATURAL_BLOCKS("Natural Blocks", new ArrayList<>()), // blocks that are okay to have around trees
+
+        VERSION("Version", 7.0)
         ; //
 
         private final String node;

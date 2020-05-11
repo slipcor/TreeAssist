@@ -19,6 +19,7 @@ public class TreeStructure {
     private List<Block> otherTrunks = new ArrayList<>();
     private Map<Block, List<Block>> branchMap;
     private List<Block> extras;
+    private List<Block> roofs = new ArrayList<>();
 
     private final List<Block> checkedBlocks = new ArrayList<>();
 
@@ -116,15 +117,18 @@ public class TreeStructure {
             }
 
             for (Block tree : trunk) {
+                //tree.setType(Material.GLASS);
                 tree.breakNaturally();
             }
 
             for (Block leaf : extras) {
+                //leaf.setType(Material.LIME_STAINED_GLASS);
                 leaf.breakNaturally();
             }
             for (List<Block> blocks : branchMap.values()) {
                 if (blocks != null) {
                     for (Block b : blocks) {
+                        //b.setType(Material.BROWN_STAINED_GLASS);
                         b.breakNaturally();
                     }
                 }
@@ -183,7 +187,7 @@ public class TreeStructure {
         }
         // thickness 2
 
-        Block checkBlock = config.getBoolean(TreeConfig.CFG.TRUNK_UNEVEN_BOTTOM) ? bottom.getRelative(BlockFace.UP) : bottom;
+        Block checkBlock = config.getBoolean(TreeConfig.CFG.TRUNK_UNEVEN_BOTTOM) ? bottom.getRelative(BlockFace.UP, 2) : bottom;
 
         BlockFace[] faces = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST,
                 BlockFace.NORTH_EAST,BlockFace.SOUTH_EAST,BlockFace.NORTH_WEST,BlockFace.SOUTH_WEST};
@@ -205,9 +209,9 @@ public class TreeStructure {
         if (trunks.size() != 4) {
             System.out.println("We do not have 4 trunks, we found " + trunks.size() + "!");
             valid = false;
+            return;
         }
 
-        // single trunk, that should be easy, right?
         trunk = findTrunks(trunks);
 
         if (trunk == null) {
@@ -254,15 +258,18 @@ public class TreeStructure {
         }
 
         for (Block tree : trunk) {
+            //tree.setType(Material.GLASS);
             tree.breakNaturally();
         }
 
         for (Block leaf : extras) {
+            //leaf.setType(Material.LIME_STAINED_GLASS);
             leaf.breakNaturally();
         }
         for (List<Block> blocks : branchMap.values()) {
             if (blocks != null) {
                 for (Block b : blocks) {
+                    //b.setType(Material.BROWN_STAINED_GLASS);
                     b.breakNaturally();
                 }
             }
@@ -322,7 +329,7 @@ public class TreeStructure {
 
                 debug("No more trunk going up at " + checkBlock.getLocation() + " - type: " + checkMaterial);
 
-                if (checkBlock.getType() != Material.AIR) {
+                if (!Utils.isAir(checkBlock.getType())) {
                     if (extraBlocks.contains(checkMaterial)) {
                         debug("It's an extra block!");
                     } else if (naturalBlocks.contains(checkMaterial)){
@@ -341,7 +348,7 @@ public class TreeStructure {
                             break blockLoop;
                         }
                         debug("Checking diagonal at " + checkBlock.getRelative(x, 0, z).getLocation() + " - type: " + innerCheck);
-                        if (innerCheck != Material.AIR) {
+                        if (!Utils.isAir(innerCheck)) {
                             if (extraBlocks.contains(innerCheck)) {
                                 debug("It's an extra block!");
                             } else if (naturalBlocks.contains(innerCheck)){
@@ -379,13 +386,13 @@ public class TreeStructure {
                 checkBlock = checkBlock.getRelative(BlockFace.UP);
             }
 
-            if (allExtras.contains(checkBlock.getType())) {
+            if (allExtras.contains(checkBlock.getType()) || Utils.isAir(checkBlock.getType())) {
                 debug("We hit the roof!");
 
                 // we hit the roof and no problems
+                roofs.add(checkBlock);
                 continue;
             }
-
             debug("We did not find a roof block. not a valid tree!");
             return null;
         }
@@ -476,6 +483,26 @@ public class TreeStructure {
 
         calculateBottoms(trunks);
 
+        List<Block> checkRoofs = new ArrayList<>();
+        checkRoofs.addAll(roofs);
+
+        for (Block block : checkRoofs) {
+            BlockFace[] directions = getFaces(block);
+            for (BlockFace face : directions) {
+                Block checkBlock = block.getRelative(face);
+
+                List<Block> branch = new ArrayList<>();
+                if (!invalidBranch(checkBlock, branch, face)) {
+                    branchMap.put(checkBlock, branch);
+                } else {
+                    checkBlock = checkBlock.getRelative(BlockFace.UP);
+                    if (!invalidBranch(checkBlock, branch, face)) {
+                        branchMap.put(checkBlock, branch);
+                    }
+                }
+            }
+        }
+
         for (Block block : trunk) {
             if (first) {
                 first = false;
@@ -501,6 +528,9 @@ public class TreeStructure {
                     trunk.clear();
                     branchMap.clear();
                     return;
+                } else {
+                    // this branch ends here
+                    roofs.add(checkBlock);
                 }
             }
         }
@@ -514,10 +544,10 @@ public class TreeStructure {
         continuations.put(BlockFace.SOUTH, new BlockFace[]{BlockFace.SOUTH});
         continuations.put(BlockFace.WEST, new BlockFace[]{BlockFace.WEST});
 
-        continuations.put(BlockFace.NORTH_EAST, new BlockFace[]{BlockFace.NORTH, BlockFace.EAST});
-        continuations.put(BlockFace.NORTH_WEST, new BlockFace[]{BlockFace.NORTH, BlockFace.WEST});
-        continuations.put(BlockFace.SOUTH_EAST, new BlockFace[]{BlockFace.SOUTH, BlockFace.EAST});
-        continuations.put(BlockFace.SOUTH_WEST, new BlockFace[]{BlockFace.SOUTH, BlockFace.WEST});
+        continuations.put(BlockFace.NORTH_EAST, new BlockFace[]{BlockFace.NORTH, BlockFace.EAST, BlockFace.NORTH_EAST});
+        continuations.put(BlockFace.NORTH_WEST, new BlockFace[]{BlockFace.NORTH, BlockFace.WEST, BlockFace.NORTH_WEST});
+        continuations.put(BlockFace.SOUTH_EAST, new BlockFace[]{BlockFace.SOUTH, BlockFace.EAST, BlockFace.SOUTH_EAST});
+        continuations.put(BlockFace.SOUTH_WEST, new BlockFace[]{BlockFace.SOUTH, BlockFace.WEST, BlockFace.SOUTH_WEST});
     }
 
     private boolean calculateBottoms(List<Block> bottoms) {
@@ -560,6 +590,11 @@ public class TreeStructure {
         set.add(southWestBlock);
         set.add(northEastBlock);
         set.add(southEastBlock);
+
+        System.out.println("NW: " + northWestBlock.getLocation());
+        System.out.println("SW: " + southWestBlock.getLocation());
+        System.out.println("NE: " + northEastBlock.getLocation());
+        System.out.println("SE: " + southEastBlock.getLocation());
 
         return set.size() == 4;
     }
@@ -637,6 +672,10 @@ public class TreeStructure {
         checkedBlocks.add(checkBlock);
         BlockFace[] diagonals = validDiagonals.get(direction);
 
+        if (diagonals == null) {
+            diagonals = new BlockFace[]{direction};
+        }
+
         Material mat = checkBlock.getType();
         if (trunkBlocks.contains(mat)) {
             // check for other trunks
@@ -662,8 +701,13 @@ public class TreeStructure {
                     return true;
                 }
             }
+            if (invalidBranch(checkBlock.getRelative(BlockFace.UP), result, direction)) {
+                result.clear();
+                return true;
+            }
         } else if (extraBlocks.contains(mat)) {
             System.out.println("This branch ends now.");
+            roofs.add(checkBlock);
             //we found our end!
             return false;
         } else if (
@@ -683,11 +727,19 @@ public class TreeStructure {
         validDiagonals.put(BlockFace.SOUTH,
                 new BlockFace[] {BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST});
 
-
         validDiagonals.put(BlockFace.EAST,
                 new BlockFace[] {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.NORTH_EAST, BlockFace.SOUTH_EAST, BlockFace.EAST});
         validDiagonals.put(BlockFace.WEST,
                 new BlockFace[] {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.NORTH_WEST, BlockFace.SOUTH_WEST, BlockFace.WEST});
+
+        validDiagonals.put(BlockFace.NORTH_EAST,
+                new BlockFace[] {BlockFace.NORTH, BlockFace.EAST, BlockFace.NORTH_EAST});
+        validDiagonals.put(BlockFace.NORTH_WEST,
+                new BlockFace[] {BlockFace.NORTH, BlockFace.WEST, BlockFace.NORTH_WEST});
+        validDiagonals.put(BlockFace.SOUTH_EAST,
+                new BlockFace[] {BlockFace.SOUTH, BlockFace.EAST, BlockFace.SOUTH_EAST});
+        validDiagonals.put(BlockFace.SOUTH_WEST,
+                new BlockFace[] {BlockFace.SOUTH, BlockFace.WEST, BlockFace.SOUTH_WEST});
     }
 
     /**
@@ -701,22 +753,9 @@ public class TreeStructure {
         boolean edgesM = config.getBoolean(TreeConfig.CFG.BLOCKS_MIDDLE_EDGES);
         boolean airM = config.getBoolean(TreeConfig.CFG.BLOCKS_MIDDLE_AIR);
 
-        Block roof = null;
-
         BlockFace[] neighbors = new BlockFace[]{BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
 
-        for (Block block : trunk) {
-            roof = block;
-
-            for (BlockFace face : neighbors) {
-                if (isInvalid(block.getRelative(face), face, radiusM, 1, true, edgesM, airM, radiusM)) {
-                    valid = false;
-                    return;
-                }
-            }
-        }
-
-        if (roof == null) {
+        if (roofs.size() <= 0) {
             debug("No more blocks found!");
             valid = false;
             return;
@@ -728,27 +767,30 @@ public class TreeStructure {
 
         boolean edgesT = config.getBoolean(TreeConfig.CFG.BLOCKS_TOP_EDGES);
 
-        for (int y=1; y<=heightT; y++) {
-            Block checkBlock = roof.getRelative(0, y, 0);
-            Material checkMaterial = checkBlock.getType();
+        for (Block roof : roofs) {
 
-            if (checkMaterial != Material.AIR) {
-                if (extraBlocks.contains(checkMaterial)) {
-                    extras.add(checkBlock);
+            for (int y = 1; y <= heightT; y++) {
+                Block checkBlock = roof.getRelative(0, y, 0);
+                Material checkMaterial = checkBlock.getType();
 
-                    for (BlockFace face : neighbors) {
-                        if (isInvalid(checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, radiusT)) {
-                            valid = false;
-                            return;
+                if (!Utils.isAir(checkMaterial)) {
+                    if (extraBlocks.contains(checkMaterial)) {
+                        extras.add(checkBlock);
+
+                        for (BlockFace face : neighbors) {
+                            if (isInvalid(checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, radiusT)) {
+                                valid = false;
+                                return;
+                            }
                         }
+                    } else if (
+                            !naturalBlocks.contains(checkMaterial) &&
+                                    !trunkBlocks.contains(checkMaterial) &&
+                                    !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
+                        debug("Invalid block found: " + checkMaterial);
+                        valid = false;
+                        return;
                     }
-                } else if (
-                        !naturalBlocks.contains(checkMaterial) &&
-                                !trunkBlocks.contains(checkMaterial) &&
-                                !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                    debug("Invalid block found: " + checkMaterial);
-                    valid = false;
-                    return;
                 }
             }
         }
@@ -796,7 +838,7 @@ public class TreeStructure {
             Block checkBlock = roof.getRelative(0, y, 0);
             Material checkMaterial = checkBlock.getType();
 
-            if (checkMaterial != Material.AIR) {
+            if (!Utils.isAir(checkMaterial)) {
                 if (extraBlocks.contains(checkMaterial)) {
                     extras.add(checkBlock);
 
@@ -840,7 +882,7 @@ public class TreeStructure {
         }
         Material checkMaterial = checkBlock.getType();
 
-        if (air || checkMaterial != Material.AIR) {
+        if (air || !Utils.isAir(checkMaterial)) {
             boolean found = air;
             if (extraBlocks.contains(checkMaterial)) {
                 extras.add(checkBlock);

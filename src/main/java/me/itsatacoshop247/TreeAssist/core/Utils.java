@@ -350,6 +350,11 @@ public final class Utils {
         Utils.plugin.saveConfig();
         player.sendMessage(Language.parse(MSG.SUCCESSFUL_ADDTOOL, entry.toString()));
     }
+
+    public static boolean isAir(final Material mat) {
+        return mat == null || mat == Material.AIR || mat == Material.CAVE_AIR || mat == Material.VOID_AIR;
+    }
+
 	/**
 	 * Check if the player has a needed tool
 	 * 
@@ -671,15 +676,20 @@ public final class Utils {
             list.add("nether");
         }
 
+        boolean changes = false;
+
         TreeStructure.allTrunks.clear();
         TreeStructure.allExtras.clear();
 
         treeDefinitions.clear();
         for (String entry : list) {
             TreeConfig parent = new TreeConfig(new File(plugin.getDataFolder().getPath() + "/trees/" + entry + ".yml"));
+            TreeConfigUpdater.check(parent, entry);
             parent.load();
+
             for (String child : parent.getStringList(TreeConfig.CFG.CHILDREN, new ArrayList<>())) {
                 TreeConfig childConfig = new TreeConfig(new File(plugin.getDataFolder().getPath() + "/trees/" + entry + "/" + child + ".yml"));
+                TreeConfigUpdater.check(childConfig, entry + "/" + child);
                 childConfig.load();
                 childConfig.loadDefaults(parent);
                 treeDefinitions.add(childConfig);

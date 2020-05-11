@@ -5,7 +5,6 @@ Trunk:
   - 'minecraft:shroomlight'
   - 'minecraft:warped_wart_block'
   Thickness: 3
-  Edges: true
 # special case: can have air AND logs in the diagonal edges
 Blocks:
   Materials:
@@ -18,3 +17,4 @@ Blocks:
   Middle:
     Radius: 3
     Air: true
+Version: 7.0

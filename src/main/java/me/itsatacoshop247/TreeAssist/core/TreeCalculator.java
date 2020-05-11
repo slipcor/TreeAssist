@@ -77,7 +77,7 @@ public class TreeCalculator {
 
                 // debug("No more trunk going down at " + block.getLocation() + " - type: " + checkMaterial);
 
-                if (checkBlock.getType() != Material.AIR) {
+                if (!Utils.isAir(checkBlock.getType())) {
                     if (groundBlocks.contains(checkMaterial)){
                         // debug("It's a ground block!");
                         return checkBlock.getRelative(BlockFace.UP);
@@ -99,7 +99,7 @@ public class TreeCalculator {
                             break blockLoop;
                         }
                         // debug("Checking diagonal at " + checkBlock.getRelative(x, 0, z).getLocation() + " - type: " + innerCheck);
-                        if (innerCheck != Material.AIR) {
+                        if (!Utils.isAir(innerCheck)) {
                             if (!groundBlocks.contains(innerCheck) &&
                                     !extraBlocks.contains(innerCheck) &&
                                     !naturalBlocks.contains(innerCheck) &&
