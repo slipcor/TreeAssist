@@ -1,12 +1,3 @@
-Custom Drops:
-  'minecraft:brown_mushroom_block': 0.01
-Custom Drop Chance:
-  DIAMOND_AXE: 100
-  GOLDEN_AXE: 75
-  IRON_AXE: 50
-  STONE_AXE: 25
-  WOODEN_AXE: 10
-Replant: 'minecraft:brown_mushroom'
 Blocks:
   Materials:
   - 'minecraft:brown_mushroom_block'
@@ -14,3 +5,9 @@ Blocks:
     Radius: 3
   Middle:
     Radius: 0
+Custom Drops:
+  'minecraft:brown_mushroom_block': 0.01
+Parent: mushroom
+Permission: treeassist.destroy.brownshroom
+Replanting:
+  Material: 'minecraft:brown_mushroom'

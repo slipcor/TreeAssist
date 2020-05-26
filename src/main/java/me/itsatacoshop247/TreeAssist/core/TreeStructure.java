@@ -1,8 +1,21 @@
 package me.itsatacoshop247.TreeAssist.core;
 
+import me.itsatacoshop247.TreeAssist.TreeAssistProtect;
+import me.itsatacoshop247.TreeAssist.TreeAssistReplant;
+import me.itsatacoshop247.TreeAssist.events.TASaplingReplaceEvent;
+import me.itsatacoshop247.TreeAssist.events.TATreeBrokenEvent;
+import me.itsatacoshop247.TreeAssist.externals.JobsHook;
+import me.itsatacoshop247.TreeAssist.externals.mcMMOHook;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -146,7 +159,7 @@ public class TreeStructure {
                 }
             }
 
-            bottom.setType(Material.matchMaterial(config.getString(TreeConfig.CFG.REPLANT)));
+            bottom.setType(Material.matchMaterial(config.getString(TreeConfig.CFG.REPLANTING_MATERIAL)));
 
             return;
 
@@ -288,26 +301,10 @@ public class TreeStructure {
         }
 
         for (Block block : trunks) {
-            block.setType(Material.matchMaterial(config.getString(TreeConfig.CFG.REPLANT)));
+            block.setType(Material.matchMaterial(config.getString(TreeConfig.CFG.REPLANTING_MATERIAL)));
         }
 
         return;
-
-
-        /*
-
-        BLOCKS_CAP_HEIGHT("Blocks.Cap.Height", 2), // Branch Topping Leaves Height
-        BLOCKS_CAP_RADIUS("Blocks.Cap.Radius", 3), // Branch Topping Leaves Radius
-
-        TRUNK_RADIUS("Trunk.Radius", 1),
-        TRUNK_EDGES("Trunk.Edges", false), // Trunk can have extra on the edges (Dark Oak)
-        TRUNK_THICKNESS("Trunk.Thickness", 1), // This value is also used for radius calculation!
-        TRUNK_UNEVEN_BOTTOM("Trunk.Uneven Bottom", false), // Can saplings/lowest trunks be on different Y?
-
-        TOOL_LIST("Tool List", new ArrayList<>()),
-        NATURAL_BLOCKS("Natural Blocks", new ArrayList<>()) // blocks that are okay to have around trees
-
-         */
     }
 
     private boolean isClose(List<Block> otherTrunks) {
@@ -939,5 +936,417 @@ public class TreeStructure {
             }
         }
         return false;
+    }
+
+    public void maybeReplant(Player player, Block block) {
+        if (config.getBoolean(TreeConfig.CFG.REPLANTING_ACTIVE)) {
+            debug.i("replanting is disabled!");
+            return;
+        }
+
+        Config globalConfig = Utils.plugin.getTreeAssistConfig();
+
+        if (!config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE)) {
+
+            if (Utils.plugin.getListener().isNoReplace(player.getName())) {
+                debug.i("Player is NoReplace!");
+                return;
+            }
+
+            if (globalConfig.getBoolean(Config.CFG.MAIN_USE_PERMISSIONS) &&
+                !player.hasPermission("treeassist.replant")) {
+                debug.i("Player has no replant perms!");
+                return;
+            }
+
+            if (config.getBoolean(TreeConfig.CFG.REPLANTING_REQUIRES_TOOLS)) {
+                if (!Utils.isRequiredTool(player.getInventory().getItemInMainHand(), config)) {
+                    debug.i("Player does not have the tool!!");
+                    return;
+                }
+            }
+        }
+        if (!(block.equals(bottom) ||
+            block.equals(northWestBlock) ||
+            block.equals(southWestBlock) ||
+            block.equals(northEastBlock) ||
+            block.equals(southEastBlock)
+            )) {
+            if (globalConfig.getBoolean(Config.CFG.SAPLING_REPLANT_BOTTOM_BLOCK_HAS_TO_BE_BROKEN_FIRST)) {
+                debug.i("We did not break the bottom!");
+                return;
+            }
+        }
+
+        debug.i("we are replacing now!");
+
+        int delay = Math.max(1, globalConfig.getInt(Config.CFG.SAPLING_REPLANT_DELAY_UNTIL_SAPLING_IS_REPLANTED));
+
+        Material saplingMat = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
+
+        List<Block> bottoms = new ArrayList<>();
+
+        if (bottom != null) {
+            bottoms.add(bottom);
+        }
+        if (northWestBlock != null) {
+            bottoms.add(northWestBlock);
+        }
+        if (southWestBlock != null) {
+            bottoms.add(southWestBlock);
+        }
+        if (northEastBlock != null) {
+            bottoms.add(northEastBlock);
+        }
+        if (southEastBlock != null) {
+            bottoms.add(southEastBlock);
+        }
+
+        for (Block saplingBlock : bottoms) {
+
+            TASaplingReplaceEvent replaceEvent = new TASaplingReplaceEvent(saplingBlock, saplingMat.name());
+            Utils.plugin.getServer().getPluginManager().callEvent(replaceEvent);
+
+            if (replaceEvent.isCancelled()) {
+                debug.i("Sapling replace was cancelled by a plugin!");
+                continue;
+            }
+
+            Runnable b = new TreeAssistReplant(Utils.plugin, saplingBlock, saplingMat);
+            Utils.plugin.getServer().getScheduler()
+                    .scheduleSyncDelayedTask(Utils.plugin, b, 20 * delay);
+            int timeToProtect = globalConfig.getInt(Config.CFG.SAPLING_REPLANT_TIME_TO_PROTECT_SAPLING);
+            if (timeToProtect > 0) {
+                Utils.plugin.saplingLocationList.add(saplingBlock.getLocation());
+                Runnable X = new TreeAssistProtect(Utils.plugin, saplingBlock.getLocation());
+
+                Utils.plugin
+                        .getServer()
+                        .getScheduler()
+                        .scheduleSyncDelayedTask(
+                                Utils.plugin,
+                                X,20 * timeToProtect);
+            }
+        }
+    }
+
+    public void removeLater(Player player, ItemStack playerTool) {
+        boolean damage = config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE);
+
+        debug.i("Removing The Tree!");
+
+
+        final int delay = Utils.plugin.getConfig().getBoolean("Main.Initial Delay") ? Utils.plugin.getConfig().getInt(
+                "Automatic Tree Destruction.Initial Delay (seconds)") * 20 : 0;
+        final int offset = Utils.plugin.getConfig().getInt(
+                "Automatic Tree Destruction.Delay (ticks)");
+
+        final ItemStack tool = (damage && player.getGameMode() != GameMode.CREATIVE) ? playerTool
+                : null;
+
+        Material sapling = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
+
+        Utils.plugin.setCoolDown(player, config, trunk);
+
+        final boolean statPickup = config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_PICKUP);
+        final boolean statMineBlock = config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_MINE_BLOCK);
+
+        final List<Block> removeBlocks = new ArrayList<>();
+
+        if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REMOVE_LEAVES)) {
+            for (Block block : extras) {
+                Utils.plugin.getListener().breakRadiusLeaves(block);
+                break;
+            }
+            removeBlocks.addAll(extras);
+        }
+        removeBlocks.addAll(trunk);
+
+        class InstantRunner extends BukkitRunnable {
+            boolean fastDecaying = false;
+            @Override
+            public void run() {
+                if (offset < 0) {
+                    for (Block block : removeBlocks) {
+                        if (sapling.equals(block.getType())) {
+                            debug.i("InstantRunner: skipping breaking a sapling");
+                            continue;
+                        }
+                        if (tool == null) {
+                            TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
+                            Utils.plugin.getServer().getPluginManager().callEvent(event);
+                            if (!event.isCancelled())
+                            {
+                                Utils.plugin.blockList.logBreak(block, player);
+
+                                callExternals(block, player);
+
+                                if (Utils.isLog(block.getType())
+                                        && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
+                                    player.getInventory().addItem(block.getState().getData().toItemStack(1));
+                                    block.setType(Material.AIR);
+                                } else {
+                                    Utils.breakBlock(player, block);
+                                }
+                                player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
+                            }
+                        } else {
+                            debug.i("InstantRunner: 1");
+                            breakBlock(block, tool, player, statPickup, statMineBlock);
+                            if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
+
+                                debug.i("removing item: " + player.getItemInHand().getType().name() +
+                                        " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
+                                player.getInventory().remove(tool);
+                                this.cancel();
+                            }
+                        }
+                    }
+                    removeBlocks.clear();
+                } else {
+                    for (Block block : removeBlocks) {
+                        if (sapling.equals(block.getType())) {
+                            debug.i("InstantRunner: skipping breaking a sapling");
+                            continue;
+                        }
+                        if (block.getType() == Material.AIR) {
+                            debug.i("InstantRunner: 2a " + Debugger.parse(block.getLocation()));
+                        } else {
+                            if (tool == null) {
+                                TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
+                                Utils.plugin.getServer().getPluginManager().callEvent(event);
+                                if (!event.isCancelled()) {
+
+                                    callExternals(block, player);
+
+                                    Utils.plugin.blockList.logBreak(block, player);
+                                    if (Utils.isLog(block.getType())
+                                            && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
+                                        player.getInventory().addItem(block.getState().getData().toItemStack(1));
+                                        block.setType(Material.AIR);
+                                    } else {
+                                        Utils.breakBlock(player, block);
+                                    }
+                                    player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
+                                }
+                            } else {
+                                debug.i("InstantRunner: 2b");
+                                breakBlock(block, tool, player, statPickup, statMineBlock);
+                                if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
+                                    debug.i("removing item: " + player.getItemInHand().getType().name() +
+                                            " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
+                                    player.getInventory().remove(tool);
+                                    this.cancel();
+                                }
+                            }
+                        }
+                        removeBlocks.remove(block);
+                        return;
+                    }
+                }
+                try {
+                    this.cancel();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        (new InstantRunner()).runTaskTimer(Utils.plugin, delay, offset);
+
+        class CleanRunner extends BukkitRunnable {
+            private final TreeStructure me;
+
+            CleanRunner(TreeStructure tree) {
+                me = tree;
+            }
+
+            @Override
+            public void run() {
+                List<Block> totalBlocks = new ArrayList<>();
+                if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REMOVE_LEAVES)) {
+                    for (Block block : extras) {
+                        Utils.plugin.getListener().breakRadiusLeaves(block);
+                        break;
+                    }
+                    totalBlocks.addAll(extras);
+                }
+                totalBlocks.addAll(trunk);
+
+                if (offset < 0) {
+                    for (Block block : totalBlocks) {
+                        if (sapling.equals(block.getType())) {
+                            debug.i("CleanRunner: skipping breaking a sapling");
+                        }
+                        debug.i("CleanRunner: 1");
+                        breakBlock(block, null, null, false, false);
+                    }
+                    removeBlocks.clear();
+                } else {
+                    for (Block block : totalBlocks) {
+                        if (sapling.equals(block.getType())) {
+                            debug.i("CleanRunner: skipping breaking a sapling");
+                            continue;
+                        }
+                        debug.i("CleanRunner: 2");
+                        breakBlock(block, null, null, false, false);
+                        totalBlocks.remove(block);
+                        return;
+                    }
+                }
+
+                me.valid = false;
+                try {
+                    this.cancel();
+                } catch (Exception e) {
+
+                }
+            }
+
+        }
+
+        (new CleanRunner(this)).runTaskTimer(Utils.plugin, delay + 200L, offset);
+    }
+
+    private void breakBlock(Block block, ItemStack tool, Player player, boolean statPickup, boolean statMineBlock) {
+
+        if ((tool != null) && (tool.getDurability() > tool.getType().getMaxDurability())) return;
+
+        TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
+        Utils.plugin.getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) return;
+
+        boolean leaf = allExtras.contains(block.getType());
+        Material maat = block.getType();
+        byte data = block.getState().getData().getData();
+
+        debug.i("breaking. leaf: " + leaf);
+
+        callExternals(block, player);
+
+        int chance = 100;
+
+        if (tool != null && !leaf) {
+            chance = config.getYamlConfiguration().getInt(TreeConfig.CFG.CUSTOM_DROP_CHANCE + "." + tool.getType().name(), 0);
+
+            if (chance < 1) {
+                chance = 1;
+            }
+        }
+
+        if (chance > 99 || (new Random()).nextInt(100) < chance) {
+            Utils.plugin.blockList.logBreak(block, player);
+
+            if (player != null && statMineBlock) {
+                player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+            }
+
+            if (player != null && Utils.isLog(block.getType())
+                    && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
+                if (statPickup) {
+                    player.incrementStatistic(Statistic.PICKUP, block.getType());
+                }
+                player.getInventory().addItem(block.getState().getData().toItemStack(1));
+                block.setType(Material.AIR);
+            } else {
+                if (tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
+                        && Utils.isMushroom(block.getType())) {
+                    Material mat = block.getType();
+                    block.setType(Material.AIR);
+                    block.getWorld().dropItemNaturally(
+                            block.getLocation(),
+                            new ItemStack(mat, 1));
+                } else {
+                    Utils.breakBlock(player, block, tool);
+                }
+            }
+            if (player != null) {
+                player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
+            }
+
+            if (leaf) {
+                ConfigurationSection cs = config.getYamlConfiguration().getConfigurationSection(TreeConfig.CFG.CUSTOM_DROPS.getNode());
+
+                debug.i("custom drop count: " + cs.getKeys(false).size());
+
+                for (String key : cs.getKeys(false)) {
+                    int customChance = (int) (cs.getDouble(key, 0.0d) * 100000d);
+
+                    if ((new Random()).nextInt(100000) < customChance) {
+                        debug.i("dropping: " + key);
+
+                        try {
+                            Material mat = Material.matchMaterial(key.toUpperCase());
+                            debug.i(">2 : " + mat.name());
+                            block.getWorld()
+                                    .dropItemNaturally(block.getLocation(),
+                                            new ItemStack(mat));
+                        } catch (Exception e) {
+                            Utils.plugin.getLogger().warning(
+                                    "Invalid config value: Custom Drops."
+                                            + key
+                                            + " is not a valid Material!");
+                        }
+
+                    }
+                }
+            } else {
+                debug.i("mat: " + maat.name());
+                debug.i("data: " + data);
+            }
+        } else {
+            block.setType(Material.AIR);
+            player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
+        }
+
+        if (!leaf && tool != null && player != null) {
+            if (tool.containsEnchantment(Enchantment.DURABILITY)) {
+                int damageChance = (int) (100d / ((double) tool
+                        .getEnchantmentLevel(Enchantment.DURABILITY) + 1d));
+
+                int random = new Random().nextInt(100);
+
+                if (random >= damageChance) {
+                    return; // nodamage -> out!
+                }
+            }
+
+            int ench = 100;
+
+            if (tool.getEnchantments().containsKey(Enchantment.DURABILITY)) {
+                ench = 100 / (tool.getEnchantmentLevel(Enchantment.DURABILITY) + 1);
+            }
+
+            if ((new Random()).nextInt(100) > ench) {
+                return; // no damage
+            }
+
+            if (Utils.toolgood.contains(tool.getType())) {
+                tool.setDurability((short) (tool.getDurability() + 1));
+            } else if (Utils.toolbad.contains(tool.getType())) {
+                tool.setDurability((short) (tool.getDurability() + 2));
+            }
+        }
+    }
+
+    public static void callExternals(Block block, Player player) {
+
+        boolean leaf = TreeStructure.allExtras.contains(block.getType());
+
+        if (!leaf && player != null) {
+            if (Utils.plugin.mcMMO) {
+                TreeStructure.debug.i("Adding mcMMO EXP!");
+                mcMMOHook.mcMMOaddExp(player, block);
+            }
+
+            if (Utils.plugin.jobs) {
+                debug.i("Adding Jobs EXP!");
+                JobsHook.addJobsExp(player, block);
+            }
+        } else {
+            debug.i("mcMMO: " + Utils.plugin.mcMMO);
+            debug.i("jobs: " + Utils.plugin.jobs);
+            debug.i("player: " + String.valueOf(player));
+        }
     }
 }

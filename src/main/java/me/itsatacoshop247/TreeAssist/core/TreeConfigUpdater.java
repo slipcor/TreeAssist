@@ -5,8 +5,8 @@ import java.util.List;
 
 public class TreeConfigUpdater {
     enum Adding {
-        NEW_AIR_CAVE(8.0f, "overworld", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:cave_air"),
-        NEW_AIR_VOID(8.0f, "overworld", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:void_air")
+        //NEW_AIR_CAVE(8.0f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:cave_air"),
+        //NEW_AIR_VOID(8.0f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:void_air")
         ;
 
         private final float version;
@@ -31,8 +31,8 @@ public class TreeConfigUpdater {
     }
 
     enum Removing {
-        TRUNK_EDGES_CRIMSON(8.0f, "nether/thick_crimson_fungus", "Trunk.Edges"),
-        TRUNK_EDGES_WARPED(8.0f, "nether/thick_warped_fungus", "Trunk.Edges")
+        //TRUNK_EDGES_CRIMSON(8.0f, "thick_crimson_fungus", "Trunk.Edges"),
+        //TRUNK_EDGES_WARPED(8.0f, "thick_warped_fungus", "Trunk.Edges")
         ;
 
         private final float version;

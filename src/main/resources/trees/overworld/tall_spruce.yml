@@ -1,19 +1,9 @@
-Custom Drops:
-  'minecraft:spruce_leaves': 0.01
-Custom Drop Chance:
-  DIAMOND_AXE: 100
-  GOLDEN_AXE: 75
-  IRON_AXE: 50
-  STONE_AXE: 25
-  WOODEN_AXE: 10
-Replant: 'minecraft:spruce_sapling'
-Trunk:
-  Thickness: 2
-  Materials:
-  - 'minecraft:spruce_log'
 Blocks:
-  Materials:
-  - 'minecraft:spruce_leaves'
+  Top:
+    Radius: 3
   Middle:
     Radius: 4
+Parent: spruce
+Trunk:
+  Thickness: 2
 Version: 7.0

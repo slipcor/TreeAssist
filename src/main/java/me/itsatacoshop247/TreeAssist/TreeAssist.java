@@ -86,8 +86,8 @@ public class TreeAssist extends JavaPlugin {
     }
 
     public boolean isForceAutoDestroy(TreeConfig treeConfig) {
-        return treeConfig.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION)
-                && config.getBoolean(Config.CFG.AUTOMATIC_TREE_DESTRUCTION_FORCED_REMOVAL);
+        return treeConfig.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_ACTIVE)
+                && treeConfig.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL);
     }
 
     public boolean isInteger(String input) {
@@ -134,10 +134,10 @@ public class TreeAssist extends JavaPlugin {
         }
 
         getServer().getPluginManager().registerEvents(listener, this);
-        if (config.getBoolean(Config.CFG.MAIN_AUTO_PLANT_DROPPED_SAPLINGS)) {
-            this.spawnListener = new TreeAssistSpawnListener(this);
-            getServer().getPluginManager().registerEvents(spawnListener, this);
-        }
+
+        this.spawnListener = new TreeAssistSpawnListener(this);
+        getServer().getPluginManager().registerEvents(spawnListener, this);
+
         reloadLists();
 
         MetricsLite metrics = new MetricsLite(this);
@@ -220,8 +220,8 @@ public class TreeAssist extends JavaPlugin {
         coolDowns.remove(playerName);
     }
 
-    public void setCoolDown(Player player, List<Block> logs) {
-        int coolDown = config.getInt(Config.CFG.AUTOMATIC_TREE_DESTRUCTION_COOLDOWN, 0);
+    public void setCoolDown(Player player, TreeConfig config, List<Block> logs) {
+        int coolDown = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_COOLDOWN, 0);
         if (coolDown == 0 || coolDownOverrides.contains(player.getName())) {
             return;
         } else if (coolDown < 0) {
@@ -301,120 +301,9 @@ public class TreeAssist extends JavaPlugin {
         }
     }
 
-    private HashMap<String, String> loadConfigurables(HashMap<String, String> items) {
-        //Pre-5.0
-        items.put("Main.Automatic Tree Destruction", "true");
-        items.put("Main.Use Permissions", "false");
-        items.put("Main.Sapling Replant", "true");
-        items.put("Automatic Tree Destruction.Apply Full Tool Damage", "true");
-        items.put("Main.Ignore User Placed Blocks", "false");
-        items.put("Main.Use mcMMO if Available", "true");
-        items.put("Automatic Tree Destruction.Tree Types.Birch", "true");
-        items.put("Automatic Tree Destruction.Tree Types.Jungle", "true");
-        items.put("Automatic Tree Destruction.Tree Types.Oak", "true");
-        items.put("Automatic Tree Destruction.Tree Types.Spruce", "true");
-        items.put("Leaf Decay.Fast Leaf Decay", "true");
-        items.put("Sapling Replant.Bottom Block has to be Broken First", "true");
-        items.put("Sapling Replant.Time to Protect Sapling (Seconds)", "0");
-        items.put("Sapling Replant.Replant When Tree Burns Down", "true");
-        items.put("Sapling Replant.Block all breaking of Saplings", "false");
-        items.put("Sapling Replant.Delay until Sapling is replanted (seconds) (minimum 1 second)", "1");
-        items.put("Tools.Sapling Replant Require Tools", "true");
-        items.put("Tools.Tree Destruction Require Tools", "true");
-
-        //items.put("Tools.Tools List", "LIST"); //TODO: needs to go into tree definitions
-
-        items.put("Worlds.Enable Per World", "false");
-        items.put("Worlds.Enabled Worlds", "LIST");
-        items.put("Config Help", "dev.bukkit.org/server-mods/tree-assist/pages/config-walkthrough/");
-
-        //5.0 additions
-        items.put("Sapling Replant.Tree Types to Replant.Birch", "true");
-        items.put("Sapling Replant.Tree Types to Replant.Jungle", "true");
-        items.put("Sapling Replant.Tree Types to Replant.Oak", "true");
-        items.put("Sapling Replant.Tree Types to Replant.Spruce", "true");
-
-        //5.2 additions
-        items.put("Main.Destroy Only Blocks Above", "false");
-
-        //5.4 additions
-        items.put("Automatic Tree Destruction.Tree Types.BigJungle", "true");
-        items.put("Sapling Replant.Tree Types to Replant.BigJungle", "true");
-
-        //5.5 additions
-        items.put("Automatic Tree Destruction.Delay (ticks)", "0");
-        items.put("Automatic Tree Destruction.Forced Removal", "false");
-        items.put("Automatic Tree Destruction.Initial Delay (seconds)", "10");
-
-        //5.6 additions
-        items.put("Main.Auto Plant Dropped Saplings", "false");
-        items.put("Auto Plant Dropped Saplings.Chance (percent)", "10");
-        items.put("Auto Plant Dropped Saplings.Delay (seconds)", "5");
-
-        //5.7 additions
-        items.put("Automatic Tree Destruction.Tree Types.Brown Shroom", "true");
-        items.put("Automatic Tree Destruction.Tree Types.Red Shroom", "true");
-
-        //5.7.1 additions
-        items.put("Tools.Drop Chance.DIAMOND_AXE", "100");
-        items.put("Tools.Drop Chance.WOODEN_AXE", "100");
-        items.put("Tools.Drop Chance.GOLDEN_AXE", "100");
-        items.put("Tools.Drop Chance.IRON_AXE", "100");
-        items.put("Tools.Drop Chance.STONE_AXE", "100");
-
-        //5.7.2 additions
-        items.put("Automatic Tree Destruction.Cooldown (seconds)", "0");
-
-        //5.7.3 additions
-        // items.put("Custom Drops.APPLE", "0.1");        //TODO needs to go into tree definitions
-        // items.put("Custom Drops.GOLDEN_APPLE", "0.0"); //TODO needs to go into tree definitions
-
-        //5.8 additions
-        items.put("Placed Blocks.Handler Plugin Name", "TreeAssist");
-        items.put("Automatic Tree Destruction.Tree Types.Acacia", "true");
-        items.put("Automatic Tree Destruction.Tree Types.Dark Oak", "true");
-        items.put("Sapling Replant.Tree Types to Replant.Acacia", "true");
-        items.put("Sapling Replant.Tree Types to Replant.Dark Oak", "true");
-        items.put("Automatic Tree Destruction.Tree Types.BigSpruce", "true");
-        items.put("Sapling Replant.Tree Types to Replant.BigSpruce", "true");
-
-        items.put("Sapling Replant.Enforce", "true");
-        items.put("Automatic Tree Destruction.Remove Leaves", "true");
-        items.put("Main.Toggle Default", "true");
-        items.put("Sapling Replant.Command Time Delay (Seconds)", "30");
-
-        items.put("Automatic Tree Destruction.When Sneaking", "true");
-        items.put("Automatic Tree Destruction.Required Lore", "");
-        items.put("Automatic Tree Destruction.Initial Delay", "false");
-
-        items.put("Sapling Replant.Time to Block Sapling Growth (Seconds)", "0");
-        items.put("Main.Language", "en");
-
-        items.put("Automatic Tree Destruction.Auto Add To Inventory", "false");
-        items.put("Automatic Tree Destruction.When Not Sneaking", "true");
-
-        //6.0 additions
-        items.put("Modding.Custom Tree Definitions", "CustomTreeDefinitions");
-
-        items.put("Block Statistics.Pickup", "false");
-        items.put("Block Statistics.Mine Block", "false");
-
-        items.put("Placed Blocks.Handler Lookup Time", "86400");
-
-        items.put("Main.Use Falling Blocks", "false");
-
-        items.put("Main.Use Jobs if Available", "true");
-
-        items.put("Main.Use WorldGuard if Available", "false");
-
-        items.put("Version", "6.0");
-
-        return items;
-    }
-
     public void reloadLists() {
         if (!new File(getDataFolder().getPath(), "trees").exists()) {
-            saveResource("trees/overworld.yml", false);
+            saveResource("trees/default.yml", false);
             saveResource("trees/overworld/acacia.yml", false);
             saveResource("trees/overworld/birch.yml", false);
             saveResource("trees/overworld/dark_oak.yml", false);

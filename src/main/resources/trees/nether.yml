@@ -1,24 +1,13 @@
-Children:
-- 'crimson_fungus'
-- 'warped_fungus'
-- 'thick_crimson_fungus'
-- 'thick_warped_fungus'
 Custom Drops:
-  NETHERRACK: 0.01
+  minecraft:netherrack: 0.01
 Custom Drop Chance:
-  DIAMOND_HOE: 100
-  GOLDEN_HOE: 75
-  IRON_HOE: 50
-  STONE_HOE: 25
-  WOODEN_HOE: 10
+  minecraft:diamond_hoe: 100
+  minecraft:golden_hoe: 75
+  minecraft:iron_hoe: 50
+  minecraft:stone_hoe: 25
+  minecraft:wooden_hoe: 10
 Ground Blocks:
 - 'minecraft:netherrack'
-Tool List:
-- 'DIAMOND_HOE'
-- 'WOODEN_HOE'
-- 'GOLDEN_HOE'
-- 'IRON_HOE'
-- 'STONE_HOE'
 Natural Blocks:
 - 'minecraft:crimson_nylium'
 - 'minecraft:warped_nylium'
@@ -32,5 +21,11 @@ Natural Blocks:
 - 'minecraft:air'
 - 'minecraft:cave_air'
 - 'minecraft:void_air'
-Automatic Tree Destruction: true
+Parent: defaultgog
+Tool List:
+- 'minecraft:diamond_hoe'
+- 'minecraft:wooden_hoe'
+- 'minecraft:golden_hoe'
+- 'minecraft:iron_hoe'
+- 'minecraft:stone_hoe'
 Version: 7.0

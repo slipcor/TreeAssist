@@ -44,7 +44,6 @@ permissions:
   treeassist.commands:
     description: allows to use all tree-assist commands
     children:
-      treeassist.addcustom: true
       treeassist.addtool: true
       treeassist.debug: true
       treeassist.findforest: true
@@ -53,14 +52,10 @@ permissions:
       treeassist.noreplace: true
       treeassist.purge: true
       treeassist.reload: true
-      treeassist.removecustom: true
       treeassist.removetool: true
       treeassist.replant: true
       treeassist.toggle: true
       treeassist.tool: true
-    default: op
-  treeassist.addcustom:
-    description: allows to add a custom blocks group
     default: op
   treeassist.addtool:
     description: allows to add a required tool
@@ -85,9 +80,6 @@ permissions:
     default: op
   treeassist.reload:
     description: allows to reload the TreeAssist config
-    default: op
-  treeassist.removecustom:
-    description: allows to remove a custom blocks group
     default: op
   treeassist.removetool:
     description: allows to remove a required tool

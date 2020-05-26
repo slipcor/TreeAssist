@@ -1,83 +1,20 @@
-Children:
-- 'mushroom-red'
-- 'mushroom-brown'
+Blocks:
+  Top:
+    Height: 1
+  Middle:
+    Radius: 0
 Custom Drops:
   'minecraft:mushroom_stem': 0.01
-Custom Drop Chance:
-  DIAMOND_AXE: 100
-  GOLDEN_AXE: 75
-  IRON_AXE: 50
-  STONE_AXE: 25
-  WOODEN_AXE: 10
-Tool List:
-- 'DIAMOND_AXE'
-- 'WOODEN_AXE'
-- 'GOLDEN_AXE'
-- 'IRON_AXE'
-- 'STONE_AXE'
 Ground Blocks:
 - 'minecraft:podzol'
 - 'minecraft:mycelium'
 - 'minecraft:grass_block'
 - 'minecraft:dirt'
 - 'minecraft:coarse_dirt'
-Natural Blocks:
-- 'minecraft:air'
-- 'minecraft:water'
-- 'minecraft:fire'
-- 'minecraft:snow'
-- 'minecraft:snow_block'
-- 'minecraft:stone'
-- 'minecraft:grass_block'
-- 'minecraft:dirt'
-- 'minecraft:coarse_dirt'
-- 'minecraft:sand'
-- 'minecraft:terracotta'
-- '*_terracotta'
-- 'minecraft:mycelium'
-- 'minecraft:podzol'
-- '*_sapling'
-- '*_leaves'
-- 'minecraft:dandelion'
-- '*_tulip'
-- 'minecraft:poppy'
-- '*_orchid'
-- 'minecraft:allium'
-- 'minecraft:azure-bluet'
-- 'minecraft:oxeye_daisy'
-- 'minecraft:lilac'
-- 'minecraft:grass'
-- 'minecraft:tall_grass'
-- 'minecraft:fern'
-- 'minecraft:dead_bush'
-- 'minecraft:sugar_cane'
-- '*_mushroom_block'
-- 'minecraft:mushroom_stem'
-- 'minecraft:melon'
-- 'minecraft:pumpkin'
-- 'minecraft:bee_nest'
-- 'minecraft:cococa'
-- 'minecraft:torch'
-- 'minecraft:rail'
-- 'minecraft:hopper'
-- 'minecraft:oak_sapling'
-- 'minecraft:birch_sapling'
-- 'minecraft:spruce_sapling'
-- 'minecraft:jungle_sapling'
-- 'minecraft:dark_oak_sapling'
-- 'minecraft:acacia_sapling'
-- 'minecraft:vine'
-- 'minecraft:cave_air'
-- 'minecraft:void_air'
+Parent: default
 Trunk:
   Minimum Height: 5
   Maximum Height: 14
   Materials:
   - 'minecraft:mushroom_stem'
-Blocks:
-  Top:
-    Height: 1
-  Middle:
-    Radius: 0
-Automatic Tree Destruction: true
 Version: 7.0

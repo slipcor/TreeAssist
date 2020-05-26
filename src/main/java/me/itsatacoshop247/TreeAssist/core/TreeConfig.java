@@ -71,15 +71,26 @@ public class TreeConfig {
     }
 
     public enum CFG {
-        CHILDREN("Children", new ArrayList<>()),
-        CUSTOM_DROPS("Custom Drops", new HashMap<>()),
-        CUSTOM_DROP_CHANCE("Custom Drop Chance", new HashMap<>()),
-        GROUND_BLOCKS("Ground Blocks", new ArrayList<>()), // the allowed blocks below the tree trunk
+        AUTOMATIC_DESTRUCTION_ACTIVE("Automatic Destruction.Active", true), // Will we attempt to automatically destroy? //TODO: check
+        AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE("Automatic Destruction.Apply Full Tool Damage", true), //TODO: check
+        AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Destruction.Auto Add To Inventory", false), //TODO: check
+        AUTOMATIC_DESTRUCTION_COOLDOWN("Automatic Destruction.Cooldown (seconds)", 0), //TODO: check
+        AUTOMATIC_DESTRUCTION_DELAY("Automatic Destruction.Delay (ticks)", 0), //TODO: check
+        AUTOMATIC_DESTRUCTION_FORCED_REMOVAL("Automatic Destruction.Forced Removal", false), //TODO: check
+        AUTOMATIC_DESTRUCTION_INCREASES_STATISTICS("Automatic Destruction.Increases Statistics", false), //TODO: check
+        AUTOMATIC_DESTRUCTION_INITIAL_DELAY("Automatic Destruction.Initial Delay", false), //TODO: check
+        AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME("Automatic Destruction.Initial Delay (seconds)", 10), //TODO: check
+        AUTOMATIC_DESTRUCTION_REMOVE_LEAVES("Automatic Destruction.Remove Leaves", true), //TODO: check
+        AUTOMATIC_DESTRUCTION_REQUIRED_LORE("Automatic Destruction.Required Lore",""), //TODO: check
+        AUTOMATIC_DESTRUCTION_REQUIRES_TOOLS("Automatic Destruction.Requires Tools", true), //TODO: check
 
-        BLOCKS_MATERIALS("Blocks.Materials", new ArrayList<>()), // the expected blocks part of the tree, next to the trunk
+        BLOCK_STATISTICS_MINE_BLOCK("Block Statistics.Mine Block", false), //TODO: check
+        BLOCK_STATISTICS_PICKUP("Block Statistics.Pickup", false), //TODO: check
 
         BLOCKS_CAP_HEIGHT("Blocks.Cap.Height", 2), // Branch Topping Leaves Height
         BLOCKS_CAP_RADIUS("Blocks.Cap.Radius", 3), // Branch Topping Leaves Radius
+
+        BLOCKS_MATERIALS("Blocks.Materials", new ArrayList<>()), // the expected blocks part of the tree, next to the trunk
 
         BLOCKS_MIDDLE_AIR("Blocks.Middle.Air", false), // allow air pockets?
         BLOCKS_MIDDLE_EDGES("Blocks.Middle.Edges", false), // would edges be populated?
@@ -90,6 +101,24 @@ public class TreeConfig {
         BLOCKS_TOP_RADIUS("Blocks.Top.Radius", 3), // the tree top leaf radius
         BLOCKS_TOP_HEIGHT("Blocks.Top.Height", 3),
 
+        CUSTOM_DROPS("Custom Drops", new HashMap<>()),
+        CUSTOM_DROP_CHANCE("Custom Drop Chance", new HashMap<>()),
+
+        GROUND_BLOCKS("Ground Blocks", new ArrayList<>()), // the allowed blocks below the tree trunk
+
+        NATURAL_BLOCKS("Natural Blocks", new ArrayList<>()), // blocks that are okay to have around trees
+
+        PARENT("Parent", "default"),
+        PERMISSION("Permission", ""),
+
+        REPLANTING_ACTIVE("Replanting.Active", true),
+        REPLANTING_MATERIAL("Replanting.Material", "String"),
+        REPLANTING_DROPPED_SAPLINGS("Replanting.Dropped Saplings Automatically", false),
+        REPLANTING_DROPPED_SAPLINGS_CHANCE("Replanting.Dropped Saplings Chance", 10),
+        REPLANTING_DROPPED_SAPLINGS_DELAY("Replanting.Dropped Saplings Delay", 5),
+        REPLANTING_ENFORCE("Replanting.Enforce", false), //TODO: check
+        REPLANTING_REQUIRES_TOOLS("Replanting.Requires Tools", true), //TODO: check
+
         TRUNK_BRANCH("Trunk.Branch", false),
         TRUNK_DIAGONAL("Trunk.Diagonal", false), // Trunk can move diagonally even (Acacia)
         TRUNK_MINIMUM_HEIGHT("Trunk.Minimum Height", 4),
@@ -99,11 +128,7 @@ public class TreeConfig {
         TRUNK_RADIUS("Trunk.Radius", 1),
         TRUNK_UNEVEN_BOTTOM("Trunk.Uneven Bottom", false), // Can saplings/lowest trunks be on different Y?
 
-        AUTOMATIC_DESTRUCTION("Automatic Tree Destruction", true), // Will we attempt to automatically destroy?
-
-        REPLANT("Replant", "String"),
         TOOL_LIST("Tool List", new ArrayList<>()),
-        NATURAL_BLOCKS("Natural Blocks", new ArrayList<>()), // blocks that are okay to have around trees
 
         VERSION("Version", 7.0)
         ; //
@@ -414,6 +439,10 @@ public class TreeConfig {
         }
 
         return matList;
+    }
+
+    public Material getMaterial(CFG node) {
+        return Material.matchMaterial(getString(node));
     }
 
     public Set<String> getKeys(final String path) {

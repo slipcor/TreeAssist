@@ -76,6 +76,9 @@ It also will take down an entire tree when it is enabled in the config.
   - implement configuration settings about when and how to remove trees automatically or to clean up
 - [read more](doc/changelog.md)
 
+// TODO: move all node implementation to tree types where it makes sense   
+// TODO: add force comments for the default config
+
 ***
 
 ## Phoning home

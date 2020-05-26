@@ -7,18 +7,12 @@ import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 
 public final class Utils {
 	private Utils() {
@@ -35,7 +29,7 @@ public final class Utils {
 
     private static List<FallingBlock> fallingBlocks = new ArrayList<>();
 
-    public static List<TreeConfig> treeDefinitions = new ArrayList<>();
+    public static Map<String, TreeConfig> treeConfigs = new HashMap<>();
 
 	static {
         // elements
@@ -541,29 +535,69 @@ public final class Utils {
     }
 
     public static void reloadTreeDefinitions(Config config) {
-        List<String> list = config.getYamlConfiguration().getStringList("Trees");
-
-        if (list.size() < 1) {
-            list.add("overworld");
-            list.add("mushroom");
-            list.add("nether");
-        }
-
         TreeStructure.allTrunks.clear();
         TreeStructure.allExtras.clear();
+        treeConfigs.clear();
 
-        treeDefinitions.clear();
-        for (String entry : list) {
-            TreeConfig parent = new TreeConfig(new File(plugin.getDataFolder().getPath() + "/trees/" + entry + ".yml"));
-            TreeConfigUpdater.check(parent, entry);
-            parent.load();
+        File folder = new File(plugin.getDataFolder().getPath(), "trees");
 
-            for (String child : parent.getStringList(TreeConfig.CFG.CHILDREN, new ArrayList<>())) {
-                TreeConfig childConfig = new TreeConfig(new File(plugin.getDataFolder().getPath() + "/trees/" + entry + "/" + child + ".yml"));
-                TreeConfigUpdater.check(childConfig, entry + "/" + child);
-                childConfig.load();
-                childConfig.loadDefaults(parent);
+        Map<String, TreeConfig> processing = new HashMap<>();
+
+        for (File file : folder.listFiles()) {
+            if (file.isDirectory()) {
+                for (File subFile : file.listFiles()) {
+                    if (subFile.getName().toLowerCase().endsWith(".yml")) {
+                        String subNode = subFile.getName().toLowerCase().replace(".yml", "");
+                        TreeConfig subTree = new TreeConfig(subFile);
+
+                        processing.put(subNode, subTree);
+                    }
+                }
+            } else if (file.getName().toLowerCase().endsWith(".yml")){
+                String node = file.getName().toLowerCase().replace(".yml", "");
+                TreeConfig tree = new TreeConfig(file);
+
+                processing.put(node, tree);
             }
+        }
+
+        // Check for updates before we even try to load
+        for (String key : processing.keySet()) {
+            TreeConfig treeConfig = processing.get(key);
+            TreeConfigUpdater.check(treeConfig, key);
+            treeConfig.load();
+        }
+
+        int attempts = 100;
+
+        looping: while (--attempts > 0 && processing.size() > 0) {
+            process: for (String key : processing.keySet()) {
+                if (treeConfigs.containsKey(key)) {
+                    // We already pre-loaded it completely!
+                    processing.remove(key);
+                    continue looping;
+                }
+                TreeConfig treeConfig = processing.get(key);
+                String parentKey = treeConfig.getYamlConfiguration().getString("Parent", null);
+                if (parentKey == null) {
+                    // We are a parent. We do not need to look for others before us
+                    treeConfigs.put(key, treeConfig);
+                    processing.remove(key);
+                    continue looping;
+                }
+                if (treeConfigs.containsKey(parentKey)) {
+                    // we can now read the parent and apply defaults!
+                    treeConfig.loadDefaults(treeConfigs.get(parentKey));
+                    treeConfigs.put(key, treeConfig);
+                    processing.remove(key);
+                    continue looping;
+                }
+                // Otherwise we skip around until we find a required parent, hopefully...
+            }
+        }
+
+        for (String key : processing.keySet()) {
+            plugin.getLogger().severe("Parent file not found for: " + key);
         }
     }
 
@@ -688,5 +722,17 @@ public final class Utils {
             }
         }
         return false;
+    }
+
+    public static TreeConfig findConfigByDroppedSapling(Material material) {
+        for (TreeConfig config : treeConfigs.values()) {
+            if (material != Material.AIR && config.getBoolean(TreeConfig.CFG.REPLANTING_DROPPED_SAPLINGS)) {
+                Material sapling = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
+                if (material == sapling) {
+                    return config;
+                }
+            }
+        }
+        return null;
     }
 }

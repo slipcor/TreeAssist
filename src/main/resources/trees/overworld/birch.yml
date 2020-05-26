@@ -1,19 +1,16 @@
-Custom Drops:
-  'minecraft:birch_leaves': 0.01
-Custom Drop Chance:
-  DIAMOND_AXE: 100
-  GOLDEN_AXE: 75
-  IRON_AXE: 50
-  STONE_AXE: 25
-  WOODEN_AXE: 10
-Replant: 'minecraft:birch_sapling'
-Trunk:
-  Materials:
-  - 'minecraft:birch_log'
 Blocks:
   Materials:
   - 'minecraft:birch_leaves'
   Top:
     Height: 2
     Radius: 2
+Custom Drops:
+  'minecraft:birch_leaves': 0.01
+Parent: default
+Permission: treeassist.destroy.birch
+Replanting:
+  Material: 'minecraft:birch_sapling'
+Trunk:
+  Materials:
+  - 'minecraft:birch_log'
 Version: 7.0

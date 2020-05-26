@@ -31,7 +31,7 @@ public class CommandRemoveTool extends AbstractCommand {
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            for (TreeConfig config : Utils.treeDefinitions) {
+            for (TreeConfig config : Utils.treeConfigs.values()) {
                 if (Utils.matchContains(config.getStringList(TreeConfig.CFG.TRUNK_MATERIALS, new ArrayList<>()), args[1], true)) {
                     Utils.removeRequiredTool(player, config);
                 }

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import me.itsatacoshop247.TreeAssist.core.Config;
 import me.itsatacoshop247.TreeAssist.core.Debugger;
+import me.itsatacoshop247.TreeAssist.core.TreeConfig;
 import me.itsatacoshop247.TreeAssist.events.TASaplingReplaceEvent;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
@@ -27,7 +28,8 @@ public class TreeAssistSpawnListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void itemSpawnEvent(ItemSpawnEvent event) {
 		Item drop = event.getEntity();
-		if (Utils.isSapling(drop.getItemStack().getType())) {
+		TreeConfig config = Utils.findConfigByDroppedSapling(drop.getItemStack().getType());
+		if (config != null) {
 			TASaplingReplaceEvent newEvent = new TASaplingReplaceEvent(
 					event.getEntity().getLocation().getBlock(),
 					drop.getItemStack().getType().name());
@@ -37,9 +39,9 @@ public class TreeAssistSpawnListener implements Listener {
 				return;
 			}
 
-			if ((new Random()).nextInt(100) < 
-					plugin.getTreeAssistConfig().getInt(Config.CFG.AUTO_PLANT_DROPPED_SAPLINGS_CHANCE,10)) {
-				new TreeAssistSaplingSelfPlant(plugin, drop);
+			if ((new Random()).nextInt(100) <
+					config.getInt(TreeConfig.CFG.REPLANTING_DROPPED_SAPLINGS_CHANCE)) {
+				new TreeAssistSaplingSelfPlant(plugin, config, drop);
 			}
 		}
 	}

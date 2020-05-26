@@ -1,15 +1,3 @@
-Custom Drops:
-  'minecraft:jungle_leaves': 0.01
-Custom Drop Chance:
-  DIAMOND_AXE: 100
-  GOLDEN_AXE: 75
-  IRON_AXE: 50
-  STONE_AXE: 25
-  WOODEN_AXE: 10
-Replant: 'minecraft:jungle_sapling'
-Trunk:
-  Materials:
-  - 'minecraft:jungle_log'
 Blocks:
   Materials:
   - 'minecraft:jungle_leaves'
@@ -17,4 +5,13 @@ Blocks:
   Top:
     Height: 2
     Radius: 2
+Custom Drops:
+  'minecraft:jungle_leaves': 0.01
+Parent: default
+Permission: treeassist.destroy.jungle
+Replanting:
+  Material: 'minecraft:jungle_sapling'
+Trunk:
+  Materials:
+  - 'minecraft:jungle_log'
 Version: 7.0

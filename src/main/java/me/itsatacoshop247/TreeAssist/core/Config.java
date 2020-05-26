@@ -26,8 +26,6 @@ public class Config {
     }
 
     public enum CFG {
-        MAIN_AUTO_PLANT_DROPPED_SAPLINGS("Main.Auto Plant Dropped Saplings", false), //TODO: check
-        MAIN_AUTOMATIC_TREE_DESTRUCTION("Main.Automatic Tree Destruction", true), //TODO: check
         MAIN_DESTROY_ONLY_BLOCKS_ABOVE("Main.Destroy Only Blocks Above", false), //TODO: check
         MAIN_FORCE_BREAK_DEFAULT_RADIUS("Main.Force Break Default Radius", 10), //TODO: check
         MAIN_FORCE_GROW_DEFAULT_RADIUS("Main.Force Grow Default Radius", 10), //TODO: check
@@ -35,7 +33,6 @@ public class Config {
         MAIN_FORCE_GROW_MAX_RADIUS("Main.Force Grow Max Radius", 30), //TODO: check
         MAIN_IGNORE_USER_PLACED_BLOCKS("Main.Ignore User Placed Blocks", false), //TODO: check
         MAIN_LANGUAGE("Main.Language", "en"), //TODO: check
-        MAIN_SAPLING_REPLANT("Main.Sapling Replant", true), //TODO: check
         MAIN_TOGGLE_DEFAULT("Main.Toggle Default", true), //TODO: check
         MAIN_USE_MCMMO_IF_AVAILABLE("Main.Use mcMMO if Available", true), //TODO: check
         MAIN_USE_JOBS_IF_AVAILABLE("Main.Use Jobs if Available", true), //TODO: check
@@ -43,33 +40,19 @@ public class Config {
         MAIN_USE_PERMISSIONS("Main.Use Permissions", false), //TODO: check
         MAIN_USE_FALLING_BLOCKS("Main.Use Falling Blocks", false), //TODO: check
 
-        AUTOMATIC_TREE_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE("Automatic Tree Destruction.Apply Full Tool Damage", true), //TODO: check
-        AUTOMATIC_TREE_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Tree Destruction.Auto Add To Inventory", false), //TODO: check
-        AUTOMATIC_TREE_DESTRUCTION_COOLDOWN("Automatic Tree Destruction.Cooldown (seconds)", 0), //TODO: check
-        AUTOMATIC_TREE_DESTRUCTION_DELAY("Automatic Tree Destruction.Delay (ticks)", 0), //TODO: check
-        AUTOMATIC_TREE_DESTRUCTION_FORCED_REMOVAL("Automatic Tree Destruction.Forced Removal", false), //TODO: check
-        AUTOMATIC_TREE_DESTRUCTION_INCREASES_STATISTICS("Automatic Tree Destruction.Increases Statistics", false), //TODO: check
-        AUTOMATIC_TREE_DESTRUCTION_INITIAL_DELAY("Automatic Tree Destruction.Initial Delay", false), //TODO: check
-        AUTOMATIC_TREE_DESTRUCTION_INITIAL_DELAY_TIME("Automatic Tree Destruction.Initial Delay (seconds)", 10), //TODO: check
-        AUTOMATIC_TREE_DESTRUCTION_REMOVE_LEAVES("Automatic Tree Destruction.Remove Leaves", true), //TODO: check
-        AUTOMATIC_TREE_DESTRUCTION_REQUIRED_LORE("Automatic Tree Destruction.Required Lore",""), //TODO: check
         AUTOMATIC_TREE_DESTRUCTION_WHEN_SNEAKING("Automatic Tree Destruction.When Sneaking", true), //TODO: check
         AUTOMATIC_TREE_DESTRUCTION_WHEN_NOT_SNEAKING("Automatic Tree Destruction.When Not Sneaking", true), //TODO: check
-        BLOCK_STATISTICS_MINE_BLOCK("Block Statistics.Mine Block", false), //TODO: check
-        BLOCK_STATISTICS_PICKUP("Block Statistics.Pickup", false), //TODO: check
-        AUTO_PLANT_DROPPED_SAPLINGS_CHANCE("Auto Plant Dropped Saplings.Chance (percent)", 10), //TODO: check
-        AUTO_PLANT_DROPPED_SAPLINGS_DELAY_("Auto Plant Dropped Saplings.Delay (seconds)", 5), //TODO: check
+
         LEAF_DECAY_FAST_LEAF_DECAY("Leaf Decay.Fast Leaf Decay", true), //TODO: check
+
         SAPLING_REPLANT_BLOCK_ALL_BREAKING_OF_SAPLINGS("Sapling Replant.Block all breaking of Saplings", false), //TODO: check
         SAPLING_REPLANT_BOTTOM_BLOCK_HAS_TO_BE_BROKEN_FIRST("Sapling Replant.Bottom Block has to be Broken First", true), //TODO: check
         SAPLING_REPLANT_COMMAND_TIME_DELAY("Sapling Replant.Command Time Delay (Seconds)", 30), //TODO: check
         SAPLING_REPLANT_DELAY_UNTIL_SAPLING_IS_REPLANTED("Sapling Replant.Delay until Sapling is replanted (seconds) (minimum 1 second)", 1), //TODO: check
-        SAPLING_REPLANT_ENFORCE("Sapling Replant.Enforce", false), //TODO: check
         SAPLING_REPLANT_REPLANT_WHEN_TREE_BURNS_DOWN("Sapling Replant.Replant When Tree Burns Down", true), //TODO: check
         SAPLING_REPLANT_TIME_TO_PROTECT_SAPLING("Sapling Replant.Time to Protect Sapling (Seconds)", 0), //TODO: check
         SAPLING_REPLANT_TIME_TO_BLOCK_SAPLING_GROWTH("Sapling Replant.Time to Block Sapling Growth (Seconds)", 0), //TODO: check
-        TOOLS_SAPLING_REPLANT_REQUIRE_TOOLS("Tools.Sapling Replant Require Tools", true), //TODO: check
-        TOOLS_TREE_DESTRUCTION_REQUIRE_TOOLS("Tools.Tree Destruction Require Tools", true), //TODO: check
+
         WORLDS_ENABLE_PER_WORLD("Worlds.Enable Per World", false), //TODO: check
         WORLD_ENABLED_WORLDS("Worlds.Enabled Worlds", new ArrayList<>(Arrays.asList("world", "world2"))), //TODO: check
 
@@ -78,8 +61,7 @@ public class Config {
 
         MODDING_DISABLE_DURABILITY_FIX("Modding.Disable Durability Fix", false), //TODO: check
 
-        VERSION("Version", 6.0),
-        TREES("Trees", new ArrayList<>(Arrays.asList("overworld", "nether", "mushroom")));
+        VERSION("Version", 6.0);
 
 
 

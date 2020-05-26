@@ -1,18 +1,3 @@
-Custom Drops:
-  'minecraft:acacia_leaves': 0.01
-Custom Drop Chance:
-  DIAMOND_AXE: 100
-  GOLDEN_AXE: 75
-  IRON_AXE: 50
-  STONE_AXE: 25
-  WOODEN_AXE: 10
-Replant: 'minecraft:acacia_sapling'
-Trunk:
-  Materials:
-  - 'minecraft:acacia_log'
-  Diagonal: true
-  Branch: true
-# special case: diagonals, even in trunk
 Blocks:
   Materials:
   - 'minecraft:acacia_leaves'
@@ -20,4 +5,15 @@ Blocks:
     Radius: 4
   Cap:
     Radius: 4
+Custom Drops:
+  'minecraft:acacia_leaves': 0.01
+Parent: default
+Permission: treeassist.destroy.acacia
+Replanting:
+  Material: 'minecraft:acacia_sapling'
+Trunk:
+  Materials:
+  - 'minecraft:acacia_log'
+  Diagonal: true
+  Branch: true
 Version: 7.0

@@ -67,7 +67,7 @@ public class CommandForceBreak extends AbstractCommand {
                 public void run() {
                     Utils.plugin.setCoolDownOverride(player.getName(), false);
                 }
-            }, Math.min(10, Utils.plugin.getTreeAssistConfig().getInt(Config.CFG.AUTOMATIC_TREE_DESTRUCTION_INITIAL_DELAY_TIME, 10) + 10) * 20);
+            }, 200);
 
             return;
         }

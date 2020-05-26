@@ -1,20 +1,9 @@
-Replant: 'minecraft:warped_fungus'
-Trunk:
-  Materials:
-  - 'minecraft:warped_stem'
-  - 'minecraft:shroomlight'
-  - 'minecraft:warped_wart_block'
-  Thickness: 3
-# special case: can have air AND logs in the diagonal edges
 Blocks:
-  Materials:
-  - 'minecraft:warped_wart_block'
-  - 'minecraft:shroomlight'
   Top:
-    Height: 3
     Radius: 4
-    Air: true
   Middle:
     Radius: 3
-    Air: true
+Parent: warped_fungus
+Trunk:
+  Thickness: 3
 Version: 7.0

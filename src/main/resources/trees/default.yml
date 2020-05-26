@@ -1,0 +1,121 @@
+Automatic Destruction:
+  Active: true
+  Apply Full Tool Damage: true
+  Auto Add To Inventory: false
+  Cooldown (seconds): 0
+  Delay (ticks): 0
+  Forced Removal: false
+  Increases Statistics: false
+  Initial Delay: false
+  Initial Delay (seconds): 10
+  Remove Leaves: true
+  Required Lore: ''
+  Require Tools: true
+Block Statistics:
+  Mine Block: false
+  Pickup: false
+Blocks:
+  Cap:
+    Height: 2
+    Radius: 3
+  Materials:
+  - 'minecraft:bee_nest'
+  Middle:
+    Air: false
+    Edges: false
+    Radius: 2
+  Top:
+    Air: false
+    Edges: false
+    Radius: 3
+    Height: 3
+Custom Drops:
+  minecraft:apple: 0.01
+  minecraft:golden_apple: 0.001
+Custom Drop Chance:
+  minecraft:diamond_axe: 100
+  minecraft:golden_axe: 75
+  minecraft:iron_axe: 50
+  minecraft:stone_axe: 25
+  minecraft:wooden_axe: 10
+Ground Blocks:
+- 'minecraft:podzol'
+- 'minecraft:mycelium'
+- 'minecraft:grass_block'
+- 'minecraft:dirt'
+- 'minecraft:coarse_dirt'
+- 'minecraft:sand'
+Natural Blocks:
+- 'minecraft:air'
+- 'minecraft:water'
+- 'minecraft:fire'
+- 'minecraft:snow'
+- 'minecraft:snow_block'
+- 'minecraft:stone'
+- 'minecraft:grass_block'
+- 'minecraft:dirt'
+- 'minecraft:coarse_dirt'
+- 'minecraft:sand'
+- 'minecraft:terracotta'
+- '*_terracotta'
+- 'minecraft:mycelium'
+- 'minecraft:podzol'
+- '*_sapling'
+- '*_leaves'
+- 'minecraft:dandelion'
+- '*_tulip'
+- 'minecraft:poppy'
+- '*_orchid'
+- 'minecraft:allium'
+- 'minecraft:azure-bluet'
+- 'minecraft:oxeye_daisy'
+- 'minecraft:lilac'
+- 'minecraft:grass'
+- 'minecraft:tall_grass'
+- 'minecraft:fern'
+- 'minecraft:dead_bush'
+- 'minecraft:sugar_cane'
+- '*_mushroom_block'
+- 'minecraft:mushroom_stem'
+- 'minecraft:melon'
+- 'minecraft:pumpkin'
+- 'minecraft:bee_nest'
+- 'minecraft:cococa'
+- 'minecraft:torch'
+- 'minecraft:rail'
+- 'minecraft:hopper'
+- 'minecraft:oak_sapling'
+- 'minecraft:birch_sapling'
+- 'minecraft:spruce_sapling'
+- 'minecraft:jungle_sapling'
+- 'minecraft:dark_oak_sapling'
+- 'minecraft:acacia_sapling'
+- 'minecraft:bamboo'
+- 'minecraft:vine'
+- 'minecraft:cave_air'
+- 'minecraft:void_air'
+Permission: treeassist.destroy.*
+Replanting:
+  Active: true
+  Dropped Saplings Automatically: false
+  Dropped Saplings Chance: 10
+  Dropped Saplings Delay: 5
+  Material: minecraft:air
+  Requires Tools: true
+Tool List:
+- 'minecraft:diamond_axe'
+- 'minecraft:wooden_axe'
+- 'minecraft:golden_axe'
+- 'minecraft:iron_axe'
+- 'minecraft:stone_axe'
+Trunk:
+  Branch: false
+  Diagonal: false
+  Minimum Height: 4
+  Maximum Height: 30
+  Materials:
+    - minecraft:bedrock
+  Thickness: 1
+  Radius: 1
+  Uneven Bottom: false
+Version: 7.0
