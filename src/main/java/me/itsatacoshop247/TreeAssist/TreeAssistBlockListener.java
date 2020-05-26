@@ -32,10 +32,13 @@ import org.bukkit.material.Tree;
 import java.util.*;
 
 public class TreeAssistBlockListener implements Listener {
-    public TreeAssist plugin;
-    private final Map<String, Long> noreplace = new HashMap<String, Long>();
-    private final TreeAssistAntiGrow antiGrow;
     public static Debugger debug;
+
+    public TreeAssist plugin;
+
+    private final TreeAssistAntiGrow antiGrow;
+    private final Map<String, Long> noreplace = new HashMap<String, Long>();
+    private final String protectToolDisplayName = "" + ChatColor.GREEN + ChatColor.ITALIC + "TreeAssist Protect";
 
     public TreeAssistBlockListener(TreeAssist instance) {
         plugin = instance;
@@ -78,7 +81,7 @@ public class TreeAssistBlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (!plugin.getTreeAssistConfig().getBoolean(Config.CFG.MAIN_IGNORE_USER_PLACED_BLOCKS) &&
-                (Utils.isLog(event.getBlock().getType()))) {
+                (TreeStructure.allTrunks.contains(event.getBlock().getType()))) {
             if (plugin.getTreeAssistConfig().getBoolean(Config.CFG.WORLDS_ENABLE_PER_WORLD)) {
                 if (!plugin.getTreeAssistConfig().getStringList(Config.CFG.WORLD_ENABLED_WORLDS, new ArrayList<>()).contains(event.getBlock().getWorld().getName())) {
                     return;
@@ -92,15 +95,15 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
-        checkFire(event, event.getBlock());
+        checkFire(event.getBlock());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
-        checkFire(event, event.getBlock());
+        checkFire(event.getBlock());
     }
 
-    private void checkFire(Cancellable unused, Block block) {
+    private void checkFire(Block block) {
 
         if (plugin.getTreeAssistConfig().getBoolean(Config.CFG.SAPLING_REPLANT_REPLANT_WHEN_TREE_BURNS_DOWN) && plugin.Enabled) {
             if (plugin.getTreeAssistConfig().getBoolean(Config.CFG.WORLDS_ENABLE_PER_WORLD)) {
@@ -129,8 +132,6 @@ public class TreeAssistBlockListener implements Listener {
             }
         }
     }
-
-    protected final static Set<TreeStructure> trees = new HashSet<>();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
@@ -393,7 +394,6 @@ public class TreeAssistBlockListener implements Listener {
         }
     }
 
-    @Deprecated
     private int calcAir(Block blockAt) {
         if (Utils.isAir(blockAt.getType()) || blockAt.getType() == Material.VINE || Utils.isLeaf(blockAt.getType())) {
             return 0;
@@ -404,22 +404,20 @@ public class TreeAssistBlockListener implements Listener {
         }
     }
 
-    private final String displayName = "" + ChatColor.GREEN + ChatColor.ITALIC + "TreeAssist Protect";
+    public ItemStack getProtectionTool() {
+        ItemStack item = new ItemStack(Material.GOLDEN_HOE);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(protectToolDisplayName);
+        item.setItemMeta(meta);
+        return item;
+    }
 
     public boolean isProtectTool(ItemStack item) {
-        return item != null && item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().equals(displayName);
+        return item != null && item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().equals(protectToolDisplayName);
     }
 
     public TreeAssistAntiGrow getAntiGrow() {
         return antiGrow;
-    }
-
-    public ItemStack getProtectionTool() {
-        ItemStack item = new ItemStack(Material.GOLDEN_HOE);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(displayName);
-        item.setItemMeta(meta);
-        return item;
     }
 
     public void noReplace(String name, int seconds) {

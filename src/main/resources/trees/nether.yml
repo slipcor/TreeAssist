@@ -21,7 +21,7 @@ Natural Blocks:
 - 'minecraft:air'
 - 'minecraft:cave_air'
 - 'minecraft:void_air'
-Parent: defaultgog
+Parent: default
 Tool List:
 - 'minecraft:diamond_hoe'
 - 'minecraft:wooden_hoe'

@@ -10,7 +10,7 @@ Automatic Destruction:
   Initial Delay (seconds): 10
   Remove Leaves: true
   Required Lore: ''
-  Require Tools: true
+  Requires Tools: true
 Block Statistics:
   Mine Block: false
   Pickup: false

@@ -18,141 +18,66 @@ public final class Utils {
 	private Utils() {
 	}
 
-    // if it's not one of these blocks, it's safe to assume its a house/building
-    private static List<Material> naturalMaterials = new ArrayList<>();
-    private static List<Material> logMaterials = new ArrayList<>();
-    private static List<Material> leafMaterials = new ArrayList<>();
-    private static List<Material> saplingMaterials = new ArrayList<>();
-    private static List<Material> mushroomMaterials = new ArrayList<>();
-
+    public static TreeAssist plugin;
     private static Boolean useFallingBlock = null;
 
     private static List<FallingBlock> fallingBlocks = new ArrayList<>();
 
     public static Map<String, TreeConfig> treeConfigs = new HashMap<>();
 
-	static {
-        // elements
-        naturalMaterials.add(Material.AIR);
-        naturalMaterials.add(Material.FIRE);
-        naturalMaterials.add(Material.WATER);
-        naturalMaterials.add(Material.SNOW_BLOCK);
-        naturalMaterials.add(Material.SNOW);
+    public static void addRequiredTool(Player player, TreeConfig treeConfig) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item.getType() == Material.AIR) {
+            item = player.getInventory().getItemInOffHand();
+        }
+        if (item.getType() == Material.AIR) {
+            player.sendMessage(Language.parse(MSG.ERROR_EMPTY_HAND));
+            return;
+        }
+        if (isRequiredTool(item, treeConfig)) {
+            player.sendMessage(Language.parse(MSG.ERROR_ADDTOOL_ALREADY));
+            return;
+        }
+        StringBuffer entry = new StringBuffer();
 
-        // ground materials
+        try {
+            entry.append(item.getType().name());
+        } catch (Exception e) {
+            final String msg = "Could not retrieve item type name: " + String.valueOf(item.getType());
+            plugin.getLogger().severe(msg);
+            player.sendMessage(Language.parse(MSG.ERROR_ADDTOOL_OTHER, msg));
+            return;
+        }
 
-        naturalMaterials.add(Material.STONE);
-        naturalMaterials.add(Material.GRASS_BLOCK);
-        naturalMaterials.add(Material.DIRT);
-        naturalMaterials.add(Material.SAND);
-        naturalMaterials.add(Material.TERRACOTTA);
-        naturalMaterials.add(Material.BROWN_TERRACOTTA);
-        naturalMaterials.add(Material.YELLOW_TERRACOTTA);
-        naturalMaterials.add(Material.ORANGE_TERRACOTTA);
-        naturalMaterials.add(Material.WHITE_TERRACOTTA);
-        naturalMaterials.add(Material.RED_TERRACOTTA);
-        naturalMaterials.add(Material.MYCELIUM);
-        naturalMaterials.add(Material.PODZOL);
+        boolean found = false;
 
-        // natural growing things
+        for (Enchantment ench : item.getEnchantments().keySet()) {
+            if (found) {
+                player.sendMessage(Language.parse(MSG.WARNING_ADDTOOL_ONLYONE, ench.getName()));
+                break;
+            }
+            entry.append(':');
+            entry.append(ench.getName());
+            entry.append(':');
+            entry.append(item.getEnchantmentLevel(ench));
+            found = true;
+        }
+        List<String> result = new ArrayList<String>();
 
-        naturalMaterials.add(Material.OAK_SAPLING);
-        naturalMaterials.add(Material.SPRUCE_SAPLING);
-        naturalMaterials.add(Material.BIRCH_SAPLING);
-        naturalMaterials.add(Material.JUNGLE_SAPLING);
-        naturalMaterials.add(Material.ACACIA_SAPLING);
-        naturalMaterials.add(Material.DARK_OAK_SAPLING);
-        naturalMaterials.add(Material.OAK_LEAVES);
-        naturalMaterials.add(Material.SPRUCE_LEAVES);
-        naturalMaterials.add(Material.BIRCH_LEAVES);
-        naturalMaterials.add(Material.JUNGLE_LEAVES);
-        naturalMaterials.add(Material.ACACIA_LEAVES);
-        naturalMaterials.add(Material.JUNGLE_LEAVES);
-        naturalMaterials.add(Material.DANDELION);
-        naturalMaterials.add(Material.POPPY);
-        naturalMaterials.add(Material.BLUE_ORCHID);
-        naturalMaterials.add(Material.ALLIUM);
-        naturalMaterials.add(Material.AZURE_BLUET);
-        naturalMaterials.add(Material.RED_TULIP);
-        naturalMaterials.add(Material.ORANGE_TULIP);
-        naturalMaterials.add(Material.WHITE_TULIP);
-        naturalMaterials.add(Material.PINK_TULIP);
-        naturalMaterials.add(Material.OXEYE_DAISY);
-        naturalMaterials.add(Material.SUNFLOWER);
-        naturalMaterials.add(Material.LILAC);
-        naturalMaterials.add(Material.GRASS);
-        naturalMaterials.add(Material.TALL_GRASS);
-        naturalMaterials.add(Material.FERN);
-        naturalMaterials.add(Material.ROSE_BUSH);
-        naturalMaterials.add(Material.PEONY);
-        naturalMaterials.add(Material.BROWN_MUSHROOM);
-        naturalMaterials.add(Material.RED_MUSHROOM);
-        naturalMaterials.add(Material.FERN);
-        naturalMaterials.add(Material.DEAD_BUSH);
-        naturalMaterials.add(Material.SUGAR_CANE);
-        naturalMaterials.add(Material.VINE);
-        naturalMaterials.add(Material.LILY_PAD);
-        naturalMaterials.add(Material.BROWN_MUSHROOM_BLOCK);
-        naturalMaterials.add(Material.RED_MUSHROOM_BLOCK);
-        naturalMaterials.add(Material.MUSHROOM_STEM);
-        naturalMaterials.add(Material.MELON);
-        naturalMaterials.add(Material.PUMPKIN);
-        naturalMaterials.add(Material.COCOA);
-
-        // blocks that are used in farms
-
-        naturalMaterials.add(Material.TORCH);
-        naturalMaterials.add(Material.RAIL);
-        naturalMaterials.add(Material.HOPPER);
-        naturalMaterials.add(Material.DISPENSER);
-        
-        // types of logs
-        
-        logMaterials.add(Material.OAK_LOG);
-        logMaterials.add(Material.SPRUCE_LOG);
-        logMaterials.add(Material.BIRCH_LOG);
-        logMaterials.add(Material.JUNGLE_LOG);
-        logMaterials.add(Material.ACACIA_LOG);
-        logMaterials.add(Material.DARK_OAK_LOG);
-        
-        // types of leaves
-        
-        leafMaterials.add(Material.OAK_LEAVES);
-        leafMaterials.add(Material.SPRUCE_LEAVES);
-        leafMaterials.add(Material.BIRCH_LEAVES);
-        leafMaterials.add(Material.JUNGLE_LEAVES);
-        leafMaterials.add(Material.ACACIA_LEAVES);
-        leafMaterials.add(Material.DARK_OAK_LEAVES);
-        
-        // types of saplings
-        
-        saplingMaterials.add(Material.OAK_SAPLING);
-        saplingMaterials.add(Material.SPRUCE_SAPLING);
-        saplingMaterials.add(Material.BIRCH_SAPLING);
-        saplingMaterials.add(Material.JUNGLE_SAPLING);
-        saplingMaterials.add(Material.ACACIA_SAPLING);
-        saplingMaterials.add(Material.DARK_OAK_SAPLING);
-        
-        // types of mushroom
-        
-        mushroomMaterials.add(Material.MUSHROOM_STEM);
-        mushroomMaterials.add(Material.BROWN_MUSHROOM_BLOCK);
-        mushroomMaterials.add(Material.RED_MUSHROOM_BLOCK);
-	}
-
-	public static List<Material> toolgood = Arrays.asList(Material.WOODEN_AXE, Material.STONE_AXE, Material.IRON_AXE, Material.GOLDEN_AXE,
-			Material.DIAMOND_AXE);
-	public static List<Material> toolbad = Arrays.asList(Material.IRON_SHOVEL, Material.IRON_PICKAXE, Material.IRON_SWORD, Material.WOODEN_SWORD,
-			Material.WOODEN_SHOVEL, Material.WOODEN_PICKAXE, Material.STONE_SWORD, Material.STONE_SHOVEL, Material.STONE_PICKAXE,
-			Material.DIAMOND_SWORD, Material.DIAMOND_SHOVEL, Material.DIAMOND_PICKAXE, Material.GOLDEN_SWORD, Material.GOLDEN_SHOVEL,
-			Material.GOLDEN_PICKAXE, Material.WOODEN_HOE, Material.STONE_HOE, Material.IRON_HOE, Material.GOLDEN_HOE, Material.DIAMOND_HOE);
-
+        List<String> fromConfig = treeConfig.getStringList(TreeConfig.CFG.TOOL_LIST, new ArrayList<>());
+        result.addAll(fromConfig);
+        result.add(entry.toString());
+        treeConfig.getYamlConfiguration().set(TreeConfig.CFG.TOOL_LIST.getNode(), result);
+        treeConfig.save();
+        player.sendMessage(Language.parse(MSG.SUCCESSFUL_ADDTOOL, entry.toString()));
+    }
 
     public static void removeRequiredTool(Player player, TreeConfig treeConfig) {
         ItemStack inHand = player.getInventory().getItemInMainHand();
-        if (inHand == null)
-        	inHand = player.getInventory().getItemInOffHand();
-        if (inHand == null || inHand.getType() == Material.AIR) {
+        if (inHand.getType() == Material.AIR) {
+            inHand = player.getInventory().getItemInOffHand();
+        }
+        if (inHand.getType() == Material.AIR) {
             player.sendMessage(Language.parse(MSG.ERROR_EMPTY_HAND));
             return;
         }
@@ -164,11 +89,7 @@ public final class Utils {
             fromConfig.remove(inHand.getType().name());
             definition = inHand.getType().name();
         } else {
-            for (Object obj : fromConfig) {
-                if (!(obj instanceof String)) {
-                    continue; // skip item IDs
-                }
-                String tool = (String) obj;
+            for (String tool : fromConfig) {
                 if (!tool.startsWith(inHand.getType().name())) {
                     continue; // skip other names
                 }
@@ -212,65 +133,21 @@ public final class Utils {
             }
         }
 
-        player.sendMessage(Language.parse(MSG.SUCCESSFUL_REMOVETOOL, definition));
-        return;
-
-
-    }
-
-    public static void addRequiredTool(Player player, TreeConfig treeConfig) {
-        //TODO: find out which tree to alter
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (item == null)
-        	item = player.getInventory().getItemInOffHand();
-        if (item == null || item.getType() == Material.AIR) {
-            player.sendMessage(Language.parse(MSG.ERROR_EMPTY_HAND));
-            return;
-        }
-        if (isRequiredTool(item, treeConfig)) {
-            player.sendMessage(Language.parse(MSG.ERROR_ADDTOOL_ALREADY));
-            return;
-        }
-        StringBuffer entry = new StringBuffer();
-
-        try {
-            entry.append(item.getType().name());
-        } catch (Exception e) {
-            final String msg = "Could not retrieve item type name: " + String.valueOf(item.getType());
-            plugin.getLogger().severe(msg);
-            player.sendMessage(Language.parse(MSG.ERROR_ADDTOOL_OTHER, msg));
-            return;
-        }
-
-        boolean found = false;
-
-        for (Enchantment ench : item.getEnchantments().keySet()) {
-            if (found) {
-                player.sendMessage(Language.parse(MSG.WARNING_ADDTOOL_ONLYONE, ench.getName()));
-                break;
-            }
-            entry.append(':');
-            entry.append(ench.getName());
-            entry.append(':');
-            entry.append(item.getEnchantmentLevel(ench));
-            found = true;
-        }
-        List<String> result = new ArrayList<String>();
-
-        List<?> fromConfig = treeConfig.getStringList(TreeConfig.CFG.TOOL_LIST, new ArrayList<>());
-        for (Object obj : fromConfig) {
-            if (obj instanceof String) {
-                result.add(String.valueOf(obj));
-            }
-        }
-        result.add(entry.toString());
-        treeConfig.getYamlConfiguration().set("Tools.Tools List", result);
+        treeConfig.getYamlConfiguration().set(TreeConfig.CFG.TOOL_LIST.getNode(), fromConfig);
         treeConfig.save();
-        player.sendMessage(Language.parse(MSG.SUCCESSFUL_ADDTOOL, entry.toString()));
+        player.sendMessage(Language.parse(MSG.SUCCESSFUL_REMOVETOOL, definition));
     }
 
     public static boolean isAir(final Material mat) {
         return mat == null || mat == Material.AIR || mat == Material.CAVE_AIR || mat == Material.VOID_AIR;
+    }
+
+    public static boolean isLeaf(Material material) {
+        return TreeStructure.allExtras.contains(material);
+    }
+
+    public static boolean isLog(Material material) {
+        return TreeStructure.allTrunks.contains(material);
     }
 
 	/**
@@ -328,8 +205,13 @@ public final class Utils {
 	}
 
 	public static boolean isVanillaTool(final ItemStack itemStack) {
-		return (toolbad.contains(itemStack.getType()) || toolgood
-				.contains(itemStack.getType()));
+	    String type = itemStack.getType().name().toLowerCase();
+
+		return type.endsWith("_axe")
+                || type.endsWith("_hoe")
+                || type.endsWith("_pickaxe")
+                || type.endsWith("_sword")
+                || type.endsWith("_shovel");
 	}
 
     public static String joinArray(final Object[] array, final String glue) {
@@ -343,172 +225,29 @@ public final class Utils {
         }
         return result.substring(glue.length());
     }
-
-	public final static BlockFace[] NEIGHBORFACES = {BlockFace.NORTH,BlockFace.EAST,BlockFace.SOUTH,BlockFace.WEST,
-	BlockFace.NORTH_EAST,BlockFace.SOUTH_EAST,BlockFace.NORTH_WEST,BlockFace.SOUTH_WEST};
-	
-
-
-    /**
-     * Should the given material be replanted?
-     *
-     * @param material
-     *            the log material
-     * @return if a sapling should be replanted
-     */
-    @Deprecated
-    public static boolean replantType(Material material) {
-        if (material == Material.BROWN_MUSHROOM_BLOCK) {
-            return Utils.plugin.getConfig()
-                    .getBoolean("Sapling Replant.Tree Types to Replant.Brown Shroom");
-        }
-        if (material == Material.RED_MUSHROOM_BLOCK) {
-            return Utils.plugin.getConfig()
-                    .getBoolean("Sapling Replant.Tree Types to Replant.Red Shroom");
-        }
-        return false;
-    }
-
-    /**
-     * Should the given species be replanted?
-     *
-     * @param species
-     *            the tree species
-     * @return if a sapling should be replanted
-     */
-    @Deprecated
-    public static boolean replantType(TreeSpecies species) {
-        if (species == TreeSpecies.GENERIC) {
-            return Utils.plugin.getConfig()
-                    .getBoolean("Sapling Replant.Tree Types to Replant.Oak");
-        }
-        if (species == TreeSpecies.REDWOOD) {
-            return Utils.plugin.getConfig()
-                    .getBoolean("Sapling Replant.Tree Types to Replant.Spruce");
-        }
-        if (species == TreeSpecies.BIRCH) {
-            return Utils.plugin.getConfig()
-                    .getBoolean("Sapling Replant.Tree Types to Replant.Birch");
-        }
-        if (species == TreeSpecies.JUNGLE) {
-            return Utils.plugin.getConfig()
-                    .getBoolean("Sapling Replant.Tree Types to Replant.Jungle");
-        }
-        if (species == TreeSpecies.ACACIA) {
-            return Utils.plugin.getConfig()
-                    .getBoolean("Sapling Replant.Tree Types to Replant.Acacia");
-        }
-        if (species == TreeSpecies.DARK_OAK) {
-            return Utils.plugin.getConfig()
-                    .getBoolean("Sapling Replant.Tree Types to Replant.Dark Oak");
-        }
-        return false;
-    }
-
-	public static TreeAssist plugin;
-
-    public static int versionCompare(String theirs, String ours) {
-        String[] aTheirs = theirs.split(".");
-        String[] aOurs = ours.split(("."));
-        int i = 0;
-        while (i < aOurs.length) {
-            if (aTheirs.length<=i) {
-                return -1;
-            }
-            try {
-                int iTheirs = Integer.parseInt(aTheirs[i], 36);
-                int iOurs = Integer.parseInt(aOurs[i], 36);
-
-                if (iTheirs != iOurs) {
-                    return iTheirs - iOurs;
-                }
-            } catch (Exception e) {
-                return 0; // something fancy, assume special version that should be a snapshot
-            }
-            i++;
-        }
-        return 0;
-    }
-    
-    public static boolean isNatural(Material material) {
-    	return naturalMaterials.contains(material);
-    }
-    
-    public static boolean isLog(Material material) {
-    	return logMaterials.contains(material);
-    }
-    
-    public static boolean isLegacyLog(Material material) {
-    	return isLog(material) && !isLegacyLog2(material);
-    }
-    
-    public static boolean isLegacyLog2(Material material) {
-    	return material == Material.ACACIA_LOG || material == Material.DARK_OAK_LOG;
-    }
-    
-    public static boolean isLeaf(Material material) {
-    	return leafMaterials.contains(material);
-    }
     
     public static boolean isSapling(Material material) {
-    	return saplingMaterials.contains(material);
+	    if (material == Material.AIR) {
+	        return false;
+        }
+	    for (TreeConfig config : treeConfigs.values()) {
+	        if (material == config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL)) {
+	            return true;
+            }
+        }
+    	return false;
     }
     
     public static boolean isMushroom(Material material) {
-    	return mushroomMaterials.contains(material);
-    }
-    
-    public static Material resolveLegacySapling(int damage) {
-    	switch(damage) {
-    	case 0:
-    		return Material.OAK_SAPLING;
-    	case 1:
-    		return Material.SPRUCE_SAPLING;
-    	case 2:
-    		return Material.BIRCH_SAPLING;
-    	case 3:
-    		return Material.JUNGLE_SAPLING;
-    	case 4:
-    		return Material.ACACIA_SAPLING;
-    	case 5:
-    		return Material.DARK_OAK_SAPLING;
-    	default:
-    		return Material.OAK_SAPLING;
-    	}
-    }
-    
-    public static Material getLogForSpecies(TreeSpecies species) {
-    	if(species == TreeSpecies.GENERIC)
-    		return Material.OAK_LOG;
-    	else if(species == TreeSpecies.REDWOOD)
-    		return Material.SPRUCE_LOG;
-    	else if(species == TreeSpecies.BIRCH)
-    		return Material.BIRCH_LOG;
-    	else if(species == TreeSpecies.JUNGLE)
-    		return Material.JUNGLE_LOG;
-    	else if(species == TreeSpecies.ACACIA)
-    		return Material.ACACIA_LOG;
-    	else if(species == TreeSpecies.DARK_OAK)
-    		return Material.DARK_OAK_LOG;
-    	else
-    		return Material.OAK_LOG;
-    }
-    
-    public static Material getLeavesForSpecies(TreeSpecies species) {
-    	if(species == TreeSpecies.GENERIC)
-    		return Material.OAK_LEAVES;
-    	else if(species == TreeSpecies.REDWOOD)
-    		return Material.SPRUCE_LEAVES;
-    	else if(species == TreeSpecies.BIRCH)
-    		return Material.BIRCH_LEAVES;
-    	else if(species == TreeSpecies.JUNGLE)
-    		return Material.JUNGLE_LEAVES;
-    	else if(species == TreeSpecies.ACACIA)
-    		return Material.ACACIA_LEAVES;
-    	else if(species == TreeSpecies.DARK_OAK)
-    		return Material.DARK_OAK_LEAVES;
-    	else
-    		return Material.OAK_LEAVES;
+	    switch (material) {
+            case BROWN_MUSHROOM:
+            case BROWN_MUSHROOM_BLOCK:
+            case MUSHROOM_STEM:
+            case RED_MUSHROOM:
+            case RED_MUSHROOM_BLOCK:
+                return true;
+        }
+    	return false;
     }
     
     public static Material getSaplingForSpecies(TreeSpecies species) {
@@ -526,12 +265,6 @@ public final class Utils {
     		return Material.DARK_OAK_SAPLING;
     	else
     		return Material.OAK_SAPLING;
-    }
-    
-    public static Material findMushroomTreeType(Block block) {
-    	while(block.getType() == Material.MUSHROOM_STEM)
-    		block = block.getRelative(BlockFace.UP);
-    	return block.getType();
     }
 
     public static void reloadTreeDefinitions(Config config) {
@@ -587,6 +320,7 @@ public final class Utils {
                 }
                 if (treeConfigs.containsKey(parentKey)) {
                     // we can now read the parent and apply defaults!
+                    System.out.println("loading defaults of " + parentKey + " into " + key);
                     treeConfig.loadDefaults(treeConfigs.get(parentKey));
                     treeConfigs.put(key, treeConfig);
                     processing.remove(key);

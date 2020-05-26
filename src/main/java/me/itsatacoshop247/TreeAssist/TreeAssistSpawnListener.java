@@ -10,6 +10,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
@@ -47,7 +48,7 @@ public class TreeAssistSpawnListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void playerPickupItemEvent(PlayerPickupItemEvent event) {
+	public void playerPickupItemEvent(EntityPickupItemEvent event) {
 		Item item = event.getItem();
 		if (Utils.isSapling(item.getItemStack().getType())) {
 			TreeAssistSaplingSelfPlant.remove(item);

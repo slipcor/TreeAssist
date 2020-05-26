@@ -15,6 +15,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
@@ -159,7 +161,7 @@ public class TreeStructure {
                 }
             }
 
-            bottom.setType(Material.matchMaterial(config.getString(TreeConfig.CFG.REPLANTING_MATERIAL)));
+            bottom.setType(config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL));
 
             return;
 
@@ -301,7 +303,7 @@ public class TreeStructure {
         }
 
         for (Block block : trunks) {
-            block.setType(Material.matchMaterial(config.getString(TreeConfig.CFG.REPLANTING_MATERIAL)));
+            block.setType(config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL));
         }
 
         return;
@@ -1036,10 +1038,9 @@ public class TreeStructure {
         debug.i("Removing The Tree!");
 
 
-        final int delay = Utils.plugin.getConfig().getBoolean("Main.Initial Delay") ? Utils.plugin.getConfig().getInt(
-                "Automatic Tree Destruction.Initial Delay (seconds)") * 20 : 0;
-        final int offset = Utils.plugin.getConfig().getInt(
-                "Automatic Tree Destruction.Delay (ticks)");
+        final int delay = config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY) ? config.getInt(
+                TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME) * 20 : 0;
+        final int offset = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_DELAY);
 
         final ItemStack tool = (damage && player.getGameMode() != GameMode.CREATIVE) ? playerTool
                 : null;
@@ -1082,7 +1083,7 @@ public class TreeStructure {
                                 callExternals(block, player);
 
                                 if (Utils.isLog(block.getType())
-                                        && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
+                                        && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
                                     player.getInventory().addItem(block.getState().getData().toItemStack(1));
                                     block.setType(Material.AIR);
                                 } else {
@@ -1121,7 +1122,7 @@ public class TreeStructure {
 
                                     Utils.plugin.blockList.logBreak(block, player);
                                     if (Utils.isLog(block.getType())
-                                            && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
+                                            && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
                                         player.getInventory().addItem(block.getState().getData().toItemStack(1));
                                         block.setType(Material.AIR);
                                     } else {
@@ -1242,7 +1243,7 @@ public class TreeStructure {
             }
 
             if (player != null && Utils.isLog(block.getType())
-                    && Utils.plugin.getConfig().getBoolean("Main.Auto Add To Inventory", false)) {
+                    && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
                 if (statPickup) {
                     player.incrementStatistic(Statistic.PICKUP, block.getType());
                 }
@@ -1321,10 +1322,18 @@ public class TreeStructure {
                 return; // no damage
             }
 
-            if (Utils.toolgood.contains(tool.getType())) {
-                tool.setDurability((short) (tool.getDurability() + 1));
-            } else if (Utils.toolbad.contains(tool.getType())) {
-                tool.setDurability((short) (tool.getDurability() + 2));
+            if (config.getMaterials(TreeConfig.CFG.TOOL_LIST).contains(tool.getType())) {
+                ItemMeta meta = tool.getItemMeta();
+                if (meta != null) {
+                    ((Damageable)meta).setDamage(((Damageable)meta).getDamage() + 1);
+                    tool.setItemMeta(meta);
+                }
+            } else if (Utils.isVanillaTool(tool)) {
+                ItemMeta meta = tool.getItemMeta();
+                if (meta != null) {
+                    ((Damageable)meta).setDamage(((Damageable)meta).getDamage() + 2);
+                    tool.setItemMeta(meta);
+                }
             }
         }
     }

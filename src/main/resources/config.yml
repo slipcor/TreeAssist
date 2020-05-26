@@ -15,9 +15,6 @@ Main:
 Automatic Tree Destruction:
   When Sneaking: true
   When Not Sneaking: true
-Auto Plant Dropped Saplings:
-  Chance (percent): 10
-  Delay (seconds): 5
 Leaf Decay:
   Fast Leaf Decay: true
 Sapling Replant:

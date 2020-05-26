@@ -181,8 +181,8 @@ public class Config {
     public void reloadMaps() {
         // known exceptions
         String[] exceptions = {"Main",
-                "Automatic Tree Destruction", "Block Statistics", "Auto Plant Dropped Saplings", "Leaf Decay",
-                "Sapling Replant", "Tools", "Worlds", "Placed Blocks", "Modding"};
+                "Automatic Tree Destruction", "Block Statistics", "Leaf Decay",
+                "Sapling Replant", "Worlds", "Placed Blocks"};
 
         root: for (final String s : cfg.getKeys(true)) {
             final Object object = cfg.get(s);

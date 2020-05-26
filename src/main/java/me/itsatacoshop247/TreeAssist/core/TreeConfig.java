@@ -112,7 +112,7 @@ public class TreeConfig {
         PERMISSION("Permission", ""),
 
         REPLANTING_ACTIVE("Replanting.Active", true),
-        REPLANTING_MATERIAL("Replanting.Material", "String"),
+        REPLANTING_MATERIAL("Replanting.Material", "minecraft:air"),
         REPLANTING_DROPPED_SAPLINGS("Replanting.Dropped Saplings Automatically", false),
         REPLANTING_DROPPED_SAPLINGS_CHANCE("Replanting.Dropped Saplings Chance", 10),
         REPLANTING_DROPPED_SAPLINGS_DELAY("Replanting.Dropped Saplings Delay", 5),
@@ -251,8 +251,9 @@ public class TreeConfig {
      */
     public void reloadMaps() {
         // known exceptions
-        String[] exceptions = {"Custom Drop Chance",
-                "Blocks", "Blocks.Cap", "Blocks.Top", "Blocks.Middle",
+        String[] exceptions = {"Automatic Destruction",
+                "Custom Drop Chance", "Block Statistics",
+                "Blocks", "Blocks.Cap", "Blocks.Top", "Blocks.Middle", "Replanting",
                 "Trunk", "Trunk.Branch"};
 
         root: for (final String s : cfg.getKeys(true)) {
@@ -276,7 +277,8 @@ public class TreeConfig {
                     }
                 }
 
-                String[] materialPaths = { "Custom Drops.", "Custom Drop Chance."};
+                String[] materialPaths = {
+                        "Custom Drops.", "Custom Drop Chance."};
 
                 for (String test : materialPaths) {
                     if (s.startsWith(test)) {
@@ -435,7 +437,17 @@ public class TreeConfig {
         List<Material> matList = new ArrayList<>();
 
         for (String matName : list) {
-            matList.add(Material.matchMaterial(matName));
+            if (matName.contains("*")) {
+                String needle = matName.substring(1).toLowerCase();
+                for (Material mat : Material.values()) {
+                    if (mat.name().toLowerCase().endsWith(needle)) {
+                        matList.add(mat);
+                        System.out.println("match added: " + mat.name());
+                    }
+                }
+            } else {
+                matList.add(Material.matchMaterial(matName));
+            }
         }
 
         return matList;

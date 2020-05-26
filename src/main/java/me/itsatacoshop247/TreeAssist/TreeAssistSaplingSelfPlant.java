@@ -1,6 +1,7 @@
 package me.itsatacoshop247.TreeAssist;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import me.itsatacoshop247.TreeAssist.core.TreeConfig;
@@ -14,12 +15,14 @@ import me.itsatacoshop247.TreeAssist.core.Utils;
 
 public class TreeAssistSaplingSelfPlant implements Runnable {
 	private final TreeAssist plugin;
+	private final TreeConfig config;
 	private Item drop;
 	private final static Set<Item> items = new HashSet<Item>();
 	
 	public TreeAssistSaplingSelfPlant(TreeAssist instance, TreeConfig config, Item item)
 	{
 		this.plugin = instance;
+		this.config = config;
 		drop = item;
 		items.add(drop);
 		
@@ -38,14 +41,13 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 			return;
 		}
 		Block block = drop.getLocation().getBlock();
-		
-		if ((Utils.isAir(block.getType()) || block.getType() == Material.SNOW) &&
-				(block.getRelative(BlockFace.DOWN).getType() == Material.DIRT ||
-						block.getRelative(BlockFace.DOWN).getType() == Material.MYCELIUM ||
-						block.getRelative(BlockFace.DOWN).getType() == Material.GRASS_BLOCK ||
-						block.getRelative(BlockFace.DOWN).getType() == Material.PODZOL)) {
 
-			block.setType(Utils.resolveLegacySapling(drop.getItemStack().getData().getData()));
+		List<Material> grounds = config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS);
+
+		if ((Utils.isAir(block.getType()) || block.getType() == Material.SNOW) &&
+				(grounds.contains(block.getRelative(BlockFace.DOWN).getType()))) {
+
+			block.setType(config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL));
 			drop.remove();
 		}
 	}
