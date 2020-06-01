@@ -53,7 +53,8 @@ public class TreeStructure {
     }
 
     private static void debug(String test) {
-        System.out.println(test);
+        //System.out.println(test);
+        //TODO: remove
     }
 
     public TreeStructure(TreeConfig config, Block bottom, Boolean onlyTrunk) {
@@ -114,14 +115,14 @@ public class TreeStructure {
             if (branches) {
                 getBranches();
 
-                System.out.println("branch blocks: " + countBranches());
+                debug.i("branch blocks: " + countBranches());
             }
 
             if (otherTrunks.isEmpty()) {
-                System.out.println("No other trunks found, checking again!");
+                debug.i("No other trunks found, checking again!");
                 findOtherTrunks();
                 if (!otherTrunks.isEmpty()) {
-                    System.out.println("Found other trunks: " + otherTrunks.size());
+                    debug.i("Found other trunks: " + otherTrunks.size());
                 }
             }
 
@@ -203,12 +204,11 @@ public class TreeStructure {
                     found++;
                 }
 
-                if (found > 4)
+                if (found > 4) {
 
-
-                    System.out.println("We ignore thick ones / farms for now!");
-                valid = false;
-                return;
+                    valid = false;
+                    return;
+                }
             }
             return;
         }
@@ -234,7 +234,7 @@ public class TreeStructure {
         }
 
         if (trunks.size() != 4) {
-            System.out.println("We do not have 4 trunks, we found " + trunks.size() + "!");
+            debug.i("We do not have 4 trunks, we found " + trunks.size() + "!");
             valid = false;
             return;
         }
@@ -266,14 +266,14 @@ public class TreeStructure {
         if (branches) {
             getBranches(trunks);
 
-            System.out.println("branch blocks: " + countBranches());
+            debug.i("branch blocks: " + countBranches());
         }
 
         if (otherTrunks.isEmpty()) {
-            System.out.println("No other trunks found, checking again!");
+            debug.i("No other trunks found, checking again!");
             findOtherTrunks();
             if (!otherTrunks.isEmpty()) {
-                System.out.println("Found other trunks: " + otherTrunks.size());
+                debug.i("Found other trunks: " + otherTrunks.size());
             }
         }
 
@@ -440,10 +440,6 @@ public class TreeStructure {
     private void findOtherTrunks() {
         int radius = config.getInt(TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS) * 2;
 
-        System.out.println("radius is " + radius);
-
-        // TODO this returns an invalid shape :(
-
         int totalChecks = 0;
 
         for (int x=-radius; x<=radius; x++) {
@@ -464,7 +460,7 @@ public class TreeStructure {
                             TreeStructure trunk = new TreeStructure(config, block, true);
                             if (trunk.isValid()) {
                                 otherTrunks.addAll(trunk.getTrunk());
-                                System.out.println("Found another tree at " + block.getLocation());
+                                debug.i("Found another tree at " + block.getLocation());
                                 continue blocks;
                             }
                         }
@@ -475,7 +471,7 @@ public class TreeStructure {
                 }
             }
         }
-        System.out.println("total checks: " + totalChecks);
+        debug.i("total checks: " + totalChecks);
     }
 
     private int countBranches() {
@@ -535,7 +531,7 @@ public class TreeStructure {
                 } else if (!allExtras.contains(checkBlock.getType())
                         && !allTrunks.contains(checkBlock.getType())
                         && !naturalBlocks.contains(checkBlock.getType())) {
-                    System.out.println("invalid block 2: " + checkBlock.getType());
+                    debug.i("invalid block 2: " + checkBlock.getType());
                     trunk.clear();
                     branchMap.clear();
                     return;
@@ -602,11 +598,6 @@ public class TreeStructure {
         set.add(northEastBlock);
         set.add(southEastBlock);
 
-        System.out.println("NW: " + northWestBlock.getLocation());
-        System.out.println("SW: " + southWestBlock.getLocation());
-        System.out.println("NE: " + northEastBlock.getLocation());
-        System.out.println("SE: " + southEastBlock.getLocation());
-
         return set.size() == 4;
     }
 
@@ -663,7 +654,7 @@ public class TreeStructure {
                 } else if (!allExtras.contains(checkBlock.getType())
                         && !allTrunks.contains(checkBlock.getType())
                         && !naturalBlocks.contains(checkBlock.getType())) {
-                    System.out.println("invalid block 2: " + checkBlock.getType());
+                    debug.i("invalid block 2: " + checkBlock.getType());
                     trunk.clear();
                     branchMap.clear();
                     return;
@@ -700,13 +691,13 @@ public class TreeStructure {
                 if (anotherTree.isValid() && !anotherTree.bottom.equals(bottom)) {
                     // this is another trunk! check somewhere else!
                     otherTrunks.addAll(anotherTree.getTrunk());
-                    System.out.println("We hit a neighbor tree! Our bottom block " + bottom.getLocation() + " is not the same as " + anotherTree.bottom.getLocation());
+                    debug.i("We hit a neighbor tree! Our bottom block " + bottom.getLocation() + " is not the same as " + anotherTree.bottom.getLocation());
                     return false;
                 }
             }
             result.add(checkBlock);
             for (BlockFace face : diagonals) {
-                System.out.println("Continuing branch " + direction + " to " + face);
+                debug.i("Continuing branch " + direction + " to " + face);
                 if (
                         invalidBranch(checkBlock.getRelative(face), result, direction) ||
                                 invalidBranch(checkBlock.getRelative(face).getRelative(BlockFace.UP), result, direction) ||
@@ -720,14 +711,14 @@ public class TreeStructure {
                 return true;
             }
         } else if (extraBlocks.contains(mat)) {
-            System.out.println("This branch ends now.");
+            debug.i("This branch ends now.");
             roofs.add(checkBlock);
             //we found our end!
             return false;
         } else if (
                 !naturalBlocks.contains(mat) &&
                         !(allTrunks.contains(mat) || allExtras.contains(mat))) {
-            System.out.println("invalid block 3: " + mat);
+            debug.i("invalid block 3: " + mat);
             return true;
         }
         return false;
@@ -982,7 +973,7 @@ public class TreeStructure {
 
         debug.i("we are replacing now!");
 
-        int delay = Math.max(1, globalConfig.getInt(Config.CFG.SAPLING_REPLANT_DELAY_UNTIL_SAPLING_IS_REPLANTED));
+        int delay = Math.max(1, config.getInt(TreeConfig.CFG.REPLANTUNG_DELAY));
 
         Material saplingMat = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
 
@@ -1177,14 +1168,10 @@ public class TreeStructure {
 
         class CleanRunner extends BukkitRunnable {
             private final TreeStructure me;
+            private final List<Block> totalBlocks = new ArrayList<>();
 
             CleanRunner(TreeStructure tree) {
                 me = tree;
-            }
-
-            @Override
-            public void run() {
-                List<Block> totalBlocks = new ArrayList<>();
                 if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REMOVE_LEAVES)) {
                     for (Block block : extras) {
                         Utils.plugin.getListener().breakRadiusLeaves(block);
@@ -1193,11 +1180,15 @@ public class TreeStructure {
                     totalBlocks.addAll(extras);
                 }
                 totalBlocks.addAll(trunk);
+            }
 
+            @Override
+            public void run() {
                 if (offset < 0) {
                     for (Block block : totalBlocks) {
                         if (sapling.equals(block.getType())) {
                             debug.i("CleanRunner: skipping breaking a sapling");
+                            continue;
                         }
                         debug.i("CleanRunner: 1");
                         Utils.breakBlock(block);
@@ -1373,5 +1364,22 @@ public class TreeStructure {
             debug.i("jobs: " + Utils.plugin.jobs);
             debug.i("player: " + String.valueOf(player));
         }
+    }
+
+    public void clearUpTo(Block block) {
+        List<Block> removals = new ArrayList<>();
+        for (Block b : trunk) {
+            if (b.getY() <= block.getY()) {
+                removals.add(b);
+            }
+        }
+        trunk.removeAll(removals);
+        removals.clear();
+        for (Block b : extras) {
+            if (b.getY() <= block.getY()) {
+                removals.add(b);
+            }
+        }
+        extras.removeAll(removals);
     }
 }

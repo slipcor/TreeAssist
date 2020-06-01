@@ -8,10 +8,6 @@ import java.util.*;
 
 public class TreeCalculator {
 
-    private static void debug(String test) {
-        System.out.println(test);
-    }
-
     private static boolean debugContain(List<Material> list, Material needle) {
         return list.contains(needle);
     }
@@ -78,10 +74,7 @@ public class TreeCalculator {
             return checkBlock.getRelative(BlockFace.UP);
         }
 
-        debug("We did not find a ground block. not a valid tree!");
-
         return null;
-
 
     }
 }

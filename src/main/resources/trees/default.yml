@@ -101,6 +101,8 @@ Replanting:
   Dropped Saplings Automatically: false
   Dropped Saplings Chance: 10
   Dropped Saplings Delay: 5
+  Enforce: false
+  Delay: 1
   Material: minecraft:air
   Requires Tools: true
 Tool List:

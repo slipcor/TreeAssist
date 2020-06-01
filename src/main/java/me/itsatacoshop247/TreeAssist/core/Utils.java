@@ -306,7 +306,11 @@ public final class Utils {
         for (String key : processing.keySet()) {
             TreeConfig treeConfig = processing.get(key);
             TreeConfigUpdater.check(treeConfig, key);
-            treeConfig.load();
+            if (key.equals("default")) {
+                treeConfig.load();
+            } else {
+                treeConfig.preLoad();
+            }
         }
 
         int attempts = 100;
@@ -321,7 +325,7 @@ public final class Utils {
                 TreeConfig treeConfig = processing.get(key);
                 String parentKey = treeConfig.getYamlConfiguration().getString("Parent", null);
                 if (parentKey == null) {
-                    // We are a parent. We do not need to look for others before us
+                    // We are THE parent. We do not need to look for others before us
                     treeConfigs.put(key, treeConfig);
                     processing.remove(key);
                     continue looping;
@@ -329,6 +333,7 @@ public final class Utils {
                 if (treeConfigs.containsKey(parentKey)) {
                     // we can now read the parent and apply defaults!
                     treeConfig.loadDefaults(treeConfigs.get(parentKey));
+                    treeConfig.load();
                     treeConfigs.put(key, treeConfig);
                     processing.remove(key);
                     continue looping;

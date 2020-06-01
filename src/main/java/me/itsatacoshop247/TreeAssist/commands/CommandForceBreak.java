@@ -37,6 +37,7 @@ public class CommandForceBreak extends AbstractCommand {
                     int configValue = Utils.plugin.getTreeAssistConfig().getInt(Config.CFG.MAIN_FORCE_BREAK_MAX_RADIUS, 30);
                     if (radius > configValue) {
                         sender.sendMessage(Language.parse(Language.MSG.ERROR_OUT_OF_RANGE, String.valueOf(configValue)));
+                        return;
                     }
                 } catch (Exception e) {
                 }

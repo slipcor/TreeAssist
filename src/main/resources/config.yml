@@ -21,8 +21,6 @@ Sapling Replant:
   Block all breaking of Saplings: false
   Bottom Block has to be Broken First: true
   Command Time Delay (Seconds): 30
-  Delay until Sapling is replanted (seconds) (minimum 1 second): 1
-  Enforce: false
   Replant When Tree Burns Down: true
   Time to Protect Sapling (Seconds): 0
   Time to Block Sapling Growth (Seconds): 0

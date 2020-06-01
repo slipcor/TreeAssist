@@ -140,7 +140,6 @@ public class TreeAssistBlockListener implements Listener {
         }
 
         if (!TreeStructure.allTrunks.contains(event.getBlock().getType())) {
-            System.out.println("Not a tree block: " + event.getBlock().getType());
             return;
         }
 
@@ -159,7 +158,6 @@ public class TreeAssistBlockListener implements Listener {
         TreeStructure foundTree = null;
 
         configs: for (TreeConfig config : Utils.treeConfigs.values()) {
-            System.out.println(config);
             List<String> list = config.getStringList(TreeConfig.CFG.TRUNK_MATERIALS, new ArrayList<>());
             for (String matName : list) {
                 Material mat = Material.matchMaterial(matName);
@@ -261,6 +259,9 @@ public class TreeAssistBlockListener implements Listener {
                                 }
 
                                 trunk.maybeReplant(player, event.getBlock());
+                                if (Utils.plugin.getTreeAssistConfig().getBoolean(Config.CFG.MAIN_DESTROY_ONLY_BLOCKS_ABOVE)) {
+                                    trunk.clearUpTo(event.getBlock());
+                                }
                                 trunk.removeLater(player, item);
                                 return;
 
@@ -286,6 +287,9 @@ public class TreeAssistBlockListener implements Listener {
             }
 
             if (matchingTreeConfig.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL)) {
+                if (Utils.plugin.getTreeAssistConfig().getBoolean(Config.CFG.MAIN_DESTROY_ONLY_BLOCKS_ABOVE)) {
+                    foundTree.clearUpTo(event.getBlock());
+                }
                 foundTree.removeLater(null, null);
             }
         }

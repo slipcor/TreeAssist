@@ -26,40 +26,40 @@ public class Config {
     }
 
     public enum CFG {
-        MAIN_DESTROY_ONLY_BLOCKS_ABOVE("Main.Destroy Only Blocks Above", false), //TODO: check
-        MAIN_FORCE_BREAK_DEFAULT_RADIUS("Main.Force Break Default Radius", 10), //TODO: check
-        MAIN_FORCE_GROW_DEFAULT_RADIUS("Main.Force Grow Default Radius", 10), //TODO: check
-        MAIN_FORCE_BREAK_MAX_RADIUS("Main.Force Break Max Radius", 30), //TODO: check
-        MAIN_FORCE_GROW_MAX_RADIUS("Main.Force Grow Max Radius", 30), //TODO: check
-        MAIN_IGNORE_USER_PLACED_BLOCKS("Main.Ignore User Placed Blocks", false), //TODO: check
-        MAIN_LANGUAGE("Main.Language", "en"), //TODO: check
-        MAIN_TOGGLE_DEFAULT("Main.Toggle Default", true), //TODO: check
-        MAIN_USE_MCMMO_IF_AVAILABLE("Main.Use mcMMO if Available", true), //TODO: check
-        MAIN_USE_JOBS_IF_AVAILABLE("Main.Use Jobs if Available", true), //TODO: check
-        MAIN_USE_WORLDGUARD_IF_AVAILABLE("Main.Use WorldGuard if Available", false), //TODO: check
-        MAIN_USE_PERMISSIONS("Main.Use Permissions", false), //TODO: check
-        MAIN_USE_FALLING_BLOCKS("Main.Use Falling Blocks", false), //TODO: check
+        MAIN_DESTROY_ONLY_BLOCKS_ABOVE("Main.Destroy Only Blocks Above", false),
+        MAIN_FORCE_BREAK_DEFAULT_RADIUS("Main.Force Break Default Radius", 10),
+        MAIN_FORCE_GROW_DEFAULT_RADIUS("Main.Force Grow Default Radius", 10),
+        MAIN_FORCE_BREAK_MAX_RADIUS("Main.Force Break Max Radius", 30),
+        MAIN_FORCE_GROW_MAX_RADIUS("Main.Force Grow Max Radius", 30),
+        MAIN_IGNORE_USER_PLACED_BLOCKS("Main.Ignore User Placed Blocks", false),
+        MAIN_LANGUAGE("Main.Language", "en"),
+        MAIN_TOGGLE_DEFAULT("Main.Toggle Default", true),
+        MAIN_USE_MCMMO_IF_AVAILABLE("Main.Use mcMMO if Available", true),
+        MAIN_USE_JOBS_IF_AVAILABLE("Main.Use Jobs if Available", true),
+        MAIN_USE_WORLDGUARD_IF_AVAILABLE("Main.Use WorldGuard if Available", false),
+        MAIN_USE_PERMISSIONS("Main.Use Permissions", false),
+        MAIN_USE_FALLING_BLOCKS("Main.Use Falling Blocks", false),
 
-        AUTOMATIC_TREE_DESTRUCTION_WHEN_SNEAKING("Automatic Tree Destruction.When Sneaking", true), //TODO: check
-        AUTOMATIC_TREE_DESTRUCTION_WHEN_NOT_SNEAKING("Automatic Tree Destruction.When Not Sneaking", true), //TODO: check
+        AUTOMATIC_TREE_DESTRUCTION_WHEN_SNEAKING("Automatic Tree Destruction.When Sneaking", true),
+        AUTOMATIC_TREE_DESTRUCTION_WHEN_NOT_SNEAKING("Automatic Tree Destruction.When Not Sneaking", true),
 
-        LEAF_DECAY_FAST_LEAF_DECAY("Leaf Decay.Fast Leaf Decay", true), //TODO: check
+        LEAF_DECAY_FAST_LEAF_DECAY("Leaf Decay.Fast Leaf Decay", true),
 
-        SAPLING_REPLANT_BLOCK_ALL_BREAKING_OF_SAPLINGS("Sapling Replant.Block all breaking of Saplings", false), //TODO: check
-        SAPLING_REPLANT_BOTTOM_BLOCK_HAS_TO_BE_BROKEN_FIRST("Sapling Replant.Bottom Block has to be Broken First", true), //TODO: check
-        SAPLING_REPLANT_COMMAND_TIME_DELAY("Sapling Replant.Command Time Delay (Seconds)", 30), //TODO: check
-        SAPLING_REPLANT_DELAY_UNTIL_SAPLING_IS_REPLANTED("Sapling Replant.Delay until Sapling is replanted (seconds) (minimum 1 second)", 1), //TODO: check
-        SAPLING_REPLANT_REPLANT_WHEN_TREE_BURNS_DOWN("Sapling Replant.Replant When Tree Burns Down", true), //TODO: check
-        SAPLING_REPLANT_TIME_TO_PROTECT_SAPLING("Sapling Replant.Time to Protect Sapling (Seconds)", 0), //TODO: check
-        SAPLING_REPLANT_TIME_TO_BLOCK_SAPLING_GROWTH("Sapling Replant.Time to Block Sapling Growth (Seconds)", 0), //TODO: check
+        SAPLING_REPLANT_BLOCK_ALL_BREAKING_OF_SAPLINGS("Sapling Replant.Block all breaking of Saplings", false),
+        SAPLING_REPLANT_BOTTOM_BLOCK_HAS_TO_BE_BROKEN_FIRST("Sapling Replant.Bottom Block has to be Broken First", true),
+        SAPLING_REPLANT_COMMAND_TIME_DELAY("Sapling Replant.Command Time Delay (Seconds)", 30),
 
-        WORLDS_ENABLE_PER_WORLD("Worlds.Enable Per World", false), //TODO: check
-        WORLD_ENABLED_WORLDS("Worlds.Enabled Worlds", new ArrayList<>(Arrays.asList("world", "world2"))), //TODO: check
+        SAPLING_REPLANT_REPLANT_WHEN_TREE_BURNS_DOWN("Sapling Replant.Replant When Tree Burns Down", true),
+        SAPLING_REPLANT_TIME_TO_PROTECT_SAPLING("Sapling Replant.Time to Protect Sapling (Seconds)", 0),
+        SAPLING_REPLANT_TIME_TO_BLOCK_SAPLING_GROWTH("Sapling Replant.Time to Block Sapling Growth (Seconds)", 0),
 
-        PLACED_BLOCKS_HANDLER_PLUGIN_NAME("Placed Blocks.Handler Plugin Name", "TreeAssist"), //TODO: check
-        PLACED_BLOCKS_HANDLER_LOOKUP_TIME("Placed Blocks.Handler Lookup Time", 86400), //TODO: check
+        WORLDS_ENABLE_PER_WORLD("Worlds.Enable Per World", false),
+        WORLD_ENABLED_WORLDS("Worlds.Enabled Worlds", new ArrayList<>(Arrays.asList("world", "world2"))),
 
-        MODDING_DISABLE_DURABILITY_FIX("Modding.Disable Durability Fix", false), //TODO: check
+        PLACED_BLOCKS_HANDLER_PLUGIN_NAME("Placed Blocks.Handler Plugin Name", "TreeAssist"),
+        PLACED_BLOCKS_HANDLER_LOOKUP_TIME("Placed Blocks.Handler Lookup Time", 86400),
+
+        MODDING_DISABLE_DURABILITY_FIX("Modding.Disable Durability Fix", false),
 
         VERSION("Version", 6.0);
 

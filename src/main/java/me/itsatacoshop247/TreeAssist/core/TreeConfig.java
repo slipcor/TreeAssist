@@ -21,15 +21,15 @@ public class TreeConfig {
     public void loadDefaults(TreeConfig parent) {
         for (CFG c : CFG.values()) {
             if (c.type.equals("string")) {
-                cfg.addDefault(c.node, getString(c, parent.getString(c)));
+                strings.put(c.node, parent.getString(c));
             } else if (c.type.equals("boolean")) {
-                cfg.addDefault(c.node, getBoolean(c, parent.getBoolean(c)));
+                booleans.put(c.node, parent.getBoolean(c));
             } else if (c.type.equals("int")) {
-                cfg.addDefault(c.node, getInt(c, parent.getInt(c)));
+                ints.put(c.node, parent.getInt(c));
             } else if (c.type.equals("double")) {
-                cfg.addDefault(c.node, getDouble(c, parent.getDouble(c)));
+                doubles.put(c.node, parent.getDouble(c));
             } else if (c.type.equals("list")) {
-                cfg.addDefault(c.node, getStringList(c, parent.getStringList(c, new ArrayList<>())));
+                cfg.addDefault(c.node, parent.getStringList(c, new ArrayList<>()));
             } else if (c.type.equals("map")) {
                 ConfigurationSection cs = parent.getYamlConfiguration().getConfigurationSection(c.node);
 
@@ -75,7 +75,7 @@ public class TreeConfig {
         AUTOMATIC_DESTRUCTION_ACTIVE("Automatic Destruction.Active", true), // Will we attempt to automatically destroy?
         AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE("Automatic Destruction.Apply Full Tool Damage", true),
         AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Destruction.Auto Add To Inventory", false),
-        AUTOMATIC_DESTRUCTION_COOLDOWN("Automatic Destruction.Cooldown (seconds)", 20),
+        AUTOMATIC_DESTRUCTION_COOLDOWN("Automatic Destruction.Cooldown (seconds)", 0),
         AUTOMATIC_DESTRUCTION_DELAY("Automatic Destruction.Delay (ticks)", 0),
         AUTOMATIC_DESTRUCTION_FORCED_REMOVAL("Automatic Destruction.Forced Removal", false),
         AUTOMATIC_DESTRUCTION_INCREASES_STATISTICS("Automatic Destruction.Increases Statistics", false),
@@ -113,13 +113,14 @@ public class TreeConfig {
         PARENT("Parent", "default"),
         PERMISSION("Permission", ""),
 
-        REPLANTING_ACTIVE("Replanting.Active", true), //TODO: check
-        REPLANTING_MATERIAL("Replanting.Material", "minecraft:air"), //TODO: check
-        REPLANTING_DROPPED_SAPLINGS("Replanting.Dropped Saplings Automatically", false), //TODO: check
-        REPLANTING_DROPPED_SAPLINGS_CHANCE("Replanting.Dropped Saplings Chance", 10), //TODO: check
-        REPLANTING_DROPPED_SAPLINGS_DELAY("Replanting.Dropped Saplings Delay", 5), //TODO: check
-        REPLANTING_ENFORCE("Replanting.Enforce", false), //TODO: check
-        REPLANTING_REQUIRES_TOOLS("Replanting.Requires Tools", true), //TODO: check
+        REPLANTING_ACTIVE("Replanting.Active", true),
+        REPLANTING_MATERIAL("Replanting.Material", "minecraft:air"),
+        REPLANTUNG_DELAY("Replanting.Delay", 1),
+        REPLANTING_DROPPED_SAPLINGS("Replanting.Dropped Saplings Automatically", false),
+        REPLANTING_DROPPED_SAPLINGS_CHANCE("Replanting.Dropped Saplings Chance", 10),
+        REPLANTING_DROPPED_SAPLINGS_DELAY("Replanting.Dropped Saplings Delay", 5),
+        REPLANTING_ENFORCE("Replanting.Enforce", false),
+        REPLANTING_REQUIRES_TOOLS("Replanting.Requires Tools", true),
 
         TRUNK_BRANCH("Trunk.Branch", false),
         TRUNK_DIAGONAL("Trunk.Diagonal", false), // Trunk can move diagonally even (Acacia)
@@ -450,7 +451,6 @@ public class TreeConfig {
                 for (Material mat : Material.values()) {
                     if (mat.name().toLowerCase().endsWith(needle)) {
                         matList.add(mat);
-                        System.out.println("match added: " + mat.name());
                     }
                 }
             } else {
