@@ -32,11 +32,6 @@ public class CommandReload extends AbstractCommand {
     }
 
     @Override
-    public String getName() {
-        return getClass().getName();
-    }
-
-    @Override
     public List<String> getShort() {
         return Collections.singletonList("!rl");
     }
@@ -44,10 +39,5 @@ public class CommandReload extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist reload - reload the plugin";
-    }
-
-    @Override
-    public CommandTree<String> getSubs() {
-        return new CommandTree<>(null);
     }
 }

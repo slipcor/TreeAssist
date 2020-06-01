@@ -20,12 +20,12 @@ import java.io.*;
 import java.util.*;
 
 public class TreeAssist extends JavaPlugin {
-    public List<Location> saplingLocationList = new ArrayList<Location>();
-    private final Map<String, List<String>> disabledMap = new HashMap<String, List<String>>();
-    final Map<String, AbstractCommand> commandMap = new HashMap<String, AbstractCommand>();
-    final List<AbstractCommand> commandList = new ArrayList<AbstractCommand>();
-    private Map<String, CooldownCounter> coolDowns = new HashMap<String, CooldownCounter>();
-    private Set<String> coolDownOverrides = new HashSet<String>();
+    public List<Location> saplingLocationList = new ArrayList<>();
+    private final Map<String, List<String>> disabledMap = new HashMap<>();
+    final Map<String, AbstractCommand> commandMap = new HashMap<>();
+    final List<AbstractCommand> commandList = new ArrayList<>();
+    private final Map<String, CooldownCounter> coolDowns = new HashMap<>();
+    private final Set<String> coolDownOverrides = new HashSet<>();
 
     public boolean Enabled = true;
     public boolean mcMMO = false;
@@ -78,29 +78,6 @@ public class TreeAssist extends JavaPlugin {
             return disabledMap.get(world).contains(player);
         }
         return false;
-    }
-
-    public boolean isDouble(String input) {
-        try {
-            Double.parseDouble(input);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    public boolean isForceAutoDestroy(TreeConfig treeConfig) {
-        return treeConfig.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_ACTIVE)
-                && treeConfig.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL);
-    }
-
-    public boolean isInteger(String input) {
-        try {
-            Integer.parseInt(input);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     @EventHandler
@@ -302,7 +279,7 @@ public class TreeAssist extends JavaPlugin {
         }
     }
 
-    private void firstRun() throws Exception {
+    private void firstRun() {
         if (!this.configFile.exists()) {
             this.configFile.getParentFile().mkdirs();
             copy(getResource("config.yml"), this.configFile);
@@ -332,7 +309,7 @@ public class TreeAssist extends JavaPlugin {
             saveResource("trees/mushroom/mushroom-brown.yml", false);
             saveResource("trees/mushroom/mushroom-red.yml", false);
         }
-        Utils.reloadTreeDefinitions(config);
+        Utils.reloadTreeDefinitions();
     }
 
     /**

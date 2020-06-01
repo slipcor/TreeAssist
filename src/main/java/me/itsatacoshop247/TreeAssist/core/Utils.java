@@ -3,15 +3,12 @@ package me.itsatacoshop247.TreeAssist.core;
 import me.itsatacoshop247.TreeAssist.TreeAssist;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
 import org.bukkit.Material;
-import org.bukkit.Statistic;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
-import sun.reflect.generics.tree.Tree;
 
 import java.io.File;
 import java.util.*;
@@ -23,7 +20,7 @@ public final class Utils {
     public static TreeAssist plugin;
     private static Boolean useFallingBlock = null;
 
-    private static List<FallingBlock> fallingBlocks = new ArrayList<>();
+    private static final List<FallingBlock> fallingBlocks = new ArrayList<>();
 
     public static Map<String, TreeConfig> treeConfigs = new HashMap<>();
 
@@ -40,12 +37,12 @@ public final class Utils {
             player.sendMessage(Language.parse(MSG.ERROR_ADDTOOL_ALREADY));
             return;
         }
-        StringBuffer entry = new StringBuffer();
+        StringBuilder entry = new StringBuilder();
 
         try {
             entry.append(item.getType().name());
         } catch (Exception e) {
-            final String msg = "Could not retrieve item type name: " + String.valueOf(item.getType());
+            final String msg = "Could not retrieve item type name: " + item.getType();
             plugin.getLogger().severe(msg);
             player.sendMessage(Language.parse(MSG.ERROR_ADDTOOL_OTHER, msg));
             return;
@@ -55,19 +52,18 @@ public final class Utils {
 
         for (Enchantment ench : item.getEnchantments().keySet()) {
             if (found) {
-                player.sendMessage(Language.parse(MSG.WARNING_ADDTOOL_ONLYONE, ench.getName()));
+                player.sendMessage(Language.parse(MSG.WARNING_ADDTOOL_ONLYONE, ench.getKey().getKey()));
                 break;
             }
             entry.append(':');
-            entry.append(ench.getName());
+            entry.append(ench.getKey());
             entry.append(':');
             entry.append(item.getEnchantmentLevel(ench));
             found = true;
         }
-        List<String> result = new ArrayList<String>();
 
         List<String> fromConfig = treeConfig.getStringList(TreeConfig.CFG.TOOL_LIST, new ArrayList<>());
-        result.addAll(fromConfig);
+        List<String> result = new ArrayList<>(fromConfig);
         result.add(entry.toString());
         treeConfig.getYamlConfiguration().set(TreeConfig.CFG.TOOL_LIST.getNode(), result);
         treeConfig.save();
@@ -104,13 +100,11 @@ public final class Utils {
                 } else {
 
                     for (Enchantment ench : inHand.getEnchantments().keySet()) {
-                        if (!ench.getName().equalsIgnoreCase(values[1])) {
+                        if (!ench.getKey().getKey().equalsIgnoreCase(values[1])) {
                             continue; // skip other enchantments
                         }
                         int level = 0;
-                        if (values.length < 3) { // has correct enchantment, no level needed
-                            definition = tool;
-                        } else {
+                        if (values.length >= 3) {
                             try {
                                 level = Integer.parseInt(values[2]);
                             } catch (Exception e) { // invalid level defined, defaulting to no
@@ -121,8 +115,8 @@ public final class Utils {
                             if (level > inHand.getEnchantments().get(ench)) {
                                 continue; // enchantment too low
                             }
-                            definition = tool;
                         }
+                        definition = tool;
 
                     }
                 }
@@ -188,10 +182,10 @@ public final class Utils {
 			}
 	
 			for (Enchantment ench : inHand.getEnchantments().keySet()) {
-				if (!ench.getName().equalsIgnoreCase(values[1])) {
+				if (!ench.getKey().getKey().equalsIgnoreCase(values[1])) {
 					continue; // skip other enchantments
 				}
-				int level = 0;
+				int level;
 				if (values.length < 3) {
 					return true; // has correct enchantment, no level needed
 				}
@@ -223,7 +217,7 @@ public final class Utils {
 	}
 
     public static String joinArray(final Object[] array, final String glue) {
-        final StringBuilder result = new StringBuilder("");
+        final StringBuilder result = new StringBuilder();
         for (final Object o : array) {
             result.append(glue);
             result.append(o);
@@ -275,7 +269,7 @@ public final class Utils {
     		return Material.OAK_SAPLING;
     }
 
-    public static void reloadTreeDefinitions(Config config) {
+    public static void reloadTreeDefinitions() {
         TreeStructure.allTrunks.clear();
         TreeStructure.allExtras.clear();
         treeConfigs.clear();
@@ -315,12 +309,12 @@ public final class Utils {
 
         int attempts = 100;
 
-        looping: while (--attempts > 0 && processing.size() > 0) {
-            process: for (String key : processing.keySet()) {
+        while (--attempts > 0 && processing.size() > 0) {
+            for (String key : processing.keySet()) {
                 if (treeConfigs.containsKey(key)) {
                     // We already pre-loaded it completely!
                     processing.remove(key);
-                    continue looping;
+                    break;
                 }
                 TreeConfig treeConfig = processing.get(key);
                 String parentKey = treeConfig.getYamlConfiguration().getString("Parent", null);
@@ -328,7 +322,7 @@ public final class Utils {
                     // We are THE parent. We do not need to look for others before us
                     treeConfigs.put(key, treeConfig);
                     processing.remove(key);
-                    continue looping;
+                    break;
                 }
                 if (treeConfigs.containsKey(parentKey)) {
                     // we can now read the parent and apply defaults!
@@ -336,7 +330,7 @@ public final class Utils {
                     treeConfig.load();
                     treeConfigs.put(key, treeConfig);
                     processing.remove(key);
-                    continue looping;
+                    break;
                 }
                 // Otherwise we skip around until we find a required parent, hopefully...
             }
@@ -395,7 +389,7 @@ public final class Utils {
      */
     public static int calculateCooldown(ItemStack tool, List<Block> blockList) {
 
-        Material element = (tool != null ? tool.getType() : null);
+        Material element = (tool != null ? tool.getType() : Material.AIR);
 
         float singleTime;
 
@@ -440,7 +434,7 @@ public final class Utils {
         return (int) (numLogs * singleTime * efficiencyFactor);
     }
 
-    public static boolean removeIfFallen(final Entity item) {
+    public static boolean removeIfFallen(final FallingBlock item) {
         if (fallingBlocks.contains(item)) {
             fallingBlocks.remove(item);
             item.remove();

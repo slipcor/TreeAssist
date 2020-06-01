@@ -17,7 +17,7 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 	private final TreeAssist plugin;
 	private final TreeConfig config;
 	private Item drop;
-	private final static Set<Item> items = new HashSet<Item>();
+	private final static Set<Item> items = new HashSet<>();
 	
 	public TreeAssistSaplingSelfPlant(TreeAssist instance, TreeConfig config, Item item)
 	{

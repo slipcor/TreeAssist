@@ -3,7 +3,6 @@ package me.itsatacoshop247.TreeAssist.commands;
 import me.itsatacoshop247.TreeAssist.core.Config;
 import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Utils;
-import net.royawesome.jlibnoise.module.combiner.Max;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -47,7 +46,6 @@ public class CommandForceBreak extends AbstractCommand {
 
             for (int x = -radius; x <= radius; x++) {
                 for (int y = -radius; y <= radius; y++) {
-                    nextBlock:
                     for (int z = -radius; z <= radius; z++) {
                         Block b = player.getLocation().add(x, y, z).getBlock();
                         if (Utils.isLog(b.getType())) {
@@ -63,12 +61,7 @@ public class CommandForceBreak extends AbstractCommand {
                 }
             }
 
-            Bukkit.getScheduler().runTaskLater(Utils.plugin, new Runnable() {
-                @Override
-                public void run() {
-                    Utils.plugin.setCoolDownOverride(player.getName(), false);
-                }
-            }, 200);
+            Bukkit.getScheduler().runTaskLater(Utils.plugin, () -> Utils.plugin.setCoolDownOverride(player.getName(), false), 200);
 
             return;
         }
@@ -81,11 +74,6 @@ public class CommandForceBreak extends AbstractCommand {
     }
 
     @Override
-    public String getName() {
-        return getClass().getName();
-    }
-
-    @Override
     public List<String> getShort() {
         return Collections.singletonList("!fb");
     }
@@ -93,10 +81,5 @@ public class CommandForceBreak extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist forcebreak - force break trees around you";
-    }
-
-    @Override
-    public CommandTree<String> getSubs() {
-        return new CommandTree<>(null);
     }
 }

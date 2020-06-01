@@ -41,8 +41,7 @@ public class TreeAssistReplant implements Runnable {
             this.block.setType(mat);
             if (data < 0) {
                 BlockState state = block.getState();
-                MaterialData data = state.getData();
-                Sapling sap = (Sapling) data;
+                Sapling sap = (Sapling) state.getData();
                 sap.setSpecies(species);
                 state.setData(sap);
                 state.update();

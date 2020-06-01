@@ -12,7 +12,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -37,7 +36,7 @@ public class TreeAssistBlockListener implements Listener {
     public TreeAssist plugin;
 
     private final TreeAssistAntiGrow antiGrow;
-    private final Map<String, Long> noreplace = new HashMap<String, Long>();
+    private final Map<String, Long> noreplace = new HashMap<>();
     private final String protectToolDisplayName = "" + ChatColor.GREEN + ChatColor.ITALIC + "TreeAssist Protect";
 
     public TreeAssistBlockListener(TreeAssist instance) {
@@ -60,10 +59,10 @@ public class TreeAssistBlockListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
         if (event.hasItem() && event.hasBlock()) {
-            if (this.isProtectTool(event.getPlayer().getItemInHand())) {
+            if (this.isProtectTool(event.getPlayer().getInventory().getItemInMainHand())) {
                 Block clicked = event.getClickedBlock();
 
-                if (Utils.isSapling(clicked.getType())) {
+                if (clicked != null && Utils.isSapling(clicked.getType())) {
                     if (plugin.saplingLocationList.contains(clicked.getLocation())) {
                         plugin.saplingLocationList.remove(clicked.getLocation());
                         event.getPlayer().sendMessage(
@@ -111,10 +110,9 @@ public class TreeAssistBlockListener implements Listener {
                     return;
                 }
             }
-            MaterialData data = block.getState().getData();
-            if (data instanceof Tree) {
+            if (block.getState().getData() instanceof Tree) {
                 Material logMat = block.getType();
-                Tree tree = (Tree) data;
+                Tree tree = (Tree) block.getState().getData();
                 Block onebelow = block.getRelative(BlockFace.DOWN, 1);
                 Block oneabove = block.getRelative(BlockFace.UP, 1);
                 if (onebelow.getType() == Material.DIRT || onebelow.getType() == Material.GRASS_BLOCK || onebelow.getType() == Material.PODZOL) {
@@ -267,7 +265,7 @@ public class TreeAssistBlockListener implements Listener {
                                 return;
 
                             } else if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL) ||
-                                    matchingTreeConfig.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE)) {
+                                        config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE)) {
                                 matchingTreeConfig = config;
                                 foundTree = trunk;
                                 break;
@@ -299,7 +297,7 @@ public class TreeAssistBlockListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPickUpEvent(EntityPickupItemEvent event) {
         if (event.getItem() instanceof FallingBlock) {
-            if (Utils.removeIfFallen(event.getItem())) {
+            if (Utils.removeIfFallen((FallingBlock) event.getItem())) {
                 event.setCancelled(true);
             }
         }
@@ -308,7 +306,7 @@ public class TreeAssistBlockListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onItemDespawn(ItemDespawnEvent event) {
         if (event.getEntity() instanceof FallingBlock) {
-            Utils.removeIfFallen(event.getEntity());
+            Utils.removeIfFallen((FallingBlock) event.getEntity());
         }
     }
 
@@ -330,7 +328,7 @@ public class TreeAssistBlockListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onChangeBlock(EntityChangeBlockEvent event) {
         if (event.getEntity() instanceof FallingBlock) {
-            if (Utils.removeIfFallen(event.getEntity())) {
+            if (Utils.removeIfFallen((FallingBlock) event.getEntity())) {
                 event.setCancelled(true);
             }
         }
@@ -426,7 +424,7 @@ public class TreeAssistBlockListener implements Listener {
     }
 
     public void noReplace(String name, int seconds) {
-        noreplace.put(name, (Long) (System.currentTimeMillis() / 1000) + seconds);
+        noreplace.put(name, (System.currentTimeMillis() / 1000) + seconds);
     }
 
     public boolean isNoReplace(String name) {

@@ -35,13 +35,9 @@ public abstract class AbstractCommand {
 
     public abstract List<String> getMain();
 
-    public abstract String getName();
-
     public abstract List<String> getShort();
 
     public abstract String getShortInfo();
-
-    public abstract CommandTree<String> getSubs();
 
     public boolean hasPerms(final CommandSender sender) {
         if (sender.hasPermission("treeassist.commands")) {

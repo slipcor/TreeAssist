@@ -30,11 +30,6 @@ public class CommandNoReplace extends AbstractCommand {
     }
 
     @Override
-    public String getName() {
-        return getClass().getName();
-    }
-
-    @Override
     public List<String> getShort() {
         return Collections.singletonList("!nr");
     }
@@ -42,10 +37,5 @@ public class CommandNoReplace extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist noreplace - stop replacing saplings for some time";
-    }
-
-    @Override
-    public CommandTree<String> getSubs() {
-        return new CommandTree<>(null);
     }
 }

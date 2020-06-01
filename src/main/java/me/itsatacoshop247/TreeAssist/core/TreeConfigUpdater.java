@@ -66,8 +66,7 @@ public class TreeConfigUpdater {
         for (Adding m : Adding.values()) {
             if (m.version > version && m.config.equals(configPath)) {
                 newVersion = Math.max(newVersion, m.version);
-                List<String> newList = new ArrayList<>();
-                newList.addAll(config.getYamlConfiguration().getStringList(m.node.getNode()));
+                List<String> newList = new ArrayList<>(config.getYamlConfiguration().getStringList(m.node.getNode()));
                 newList.add(m.value);
                 config.getYamlConfiguration().set(m.node.getNode(), newList);
                 Utils.plugin.getLogger().info("Config String value added: " + m.toString());

@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 public class TreeAssistAntiGrow {
-    final Map<String, Integer> blocks = new HashMap<String, Integer>();
+    final Map<String, Integer> blocks = new HashMap<>();
     private boolean lock = false;
     private final TreeAssist plugin;
 
@@ -22,7 +22,7 @@ public class TreeAssistAntiGrow {
         @Override
         public void run() {
 
-            final Map<String, Integer> temp = new HashMap<String, Integer>();
+            final Map<String, Integer> temp = new HashMap<>();
 
             for (Map.Entry<String, Integer> entry : blocks.entrySet()) {
                 temp.put(entry.getKey(), entry.getValue() - 1);
@@ -30,7 +30,7 @@ public class TreeAssistAntiGrow {
 
             try {
                 lock = true;
-                for (Map.Entry<String, Integer> entry : blocks.entrySet()) {
+                for (Map.Entry<String, Integer> entry : temp.entrySet()) {
                     if (entry.getValue() < 1) {
                         blocks.remove(entry.getKey());
                     } else {

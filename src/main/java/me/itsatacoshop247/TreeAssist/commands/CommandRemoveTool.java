@@ -47,11 +47,6 @@ public class CommandRemoveTool extends AbstractCommand {
     }
 
     @Override
-    public String getName() {
-        return getClass().getName();
-    }
-
-    @Override
     public List<String> getShort() {
         return Collections.singletonList("!rt");
     }
@@ -59,10 +54,5 @@ public class CommandRemoveTool extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist removetool {trunk block type} - remove a required tool";
-    }
-
-    @Override
-    public CommandTree<String> getSubs() {
-        return new CommandTree<>(null);
     }
 }

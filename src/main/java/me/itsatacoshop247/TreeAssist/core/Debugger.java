@@ -18,12 +18,12 @@ public class Debugger {
     public static boolean override = false;
 
     private static Logger logger = null;
-    private static List<Logger> loggers = new ArrayList<Logger>();
+    private static List<Logger> loggers = new ArrayList<>();
 
     private final TreeAssist plugin;
     private final int debugID;
 
-    private static Set<Integer> check = new HashSet<Integer>();
+    private static Set<Integer> check = new HashSet<>();
 
     public Debugger(TreeAssist plugin, int id) {
         debugID = id;
@@ -60,9 +60,7 @@ public class Debugger {
                 logger.addHandler(handler);
 
                 loggers.add(logger);
-            } catch (IOException ex) {
-                plugin.getLogger().log(Level.SEVERE, null, ex);
-            } catch (SecurityException ex) {
+            } catch (IOException | SecurityException ex) {
                 plugin.getLogger().log(Level.SEVERE, null, ex);
             }
         }
@@ -86,7 +84,7 @@ public class Debugger {
             final StringBuilder builder = new StringBuilder();
             final Throwable exception = record.getThrown();
 
-            builder.append(this.date.format(Long.valueOf(record.getMillis())));
+            builder.append(this.date.format(record.getMillis()));
             builder.append(" [");
             builder.append(record.getLevel().getLocalizedName().toUpperCase());
             builder.append("] ");
@@ -114,7 +112,7 @@ public class Debugger {
     public static void load(final TreeAssist instance, final CommandSender sender) {
         check.clear();
         override = false;
-        final String debugs = instance.getConfig().getString("Debug");
+        final String debugs = instance.getConfig().getString("Debug", "none");
         if (debugs.equals("none")) {
             instance.getLogger().info("debugging: off");
         } else {
@@ -148,7 +146,7 @@ public class Debugger {
     }
 
     public static String parse(Location location) {
-        StringBuffer sb = new StringBuffer(location.getWorld().getName());
+        StringBuilder sb = new StringBuilder(location.getWorld().getName());
         sb.append(':');
         sb.append(location.getBlockX());
         sb.append('/');

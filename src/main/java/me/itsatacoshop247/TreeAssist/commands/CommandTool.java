@@ -52,11 +52,6 @@ public class CommandTool extends AbstractCommand {
     }
 
     @Override
-    public String getName() {
-        return getClass().getName();
-    }
-
-    @Override
     public List<String> getShort() {
         return Collections.singletonList("!t");
     }
@@ -64,10 +59,5 @@ public class CommandTool extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist tool - toggle the sapling protection tool";
-    }
-
-    @Override
-    public CommandTree<String> getSubs() {
-        return new CommandTree<>(null);
     }
 }

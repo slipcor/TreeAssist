@@ -3,13 +3,10 @@ package me.itsatacoshop247.TreeAssist.blocklists;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
-import net.coreprotect.CoreProtectAPI.ParseResult;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import java.util.List;
 
 public class CoreProtectBlockList extends EmptyBlockList {
 	private final CoreProtectAPI protect;
@@ -23,7 +20,7 @@ public class CoreProtectBlockList extends EmptyBlockList {
 		Plugin plugin = Bukkit.getPluginManager().getPlugin("CoreProtect");
 		     
 		// Check that CoreProtect is loaded
-		if (plugin == null || !(plugin instanceof CoreProtect)) {
+		if (!(plugin instanceof CoreProtect)) {
 		  return null;
 		}
 		       

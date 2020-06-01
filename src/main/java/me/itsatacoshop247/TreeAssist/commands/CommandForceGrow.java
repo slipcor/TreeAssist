@@ -11,7 +11,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.material.MaterialData;
 import org.bukkit.material.Sapling;
 
 import java.util.Collections;
@@ -52,8 +51,7 @@ public class CommandForceGrow extends AbstractCommand {
                         if (Utils.isSapling(player.getLocation().add(x, y, z).getBlock().getType())) {
                             Block block = player.getLocation().add(x, y, z).getBlock();
                             BlockState state = block.getState();
-                            MaterialData data = state.getData();
-                            Sapling sap = (Sapling) data;
+                            Sapling sap = (Sapling) state.getData();
 
                             TreeType type = TreeType.TREE;
 
@@ -94,11 +92,6 @@ public class CommandForceGrow extends AbstractCommand {
     }
 
     @Override
-    public String getName() {
-        return getClass().getName();
-    }
-
-    @Override
     public List<String> getShort() {
         return Collections.singletonList("!fg");
     }
@@ -106,10 +99,5 @@ public class CommandForceGrow extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist forcegrow - force saplings around you to grow";
-    }
-
-    @Override
-    public CommandTree<String> getSubs() {
-        return new CommandTree<>(null);
     }
 }

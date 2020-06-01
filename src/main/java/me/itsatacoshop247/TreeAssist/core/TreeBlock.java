@@ -59,7 +59,7 @@ public class TreeBlock implements ConfigurationSerializable {
 
     @Override
     public Map<String, Object> serialize() {
-        final Map<String, Object> map = new HashMap<String, Object>();
+        final Map<String, Object> map = new HashMap<>();
         map.put("w", world);
         map.put("x", x);
         map.put("y", y);
@@ -97,9 +97,9 @@ public class TreeBlock implements ConfigurationSerializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + (world == null ? 0 : world.hashCode());
-        result = prime * result + (x ^ x >>> 32);
-        result = prime * result + (y ^ y >>> 32);
-        result = prime * result + (z ^ z >>> 32);
+        result = prime * result + x;
+        result = prime * result + y;
+        result = prime * result + z;
         return result;
     }
 

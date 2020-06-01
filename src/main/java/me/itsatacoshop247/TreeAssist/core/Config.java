@@ -2,7 +2,6 @@ package me.itsatacoshop247.TreeAssist.core;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -108,14 +107,6 @@ public class Config {
             this.type = "list";
         }
 
-
-
-        CFG(final String node, final Map<String, String> value) {
-            this.node = node;
-            this.value = value;
-            this.type = "map";
-        }
-
         public String getNode() {
             return node;
         }
@@ -150,6 +141,11 @@ public class Config {
 
         cfg = new YamlConfiguration();
         this.configFile = configFile;
+
+        if (ConfigUpdater.check(cfg)) {
+            save();
+        }
+
         booleans = new HashMap<>();
         ints = new HashMap<>();
         doubles = new HashMap<>();
@@ -354,7 +350,7 @@ public class Config {
         }
 
         final ConfigurationSection section = cfg.getConfigurationSection(path);
-        return section.getKeys(false);
+        return section == null? new HashSet<>() : section.getKeys(false);
     }
 
     public List<String> getStringList(final CFG cfg, final List<String> def) {

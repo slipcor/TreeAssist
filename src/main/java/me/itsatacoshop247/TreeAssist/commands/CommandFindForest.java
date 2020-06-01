@@ -3,10 +3,8 @@ package me.itsatacoshop247.TreeAssist.commands;
 import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,13 +16,13 @@ public class CommandFindForest extends AbstractCommand {
     public CommandFindForest() {
         super(new String[]{"treeassist.findforest"});
 
-        biomeMap.put("ACACIA", Arrays.asList(new Biome[]{Biome.SAVANNA}));
-        biomeMap.put("BIRCH", Arrays.asList(new Biome[]{Biome.BIRCH_FOREST, Biome.BIRCH_FOREST_HILLS}));
-        biomeMap.put("DARK_OAK", Arrays.asList(new Biome[]{Biome.DARK_FOREST}));
-        biomeMap.put("OAK", Arrays.asList(new Biome[]{Biome.FOREST}));
-        biomeMap.put("JUNGLE", Arrays.asList(new Biome[]{Biome.JUNGLE, Biome.JUNGLE_HILLS}));
-        biomeMap.put("SPRUCE", Arrays.asList(new Biome[]{Biome.TAIGA, Biome.GIANT_TREE_TAIGA}));
-        biomeMap.put("MUSHROOM", Arrays.asList(new Biome[]{Biome.MUSHROOM_FIELDS, Biome.MUSHROOM_FIELD_SHORE}));
+        biomeMap.put("ACACIA", Arrays.asList(Biome.SAVANNA));
+        biomeMap.put("BIRCH", Arrays.asList(Biome.BIRCH_FOREST, Biome.BIRCH_FOREST_HILLS));
+        biomeMap.put("DARK_OAK", Arrays.asList(Biome.DARK_FOREST));
+        biomeMap.put("OAK", Arrays.asList(Biome.FOREST));
+        biomeMap.put("JUNGLE", Arrays.asList(Biome.JUNGLE, Biome.JUNGLE_HILLS));
+        biomeMap.put("SPRUCE", Arrays.asList(Biome.TAIGA, Biome.GIANT_TREE_TAIGA));
+        biomeMap.put("MUSHROOM", Arrays.asList(Biome.MUSHROOM_FIELDS, Biome.MUSHROOM_FIELD_SHORE));
     }
 
     @Override
@@ -108,11 +106,6 @@ public class CommandFindForest extends AbstractCommand {
     }
 
     @Override
-    public String getName() {
-        return getClass().getName();
-    }
-
-    @Override
     public List<String> getShort() {
         return Collections.singletonList("!ff");
     }
@@ -120,18 +113,5 @@ public class CommandFindForest extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist findforest [treetype] - find biome based on tree type";
-    }
-
-    @Override
-    public CommandTree<String> getSubs() {
-        final CommandTree<String> result = new CommandTree<>(null);
-        result.define(new String[]{"ACACIA"});
-        result.define(new String[]{"BIRCH"});
-        result.define(new String[]{"DARK_OAK"});
-        result.define(new String[]{"OAK"});
-        result.define(new String[]{"JUNGLE"});
-        result.define(new String[]{"SPRUCE"});
-        result.define(new String[]{"MUSHROOM"});
-        return result;
     }
 }

@@ -2,7 +2,6 @@ package me.itsatacoshop247.TreeAssist;
 
 import java.util.Random;
 
-import me.itsatacoshop247.TreeAssist.core.Config;
 import me.itsatacoshop247.TreeAssist.core.Debugger;
 import me.itsatacoshop247.TreeAssist.core.TreeConfig;
 import me.itsatacoshop247.TreeAssist.events.TASaplingReplaceEvent;
@@ -12,7 +11,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import me.itsatacoshop247.TreeAssist.core.Utils;
 

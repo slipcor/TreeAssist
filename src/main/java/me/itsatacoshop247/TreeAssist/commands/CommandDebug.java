@@ -23,15 +23,14 @@ public class CommandDebug extends AbstractCommand {
         Debugger.destroy();
         if (args.length < 2 || args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false") || args[1].equalsIgnoreCase("none")) {
             Utils.plugin.getConfig().set("Debug", "none");
-            Debugger.load(Utils.plugin, sender);
         } else {
             if (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("all")) {
                 Utils.plugin.getConfig().set("Debug", "all");
             } else {
                 Utils.plugin.getConfig().set("Debug", args[1]);
             }
-            Debugger.load(Utils.plugin, sender);
         }
+        Debugger.load(Utils.plugin, sender);
     }
 
     @Override
@@ -65,11 +64,6 @@ public class CommandDebug extends AbstractCommand {
     }
 
     @Override
-    public String getName() {
-        return getClass().getName();
-    }
-
-    @Override
     public List<String> getShort() {
         return Collections.singletonList("!d");
     }
@@ -77,19 +71,5 @@ public class CommandDebug extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist debug - start/stop debug";
-    }
-
-    @Override
-    public CommandTree<String> getSubs() {
-        final CommandTree<String> result = new CommandTree<>(null);
-        result.define(new String[]{"all"});
-        result.define(new String[]{"none"});
-
-        result.define(new String[]{"on"});
-        result.define(new String[]{"off"});
-
-        result.define(new String[]{"true"});
-        result.define(new String[]{"false"});
-        return result;
     }
 }

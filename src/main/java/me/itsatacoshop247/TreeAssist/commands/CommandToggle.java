@@ -163,11 +163,6 @@ public class CommandToggle extends AbstractCommand {
     }
 
     @Override
-    public String getName() {
-        return getClass().getName();
-    }
-
-    @Override
     public List<String> getShort() {
         return Collections.singletonList("!tg");
     }
@@ -175,16 +170,5 @@ public class CommandToggle extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist toggle [player/world] {world} - toggle plugin usage for you/others";
-    }
-
-    @Override
-    public CommandTree<String> getSubs() {
-        final CommandTree<String> result = new CommandTree<>(null);
-        for (World world : Bukkit.getServer().getWorlds()) {
-            result.define(new String[]{"{Player}", world.getName()});
-            result.define(new String[]{world.getName()});
-        }
-        result.define(new String[]{"{Player}"});
-        return result;
     }
 }

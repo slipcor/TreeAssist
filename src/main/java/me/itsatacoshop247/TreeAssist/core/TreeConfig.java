@@ -473,7 +473,7 @@ public class TreeConfig {
         }
 
         final ConfigurationSection section = cfg.getConfigurationSection(path);
-        return section.getKeys(false);
+        return section == null ? new HashSet<>() : section.getKeys(false);
     }
 
     public List<String> getStringList(final CFG cfg, final List<String> def) {

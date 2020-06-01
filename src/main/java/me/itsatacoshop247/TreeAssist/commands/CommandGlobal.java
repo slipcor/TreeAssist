@@ -25,17 +25,11 @@ public class CommandGlobal extends AbstractCommand {
             Utils.plugin.Enabled = false;
             sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_GLOBAL_OFF));
         }
-        return;
     }
 
     @Override
     public List<String> getMain() {
         return Collections.singletonList("global");
-    }
-
-    @Override
-    public String getName() {
-        return getClass().getName();
     }
 
     @Override
@@ -47,10 +41,4 @@ public class CommandGlobal extends AbstractCommand {
     public String getShortInfo() {
         return "/treeassist global - toggle global plugin availability";
     }
-
-    @Override
-    public CommandTree<String> getSubs() {
-        return new CommandTree<>(null);
-    }
-
 }

@@ -28,21 +28,21 @@ public class TreeStructure {
 
     public Block bottom;
     public List<Block> trunk;
-    private List<Material> trunkBlocks;
-    private List<Material> extraBlocks;
-    private List<Material> naturalBlocks;
-    private List<Material> groundBlocks;
+    private final List<Material> trunkBlocks;
+    private final List<Material> extraBlocks;
+    private final List<Material> naturalBlocks;
+    private final List<Material> groundBlocks;
     private List<Block> otherTrunks = new ArrayList<>();
     private Map<Block, List<Block>> branchMap;
     private List<Block> extras;
-    private List<Block> roofs = new ArrayList<>();
+    private final List<Block> roofs = new ArrayList<>();
 
     private final List<Block> checkedBlocks = new ArrayList<>();
 
-    private boolean trunkDiagonally;
+    private final boolean trunkDiagonally;
     private boolean valid = true;
 
-    private TreeConfig config;
+    private final TreeConfig config;
     private Block northWestBlock;
     private Block northEastBlock;
     private Block southWestBlock;
@@ -50,11 +50,6 @@ public class TreeStructure {
 
     public boolean isValid() {
         return valid;
-    }
-
-    private static void debug(String test) {
-        //System.out.println(test);
-        //TODO: remove
     }
 
     public TreeStructure(TreeConfig config, Block bottom, Boolean onlyTrunk) {
@@ -95,7 +90,7 @@ public class TreeStructure {
                 valid = false;
                 return;
             }
-            debug("Tree of size " + trunk.size() + " found!");
+            debug.i("Tree of size " + trunk.size() + " found!");
 
             if (onlyTrunk) {
                 // this will be used by other trees being broken checking OUR trunk for leaf distance and alike
@@ -126,63 +121,17 @@ public class TreeStructure {
                 }
             }
 
-            getExtras();
+            getAllExtras();
 
-            if (extras == null || (extras.size() < 10 && !isClose(otherTrunks) )) {
+            if (extras == null || (extras.size() < 10 && hasDistanceTo(otherTrunks))) {
                 valid = false;
                 return;
             }
-/*
-            for (Block tree : trunk) {
-                if (tree.getType().name().contains("GLASS") && trunkBlocks.contains(Material.GLASS)) {
-                    tree.breakNaturally();
-                } else {
-                    tree.setType(Material.GLASS);
-
-                }
-            }
-
-            for (Block leaf : extras) {
-                if (leaf.getType().name().contains("GLASS") && trunkBlocks.contains(Material.GLASS)) {
-                    leaf.breakNaturally();
-                } else {
-                    leaf.setType(Material.LIME_STAINED_GLASS);
-
-                }
-            }
-            for (List<Block> blocks : branchMap.values()) {
-                if (blocks != null) {
-                    for (Block b : blocks) {
-                        if (b.getType().name().contains("GLASS") && trunkBlocks.contains(Material.GLASS)) {
-                            b.breakNaturally();
-                        } else {
-                            b.setType(Material.BROWN_STAINED_GLASS);
-                        }
-                    }
-                }
-            }
-
-            bottom.setType(config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL));
-*/
             return;
 
         }
 
         if (thickness > 2) {
-
-            // we have a big amount of blocks, so we need to be really edgy
-
-            // west << X >> east
-
-        /*
-          north
-          ^^^^^
-            z
-          vvvvv
-          south
-
-         */
-
 
             // check for other trunks around
             Material westMat = bottom.getRelative(BlockFace.WEST).getType();
@@ -246,7 +195,7 @@ public class TreeStructure {
             valid = false;
             return;
         }
-        debug("Tree of size " + trunk.size() + " found!");
+        debug.i("Tree of size " + trunk.size() + " found!");
 
         if (onlyTrunk) {
             // this will be used by other trees being broken checking OUR trunk for leaf distance and alike
@@ -277,9 +226,9 @@ public class TreeStructure {
             }
         }
 
-        getExtras(trunks);
+        getDirectionalExtras();
 
-        if (extras == null || (extras.size() < 10 && !isClose(otherTrunks) )) {
+        if (extras == null || (extras.size() < 10 && hasDistanceTo(otherTrunks))) {
             valid = false;
             return;
         }
@@ -305,20 +254,18 @@ public class TreeStructure {
         for (Block block : trunks) {
             block.setType(config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL));
         }
-
-        return;
     }
 
-    private boolean isClose(List<Block> otherTrunks) {
+    private boolean hasDistanceTo(List<Block> otherTrunks) {
         int radius = config.getInt(TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS);
         for (Block block : otherTrunks) {
             for (Block myBlock : trunk) {
                 if (block.getLocation().distance(myBlock.getLocation()) <= radius) {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     public List<Block> getTrunk() {
@@ -338,15 +285,15 @@ public class TreeStructure {
             if (trunkDiagonally && !debugContain(trunkBlocks, checkBlock.getType())) {
                 Material checkMaterial = checkBlock.getType();
 
-                debug("No more trunk going up at " + checkBlock.getLocation() + " - type: " + checkMaterial);
+                debug.i("No more trunk going up at " + checkBlock.getLocation() + " - type: " + checkMaterial);
 
                 if (!Utils.isAir(checkBlock.getType())) {
                     if (extraBlocks.contains(checkMaterial)) {
-                        debug("It's an extra block!");
+                        debug.i("It's an extra block!");
                     } else if (naturalBlocks.contains(checkMaterial)){
-                        debug("It's a natural block!");
+                        debug.i("It's a natural block!");
                     } else if (!allTrunks.contains(checkMaterial) && !allExtras.contains(checkMaterial)) {
-                        debug("Unexpected block! Not a valid tree!");
+                        debug.i("Unexpected block! Not a valid tree!");
                         return null;
                     }
                 }
@@ -358,14 +305,14 @@ public class TreeStructure {
                             checkBlock = checkBlock.getRelative(x, 0, z);
                             break blockLoop;
                         }
-                        debug("Checking diagonal at " + checkBlock.getRelative(x, 0, z).getLocation() + " - type: " + innerCheck);
+                        debug.i("Checking diagonal at " + checkBlock.getRelative(x, 0, z).getLocation() + " - type: " + innerCheck);
                         if (!Utils.isAir(innerCheck)) {
                             if (extraBlocks.contains(innerCheck)) {
-                                debug("It's an extra block!");
+                                debug.i("It's an extra block!");
                             } else if (naturalBlocks.contains(innerCheck)){
-                                debug("It's a natural block!");
+                                debug.i("It's a natural block!");
                             } else if (!allTrunks.contains(checkMaterial) && !allExtras.contains(checkMaterial)) {
-                                debug("Unexpected block! Not a valid tree!");
+                                debug.i("Unexpected block! Not a valid tree!");
                                 return null;
                             }
                         }
@@ -375,13 +322,13 @@ public class TreeStructure {
         }
 
         if (allExtras.contains(checkBlock.getType())) {
-            debug("We hit the roof!");
+            debug.i("We hit the roof!");
 
             // we hit the roof and no problems
             return result;
         }
 
-        debug("We did not find a roof block. not a valid tree!");
+        debug.i("We did not find a roof block. not a valid tree!");
 
         return null;
     }
@@ -398,13 +345,13 @@ public class TreeStructure {
             }
 
             if (allExtras.contains(checkBlock.getType()) || Utils.isAir(checkBlock.getType())) {
-                debug("We hit the roof!");
+                debug.i("We hit the roof!");
 
                 // we hit the roof and no problems
                 roofs.add(checkBlock);
                 continue;
             }
-            debug("We did not find a roof block. not a valid tree!");
+            debug.i("We did not find a roof block. not a valid tree!");
             return null;
         }
 
@@ -490,8 +437,7 @@ public class TreeStructure {
 
         calculateBottoms(trunks);
 
-        List<Block> checkRoofs = new ArrayList<>();
-        checkRoofs.addAll(roofs);
+        List<Block> checkRoofs = new ArrayList<>(roofs);
 
         for (Block block : checkRoofs) {
             BlockFace[] directions = getFaces(block);
@@ -557,7 +503,7 @@ public class TreeStructure {
         continuations.put(BlockFace.SOUTH_WEST, new BlockFace[]{BlockFace.SOUTH, BlockFace.WEST, BlockFace.SOUTH_WEST});
     }
 
-    private boolean calculateBottoms(List<Block> bottoms) {
+    private void calculateBottoms(List<Block> bottoms) {
 
         int minX = Integer.MAX_VALUE;
         int maxX = Integer.MIN_VALUE;
@@ -590,15 +536,6 @@ public class TreeStructure {
                 }
             }
         }
-
-        Set<Block> set = new HashSet<>();
-
-        set.add(northWestBlock);
-        set.add(southWestBlock);
-        set.add(northEastBlock);
-        set.add(southEastBlock);
-
-        return set.size() == 4;
     }
 
     private BlockFace[] getFaces(Block checkBlock) {
@@ -750,7 +687,7 @@ public class TreeStructure {
     /**
      * Checking only in trunk facing directions
      */
-    private void getExtras(List<Block> trunks) {
+    private void getDirectionalExtras() {
         extras = new ArrayList<>();
 
         int radiusM = config.getInt(TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS);
@@ -758,10 +695,19 @@ public class TreeStructure {
         boolean edgesM = config.getBoolean(TreeConfig.CFG.BLOCKS_MIDDLE_EDGES);
         boolean airM = config.getBoolean(TreeConfig.CFG.BLOCKS_MIDDLE_AIR);
 
+        for (Block checkBlock : trunk) {
+            for (BlockFace face : getFaces(checkBlock)) {
+                if (isInvalid(checkBlock.getRelative(face), face, radiusM, 1, true, edgesM, airM, radiusM)) {
+                    valid = false;
+                    return;
+                }
+            }
+        }
+
         BlockFace[] neighbors = new BlockFace[]{BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
 
         if (roofs.size() <= 0) {
-            debug("No more blocks found!");
+            debug.i("No more blocks found!");
             valid = false;
             return;
         }
@@ -792,7 +738,7 @@ public class TreeStructure {
                             !naturalBlocks.contains(checkMaterial) &&
                                     !trunkBlocks.contains(checkMaterial) &&
                                     !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                        debug("Invalid block found: " + checkMaterial);
+                        debug.i("Invalid block found: " + checkMaterial);
                         valid = false;
                         return;
                     }
@@ -802,9 +748,9 @@ public class TreeStructure {
     }
 
     /**
-     * This only works for 1x1 trunks, it checks in all directions !!
+     * Calculate extra blocks, looking in all directions
      */
-    private void getExtras() {
+    private void getAllExtras() {
         extras = new ArrayList<>();
 
         int radiusM = config.getInt(TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS);
@@ -828,7 +774,7 @@ public class TreeStructure {
         }
 
         if (roof == null) {
-            debug("No more blocks found!");
+            debug.i("No more blocks found!");
             valid = false;
             return;
         }
@@ -857,7 +803,7 @@ public class TreeStructure {
                         !naturalBlocks.contains(checkMaterial) &&
                                 !trunkBlocks.contains(checkMaterial) &&
                                 !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                    debug("Invalid block found: " + checkMaterial);
+                    debug.i("Invalid block found: " + checkMaterial);
                     valid = false;
                     return;
                 }
@@ -924,7 +870,7 @@ public class TreeStructure {
                     !naturalBlocks.contains(checkMaterial) &&
                             !trunkBlocks.contains(checkMaterial) &&
                             !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                debug("Invalid block found 1: " + checkMaterial);
+                debug.i("Invalid block found 1: " + checkMaterial);
                 return true;
             }
         }
@@ -1061,7 +1007,6 @@ public class TreeStructure {
         removeBlocks.addAll(trunk);
 
         class InstantRunner extends BukkitRunnable {
-            boolean fastDecaying = false;
             @Override
             public void run() {
                 if (offset < 0) {
@@ -1073,7 +1018,7 @@ public class TreeStructure {
                         if (tool == null) {
 
                             debug.i("tool null 1");
-                            TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
+                            TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, null);
                             Utils.plugin.getServer().getPluginManager().callEvent(event);
                             if (!event.isCancelled()) {
                                 Utils.plugin.blockList.logBreak(block, player);
@@ -1102,7 +1047,7 @@ public class TreeStructure {
                             breakBlock(block, tool, player, statPickup, statMineBlock);
                             if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
 
-                                debug.i("removing item: " + player.getItemInHand().getType().name() +
+                                debug.i("removing item: " + player.getInventory().getItemInMainHand().getType().name() +
                                         " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
                                 player.getInventory().remove(tool);
                                 this.cancel();
@@ -1123,7 +1068,7 @@ public class TreeStructure {
 
                                 debug.i("tool null 2");
 
-                                TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
+                                TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, null);
                                 Utils.plugin.getServer().getPluginManager().callEvent(event);
                                 if (!event.isCancelled()) {
 
@@ -1143,7 +1088,7 @@ public class TreeStructure {
                                 debug.i("InstantRunner: 2b");
                                 breakBlock(block, tool, player, statPickup, statMineBlock);
                                 if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
-                                    debug.i("removing item: " + player.getItemInHand().getType().name() +
+                                    debug.i("removing item: " + player.getInventory().getItemInMainHand().getType().name() +
                                             " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
                                     player.getInventory().remove(tool);
                                     this.cancel();
@@ -1232,14 +1177,13 @@ public class TreeStructure {
 
         boolean leaf = allExtras.contains(block.getType());
         Material maat = block.getType();
-        byte data = block.getState().getData().getData();
 
         debug.i("breaking " + block.getType() +". leaf: " + leaf);
 
         callExternals(block, player);
 
 
-        if (leaf) {
+        if (leaf && tool != null) {
             int chance = config.getYamlConfiguration().getInt(TreeConfig.CFG.CUSTOM_DROP_CHANCE + "." + tool.getType().name(), 0);
 
 
@@ -1273,15 +1217,19 @@ public class TreeStructure {
             }
         } else {
             debug.i("mat: " + maat.name());
-            debug.i("data: " + data);
         }
         Utils.plugin.blockList.logBreak(block, player);
+        if (player == null) {
+            debug.i("no player, out!");
+            Utils.breakBlock(null, block, tool);
+            return;
+        }
 
-        if (player != null && statMineBlock) {
+        if (statMineBlock) {
             player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
         }
 
-        if (player != null && Utils.isLog(block.getType())
+        if (Utils.isLog(block.getType())
                 && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
             if (statPickup) {
                 player.incrementStatistic(Statistic.PICKUP, block.getType());
@@ -1303,11 +1251,9 @@ public class TreeStructure {
                 Utils.breakBlock(player, block, tool);
             }
         }
-        if (player != null) {
-            player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
-        }
+        player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
 
-        if (!leaf && tool != null && player != null) {
+        if (!leaf && tool != null) {
             if (tool.containsEnchantment(Enchantment.DURABILITY)) {
                 int damageChance = (int) (100d / ((double) tool
                         .getEnchantmentLevel(Enchantment.DURABILITY) + 1d));
@@ -1362,7 +1308,7 @@ public class TreeStructure {
         } else {
             debug.i("mcMMO: " + Utils.plugin.mcMMO);
             debug.i("jobs: " + Utils.plugin.jobs);
-            debug.i("player: " + String.valueOf(player));
+            debug.i("player: " + player);
         }
     }
 

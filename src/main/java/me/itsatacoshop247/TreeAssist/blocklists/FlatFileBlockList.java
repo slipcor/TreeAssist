@@ -3,7 +3,6 @@ package me.itsatacoshop247.TreeAssist.blocklists;
 import me.itsatacoshop247.TreeAssist.core.TreeBlock;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -18,12 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 public class FlatFileBlockList extends EmptyBlockList {
-    private Map<RegionKey, Map<TreeBlock, Long>> mymap = new HashMap<RegionKey, Map<TreeBlock, Long>>();
+    private Map<RegionKey, Map<TreeBlock, Long>> mymap = new HashMap<>();
 
     /**
      * A small class to ease access to the file name and to mapping of the files' content
      */
-    class RegionKey {
+    static class RegionKey {
         String world;
         int x;
         int z;
@@ -39,8 +38,8 @@ public class FlatFileBlockList extends EmptyBlockList {
             final int prime = 31;
             int result = 1;
             result = prime * result + (world == null ? 0 : world.hashCode());
-            result = prime * result + (x ^ x >>> 32);
-            result = prime * result + (z ^ z >>> 32);
+            result = prime * result + x;
+            result = prime * result + z;
             return result;
         }
 
@@ -97,14 +96,14 @@ public class FlatFileBlockList extends EmptyBlockList {
      */
     private synchronized Map<TreeBlock, Long> getChunkMap(final RegionKey rKey) {
         if (!mymap.containsKey(rKey)) {
-            final Map<TreeBlock, Long> map = new HashMap<TreeBlock, Long>();
+            final Map<TreeBlock, Long> map = new HashMap<>();
             try {
                 final File path = new File(Utils.plugin.getDataFolder(), rKey.world);
                 if (path.isDirectory() && path.exists()) {
                     final File file = new File(path, rKey.x + "." + rKey.z + ".txt");
                     if (file.exists()) {
                         final BufferedReader reader = new BufferedReader(new FileReader(file));
-                        String line = null;
+                        String line;
                         while ((line = reader.readLine()) != null) {
                             TreeBlock tBlock = new TreeBlock(line);
                             map.put(tBlock, tBlock.time);
@@ -160,7 +159,7 @@ public class FlatFileBlockList extends EmptyBlockList {
 
                 if (config.contains("Blocks")) {
                     final List<String> list = config.getStringList("Blocks");
-                    final Map<String, Object> map = new HashMap<String, Object>();
+                    final Map<String, Object> map = new HashMap<>();
                     for (final String entry : list) {
                         final String[] split = entry.split(";");
                         if (split.length == 4) {
@@ -196,24 +195,17 @@ public class FlatFileBlockList extends EmptyBlockList {
                     }
                     config.set("Blocks", null);
                 } else if (config.contains("TreeBlocks")) {
-                    for (Object o : config.getList("TreeBlocks")) {
+                    for (Object o : config.getList("TreeBlocks", new ArrayList<>())) {
                         addBlock((TreeBlock) o);
                     }
                 }
                 configFile.delete();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidConfigurationException e) {
+        } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
 
-        Bukkit.getScheduler().runTaskTimer(Utils.plugin, new Runnable() {
-            @Override
-            public void run() {
-                FlatFileBlockList.this.save(false);
-            }
-        }, 1200, 1200);
+        Bukkit.getScheduler().runTaskTimer(Utils.plugin, () -> FlatFileBlockList.this.save(false), 1200, 1200);
     }
 
     @Override
@@ -254,7 +246,7 @@ public class FlatFileBlockList extends EmptyBlockList {
     public int purge() {
         int total = 0;
 
-        final List<RegionKey> keyRemovals = new ArrayList<RegionKey>();
+        final List<RegionKey> keyRemovals = new ArrayList<>();
 
         for (final World world : Bukkit.getWorlds()) {
             final File path = new File(Utils.plugin.getDataFolder(), world.getName());
@@ -272,7 +264,7 @@ public class FlatFileBlockList extends EmptyBlockList {
 
                         final Map<TreeBlock, Long> blockMap = getChunkMap(rKey);
 
-                        final List<TreeBlock> removals = new ArrayList<TreeBlock>();
+                        final List<TreeBlock> removals = new ArrayList<>();
                         for (final TreeBlock block : blockMap.keySet()) {
                             final Block bukkitBlock = block.getBukkitBlock();
                             if (!Utils.isLog(bukkitBlock.getType())) {
@@ -302,7 +294,7 @@ public class FlatFileBlockList extends EmptyBlockList {
 
     /**
      * Purge a world, remove all blocks
-     * @param worldname
+     * @param worldname the world to purge
      * @return the amount of blocks purged
      */
     public int purge(final String worldname) {
@@ -332,7 +324,7 @@ public class FlatFileBlockList extends EmptyBlockList {
             }
         }
 
-        final List<RegionKey> removals = new ArrayList<RegionKey>();
+        final List<RegionKey> removals = new ArrayList<>();
 
         for (final RegionKey key : mymap.keySet()) {
             if (key.world.equalsIgnoreCase(worldname)) {
@@ -360,7 +352,7 @@ public class FlatFileBlockList extends EmptyBlockList {
 
         int total = 0;
 
-        final List<RegionKey> keyRemovals = new ArrayList<RegionKey>();
+        final List<RegionKey> keyRemovals = new ArrayList<>();
 
         for (final World world : Bukkit.getWorlds()) {
             final File path = new File(Utils.plugin.getDataFolder(), world.getName());
@@ -378,7 +370,7 @@ public class FlatFileBlockList extends EmptyBlockList {
 
                         final Map<TreeBlock, Long> blockMap = getChunkMap(rKey);
 
-                        final List<TreeBlock> removals = new ArrayList<TreeBlock>();
+                        final List<TreeBlock> removals = new ArrayList<>();
                         for (final TreeBlock block : blockMap.keySet()) {
                             if (block.time < (System.currentTimeMillis() - days * 24 * 60 * 60 * 1000)) {
                                 removals.add(block);
@@ -421,7 +413,7 @@ public class FlatFileBlockList extends EmptyBlockList {
      */
     private void saveData(final RegionKey rKey, final boolean force) {
         final File path = new File(Utils.plugin.getDataFolder(), rKey.world);
-        final Map<TreeBlock, Long> map = new HashMap<TreeBlock, Long>(mymap.get(rKey));
+        final Map<TreeBlock, Long> map = new HashMap<>(mymap.get(rKey));
 
         class RunLater implements Runnable {
             @Override
@@ -431,9 +423,9 @@ public class FlatFileBlockList extends EmptyBlockList {
                         path.mkdir();
                     }
                     final File file = new File(path, rKey.x + "." + rKey.z + ".txt");
-                    if (!file.exists() && map != null && map.size() > 0) {
+                    if (!file.exists() && map.size() > 0) {
                         file.createNewFile();
-                    } else if (map == null || map.size() < 1) {
+                    } else if (map.size() < 1) {
                         file.delete();
                         return;
                     }
