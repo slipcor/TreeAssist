@@ -16,6 +16,7 @@ public class TreeConfig {
     private final Map<String, Integer> ints;
     private final Map<String, Double> doubles;
     private final Map<String, String> strings;
+    private final Map<String, List<Material>> materials;
 
     public void loadDefaults(TreeConfig parent) {
         for (CFG c : CFG.values()) {
@@ -71,21 +72,22 @@ public class TreeConfig {
     }
 
     public enum CFG {
-        AUTOMATIC_DESTRUCTION_ACTIVE("Automatic Destruction.Active", true), // Will we attempt to automatically destroy? //TODO: check
-        AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE("Automatic Destruction.Apply Full Tool Damage", true), //TODO: check
-        AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Destruction.Auto Add To Inventory", false), //TODO: check
-        AUTOMATIC_DESTRUCTION_COOLDOWN("Automatic Destruction.Cooldown (seconds)", 0), //TODO: check
-        AUTOMATIC_DESTRUCTION_DELAY("Automatic Destruction.Delay (ticks)", 0), //TODO: check
-        AUTOMATIC_DESTRUCTION_FORCED_REMOVAL("Automatic Destruction.Forced Removal", false), //TODO: check
-        AUTOMATIC_DESTRUCTION_INCREASES_STATISTICS("Automatic Destruction.Increases Statistics", false), //TODO: check
-        AUTOMATIC_DESTRUCTION_INITIAL_DELAY("Automatic Destruction.Initial Delay", false), //TODO: check
-        AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME("Automatic Destruction.Initial Delay (seconds)", 10), //TODO: check
-        AUTOMATIC_DESTRUCTION_REMOVE_LEAVES("Automatic Destruction.Remove Leaves", true), //TODO: check
-        AUTOMATIC_DESTRUCTION_REQUIRED_LORE("Automatic Destruction.Required Lore",""), //TODO: check
-        AUTOMATIC_DESTRUCTION_REQUIRES_TOOLS("Automatic Destruction.Requires Tools", true), //TODO: check
+        AUTOMATIC_DESTRUCTION_ACTIVE("Automatic Destruction.Active", true), // Will we attempt to automatically destroy?
+        AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE("Automatic Destruction.Apply Full Tool Damage", true),
+        AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Destruction.Auto Add To Inventory", false),
+        AUTOMATIC_DESTRUCTION_COOLDOWN("Automatic Destruction.Cooldown (seconds)", 20),
+        AUTOMATIC_DESTRUCTION_DELAY("Automatic Destruction.Delay (ticks)", 0),
+        AUTOMATIC_DESTRUCTION_FORCED_REMOVAL("Automatic Destruction.Forced Removal", false),
+        AUTOMATIC_DESTRUCTION_INCREASES_STATISTICS("Automatic Destruction.Increases Statistics", false),
+        AUTOMATIC_DESTRUCTION_INITIAL_DELAY("Automatic Destruction.Initial Delay", false),
+        AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME("Automatic Destruction.Initial Delay (seconds)", 10),
+        AUTOMATIC_DESTRUCTION_CLEANUP_DELAY_TIME("Automatic Destruction.Cleanup Delay (seconds)", 60),
+        AUTOMATIC_DESTRUCTION_REMOVE_LEAVES("Automatic Destruction.Remove Leaves", true),
+        AUTOMATIC_DESTRUCTION_REQUIRED_LORE("Automatic Destruction.Required Lore",""),
+        AUTOMATIC_DESTRUCTION_REQUIRES_TOOLS("Automatic Destruction.Requires Tools", true),
 
-        BLOCK_STATISTICS_MINE_BLOCK("Block Statistics.Mine Block", false), //TODO: check
-        BLOCK_STATISTICS_PICKUP("Block Statistics.Pickup", false), //TODO: check
+        BLOCK_STATISTICS_MINE_BLOCK("Block Statistics.Mine Block", false),
+        BLOCK_STATISTICS_PICKUP("Block Statistics.Pickup", false),
 
         BLOCKS_CAP_HEIGHT("Blocks.Cap.Height", 2), // Branch Topping Leaves Height
         BLOCKS_CAP_RADIUS("Blocks.Cap.Radius", 3), // Branch Topping Leaves Radius
@@ -111,11 +113,11 @@ public class TreeConfig {
         PARENT("Parent", "default"),
         PERMISSION("Permission", ""),
 
-        REPLANTING_ACTIVE("Replanting.Active", true),
-        REPLANTING_MATERIAL("Replanting.Material", "minecraft:air"),
-        REPLANTING_DROPPED_SAPLINGS("Replanting.Dropped Saplings Automatically", false),
-        REPLANTING_DROPPED_SAPLINGS_CHANCE("Replanting.Dropped Saplings Chance", 10),
-        REPLANTING_DROPPED_SAPLINGS_DELAY("Replanting.Dropped Saplings Delay", 5),
+        REPLANTING_ACTIVE("Replanting.Active", true), //TODO: check
+        REPLANTING_MATERIAL("Replanting.Material", "minecraft:air"), //TODO: check
+        REPLANTING_DROPPED_SAPLINGS("Replanting.Dropped Saplings Automatically", false), //TODO: check
+        REPLANTING_DROPPED_SAPLINGS_CHANCE("Replanting.Dropped Saplings Chance", 10), //TODO: check
+        REPLANTING_DROPPED_SAPLINGS_DELAY("Replanting.Dropped Saplings Delay", 5), //TODO: check
         REPLANTING_ENFORCE("Replanting.Enforce", false), //TODO: check
         REPLANTING_REQUIRES_TOOLS("Replanting.Requires Tools", true), //TODO: check
 
@@ -222,6 +224,7 @@ public class TreeConfig {
         ints = new HashMap<>();
         doubles = new HashMap<>();
         strings = new HashMap<>();
+        materials = new HashMap<>();
     }
 
     /**
@@ -250,6 +253,7 @@ public class TreeConfig {
      * strings-map, etc.
      */
     public void reloadMaps() {
+        materials.clear();
         // known exceptions
         String[] exceptions = {"Automatic Destruction",
                 "Custom Drop Chance", "Block Statistics",
@@ -432,6 +436,10 @@ public class TreeConfig {
      * @return a list of materials (can contain null)
      */
     public List<Material> getMaterials(CFG cfg) {
+        if (materials.containsKey(cfg.node)) {
+            return materials.get(cfg.node);
+        }
+
         List<String> list = getStringList(cfg, new ArrayList<>());
 
         List<Material> matList = new ArrayList<>();
@@ -449,6 +457,8 @@ public class TreeConfig {
                 matList.add(Material.matchMaterial(matName));
             }
         }
+
+        materials.put(cfg.node, matList);
 
         return matList;
     }

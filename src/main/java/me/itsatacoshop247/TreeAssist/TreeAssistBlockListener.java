@@ -260,8 +260,8 @@ public class TreeAssistBlockListener implements Listener {
                                     }
                                 }
 
-                                foundTree.maybeReplant(player, event.getBlock());
-                                foundTree.removeLater(player, item);
+                                trunk.maybeReplant(player, event.getBlock());
+                                trunk.removeLater(player, item);
                                 return;
 
                             } else if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL) ||

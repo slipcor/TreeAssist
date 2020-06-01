@@ -108,6 +108,7 @@ public class Debugger {
             return;
         }
         getLogger().info(System.currentTimeMillis() % 1000 + " " + string);
+        Utils.plugin.getLogger().info(string);
     }
 
     public static void load(final TreeAssist instance, final CommandSender sender) {

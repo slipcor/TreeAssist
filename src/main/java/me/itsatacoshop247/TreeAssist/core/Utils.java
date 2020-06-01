@@ -3,6 +3,7 @@ package me.itsatacoshop247.TreeAssist.core;
 import me.itsatacoshop247.TreeAssist.TreeAssist;
 import me.itsatacoshop247.TreeAssist.core.Language.MSG;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -10,6 +11,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import sun.reflect.generics.tree.Tree;
 
 import java.io.File;
 import java.util.*;
@@ -158,10 +160,16 @@ public final class Utils {
 	 * @return if the player has a needed tool
 	 */
 	public static boolean isRequiredTool(final ItemStack inHand, TreeConfig treeConfig) {
-		List<String> fromConfig = treeConfig.getStringList(TreeConfig.CFG.TOOL_LIST, new ArrayList<>());
-		if (fromConfig.contains(inHand.getType().name())) {
+        TreeStructure.debug.i("in hand: " + inHand.getType());
+		List<Material> fromConfig = treeConfig.getMaterials(TreeConfig.CFG.TOOL_LIST);
+		if (fromConfig.contains(inHand.getType())) {
 			return true;
-		}
+		} else {
+            TreeStructure.debug.i("valid: " + inHand.getType());
+		    for (Material mat : fromConfig) {
+		        TreeStructure.debug.i(mat.name());
+            }
+        }
 	
 		for (Object obj : fromConfig) {
 			if (!(obj instanceof String)) {
@@ -320,7 +328,6 @@ public final class Utils {
                 }
                 if (treeConfigs.containsKey(parentKey)) {
                     // we can now read the parent and apply defaults!
-                    System.out.println("loading defaults of " + parentKey + " into " + key);
                     treeConfig.loadDefaults(treeConfigs.get(parentKey));
                     treeConfigs.put(key, treeConfig);
                     processing.remove(key);

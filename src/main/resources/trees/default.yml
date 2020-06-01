@@ -3,6 +3,7 @@ Automatic Destruction:
   Apply Full Tool Damage: true
   Auto Add To Inventory: false
   Cooldown (seconds): 0
+  Cleanup Delay (seconds): 60
   Delay (ticks): 0
   Forced Removal: false
   Increases Statistics: false

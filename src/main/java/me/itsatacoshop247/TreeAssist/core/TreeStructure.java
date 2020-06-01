@@ -131,7 +131,7 @@ public class TreeStructure {
                 valid = false;
                 return;
             }
-
+/*
             for (Block tree : trunk) {
                 if (tree.getType().name().contains("GLASS") && trunkBlocks.contains(Material.GLASS)) {
                     tree.breakNaturally();
@@ -162,7 +162,7 @@ public class TreeStructure {
             }
 
             bottom.setType(config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL));
-
+*/
             return;
 
         }
@@ -941,7 +941,7 @@ public class TreeStructure {
     }
 
     public void maybeReplant(Player player, Block block) {
-        if (config.getBoolean(TreeConfig.CFG.REPLANTING_ACTIVE)) {
+        if (!config.getBoolean(TreeConfig.CFG.REPLANTING_ACTIVE)) {
             debug.i("replanting is disabled!");
             return;
         }
@@ -1042,15 +1042,21 @@ public class TreeStructure {
                 TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME) * 20 : 0;
         final int offset = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_DELAY);
 
-        final ItemStack tool = (damage && player.getGameMode() != GameMode.CREATIVE) ? playerTool
+        debug.i("delay: " + delay +"; offset: " + offset);
+
+        final ItemStack tool = (damage && player != null && player.getGameMode() != GameMode.CREATIVE) ? playerTool
                 : null;
 
         Material sapling = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
 
-        Utils.plugin.setCoolDown(player, config, trunk);
+        if (player != null) {
+            Utils.plugin.setCoolDown(player, config, trunk);
+        }
 
         final boolean statPickup = config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_PICKUP);
         final boolean statMineBlock = config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_MINE_BLOCK);
+
+        debug.i("pickup: " + statPickup + "; mine: " + statMineBlock);
 
         final List<Block> removeBlocks = new ArrayList<>();
 
@@ -1074,10 +1080,11 @@ public class TreeStructure {
                             continue;
                         }
                         if (tool == null) {
+
+                            debug.i("tool null 1");
                             TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
                             Utils.plugin.getServer().getPluginManager().callEvent(event);
-                            if (!event.isCancelled())
-                            {
+                            if (!event.isCancelled()) {
                                 Utils.plugin.blockList.logBreak(block, player);
 
                                 callExternals(block, player);
@@ -1086,8 +1093,16 @@ public class TreeStructure {
                                         && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
                                     player.getInventory().addItem(block.getState().getData().toItemStack(1));
                                     block.setType(Material.AIR);
+
+                                    if (config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_MINE_BLOCK)) {
+                                        player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+                                    }
+
+                                    debug.i("added to inventory");
                                 } else {
                                     Utils.breakBlock(player, block);
+
+                                    debug.i("breaking!");
                                 }
                                 player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
                             }
@@ -1114,6 +1129,9 @@ public class TreeStructure {
                             debug.i("InstantRunner: 2a " + Debugger.parse(block.getLocation()));
                         } else {
                             if (tool == null) {
+
+                                debug.i("tool null 2");
+
                                 TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
                                 Utils.plugin.getServer().getPluginManager().callEvent(event);
                                 if (!event.isCancelled()) {
@@ -1153,7 +1171,9 @@ public class TreeStructure {
             }
 
         }
-        (new InstantRunner()).runTaskTimer(Utils.plugin, delay, offset);
+        if (player != null) {
+            (new InstantRunner()).runTaskTimer(Utils.plugin, delay, offset);
+        }
 
         class CleanRunner extends BukkitRunnable {
             private final TreeStructure me;
@@ -1180,7 +1200,7 @@ public class TreeStructure {
                             debug.i("CleanRunner: skipping breaking a sapling");
                         }
                         debug.i("CleanRunner: 1");
-                        breakBlock(block, null, null, false, false);
+                        Utils.breakBlock(block);
                     }
                     removeBlocks.clear();
                 } else {
@@ -1190,7 +1210,7 @@ public class TreeStructure {
                             continue;
                         }
                         debug.i("CleanRunner: 2");
-                        breakBlock(block, null, null, false, false);
+                        Utils.breakBlock(block);
                         totalBlocks.remove(block);
                         return;
                     }
@@ -1206,7 +1226,9 @@ public class TreeStructure {
 
         }
 
-        (new CleanRunner(this)).runTaskTimer(Utils.plugin, delay + 200L, offset);
+        int cleanDelay = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CLEANUP_DELAY_TIME);
+
+        (new CleanRunner(this)).runTaskTimer(Utils.plugin, cleanDelay *20L, offset);
     }
 
     private void breakBlock(Block block, ItemStack tool, Player player, boolean statPickup, boolean statMineBlock) {
@@ -1221,51 +1243,17 @@ public class TreeStructure {
         Material maat = block.getType();
         byte data = block.getState().getData().getData();
 
-        debug.i("breaking. leaf: " + leaf);
+        debug.i("breaking " + block.getType() +". leaf: " + leaf);
 
         callExternals(block, player);
 
-        int chance = 100;
 
-        if (tool != null && !leaf) {
-            chance = config.getYamlConfiguration().getInt(TreeConfig.CFG.CUSTOM_DROP_CHANCE + "." + tool.getType().name(), 0);
+        if (leaf) {
+            int chance = config.getYamlConfiguration().getInt(TreeConfig.CFG.CUSTOM_DROP_CHANCE + "." + tool.getType().name(), 0);
 
-            if (chance < 1) {
-                chance = 1;
-            }
-        }
 
-        if (chance > 99 || (new Random()).nextInt(100) < chance) {
-            Utils.plugin.blockList.logBreak(block, player);
-
-            if (player != null && statMineBlock) {
-                player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
-            }
-
-            if (player != null && Utils.isLog(block.getType())
-                    && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
-                if (statPickup) {
-                    player.incrementStatistic(Statistic.PICKUP, block.getType());
-                }
-                player.getInventory().addItem(block.getState().getData().toItemStack(1));
-                block.setType(Material.AIR);
-            } else {
-                if (tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
-                        && Utils.isMushroom(block.getType())) {
-                    Material mat = block.getType();
-                    block.setType(Material.AIR);
-                    block.getWorld().dropItemNaturally(
-                            block.getLocation(),
-                            new ItemStack(mat, 1));
-                } else {
-                    Utils.breakBlock(player, block, tool);
-                }
-            }
-            if (player != null) {
-                player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
-            }
-
-            if (leaf) {
+            if (chance > 99 || (new Random()).nextInt(100) < chance) {
+                debug.i("dropping custom drop!");
                 ConfigurationSection cs = config.getYamlConfiguration().getConfigurationSection(TreeConfig.CFG.CUSTOM_DROPS.getNode());
 
                 debug.i("custom drop count: " + cs.getKeys(false).size());
@@ -1291,12 +1279,40 @@ public class TreeStructure {
 
                     }
                 }
-            } else {
-                debug.i("mat: " + maat.name());
-                debug.i("data: " + data);
             }
         } else {
+            debug.i("mat: " + maat.name());
+            debug.i("data: " + data);
+        }
+        Utils.plugin.blockList.logBreak(block, player);
+
+        if (player != null && statMineBlock) {
+            player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+        }
+
+        if (player != null && Utils.isLog(block.getType())
+                && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
+            if (statPickup) {
+                player.incrementStatistic(Statistic.PICKUP, block.getType());
+            }
+            player.getInventory().addItem(block.getState().getData().toItemStack(1));
             block.setType(Material.AIR);
+        } else {
+            if (tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
+                    && Utils.isMushroom(block.getType())) {
+                Material mat = block.getType();
+                block.setType(Material.AIR);
+                block.getWorld().dropItemNaturally(
+                        block.getLocation(),
+                        new ItemStack(mat, 1));
+                if (config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_MINE_BLOCK)) {
+                    player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+                }
+            } else {
+                Utils.breakBlock(player, block, tool);
+            }
+        }
+        if (player != null) {
             player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
         }
 
