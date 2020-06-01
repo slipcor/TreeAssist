@@ -1,5 +1,6 @@
 package me.itsatacoshop247.TreeAssist.commands;
 
+import me.itsatacoshop247.TreeAssist.core.Config;
 import me.itsatacoshop247.TreeAssist.core.Language;
 import me.itsatacoshop247.TreeAssist.core.Utils;
 import org.bukkit.command.CommandSender;
@@ -21,6 +22,7 @@ public class CommandReload extends AbstractCommand {
         Utils.plugin.blockList.save(true);
         Utils.plugin.getTreeAssistConfig().load();
         Utils.plugin.reloadLists();
+        Language.init(Utils.plugin, Utils.plugin.getTreeAssistConfig().getString(Config.CFG.MAIN_LANGUAGE, "en"));
         sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_RELOAD));
     }
 

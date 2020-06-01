@@ -73,7 +73,7 @@ public class TreeCalculator {
             // we hit the ground and no problems
             return checkBlock.getRelative(BlockFace.UP);
         }
-
+        TreeStructure.debug.i("We did not find a ground block ("+ checkBlock.getType() + ") not a valid tree.");
         return null;
 
     }

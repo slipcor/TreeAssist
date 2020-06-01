@@ -2,8 +2,8 @@ name: TreeAssist
 main: me.itsatacoshop247.TreeAssist.TreeAssist
 version: 7.0.jenkins-build-number
 api-version: 1.13
-author: itsatacoshop247
-authors: [slipcor, pop4959]
+author: slipcor
+authors: [slipcor, itsatacoshop247]
 description: TreeAssist
 softdepend: [mcMMO, Prism, CoreProtect, LogBlock, Jobs, WorldGuard]
 dev-url: http://dev.bukkit.org/server-mods/tree-assist/
@@ -59,6 +59,9 @@ permissions:
     default: op
   treeassist.addtool:
     description: allows to add a required tool
+    default: op
+  treeassist.bypass.cooldown:
+    description: allows to bypass the cooldown
     default: op
   treeassist.debug:
     description: allows to debug

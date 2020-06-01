@@ -55,6 +55,10 @@ public class TreeAssist extends JavaPlugin {
     }
 
     public boolean hasCoolDown(Player player) {
+        if (player.hasPermission("treeassist.bypass.cooldown")) {
+            TreeStructure.debug.i("cooldown bypass permission!");
+            return false;
+        }
         return !coolDownOverrides.contains(player.getName()) && coolDowns.containsKey(player.getName());
     }
 
@@ -221,6 +225,10 @@ public class TreeAssist extends JavaPlugin {
     }
 
     public void setCoolDown(Player player, TreeConfig config, List<Block> logs) {
+        if (player.hasPermission("treeassist.bypass.cooldown")) {
+            TreeStructure.debug.i("cooldown bypass permission!");
+            return;
+        }
         int coolDown = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_COOLDOWN, 0);
         if (coolDown == 0 || coolDownOverrides.contains(player.getName())) {
             return;

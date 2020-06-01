@@ -140,6 +140,7 @@ public class TreeAssistBlockListener implements Listener {
         }
 
         if (!TreeStructure.allTrunks.contains(event.getBlock().getType())) {
+            debug.i("Not a tree block: " + event.getBlock().getType());
             return;
         }
 
