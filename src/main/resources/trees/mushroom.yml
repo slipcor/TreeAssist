@@ -14,7 +14,6 @@ Ground Blocks:
 Parent: default
 Trunk:
   Minimum Height: 5
-  Maximum Height: 14
   Materials:
   - 'minecraft:mushroom_stem'
 Version: 7.0

@@ -1,101 +1,49 @@
-# Configuration File
+# Main Configuration File
 
-This is the default configuation file.
+This is the default main configuration file.
 
-    Main:
-      Auto Plant Dropped Saplings: false # spawned saplings will automatically turn into placed saplings
-      Automatic Tree Destruction: true
-      Destroy Only Blocks Above: false # true will leave tree stumps if you don't break the bottom block
-      Force Break Default Radius: 10
-      Force Grow Default Radius: 10
-      Force Break Max Radius: 30
-      Force Grow Max Radius: 30
-      Ignore User Placed Blocks: false
-      Language: en
-      Sapling Replant: true
+    # === [ General Settings ] ===
+    General:
+      # Language file to load. Does not need YML extension!
+      Language: lang_en
       Toggle Default: true
-      Use mcMMO if Available: true
-      Use Jobs if Available: true
       Use Permissions: false
-    Automatic Tree Destruction:
-      Apply Full Tool Damage: true # false will prevent tool damage
-      Auto Add To Inventory: false
-      Required Lore: ''
-      When Sneaking: true
-      When Not Sneaking: true
-      Forced Removal: false # even if we lack the tool or did not break the bottom block (if needed) the plugin will remove the tree for cosmetic reasons
-      Remove Leaves: true
-      Initial Delay: false
-      Initial Delay (seconds): 10
-      Delay (ticks): 0 # delay in between block deletions, if your server is affected by lag by the plugin's insta-removal
-      Tree Types: # here you can turn off the automatic destruction for single tree types
-        Birch: true
-        Jungle: true
-        BigJungle: true
-        BigSpruce: true
-        Oak: true
-        Spruce: true
-        Brown Shroom: true
-        Red Shroom: true
-        Acacia: true
-        Dark Oak: true
-      Cooldown (seconds): 0 # a way to limit people killing the forest
-    Auto Plant Dropped Saplings: # if activated (!) here are some more options for the automated sapling planting
-      Chance (percent): 10
-      Delay (seconds): 5
-    Leaf Decay:
+    # === [ Command Settings ] ===
+    Commands:
+      Force Break:
+        Default Radius: 10
+        Max Radius: 30
+      Force Grow:
+        Default Radius: 10
+        Max Radius: 30
+      No Replant:
+        Cooldown Time: 30
+    # === [ Automatic Destruction Settings ] ===
+    Destruction:
+      Falling Blocks: false
       Fast Leaf Decay: true
-    Sapling Replant:
-      Command Time Delay (Seconds): 30
-      Bottom Block has to be Broken First: true # false will basically force a possibly existing bottom block to turn into a sapling
-      Time to Protect Sapling (Seconds): 0
-      Time to Block Sapling Growth (Seconds): 0
-      Replant When Tree Burns Down: true
-      Block all breaking of Saplings: false
-      Delay until Sapling is replanted (seconds) (minimum 1 second): 1
-      Enforce: false
-      Tree Types to Replant: # here you can turn off the automatic replanting for single tree types
-        Birch: true
-        Jungle: true
-        BigJungle: true
-        Oak: true
-        Spruce: true
-        Brown Shroom: true
-        Red Shroom: true
-        Acacia: true
-        Dark Oak: true
-    Tools:
-      Sapling Replant Require Tools: true
-      Tree Destruction Require Tools: true
-      Tools List:
-      - DIAMOND_AXE
-      - WOODEN_AXE
-      - GOLDEN_AXE
-      - IRON_AXE
-      - STONE_AXE
-      Drop Chance:
-        DIAMOND_AXE: 100
-        WOODEN_AXE: 100
-        GOLDEN_AXE: 100
-        IRON_AXE: 100
-        STONE_AXE: 100
+      Only Above: false
+    Placed Blocks:
+      Active: true
+      Plugin Name: TreeAssist
+      Lookup Time: 86400
+    # === [ Plugin Integration Settings ] ===
+    Plugins:
+      # Count broken blocks towards the TreeFeller ability
+      mcMMO: true
+      # Count broken blocks towards Jobs jobs that fit
+      Jobs: true
+      # Allow to set up regions with WorldGuard to prevent destruction with 'treeassist-autochop' and sapling replacement with 'treeassist-replant'
+      WorldGuard: false
+    # === [ World Related Settings ] ===
     Worlds:
-      Enable Per World: false
+      # Enable world based restrictions
+      Restrict: false
       Enabled Worlds:
       - world
       - world2
-    Custom Drops:
-      APPLE: 0.1
-      GOLDEN_APPLE: 0.0
-    Placed Blocks:
-      Handler Plugin Name: TreeAssist
     Modding:
       Disable Durability Fix: false
-    Custom Tree Definitions:
-    - - minecraft:birch_sapling
-      - minecraft:birch_log
-      - minecraft:birch_leaves
-    # be careful formatting here. the first hyphen aligns vertically with the C of Custom and starts a definition,
-    # then each next hyphen indicates each sub setting.
-    # Another definition requires another double hyphen on the level of the C of Custom
     Debug: none
+    # The config version for update checks
+    Version: 7.0

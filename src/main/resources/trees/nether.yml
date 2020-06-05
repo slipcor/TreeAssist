@@ -1,11 +1,11 @@
 Custom Drops:
   minecraft:netherrack: 0.01
-Custom Drop Chance:
-  minecraft:diamond_hoe: 100
-  minecraft:golden_hoe: 75
-  minecraft:iron_hoe: 50
-  minecraft:stone_hoe: 25
-  minecraft:wooden_hoe: 10
+Custom Drop Factor:
+  minecraft:diamond_hoe: 1.0
+  minecraft:golden_hoe: 0.75
+  minecraft:iron_hoe: 0.5
+  minecraft:stone_hoe: 0.25
+  minecraft:wooden_hoe: 0.1
 Ground Blocks:
 - 'minecraft:netherrack'
 Natural Blocks:

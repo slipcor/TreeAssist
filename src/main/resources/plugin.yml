@@ -1,12 +1,12 @@
 name: TreeAssist
-main: me.itsatacoshop247.TreeAssist.TreeAssist
+main: net.slipcor.treeassist.TreeAssist
 version: 7.0.jenkins-build-number
 api-version: 1.13
 author: slipcor
-authors: [slipcor, itsatacoshop247]
+authors: [slipcor, FriendlyBaron]
 description: TreeAssist
 softdepend: [mcMMO, Prism, CoreProtect, LogBlock, Jobs, WorldGuard]
-dev-url: http://dev.bukkit.org/server-mods/tree-assist/
+dev-url: https://www.spigotmc.org/resources/treeassist.67436/
 commands:
   TreeAssist:
     description: Turn TreeAssist features on or off
@@ -49,7 +49,7 @@ permissions:
       treeassist.findforest: true
       treeassist.forcebreak: true
       treeassist.forcegrow: true
-      treeassist.noreplace: true
+      treeassist.noreplant: true
       treeassist.purge: true
       treeassist.reload: true
       treeassist.removetool: true
@@ -75,7 +75,7 @@ permissions:
   treeassist.forcegrow:
     description: allows to force grow saplings
     default: op
-  treeassist.noreplace:
+  treeassist.noreplant:
     description: allows to stop replacing saplings for some time
     default: true
   treeassist.purge:

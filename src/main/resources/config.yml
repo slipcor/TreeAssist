@@ -1,38 +1,34 @@
-Main:
-  Destroy Only Blocks Above: false
-  Force Break Default Radius: 10
-  Force Grow Default Radius: 10
-  Force Break Max Radius: 30
-  Force Grow Max Radius: 30
-  Ignore User Placed Blocks: false
-  Language: en
+General:
+  Language: lang_en
   Toggle Default: true
-  Use mcMMO if Available: true
-  Use Jobs if Available: true
-  Use WorldGuard if Available: false
   Use Permissions: false
-  Use Falling Blocks: false
-Automatic Tree Destruction:
-  When Sneaking: true
-  When Not Sneaking: true
-Leaf Decay:
+Commands:
+  Force Break:
+    Default Radius: 10
+    Max Radius: 30
+  Force Grow:
+    Default Radius: 10
+    Max Radius: 30
+  No Replant:
+    Cooldown Time: 30
+Destruction:
+  Falling Blocks: false
   Fast Leaf Decay: true
-Sapling Replant:
-  Block all breaking of Saplings: false
-  Bottom Block has to be Broken First: true
-  Command Time Delay (Seconds): 30
-  Replant When Tree Burns Down: true
-  Time to Protect Sapling (Seconds): 0
-  Time to Block Sapling Growth (Seconds): 0
+  Only Above: false
+Placed Blocks:
+  Active: true
+  Plugin Name: TreeAssist
+  Lookup Time: 86400
+Plugins:
+  mcMMO: true
+  Jobs: true
+  WorldGuard: false
 Worlds:
-  Enable Per World: false
+  Restrict: false
   Enabled Worlds:
   - world
   - world2
-Placed Blocks:
-  Handler Plugin Name: TreeAssist
-  Handler Lookup Time: 86400
 Modding:
   Disable Durability Fix: false
 Debug: none
-Version: 6.0
+Version: 7.0

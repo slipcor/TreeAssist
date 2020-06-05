@@ -2,7 +2,7 @@
 
 ## Description
 
-This command reload the plugin to account for changes you did to the YML files with from outside of Minecraft
+This command reloads the plugin to account for changes you did to the YML files with from outside of Minecraft
 
 ## Usage Examples
 

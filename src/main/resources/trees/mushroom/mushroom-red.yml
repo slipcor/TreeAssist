@@ -6,6 +6,7 @@ Blocks:
     Edges: true
   Middle:
     Air: true
+    Radius: 2
 Custom Drops:
   'minecraft:red_mushroom_block': 0.01
 Parent: mushroom

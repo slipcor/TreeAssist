@@ -16,6 +16,5 @@ Trunk:
   Materials:
   - 'minecraft:dark_oak_log'
   Uneven Bottom: true
-  Radius: 2
   Branch: true
 Version: 7.0
