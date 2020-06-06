@@ -1,0 +1,13 @@
+Blocks:
+  Materials:
+  - 'minecraft:brown_mushroom_block'
+  Top:
+    Radius: 3
+  Middle:
+    Radius: 0
+Custom Drops:
+  'minecraft:brown_mushroom_block': 0.01
+Parent: mushroom
+Permission: treeassist.destroy.brownshroom
+Replanting:
+  Material: 'minecraft:brown_mushroom'

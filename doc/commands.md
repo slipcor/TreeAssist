@@ -19,8 +19,8 @@ _Manage which tools are required for the automated removal_
 
 Command | Shorthand | Definition
 ------------- | ------------- | -------------
-[/treeassist addtool](commands/addtool.md) | /ta !at | add a required tool
-[/treeassist removetool](commands/removetool.md) | /ta !rt | remove a required tool
+[/treeassist addtool](commands/addtool.md) | /ta !at {trunk type} | add a required tool
+[/treeassist removetool](commands/removetool.md) | /ta !rt {trunk type} | remove a required tool
 
 ***
 
@@ -34,23 +34,13 @@ Command | Shorthand | Definition
 
 ***
 
-## Commands about custom block definitions
-_Manage dedicated custom block groups that define what a tree is_
-
-Command | Shorthand | Definition
-------------- | ------------- | -------------
-[/treeassist addcustom](commands/addcustom.md) | /ta !ac | add a custom block group
-[/treeassist removecustom](commands/removecustom.md) | /ta !rc | remove a custom block group
-
-***
-
 ## Miscellaneous commands
 
 Command | Shorthand | Definition
 ------------- | ------------- | -------------
 [/treeassist debug](commands/debug.md) | /ta !d | start/stop debug
 [/treeassist findforest](commands/findforest.md) [treetype] | /ta !ff  | find biome based on tree type
-[/treeassist noreplace](commands/noreplace.md) | /ta !nr | stop replacing saplings for some time
+[/treeassist noreplant](commands/noreplant.md) | /ta !nr | stop replanting saplings for some time
 [/treeassist purge](commands/purge.md) global | /ta !p global | purge block placement entries globally
 [/treeassist purge](commands/purge.md) [world] | /ta !p [world] | purge block placement entries of [world]
 [/treeassist purge](commands/purge.md) [days] | /ta !p [days] | purge block placement entries older than [days]

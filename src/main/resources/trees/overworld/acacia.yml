@@ -1,0 +1,19 @@
+Blocks:
+  Materials:
+  - 'minecraft:acacia_leaves'
+  Top:
+    Radius: 4
+  Cap:
+    Radius: 4
+Custom Drops:
+  'minecraft:acacia_leaves': 0.01
+Parent: default
+Permission: treeassist.destroy.acacia
+Replanting:
+  Material: 'minecraft:acacia_sapling'
+Trunk:
+  Materials:
+  - 'minecraft:acacia_log'
+  Diagonal: true
+  Branch: true
+Version: 7.0

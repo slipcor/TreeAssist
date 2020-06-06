@@ -22,16 +22,14 @@ treeassist.destroy.redshroom | allows giant red mushrooms | false
 Node |  Definition | Default | Function
 ------------- | ------------- | ------------- | -------------
 treeassist.commands | **allows all commands** | op | ALL THE COMMANDS
-treeassist.addcustom | allows the addcustom command | op | add a custom blocks group
 treeassist.addtool | allows the addtool command | op | add a required tool
 treeassist.debug | allows the debug command | op | debug log information
 treeassist.findforest | allows the findforest command | op | find forest by tree type
 treeassist.forcebreak | allows the forcebreak command | op | force break trees
 treeassist.forcegrow | allows the forcegrow command | op | force grow saplings
-treeassist.noreplace | allows the noreplace command | **true** | stop replacing saplings for some time
+treeassist.noreplant | allows the noreplant command | **true** | stop replanting saplings for some time
 treeassist.purge | allows the purge command | op | purge the database or data.yml
 treeassist.reload | allows the reload command | op | reload the TreeAssist config
-treeassist.removecustom | allows the removecustom command | op | remove a custom blocks group
 treeassist.removetool | allows the removetool command | op | remove a required tool
 treeassist.toggle | allows the toggle command | op | toggle TreeAssist usage
 treeassist.toggle.global | allows the global toggle command | op | toggle global TreeAssist usage

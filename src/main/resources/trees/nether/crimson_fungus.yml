@@ -1,0 +1,23 @@
+Blocks:
+  Materials:
+  - 'minecraft:nether_wart_block'
+  - 'minecraft:shroomlight'
+  Top:
+    Height: 3
+    Radius: 3
+    Air: true
+  Middle:
+    Air: true
+Ground Blocks:
+- 'minecraft:netherrack'
+- 'minecraft:crimson_nylium'
+Parent: nether
+Permission: treeassist.destroy.crimsonfungus
+Replanting:
+  Material: 'minecraft:crimson_fungus'
+Trunk:
+  Materials:
+  - 'minecraft:crimson_stem'
+  - 'minecraft:shroomlight'
+  - 'minecraft:nether_wart_block'
+Version: 7.0

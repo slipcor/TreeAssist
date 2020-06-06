@@ -1,0 +1,19 @@
+Blocks:
+  Top:
+    Height: 1
+  Middle:
+    Radius: 0
+Custom Drops:
+  'minecraft:mushroom_stem': 0.01
+Ground Blocks:
+- 'minecraft:podzol'
+- 'minecraft:mycelium'
+- 'minecraft:grass_block'
+- 'minecraft:dirt'
+- 'minecraft:coarse_dirt'
+Parent: default
+Trunk:
+  Minimum Height: 5
+  Materials:
+  - 'minecraft:mushroom_stem'
+Version: 7.0

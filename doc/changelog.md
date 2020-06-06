@@ -1,51 +1,20 @@
-# v6.X Changelog
+# v7.X Changelog
 
-## v6.0 - Minecraft 1.13
-- v6.0.90 - address a NPE because of the new support of not 4-trunk spruce
-- v6.0.89 - who merged the classic branch? not me. time to burn it!
-- v6.0.88 - allow both mcMMO and Jobs to be used at the same time - addresses #43
-- v6.0.87 - expand mcMMO and Jobs EXP gain logic, several cases were uncovered! Also remove safeguard for spruce detection, this addresses issues #43 and #44
-- v6.0.86 - check that mcMMO is generally enabled before looking for its classes!
-- v6.0.85 - remove mcMMO-classic support attempt from POM
-- v6.0.84 - check for mcMMO-classic and display warning
-- v6.0.83 - significantly improve the biome finder, disable user placed blocks for CoreProtect as it always returns trees grown as placed blocks
-- v6.0.82 - clear the region save queue after writing - much less writing, a bit more reading
-- v6.0.81 - instantiate the self replant debugger
-- v6.0.80 - include sapling self replanting in the WorldGuard replant flag
-- v6.0.79 - add worldguard support - restrict usage with custom flags "treeassist-autochop" and "treeassist-replant" - adds #38
-- v6.0.78 - prevent a NullPointerException that for some reason exists now - addresses #37 and probably more
-- v6.0.77 - make sure config values for mcMMO and Jobs are read - only try to load mcMMO and Jobs if required and requested
-- v6.0.76 - add support for Jobs reborn
-- v6.0.75 - remove debug outputs that we do not need
-- v6.0.74 - remove "wood_axe" and "gold_axe" remnants
-- v6.0.73 - make trees literally fall down - off by default for testing, happy falling!
-- v6.0.72 - change default tools to 1.13 material names (woodEN and goldEN axe) - add converter for these nodes. Please check your lists for outdated names :)
-- v6.0.71 - disable check by setting lookup time to <= 0. Even if the result is the same this actually skips database lookups!
-- v6.0.70 - Expand lookup time to all Block Lists
-- v6.0.69 - Implement lookup time for Core Protect
-- v6.0.68 - "Block Statistics" config nodes for Pickup and Block Mine statistics, defaulting to false!
-- v6.0.67 - more sapling block fixes - in some cases the bottom block would stay
-- v6.0.66 - actually use the sapling blocks we calculated
-- v6.0.65 - fix acacia bottom determination
-- v6.0.64 - implement implementation method to check for log types and use where appropriate
-- v6.0.63 - rewrite the bottom block logic by introducing a sapling block logic - this will help with "Destroy Only Blocks Above" finally doing what it should
-- v6.0.62 - Update to an mcMMO version that is more suitable (1.5 => 2.1)
-- v6.0.61 - Add bStats and a working command autocomplete system
-- v6.0.60 - Custom tree definitions now are in a list of lists in the config, grouped together properly and saved together, in the file and in the API
-- v6.0.58 - Finalize the custom tree system so it is operational for now.
-- v6.0.57 - Implement addcustom and removecustom in accordance to the 1.13 API - everything is based on strings like minecraft:dirt, should work backwards compatibly with properly defined material values!
-- v6.0.56 - Fix mushroom implementation 1.13 compatibility
-- v6.0.55 - Fix plugin.yml typos
-- v6.0.54 - Fixed a bug where items not explicitly in the tools list could be used to cut down a tree
-- v6.0.53 - Please let's use the jenkins again
-- v6.0.10 - Update bukkit version to 1.14 (still compatible with 1.13)
-- v6.0.9 - Update integration with CoreProtect to use new API call
-- v6.0.8 - Fixed a bug with felling trees growing next to short grass, or hoppers/dispensers in tree farms
-- v6.0.7 - Fixed a bug where mushroom blocks dropped from felling mushroom trees with silk touch would not stack
-- v6.0.6 - Fixed a bug with felling mushroom trees growing on grass
-- v6.0.5 - Fixed a bug with felling trees growing on podzol
-- v6.0.4 - Fixed a bug where red mushroom trees drop brown mushrooms
-- v6.0.3 - Fixed a bug where felled trees drop the wrong sapling
-- v6.0.2 - Fixed a bug where red mushroom trees aren't fully cut down
-- v6.0.1 - Update integration with CoreProtect API
-- v6.0.0 - Update TreeAssist to natively support 1.13
+## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.90 - First rewrite commit
+- Complete rewrite of tree determination and tree definition.
+- Outsourcing of over 30 config.yml nodes to the new trees/default.yml node.
+- The folder `trees` contains all tree definitions. The examples should help set up custom definitions.
+- config.yml rewrite with attempted migration and warning in case there are wrong entries.
+- config.yml has custom comments in hopes to clear up some confusion.
+- Support and defaulting to the new material IDs, e.g. `minecraft:oak_sapling` instead of `OAK_SAPLING`.
+- Migrating of all chances to probabilities - instead of percentages we use factors where 1.0 is 100% chance.
+- Reorganization of Utils class, separation into separate utility classes
+- JavaDocs for every public and every important method
+- TreeAssist events fully documented, added some more configurability, and changed the replacement event to work with Material instead of its name
+- mcMMO hooks now should support all block types, mcMMO should decide what kind of EXP to add
+- `noreplace` command renamed to `noreplant`, including permissions and config nodes
+- config default for "Only When Bottom Broken First" changed, as this setting never worked anyway
+- logs should break from bottom up (thick trees look much better now)
+- leaves should break from inside out
+- destruction should be much faster now as we check for duplicates

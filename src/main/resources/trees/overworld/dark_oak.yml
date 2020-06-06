@@ -1,0 +1,20 @@
+Blocks:
+  Materials:
+  - 'minecraft:dark_oak_leaves'
+  Top:
+    Height: 2
+  Middle:
+    Radius: 3
+Custom Drops:
+  'minecraft:dark_oak_leaves': 0.01
+Parent: default
+Permission: treeassist.destroy.darkoak
+Replanting:
+  Material: 'minecraft:dark_oak_sapling'
+Trunk:
+  Thickness: 2
+  Materials:
+  - 'minecraft:dark_oak_log'
+  Uneven Bottom: true
+  Branch: true
+Version: 7.0

@@ -1,0 +1,11 @@
+Blocks:
+  Top:
+    Radius: 3
+  Middle:
+    Radius: 2
+    Air: true
+Parent: jungle
+Trunk:
+  Thickness: 2
+  Branch: true
+Version: 7.0

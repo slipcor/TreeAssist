@@ -1,0 +1,15 @@
+Blocks:
+  Materials:
+  - 'minecraft:red_mushroom_block'
+  Top:
+    Radius: 1
+    Edges: true
+  Middle:
+    Air: true
+    Radius: 2
+Custom Drops:
+  'minecraft:red_mushroom_block': 0.01
+Parent: mushroom
+Permission: treeassist.destroy.redshroom
+Replanting:
+  Material: 'minecraft:red_mushroom'

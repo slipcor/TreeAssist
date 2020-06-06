@@ -1,0 +1,31 @@
+Custom Drops:
+  minecraft:netherrack: 0.01
+Custom Drop Factor:
+  minecraft:diamond_hoe: 1.0
+  minecraft:golden_hoe: 0.75
+  minecraft:iron_hoe: 0.5
+  minecraft:stone_hoe: 0.25
+  minecraft:wooden_hoe: 0.1
+Ground Blocks:
+- 'minecraft:netherrack'
+Natural Blocks:
+- 'minecraft:crimson_nylium'
+- 'minecraft:warped_nylium'
+- 'minecraft:shroomlight'
+- 'minecraft:crimson_fungus'
+- 'minecraft:warped_fungus'
+- 'minecraft:twisting_vines'
+- 'minecraft:weeping_vines'
+- 'minecraft:crimson_roots'
+- 'minecraft:warped_roots'
+- 'minecraft:air'
+- 'minecraft:cave_air'
+- 'minecraft:void_air'
+Parent: default
+Tool List:
+- 'minecraft:diamond_hoe'
+- 'minecraft:wooden_hoe'
+- 'minecraft:golden_hoe'
+- 'minecraft:iron_hoe'
+- 'minecraft:stone_hoe'
+Version: 7.0

@@ -1,0 +1,9 @@
+Blocks:
+  Top:
+    Radius: 3
+  Middle:
+    Radius: 4
+Parent: spruce
+Trunk:
+  Thickness: 2
+Version: 7.0

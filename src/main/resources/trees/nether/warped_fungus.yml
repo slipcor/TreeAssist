@@ -1,0 +1,23 @@
+Blocks:
+  Materials:
+  - 'minecraft:warped_wart_block'
+  - 'minecraft:shroomlight'
+  Top:
+    Height: 3
+    Radius: 3
+    Air: true
+  Middle:
+    Air: true
+Ground Blocks:
+- 'minecraft:netherrack'
+- 'minecraft:warped_nylium'
+Parent: nether
+Permission: treeassist.destroy.warpedfungus
+Replanting:
+  Material: 'minecraft:warped_fungus'
+Trunk:
+  Materials:
+  - 'minecraft:warped_stem'
+  - 'minecraft:shroomlight'
+  - 'minecraft:warped_wart_block'
+Version: 7.0

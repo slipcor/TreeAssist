@@ -1,0 +1,15 @@
+Blocks:
+  Cap:
+    Height: 4
+  Top:
+    Height: 3
+    Radius: 3
+  Middle:
+    Radius: 2
+    Air: true
+Custom Drops:
+  'minecraft:oak_leaves': 0.01
+Parent: oak
+Trunk:
+  Branch: true
+Version: 7.0

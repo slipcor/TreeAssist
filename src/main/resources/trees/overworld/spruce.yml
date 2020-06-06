@@ -1,0 +1,17 @@
+Blocks:
+  Materials:
+  - 'minecraft:spruce_leaves'
+  Top:
+    Radius: 2
+  Middle:
+    Radius: 4
+Custom Drops:
+  'minecraft:spruce_leaves': 0.01
+Parent: default
+Permission: treeassist.destroy.spruce
+Replanting:
+  Material: 'minecraft:spruce_sapling'
+Trunk:
+  Materials:
+  - 'minecraft:spruce_log'
+Version: 7.0

@@ -1,0 +1,9 @@
+Blocks:
+  Top:
+    Radius: 4
+  Middle:
+    Radius: 3
+Parent: crimson_fungus
+Trunk:
+  Thickness: 3
+Version: 7.0

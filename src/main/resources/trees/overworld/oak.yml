@@ -1,0 +1,15 @@
+Blocks:
+  Materials:
+  - 'minecraft:oak_leaves'
+  Top:
+    Radius: 2
+Custom Drops:
+  'minecraft:oak_leaves': 0.01
+Parent: default
+Permission: treeassist.destroy.oak
+Replanting:
+  Material: 'minecraft:oak_sapling'
+Trunk:
+  Materials:
+  - 'minecraft:oak_log'
+Version: 7.0

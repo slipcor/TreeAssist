@@ -15,12 +15,14 @@ It also will take down an entire tree when it is enabled in the config.
 - Force break command - breaks all trees in a configurable range
 - Force grow command - grows all saplings into trees in a configurable range
 - mcMMO EXP integration
+- Jobs integration
+- WorldGuard flag integration
 
 ### Options
 
 - Faster leaf decay
 - Incrementing of minecraft block break / pickup statistics
-- Require certain tool for automated destruction or sapling replanting
+- Require certain tools for automated destruction or sapling replanting
 - Require lore tool for automated destruction or sapling replanting
 - Require breaking of bottom block for automated destruction or sapling replanting
 - Prevent tool damage from the automation
@@ -51,8 +53,9 @@ It also will take down an entire tree when it is enabled in the config.
 
 - Stop your server
 - Place jar in plugins folder
-- Run a first time to create config folder
+- Start the server
 - Configure if you wish to
+- /treeassist reload
 - Done !
 
 ***
@@ -67,7 +70,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v6.0.90 - address a NPE because of the new support of not 4-trunk spruce
+- v7.0-SNAPSHOT - release candidate
 - [read more](doc/changelog.md)
 
 ***
@@ -84,7 +87,7 @@ If you want to disable the tracker, set "enabled" to false in __/plugins/bStats/
 
 ## Credits
 
-- FriendlyBaron aka itsatacoshop247 for the original source, the stable foundation that to this day runs strong in TreeAssist
+- FriendlyBaron formerly known as itsatacoshop247 for the original source, the stable foundation that to this day runs strong in TreeAssist
 - Bradley Hilton for the Jenkins
 - pop4959 for the 1.13 update, and a kick in the butt at the right time
 - btilm305 for keeping the repo together in time of need

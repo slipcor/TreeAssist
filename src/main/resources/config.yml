@@ -1,0 +1,34 @@
+General:
+  Language: lang_en
+  Toggle Default: true
+  Use Permissions: false
+Commands:
+  Force Break:
+    Default Radius: 10
+    Max Radius: 30
+  Force Grow:
+    Default Radius: 10
+    Max Radius: 30
+  No Replant:
+    Cooldown Time: 30
+Destruction:
+  Falling Blocks: false
+  Fast Leaf Decay: true
+  Only Above: false
+Placed Blocks:
+  Active: true
+  Plugin Name: TreeAssist
+  Lookup Time: 86400
+Plugins:
+  mcMMO: true
+  Jobs: true
+  WorldGuard: false
+Worlds:
+  Restrict: false
+  Enabled Worlds:
+  - world
+  - world2
+Modding:
+  Disable Durability Fix: false
+Debug: none
+Version: 7.0
