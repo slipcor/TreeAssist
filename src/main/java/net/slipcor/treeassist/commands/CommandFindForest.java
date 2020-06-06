@@ -71,7 +71,7 @@ public class CommandFindForest extends AbstractCommand {
             player.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_FINDFOREST,
                     foundBlock.getX() + "/" + foundBlock.getY() + "/" + foundBlock.getZ()));
         } else {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_FINDFOREST, args[0]));
+            sender.sendMessage(Language.parse(Language.MSG.ERROR_FINDFOREST, args[1]));
         }
     }
 

@@ -14,3 +14,7 @@
 - TreeAssist events fully documented, added some more configurability, and changed the replacement event to work with Material instead of its name
 - mcMMO hooks now should support all block types, mcMMO should decide what kind of EXP to add
 - `noreplace` command renamed to `noreplant`, including permissions and config nodes
+- config default for "Only When Bottom Broken First" changed, as this setting never worked anyway
+- logs should break from bottom up (thick trees look much better now)
+- leaves should break from inside out
+- destruction should be much faster now as we check for duplicates

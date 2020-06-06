@@ -204,6 +204,9 @@ public class ConfigV7Updater {
         config.set("Tools", null);
         config.set("Custom Drops", null);
 
+        // due to a bug this never worked and no-one complained
+        treeConfig.set(TreeConfig.CFG.REPLANTING_ONLY_WHEN_BOTTOM_BLOCK_BROKEN_FIRST.getNode(), false);
+
         try {
             config.save(configFile);
             treeConfig.save(newConfigFile);

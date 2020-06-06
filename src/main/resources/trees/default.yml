@@ -140,7 +140,7 @@ Replanting:
   # Tools are set in the tool list
   Requires Tools: true
   # Only place saplings when the bottom block was broken
-  Only When Bottom Block Broken First: true
+  Only When Bottom Block Broken First: false
   # Replant when a tree block burns
   When Tree Burns Down: true
   # How long to protect saplings

@@ -15,9 +15,7 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Utility methods about Blocks
@@ -213,5 +211,21 @@ public class BlockUtils {
             return true;
         }
         return false;
+    }
+
+    public static void sortBottomUp(Set<Block> set) {
+        Queue<Block> temp = new PriorityQueue<>(Comparator.comparingInt(Block::getY));
+        temp.addAll(set);
+
+        set.clear();
+        set.addAll(temp);
+    }
+
+    public static void sortInsideOut(Set<Block> set, Block bottom) {
+        Queue<Block> temp = new PriorityQueue<>((o1, o2) -> (int) (o1.getLocation().distanceSquared(bottom.getLocation()) - o2.getLocation().distanceSquared(bottom.getLocation())));
+        temp.addAll(set);
+
+        set.clear();
+        set.addAll(temp);
     }
 }

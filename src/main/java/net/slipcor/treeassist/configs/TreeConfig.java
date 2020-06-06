@@ -257,8 +257,6 @@ public class TreeConfig {
             cfg.load(configFile);
             reloadMaps();
 
-            System.out.println(configFile.getPath() + " - Destruction: " + this.getBoolean(CFG.AUTOMATIC_DESTRUCTION_ACTIVE));
-
             TreeStructure.allTrunks.addAll(getMaterials(TreeConfig.CFG.TRUNK_MATERIALS));
             TreeStructure.allExtras.addAll(getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS));
             TreeStructure.allNaturals.addAll(getMaterials(CFG.NATURAL_BLOCKS));

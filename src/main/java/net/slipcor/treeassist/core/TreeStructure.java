@@ -28,8 +28,8 @@ import java.io.File;
 import java.util.*;
 
 public class TreeStructure {
-    public static List<Material> allTrunks = new ArrayList<>();     // Valid trunk materials of all configs
-    public static List<Material> allExtras = new ArrayList<>();     // Valid tree block materials of all configs
+    public static Set<Material> allTrunks = new HashSet<>();     // Valid trunk materials of all configs
+    public static Set<Material> allExtras = new HashSet<>();     // Valid tree block materials of all configs
     public static Set<Material> allNaturals = new HashSet<>();      // Valid naturally occurring materials of all configs
     static Map<BlockFace, BlockFace[]> continuations = new EnumMap<>(BlockFace.class); // Followup directions based on a given direction
 
@@ -39,13 +39,13 @@ public class TreeStructure {
 
     public Block bottom;
     public List<Block> trunk;
-    private final List<Material> trunkBlocks;
-    private final List<Material> extraBlocks;
-    private final List<Material> naturalBlocks;
-    private final List<Material> groundBlocks;
+    private final Set<Material> trunkBlocks;
+    private final Set<Material> extraBlocks;
+    private final Set<Material> naturalBlocks;
+    private final Set<Material> groundBlocks;
     private List<Block> neighborTrunks = new ArrayList<>();
     private Map<Block, List<Block>> branchMap;
-    private List<Block> extras;
+    private Set<Block> extras;
     private final List<Block> roofs = new ArrayList<>();
 
     private final List<Block> checkedBlocks = new ArrayList<>();
@@ -101,10 +101,10 @@ public class TreeStructure {
     public TreeStructure(TreeConfig config, Block bottom, boolean onlyTrunk) {
         this.config = config;
         this.bottom = bottom;
-        trunkBlocks = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
-        extraBlocks = config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS);
-        naturalBlocks = config.getMaterials(TreeConfig.CFG.NATURAL_BLOCKS);
-        groundBlocks = config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS);
+        trunkBlocks = new LinkedHashSet<>(config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS));
+        extraBlocks = new LinkedHashSet<>(config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS));
+        naturalBlocks = new LinkedHashSet<>(config.getMaterials(TreeConfig.CFG.NATURAL_BLOCKS));
+        groundBlocks = new LinkedHashSet<>(config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS));
         trunkDiagonally = config.getBoolean(TreeConfig.CFG.TRUNK_DIAGONAL);
 
         int thickness = config.getInt(TreeConfig.CFG.TRUNK_THICKNESS);
@@ -641,7 +641,7 @@ public class TreeStructure {
      * Calculate extra blocks, looking in all directions
      */
     private void getAllExtras() {
-        extras = new ArrayList<>();
+        extras = new LinkedHashSet<>();
 
         int radiusM = config.getInt(TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS);
 
@@ -766,7 +766,7 @@ public class TreeStructure {
      * Calculate extra blocks, checking only in trunk facing directions
      */
     private void getDirectionalExtras() {
-        extras = new ArrayList<>();
+        extras = new LinkedHashSet<>();
 
         int radiusM = config.getInt(TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS);
 
@@ -1282,20 +1282,26 @@ public class TreeStructure {
 
         debug.i("pickup: " + statPickup + "; mine: " + statMineBlock);
 
-        final List<Block> removeBlocks = new ArrayList<>();
+        final Set<Block> removeBlocks = new LinkedHashSet<>(trunk);
 
-        removeBlocks.addAll(trunk);
         for (List<Block> blocks : branchMap.values()) {
             if (blocks != null) {
                 removeBlocks.addAll(blocks);
             }
         }
 
+        if (offset >= 0) {
+            // If there is an offset, we break the logs from the bottom up
+            BlockUtils.sortBottomUp(removeBlocks);
+            // And the leaves from inside out
+            BlockUtils.sortInsideOut(extras, bottom);
+        }
+
         if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REMOVE_LEAVES)) {
-            for (Block block : extras) {
-                BlockUtils.breakRadiusLeaves(block, config);
+            /*for (Block block : extras) {
+                //BlockUtils.breakRadiusLeaves(block, config);
                 break;
-            }
+            }*/
             removeBlocks.addAll(extras);
         }
 
@@ -1308,9 +1314,10 @@ public class TreeStructure {
                             debug.i("InstantRunner: skipping breaking a sapling");
                             continue;
                         }
+                        /*
                         if (tool == null) {
 
-                            debug.i("tool null 1");
+                            debug.i("tool null 1" + Debugger.parse(block.getLocation()));
                             TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, null);
                             TreeAssist.instance.getServer().getPluginManager().callEvent(event);
                             if (!event.isCancelled()) {
@@ -1336,16 +1343,19 @@ public class TreeStructure {
                                 player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
                             }
                         } else {
-                            debug.i("InstantRunner: 1");
+
+                            */
+                            debug.i("InstantRunner: 1 " + Debugger.parse(block.getLocation()));
                             maybeBreakBlock(block, tool, player, statPickup, statMineBlock);
-                            if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
+                            if (tool != null && tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
 
                                 debug.i("removing item: " + player.getInventory().getItemInMainHand().getType().name() +
                                         " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
                                 player.getInventory().remove(tool);
                                 this.cancel();
+                                return; // we skip clearing the block list because there was an issue that requires cleanup
                             }
-                        }
+                        //}
                     }
                     removeBlocks.clear();
                 } else {
@@ -1355,11 +1365,13 @@ public class TreeStructure {
                             continue;
                         }
                         if (block.getType() == Material.AIR) {
-                            debug.i("InstantRunner: 2a " + Debugger.parse(block.getLocation()));
+                            debug.i("InstantRunner: 2 AIR " + Debugger.parse(block.getLocation()));
+                            continue;
                         } else {
+                            /*
                             if (tool == null) {
 
-                                debug.i("tool null 2");
+                                debug.i("tool null 2: " + Debugger.parse(block.getLocation()));
 
                                 TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, null);
                                 TreeAssist.instance.getServer().getPluginManager().callEvent(event);
@@ -1371,6 +1383,15 @@ public class TreeStructure {
                                     if (MaterialUtils.isLog(block.getType())
                                             && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
                                         player.getInventory().addItem(block.getState().getData().toItemStack(1));
+
+                                        if (config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_MINE_BLOCK)) {
+                                            player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+                                        }
+
+                                        if (config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_PICKUP)) {
+                                            player.incrementStatistic(Statistic.PICKUP, block.getType());
+                                        }
+                                        debug.i("added to inventory");
                                         block.setType(Material.AIR);
                                     } else {
                                         BlockUtils.breakBlock(player, block);
@@ -1378,15 +1399,18 @@ public class TreeStructure {
                                     player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
                                 }
                             } else {
-                                debug.i("InstantRunner: 2b");
+                                */
+
+                                debug.i("InstantRunner: 2b " + Debugger.parse(block.getLocation()));
                                 maybeBreakBlock(block, tool, player, statPickup, statMineBlock);
-                                if (tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
+                                if (tool != null && tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
                                     debug.i("removing item: " + player.getInventory().getItemInMainHand().getType().name() +
                                             " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
                                     player.getInventory().remove(tool);
                                     this.cancel();
+                                    return;
                                 }
-                            }
+                            //}
                         }
                         removeBlocks.remove(block);
                         return;
@@ -1437,7 +1461,6 @@ public class TreeStructure {
                 try {
                     this.cancel();
                 } catch (Exception e) {
-
                 }
             }
 
