@@ -65,6 +65,7 @@ It also will take down an entire tree when it is enabled in the config.
 - [Commands](doc/commands.md)
 - [Permissions](doc/permissions.md)
 - [Configuration](doc/configuration.md)
+- [TreeConfiguration](doc/treeconfig.md)
 
 ***
 
