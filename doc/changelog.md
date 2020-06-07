@@ -1,7 +1,8 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
-- v7.0.93 - when warning about "lower than minimum", show more information
+- v7.0.95 - add large ferns to the natural blocks, improve mushroom detection
+- v7.0.94 - when warning about "lower than minimum", show more information
 - v7.0.90 - First rewrite commit
 - Complete rewrite of tree determination and tree definition.
 - Outsourcing of over 30 config.yml nodes to the new trees/default.yml node.

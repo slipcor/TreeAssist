@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TreeConfigUpdater {
     enum Adding {
-        //NEW_AIR_CAVE(8.0f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:cave_air"),
+        NATURAL_LARGE_FERN(7.0095f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:large_fern"),
         //NEW_AIR_VOID(8.0f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:void_air")
         ;
 
@@ -32,8 +32,26 @@ public class TreeConfigUpdater {
         }
     }
 
+    enum Updating {
+        //MUSHROOM_TRUNK(7.0096f, "mushroom", TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT, 5, 4)
+        ;
+        private final float version;
+        private final String config;
+        private final TreeConfig.CFG node;
+        private final Object oldValue;
+        private final Object newValue;
+
+        Updating(float version, String config, TreeConfig.CFG node, Object oldValue, Object newValue) {
+            this.version = version;
+            this.config = config;
+            this.node = node;
+            this.oldValue = oldValue;
+            this.newValue = newValue;
+        }
+    }
+
     enum Removing {
-        //TRUNK_EDGES_CRIMSON(8.0f, "thick_crimson_fungus", "Trunk.Edges"),
+        MUSHROOM_TRUNK(7.0097f, "mushroom", "Trunk.Minimum Height"),
         //TRUNK_EDGES_WARPED(8.0f, "thick_warped_fungus", "Trunk.Edges")
         ;
 
@@ -82,6 +100,18 @@ public class TreeConfigUpdater {
                 config.getYamlConfiguration().set(m.node, null);
                 TreeAssist.instance.getLogger().info("Config String value removed: " + m.toString());
                 changed = true;
+            }
+        }
+        for (Updating m : Updating.values()) {
+            if (m.version > version && m.config.equals(configPath)) {
+                newVersion = Math.max(newVersion, m.version);
+                if (m.oldValue.equals(config.getYamlConfiguration().get(m.node.getNode(), null))) {
+                    config.getYamlConfiguration().set(m.node.getNode(), m.newValue);
+                    TreeAssist.instance.getLogger().info("Config String value updated: " + m.toString());
+                    changed = true;
+                } else {
+                    TreeAssist.instance.getLogger().warning("Config String value not updated: " + m.toString());
+                }
             }
         }
         if (changed) {

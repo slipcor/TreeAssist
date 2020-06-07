@@ -127,9 +127,12 @@ public class TreeStructure {
             }
 
             int min = config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT);
+            int height = trunk.size();
 
-            if (trunk.size() < min) {
-                TreeAssist.instance.getLogger().warning("Lower than minimum: " + trunk.size() + " / " + min + " for " + trunk.get(0).getType());
+            if (height < min) {
+                debug.i("Lower than minimum: " + height + " < " + min + " for " + trunk.get(0).getType());
+                valid = false;
+                return;
             }
 
             neighborTrunks = new ArrayList<>();
@@ -153,7 +156,6 @@ public class TreeStructure {
 
             if (extras == null || (extras.size() < config.getInt(TreeConfig.CFG.BLOCKS_REQUIRED, 10) && hasDistanceTo(neighborTrunks))) {
                 valid = false;
-                return;
             }
             return;
         }
@@ -206,7 +208,10 @@ public class TreeStructure {
                 nextBlock = nextBlock.getRelative(BlockFace.DOWN);
             }
             if (groundBlocks.contains(nextBlock.getType())) {
-                trunks.add(nextBlock.getRelative(BlockFace.UP));
+                // check that is not just a jungle bush
+                if (trunkBlocks.contains(nextBlock.getRelative(BlockFace.UP, 2).getType())) {
+                    trunks.add(nextBlock.getRelative(BlockFace.UP));
+                }
             }
         }
 
@@ -231,9 +236,12 @@ public class TreeStructure {
         }
 
         int min = config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT);
+        int height = trunk.size() / trunks.size();
 
-        if (trunk.size() < min) {
-            TreeAssist.instance.getLogger().warning("Lower than thick minimum: " + trunk.size() + " / " + min + " for " + trunk.get(0).getType());
+        if (height < min) {
+            debug.i("Lower than thick minimum: " + height + " < " + min + " for " + trunk.get(0).getType());
+            valid = false;
+            return;
         }
 
         neighborTrunks = new ArrayList<>();

@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.93 - when warning about "lower than minimum", show more information
+- v7.0.95 - add large ferns to the natural blocks, improve mushroom detection
 - [read more](doc/changelog.md)
 
 ***

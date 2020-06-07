@@ -119,6 +119,7 @@ Natural Blocks:
 - 'minecraft:vine'
 - 'minecraft:cave_air'
 - 'minecraft:void_air'
+- 'minecraft:large_fern'
 Permission: treeassist.destroy.*
 # Sapling replant settings
 Replanting:
@@ -170,4 +171,4 @@ Trunk:
   Thickness: 1
   # Can the saplings be at different height?
   Uneven Bottom: false
-Version: 7.0
+Version: 7.0095
