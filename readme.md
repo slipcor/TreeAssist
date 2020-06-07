@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0-SNAPSHOT - release candidate
+- v7.0.93 - when warning about "lower than minimum", show more information
 - [read more](doc/changelog.md)
 
 ***

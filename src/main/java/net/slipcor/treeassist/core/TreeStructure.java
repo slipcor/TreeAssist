@@ -126,8 +126,10 @@ public class TreeStructure {
                 return;
             }
 
-            if (trunk.size() < config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT)) {
-                TreeAssist.instance.getLogger().warning("Lower than minimum!");
+            int min = config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT);
+
+            if (trunk.size() < min) {
+                TreeAssist.instance.getLogger().warning("Lower than minimum: " + trunk.size() + " / " + min + " for " + trunk.get(0).getType());
             }
 
             neighborTrunks = new ArrayList<>();
@@ -228,8 +230,10 @@ public class TreeStructure {
             return;
         }
 
-        if (trunk.size() < config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT)) {
-            TreeAssist.instance.getLogger().warning("Lower than minimum!");
+        int min = config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT);
+
+        if (trunk.size() < min) {
+            TreeAssist.instance.getLogger().warning("Lower than thick minimum: " + trunk.size() + " / " + min + " for " + trunk.get(0).getType());
         }
 
         neighborTrunks = new ArrayList<>();
