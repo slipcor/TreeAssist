@@ -234,14 +234,14 @@ public class TreeAssistBlockListener implements Listener {
                                     player.sendMessage(Language.parse(Language.MSG.INFO_COOLDOWN_VALUE, String.valueOf(TreeAssist.instance.getCoolDown(player))));
                                     matchingTreeConfig = config; // for maybe forcing something later
                                     foundTree = trunk;
-                                    break configs;
+                                    break configs; // no need to keep checking
                                 }
 
                                 if (plugin.isDisabled(player.getWorld().getName(), player.getName())) {
                                     debug.i("Disabled for this player in this world!");
                                     matchingTreeConfig = config; // for maybe forcing something later
                                     foundTree = trunk;
-                                    break configs;
+                                    break configs; // no need to keep checking
                                 }
 
                                 String lore = config.getString(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REQUIRED_LORE);
@@ -309,6 +309,7 @@ public class TreeAssistBlockListener implements Listener {
                                 if (TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
                                     trunk.removeBlocksBelow(event.getBlock());
                                 }
+                                TreeAssist.instance.treeAdd(trunk);
                                 trunk.removeTreeLater(player, item);
                                 return;
 
@@ -334,6 +335,7 @@ public class TreeAssistBlockListener implements Listener {
             }
 
             if (matchingTreeConfig.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL)) {
+                TreeAssist.instance.treeAdd(foundTree);
                 if (TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
                     foundTree.removeBlocksBelow(event.getBlock());
                 }

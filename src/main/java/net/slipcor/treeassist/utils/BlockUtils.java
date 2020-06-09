@@ -3,10 +3,13 @@ package net.slipcor.treeassist.utils;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.configs.MainConfig;
 import net.slipcor.treeassist.configs.TreeConfig;
+import net.slipcor.treeassist.core.Debugger;
+import net.slipcor.treeassist.core.LeavesStructure;
 import net.slipcor.treeassist.core.TreeStructure;
 import net.slipcor.treeassist.events.TALeafDecay;
 import net.slipcor.treeassist.externals.JobsHook;
 import net.slipcor.treeassist.externals.mcMMOHook;
+import net.slipcor.treeassist.runnables.CleanRunner;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -22,7 +25,7 @@ import java.util.*;
  */
 public class BlockUtils {
     private BlockUtils() {}
-
+    public static Debugger debug;
     public static Boolean useFallingBlock = null;
     private static final List<FallingBlock> fallingBlocks = new ArrayList<>();
 
@@ -92,11 +95,12 @@ public class BlockUtils {
      *
      * @param block the block to check
      * @param config the tree config to check against
+     * @param trees known trees so far
      */
-    private static void breakIfLonelyLeaf(Block block, TreeConfig config) {
+    private static boolean isLonelyLeaf(Block block, TreeConfig config, Set<TreeStructure> trees) {
         List<Material> extras = config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS);
         if (!extras.contains(block.getType())) {
-            return;
+            return false;
         }
         List<Material> trunks = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
         List<Material> naturals = config.getMaterials(TreeConfig.CFG.NATURAL_BLOCKS);
@@ -113,15 +117,21 @@ public class BlockUtils {
                     for (int z = block.getZ() - 2; z <= block.getZ() + 2; z++) {
                         preventCheck += decayPreventionValue(world.getBlockAt(x, y, z), trunks, naturals);
                         if (preventCheck > 4) {
-                            return; // prevent threshold -> out!
+                            return false; // prevent threshold -> out!
                         }
                     }
                 }
             }
 
-            TreeAssist.instance.blockList.logBreak(block, null);
-            breakBlock(block);
+            for (TreeStructure tree : trees) {
+                if (tree.containsBlock(block)) {
+                    return false;
+                }
+            }
+
+            return true;
         }
+        return false;
     }
 
     /**
@@ -142,13 +152,37 @@ public class BlockUtils {
         int x = block.getX();
         int y = block.getY();
         int z = block.getZ();
+
+        Set<TreeStructure> validTrees = new HashSet<>(TreeAssist.instance.treesThatQualify(config, block));
+
+        Set<Block> breakables = new LinkedHashSet<>();
+
         for (int x2 = -8; x2 < 9; x2++) {
-            for (int z2 = -8; z2 < 9; z2++) {
-                breakIfLonelyLeaf(world.getBlockAt(x + x2, y + 2, z + z2), config);
-                breakIfLonelyLeaf(world.getBlockAt(x + x2, y + 1, z + z2), config);
-                breakIfLonelyLeaf(world.getBlockAt(x + x2, y, z + z2), config);
-                breakIfLonelyLeaf(world.getBlockAt(x + x2, y - 1, z + z2), config);
-                breakIfLonelyLeaf(world.getBlockAt(x + x2, y - 2, z + z2), config);
+            for (int y2 = - 2; y2 < + 3; y2++) {
+                for (int z2 = -8; z2 < 9; z2++) {
+                    Block checkBlock = world.getBlockAt(x + x2, y + y2, z + z2);
+                    if (isLonelyLeaf(checkBlock, config, validTrees)) {
+                        breakables.add(checkBlock);
+                    }
+                }
+            }
+        }
+
+        int delay = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_DELAY);
+
+        if (delay < 0) {
+            for (Block bye : breakables) {
+                TreeAssist.instance.blockList.logBreak(bye, null);
+                breakBlock(bye);
+            }
+        } else {
+            sortInsideOut(breakables, block);
+            if (breakables.size() > 0) {
+                LeavesStructure leaves = new LeavesStructure(config, breakables);
+                TreeAssist.instance.treeAdd(leaves);
+
+                CleanRunner cleaner = (new CleanRunner(leaves, delay, new LinkedHashSet<>(breakables), Material.AIR));
+                cleaner.runTaskTimer(TreeAssist.instance, delay, delay);
             }
         }
     }
@@ -214,6 +248,11 @@ public class BlockUtils {
         return false;
     }
 
+    /**
+     * Sort a set based on block Y value
+     *
+     * @param set the Set to sort
+     */
     public static void sortBottomUp(Set<Block> set) {
         Queue<Block> temp = new PriorityQueue<>(Comparator.comparingInt(Block::getY));
         temp.addAll(set);
@@ -222,8 +261,14 @@ public class BlockUtils {
         set.addAll(temp);
     }
 
-    public static void sortInsideOut(Set<Block> set, Block bottom) {
-        Queue<Block> temp = new PriorityQueue<>((o1, o2) -> (int) (o1.getLocation().distanceSquared(bottom.getLocation()) - o2.getLocation().distanceSquared(bottom.getLocation())));
+    /**
+     * Sort a set based on distance from a block
+     *
+     * @param set the Set to sort
+     * @param block the block check against
+     */
+    public static void sortInsideOut(Set<Block> set, Block block) {
+        Queue<Block> temp = new PriorityQueue<>((o1, o2) -> (int) (o1.getLocation().distanceSquared(block.getLocation()) - o2.getLocation().distanceSquared(block.getLocation())));
         temp.addAll(set);
 
         set.clear();

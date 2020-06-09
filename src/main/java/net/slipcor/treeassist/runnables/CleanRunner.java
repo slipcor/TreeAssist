@@ -1,0 +1,61 @@
+package net.slipcor.treeassist.runnables;
+
+import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.core.Debugger;
+import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.utils.BlockUtils;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.Set;
+
+public class CleanRunner extends BukkitRunnable {
+    private final TreeStructure me;
+    private final int offset;
+    private final Set<Block> removeBlocks;
+    public static Debugger debug;
+    private final Material sapling;
+
+    public CleanRunner(TreeStructure tree, int offset, Set<Block> removeBlocks, Material sapling) {
+        me = tree;
+        this.offset = offset;
+        this.removeBlocks = removeBlocks;
+        this.sapling = sapling;
+    }
+
+    @Override
+    public void run() {
+        if (offset < 0) {
+            for (Block block : removeBlocks) {
+                if (sapling.equals(block.getType())) {
+                    debug.i("CleanRunner: skipping breaking a sapling");
+                    continue;
+                }
+                debug.i("CleanRunner: 1");
+                BlockUtils.breakBlock(block);
+            }
+            removeBlocks.clear();
+        } else {
+            for (Block block : removeBlocks) {
+                if (sapling.equals(block.getType())) {
+                    debug.i("CleanRunner: skipping breaking a sapling");
+                    continue;
+                }
+                debug.i("CleanRunner: 2");
+                BlockUtils.breakBlock(block);
+                TreeAssist.instance.blockList.logBreak(block, null);
+                removeBlocks.remove(block);
+                return;
+            }
+        }
+
+        me.setValid(false);
+        try {
+            TreeAssist.instance.treeRemove(me);
+            this.cancel();
+        } catch (Exception e) {
+        }
+    }
+
+}

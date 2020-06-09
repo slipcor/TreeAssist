@@ -4,6 +4,7 @@ import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.configs.MainConfig;
 import net.slipcor.treeassist.configs.TreeConfig;
 import net.slipcor.treeassist.configs.TreeConfigUpdater;
+import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.runnables.TreeAssistProtect;
 import net.slipcor.treeassist.runnables.TreeAssistReplant;
 import net.slipcor.treeassist.events.TASaplingReplaceEvent;
@@ -45,7 +46,7 @@ public class TreeStructure {
     private final Set<Material> groundBlocks;
     private List<Block> neighborTrunks = new ArrayList<>();
     private Map<Block, List<Block>> branchMap;
-    private Set<Block> extras;
+    protected Set<Block> extras;
     private final List<Block> roofs = new ArrayList<>();
 
     private final List<Block> checkedBlocks = new ArrayList<>();
@@ -272,6 +273,19 @@ public class TreeStructure {
     }
 
     /**
+     * Create an empty tree structure
+     */
+    protected TreeStructure(TreeConfig config) {
+        // this is only to be used by special inheriting classes
+        this.config = config;
+        trunkBlocks = new HashSet<>();
+        extraBlocks = new HashSet<>();
+        naturalBlocks = new HashSet<>();
+        groundBlocks = new HashSet<>();
+        trunkDiagonally = config.getBoolean(TreeConfig.CFG.TRUNK_DIAGONAL);
+    }
+
+    /**
      * Try to find a tree's bottom block based on a given block and a given tree config, traversing down
      * trying to find a valid ground block and NOT finding unexpected blocks nearby.
      *
@@ -344,6 +358,13 @@ public class TreeStructure {
         debug.i("We did not find a ground block ("+ checkBlock.getType() + ") not a valid tree.");
         return null;
 
+    }
+
+    /**
+     * @return the loaded TreeConfig
+     */
+    public TreeConfig getConfig() {
+        return config;
     }
 
     /**
@@ -457,6 +478,16 @@ public class TreeStructure {
     // DETERMINATION //
     //               //
     ///////////////////
+
+    /**
+     * Check whether a given block belongs to us
+     *
+     * @param block the block to find
+     * @return whether it is part of us
+     */
+    public boolean containsBlock(Block block) {
+        return trunk.contains(block) || extras.contains(block);
+    }
 
     /**
      * @return the amount of branch blocks
@@ -1310,10 +1341,6 @@ public class TreeStructure {
         }
 
         if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REMOVE_LEAVES)) {
-            /*for (Block block : extras) {
-                //BlockUtils.breakRadiusLeaves(block, config);
-                break;
-            }*/
             removeBlocks.addAll(extras);
         }
 
@@ -1326,48 +1353,16 @@ public class TreeStructure {
                             debug.i("InstantRunner: skipping breaking a sapling");
                             continue;
                         }
-                        /*
-                        if (tool == null) {
+                        debug.i("InstantRunner: 1 " + Debugger.parse(block.getLocation()));
+                        maybeBreakBlock(block, tool, player, statPickup, statMineBlock);
+                        if (tool != null && tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
 
-                            debug.i("tool null 1" + Debugger.parse(block.getLocation()));
-                            TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, null);
-                            TreeAssist.instance.getServer().getPluginManager().callEvent(event);
-                            if (!event.isCancelled()) {
-                                TreeAssist.instance.blockList.logBreak(block, player);
-
-                                BlockUtils.callExternals(block, player);
-
-                                if (MaterialUtils.isLog(block.getType())
-                                        && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
-                                    player.getInventory().addItem(block.getState().getData().toItemStack(1));
-                                    block.setType(Material.AIR);
-
-                                    if (config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_MINE_BLOCK)) {
-                                        player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
-                                    }
-
-                                    debug.i("added to inventory");
-                                } else {
-                                    BlockUtils.breakBlock(player, block);
-
-                                    debug.i("breaking!");
-                                }
-                                player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
-                            }
-                        } else {
-
-                            */
-                            debug.i("InstantRunner: 1 " + Debugger.parse(block.getLocation()));
-                            maybeBreakBlock(block, tool, player, statPickup, statMineBlock);
-                            if (tool != null && tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
-
-                                debug.i("removing item: " + player.getInventory().getItemInMainHand().getType().name() +
-                                        " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
-                                player.getInventory().remove(tool);
-                                this.cancel();
-                                return; // we skip clearing the block list because there was an issue that requires cleanup
-                            }
-                        //}
+                            debug.i("removing item: " + player.getInventory().getItemInMainHand().getType().name() +
+                                    " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
+                            player.getInventory().remove(tool);
+                            this.cancel();
+                            return; // we skip clearing the block list because there was an issue that requires cleanup
+                        }
                     }
                     removeBlocks.clear();
                 } else {
@@ -1380,49 +1375,15 @@ public class TreeStructure {
                             debug.i("InstantRunner: 2 AIR " + Debugger.parse(block.getLocation()));
                             continue;
                         } else {
-                            /*
-                            if (tool == null) {
-
-                                debug.i("tool null 2: " + Debugger.parse(block.getLocation()));
-
-                                TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, null);
-                                TreeAssist.instance.getServer().getPluginManager().callEvent(event);
-                                if (!event.isCancelled()) {
-
-                                    BlockUtils.callExternals(block, player);
-
-                                    TreeAssist.instance.blockList.logBreak(block, player);
-                                    if (MaterialUtils.isLog(block.getType())
-                                            && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
-                                        player.getInventory().addItem(block.getState().getData().toItemStack(1));
-
-                                        if (config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_MINE_BLOCK)) {
-                                            player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
-                                        }
-
-                                        if (config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_PICKUP)) {
-                                            player.incrementStatistic(Statistic.PICKUP, block.getType());
-                                        }
-                                        debug.i("added to inventory");
-                                        block.setType(Material.AIR);
-                                    } else {
-                                        BlockUtils.breakBlock(player, block);
-                                    }
-                                    player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
-                                }
-                            } else {
-                                */
-
-                                debug.i("InstantRunner: 2b " + Debugger.parse(block.getLocation()));
-                                maybeBreakBlock(block, tool, player, statPickup, statMineBlock);
-                                if (tool != null && tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
-                                    debug.i("removing item: " + player.getInventory().getItemInMainHand().getType().name() +
-                                            " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
-                                    player.getInventory().remove(tool);
-                                    this.cancel();
-                                    return;
-                                }
-                            //}
+                            debug.i("InstantRunner: 2b " + Debugger.parse(block.getLocation()));
+                            maybeBreakBlock(block, tool, player, statPickup, statMineBlock);
+                            if (tool != null && tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
+                                debug.i("removing item: " + player.getInventory().getItemInMainHand().getType().name() +
+                                        " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
+                                player.getInventory().remove(tool);
+                                this.cancel();
+                                return;
+                            }
                         }
                         removeBlocks.remove(block);
                         return;
@@ -1437,47 +1398,7 @@ public class TreeStructure {
 
         }
 
-        class CleanRunner extends BukkitRunnable {
-            private final TreeStructure me;
-
-            CleanRunner(TreeStructure tree) {
-                me = tree;
-            }
-
-            @Override
-            public void run() {
-                if (offset < 0) {
-                    for (Block block : removeBlocks) {
-                        if (sapling.equals(block.getType())) {
-                            debug.i("CleanRunner: skipping breaking a sapling");
-                            continue;
-                        }
-                        debug.i("CleanRunner: 1");
-                        BlockUtils.breakBlock(block);
-                    }
-                    removeBlocks.clear();
-                } else {
-                    for (Block block : removeBlocks) {
-                        if (sapling.equals(block.getType())) {
-                            debug.i("CleanRunner: skipping breaking a sapling");
-                            continue;
-                        }
-                        debug.i("CleanRunner: 2");
-                        BlockUtils.breakBlock(block);
-                        removeBlocks.remove(block);
-                        return;
-                    }
-                }
-
-                me.valid = false;
-                try {
-                    this.cancel();
-                } catch (Exception e) {
-                }
-            }
-
-        }
-        CleanRunner cleaner = (new CleanRunner(this));
+        CleanRunner cleaner = (new CleanRunner(this, offset, removeBlocks, sapling));
         if (player != null) {
             (new InstantRunner()).runTaskTimer(TreeAssist.instance, delay, offset);
         }
@@ -1525,5 +1446,9 @@ public class TreeStructure {
                 }
             }
         }
+    }
+
+    public void setValid(boolean value) {
+        this.valid = value;
     }
 }

@@ -8,6 +8,7 @@ import net.slipcor.treeassist.externals.WorldGuardListener;
 import net.slipcor.treeassist.listeners.TreeAssistBlockListener;
 import net.slipcor.treeassist.listeners.TreeAssistSpawnListener;
 import net.slipcor.treeassist.metrics.MetricsLite;
+import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.runnables.CoolDownCounter;
 import net.slipcor.treeassist.core.*;
 import net.slipcor.treeassist.utils.ToolUtils;
@@ -34,6 +35,8 @@ public class TreeAssist extends JavaPlugin {
     private final Map<String, CoolDownCounter> coolDowns = new HashMap<>();     // Maps of player names to active CoolDown Runnables
     private final Set<String> coolDownOverrides = new HashSet<>();              // List of player names who override cooldowns
 
+    private final Set<TreeStructure> validTrees = new HashSet<>();
+
     public boolean Enabled = true;  // Whether the plugin as a whole is enabled
     public boolean mcMMO = false;   // Whether mcMMO has been found and hooked into
     public boolean jobs = false;    // Whether Jobs has been found and hooked into
@@ -46,6 +49,7 @@ public class TreeAssist extends JavaPlugin {
     private WorldGuardListener worldGuard = null;   // WorldGuard Listener instance
     private TreeAssistBlockListener listener;       // Block Listener instance
     private TreeAssistSpawnListener spawnListener;  // Item Spawn Listener instance
+
 
     /**
      * Check for mcMMO if requested
@@ -228,6 +232,7 @@ public class TreeAssist extends JavaPlugin {
         MetricsLite metrics = new MetricsLite(this);
 
         TreeStructure.debug = new Debugger(this, 1);
+        CleanRunner.debug = new Debugger(this, 2);
         TreeAssistBlockListener.debug = new Debugger(this, 6);
         TreeAssistSpawnListener.debug = new Debugger(this, 7);
         Debugger.load(this, Bukkit.getConsoleSender());
@@ -392,5 +397,40 @@ public class TreeAssist extends JavaPlugin {
             disabledMap.get(world).add(player);
         }
         return false;
+    }
+
+    /**
+     * Add a valid tree structure to a list of known trees
+     *
+     * @param tree the tree
+     */
+    public void treeAdd(TreeStructure tree) {
+        validTrees.add(tree);
+    }
+
+    public void treeRemove(TreeStructure tree) {
+        validTrees.remove(tree);
+    }
+
+    /**
+     * Look for all trees that could be close and match the config
+     *
+     * @param config the config to compare
+     * @param block the block to check against
+     * @return a set of matching trees that match
+     */
+    public Set<TreeStructure> treesThatQualify(TreeConfig config, Block block) {
+        Set<TreeStructure> checkTrees = new HashSet<>(validTrees);
+        Set<TreeStructure> result = new HashSet<>();
+        for (TreeStructure tree : checkTrees) {
+            if (config.equals(tree.getConfig())) {
+                Location myBlock = block.getLocation();
+                Location otherLocation = tree.bottom.getLocation();
+                if (myBlock.getWorld().equals(otherLocation.getWorld()) && myBlock.distanceSquared(otherLocation) < 2500) {
+                    result.add(tree);
+                }
+            }
+        }
+        return result;
     }
 }
