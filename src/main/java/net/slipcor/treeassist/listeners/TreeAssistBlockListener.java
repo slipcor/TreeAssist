@@ -22,9 +22,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.ItemDespawnEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.StructureGrowEvent;
@@ -346,9 +344,14 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPickUpEvent(EntityPickupItemEvent event) {
+        debug.i("Picking up : " + event.getItem().getType() + " >> " + event.getItem().getClass());
         if (event.getItem() instanceof FallingBlock) {
+            debug.i("Falling block picked up!");
             if (BlockUtils.removeIfFallen((FallingBlock) event.getItem())) {
                 event.setCancelled(true);
+                debug.i("Event cancelled!");
+            } else {
+                debug.i("Event not cancelled!");
             }
         }
     }
@@ -356,6 +359,7 @@ public class TreeAssistBlockListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onItemDespawn(ItemDespawnEvent event) {
         if (event.getEntity() instanceof FallingBlock) {
+            debug.i("Falling block despawning!");
             BlockUtils.removeIfFallen((FallingBlock) event.getEntity());
         }
     }
@@ -377,9 +381,12 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onChangeBlock(EntityChangeBlockEvent event) {
+        debug.i("onEntityChangeBlock : " + event.getEntityType());
         if (event.getEntity() instanceof FallingBlock) {
             if (BlockUtils.removeIfFallen((FallingBlock) event.getEntity())) {
+                debug.i("removing the entity!");
                 event.setCancelled(true);
+                event.getEntity().remove();
             }
         }
     }

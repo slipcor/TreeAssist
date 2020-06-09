@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.95 - add large ferns to the natural blocks, improve mushroom detection
+- v7.0.96 - convince FallingBlocks to not drop themselves after falling
 - [read more](doc/changelog.md)
 
 ***

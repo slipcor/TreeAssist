@@ -23,7 +23,7 @@ import java.util.*;
 public class BlockUtils {
     private BlockUtils() {}
 
-    private static Boolean useFallingBlock = null;
+    public static Boolean useFallingBlock = null;
     private static final List<FallingBlock> fallingBlocks = new ArrayList<>();
 
     /**
@@ -65,6 +65,7 @@ public class BlockUtils {
             block.setType(Material.AIR);
 
             FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), data);
+            falling.setDropItem(false); // we do the dropping already, thank you!
 
             fallingBlocks.add(falling);
 

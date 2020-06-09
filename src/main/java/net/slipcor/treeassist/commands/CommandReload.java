@@ -3,6 +3,7 @@ package net.slipcor.treeassist.commands;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.configs.MainConfig;
 import net.slipcor.treeassist.core.Language;
+import net.slipcor.treeassist.utils.BlockUtils;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -22,6 +23,7 @@ public class CommandReload extends AbstractCommand {
         TreeAssist.instance.blockList.save(true);
         TreeAssist.instance.getMainConfig().load();
         TreeAssist.instance.reloadLists();
+        BlockUtils.useFallingBlock = null; // reset this value to allow re-loading
         Language.init(TreeAssist.instance, TreeAssist.instance.getMainConfig().getString(MainConfig.CFG.GENERAL_LANGUAGE, "lang_en"));
         sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_RELOAD));
     }
