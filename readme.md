@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.96 - convince FallingBlocks to not drop themselves after falling
+- v7.0.97 - only auto-plant saplings when this is set in the config!
 - [read more](doc/changelog.md)
 
 ***

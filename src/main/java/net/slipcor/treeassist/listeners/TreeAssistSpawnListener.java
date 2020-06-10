@@ -28,8 +28,15 @@ public class TreeAssistSpawnListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void itemSpawnEvent(ItemSpawnEvent event) {
 		Item drop = event.getEntity();
-		for (TreeConfig config : TreeAssist.treeConfigs.values()) {
+		for (String name : TreeAssist.treeConfigs.keySet()) {
+			TreeConfig config = TreeAssist.treeConfigs.get(name);
 			if (config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL) == drop.getItemStack().getType() ) {
+				debug.i("Someone dropped our sapling! - " + name);
+				if (!config.getBoolean(TreeConfig.CFG.REPLANTING_DROPPED_SAPLINGS)) {
+					debug.i("But we do not want to plant this anyway");
+					return;
+				}
+
 				TASaplingReplaceEvent newEvent = new TASaplingReplaceEvent(
 						event.getEntity().getLocation().getBlock(),
 						drop.getItemStack().getType());

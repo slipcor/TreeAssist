@@ -1,6 +1,7 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.97 - only auto-plant saplings when this is set in the config!
 - v7.0.96 - convince FallingBlocks to not drop themselves after falling
 - v7.0.95 - add large ferns to the natural blocks, improve mushroom detection
 - v7.0.94 - when warning about "lower than minimum", show more information
