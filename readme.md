@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.97 - only auto-plant saplings when this is set in the config!
+- v7.0.99 - sync jenkins and github - sorry for any confusion
 - [read more](doc/changelog.md)
 
 ***
