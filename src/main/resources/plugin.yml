@@ -1,7 +1,7 @@
 name: TreeAssist
 main: net.slipcor.treeassist.TreeAssist
 version: 7.0.jenkins-build-number
-api-version: 1.13
+api-version: 1.15
 author: slipcor
 authors: [slipcor, FriendlyBaron]
 description: TreeAssist

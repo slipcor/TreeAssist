@@ -15,6 +15,7 @@ import net.slipcor.treeassist.utils.ToolUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -110,6 +111,7 @@ public class TreeStructure {
 
         int thickness = config.getInt(TreeConfig.CFG.TRUNK_THICKNESS);
         boolean branches = config.getBoolean(TreeConfig.CFG.TRUNK_BRANCH);
+        System.err.println("Thickness: " + thickness);
 
         if (thickness == 1) {
             // Single trunk, that should be easy, right?
@@ -164,30 +166,29 @@ public class TreeStructure {
         if (thickness > 2) {
 
             // check for other trunks around
-            Material westMat = bottom.getRelative(BlockFace.WEST).getType();
-            Material eastMat = bottom.getRelative(BlockFace.EAST).getType();
-            Material northMat = bottom.getRelative(BlockFace.NORTH).getType();
-            Material southMat = bottom.getRelative(BlockFace.SOUTH).getType();
-            if (trunkBlocks.contains(westMat) || trunkBlocks.contains(eastMat) || trunkBlocks.contains(northMat) || trunkBlocks.contains(southMat)) {
-                int found = 0;
-                if (trunkBlocks.contains(westMat)) {
-                    found++;
-                }
-                if (trunkBlocks.contains(eastMat)) {
-                    found++;
-                }
-                if (trunkBlocks.contains(northMat)) {
-                    found++;
-                }
-                if (trunkBlocks.contains(southMat)) {
-                    found++;
-                }
+            branchMap = new HashMap<>();
 
-                if (found > 4) {
-                    // TODO: this needs to be verified when 1.16 is released, we will find up to 9 saplings
-                    debug.i("Too many trunks found: " + found);
-                    valid = false;
-                    return;
+            List<Block> bottoms = findThickBottoms();
+            if (bottoms.size() < 3) {
+                debug.i("Not enough trunks found: " + bottoms.size());
+                valid = false;
+                return;
+            }
+            System.err.println("Trunks: " + bottoms.size());
+            trunk = findTrunks(bottoms);
+
+            if (trunk == null) {
+                // No tree found, nothing to remove!
+                valid = false;
+                return;
+            }
+            getAllExtras();
+
+            if (neighborTrunks.isEmpty()) {
+                debug.i("No other trunks found, checking again!");
+                findOtherTrunks();
+                if (!neighborTrunks.isEmpty()) {
+                    debug.i("Found other trunks: " + neighborTrunks.size());
                 }
             }
             return;
@@ -502,6 +503,45 @@ public class TreeStructure {
         return result;
     }
 
+    private List<Block> findThickBottoms() {
+        List<Block> result = new ArrayList<>();
+        result.add(bottom);
+
+        BlockFace[] faces = {BlockFace.NORTH, BlockFace.SOUTH, BlockFace.WEST, BlockFace.EAST};
+
+        for (BlockFace face : faces) {
+            findThickNeighbor(result, bottom.getRelative(face), face, true);
+        }
+        return result;
+    }
+
+    private void findThickNeighbor(List<Block> result, Block block, BlockFace direction, boolean first) {
+        if (result.contains(block) || !trunkBlocks.contains(block.getType())) {
+            return;
+        }
+        if (Math.abs(block.getX() - bottom.getX()) > 3 || Math.abs(block.getZ() - bottom.getZ()) > 3) {
+            debug.i("too far");
+            return;
+        }
+        if (result.size() > 9) {
+            debug.i("we found more than enough already");
+            return;
+        }
+        result.add(block);
+        debug.i("continuing " + direction);
+        findThickNeighbor(result, block.getRelative(direction), direction, first);
+        if (first) {
+            debug.i("branching out");
+            if (direction == BlockFace.NORTH || direction == BlockFace.SOUTH) {
+                findThickNeighbor(result, block.getRelative(BlockFace.EAST), BlockFace.EAST, false);
+                findThickNeighbor(result, block.getRelative(BlockFace.WEST), BlockFace.WEST, false);
+            } else {
+                findThickNeighbor(result, block.getRelative(BlockFace.NORTH), BlockFace.NORTH, false);
+                findThickNeighbor(result, block.getRelative(BlockFace.SOUTH), BlockFace.SOUTH, false);
+            }
+        }
+    }
+
     /**
      * Determine our trunk blocks by going up from the bottom, finding a roof block at the top
      *
@@ -612,11 +652,15 @@ public class TreeStructure {
                     continue;
                 }
 
-                Block checkBlock = bottom.getWorld().getHighestBlockAt(bottom.getX() + x, bottom.getZ() + z);
+                Block checkBlock = bottom.getRelative(x, 4, z);
                 int y = checkBlock.getY();
                 while (y > 1) {
                     totalChecks++;
                     checkBlock = checkBlock.getRelative(BlockFace.DOWN);
+
+                    if (trunk.contains(checkBlock)) {
+                        break;
+                    }
 
                     if (trunkBlocks.contains(checkBlock.getType())) {
                         Block block = findBottomBlock(checkBlock, config);

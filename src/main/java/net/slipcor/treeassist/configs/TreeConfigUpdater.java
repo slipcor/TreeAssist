@@ -8,13 +8,12 @@ import java.util.List;
 public class TreeConfigUpdater {
     enum Adding {
         NATURAL_LARGE_FERN(7.0095f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:large_fern"),
-        //NEW_AIR_VOID(8.0f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:void_air")
         ;
 
         private final float version;
         private final String config;
         private final TreeConfig.CFG node;
-        private final String value;
+        private final String addition;
 
         /**
          * An addition definition
@@ -22,18 +21,19 @@ public class TreeConfigUpdater {
          * @param version the version it was introduced
          * @param config the affected config
          * @param node the node to write to
-         * @param value the value to add
+         * @param addition the value to add
          */
-        Adding(float version, String config, TreeConfig.CFG node, String value) {
+        Adding(float version, String config, TreeConfig.CFG node, String addition) {
             this.version = version;
             this.config = config;
             this.node = node;
-            this.value = value;
+            this.addition = addition;
         }
     }
 
     enum Updating {
-        //MUSHROOM_TRUNK(7.0096f, "mushroom", TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT, 5, 4)
+        CRIMSON_MIDDLE_RADIUS(7.0101f, "crimson_fungus", TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS, 2, 3),
+        WARPED_MIDDLE_RADIUS(7.0101f, "warped_fungus", TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS, 2, 3),
         ;
         private final float version;
         private final String config;
@@ -52,15 +52,18 @@ public class TreeConfigUpdater {
 
     enum Removing {
         MUSHROOM_TRUNK(7.0097f, "mushroom", "Trunk.Minimum Height"),
+        CRIMSON_TRUNK_WART(7.0100f, "crimson_fungus", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:nether_wart_block"),
+        WARPED_TRUNK_WART(7.0100f, "warped_fungus", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:warped_wart_block"),
         //TRUNK_EDGES_WARPED(8.0f, "thick_warped_fungus", "Trunk.Edges")
         ;
 
         private final float version;
         private final String config;
         private final String node;
+        private final String removal;
 
         /**
-         * An addition definition
+         * A removing definition
          *
          * @param version the version it was introduced
          * @param config the affected config
@@ -70,6 +73,22 @@ public class TreeConfigUpdater {
             this.version = version;
             this.config = config;
             this.node = node;
+            this.removal = null;
+        }
+
+        /**
+         * An element removing definition
+         *
+         * @param version the version it was introduced
+         * @param config the affected config
+         * @param node the node to access
+         * @param removal the value to remove
+         */
+        Removing(float version, String config, TreeConfig.CFG node, String removal) {
+            this.version = version;
+            this.config = config;
+            this.node = node.getNode();
+            this.removal = removal;
         }
     }
 
@@ -88,7 +107,7 @@ public class TreeConfigUpdater {
             if (m.version > version && m.config.equals(configPath)) {
                 newVersion = Math.max(newVersion, m.version);
                 List<String> newList = new ArrayList<>(config.getYamlConfiguration().getStringList(m.node.getNode()));
-                newList.add(m.value);
+                newList.add(m.addition);
                 config.getYamlConfiguration().set(m.node.getNode(), newList);
                 TreeAssist.instance.getLogger().info("Config String value added: " + m.toString());
                 changed = true;
@@ -96,21 +115,29 @@ public class TreeConfigUpdater {
         }
         for (Removing m : Removing.values()) {
             if (m.version > version && m.config.equals(configPath)) {
-                newVersion = Math.max(newVersion, m.version);
-                config.getYamlConfiguration().set(m.node, null);
-                TreeAssist.instance.getLogger().info("Config String value removed: " + m.toString());
-                changed = true;
+                if (m.removal == null) {
+                    newVersion = Math.max(newVersion, m.version);
+                    config.getYamlConfiguration().set(m.node, null);
+                    TreeAssist.instance.getLogger().info("Config String value removed: " + m.toString());
+                    changed = true;
+                } else {
+                    newVersion = Math.max(newVersion, m.version);
+                    List<String> values = config.getYamlConfiguration().getStringList(m.node);
+                    values.remove(m.removal);
+                    config.getYamlConfiguration().set(m.node, values);
+                    changed = true;
+                }
             }
         }
         for (Updating m : Updating.values()) {
             if (m.version > version && m.config.equals(configPath)) {
                 newVersion = Math.max(newVersion, m.version);
-                if (m.oldValue.equals(config.getYamlConfiguration().get(m.node.getNode(), null))) {
+                if (m.oldValue.equals(config.getYamlConfiguration().get(m.node.getNode(), m.oldValue))) {
                     config.getYamlConfiguration().set(m.node.getNode(), m.newValue);
-                    TreeAssist.instance.getLogger().info("Config String value updated: " + m.toString());
+                    TreeAssist.instance.getLogger().info("Config value updated: " + m.toString());
                     changed = true;
                 } else {
-                    TreeAssist.instance.getLogger().warning("Config String value not updated: " + m.toString());
+                    TreeAssist.instance.getLogger().warning("Config value not updated: " + m.toString());
                 }
             }
         }

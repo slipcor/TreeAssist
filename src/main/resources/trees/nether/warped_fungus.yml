@@ -8,6 +8,7 @@ Blocks:
     Air: true
   Middle:
     Air: true
+    Radius: 3
 Ground Blocks:
 - 'minecraft:netherrack'
 - 'minecraft:warped_nylium'
@@ -19,5 +20,4 @@ Trunk:
   Materials:
   - 'minecraft:warped_stem'
   - 'minecraft:shroomlight'
-  - 'minecraft:warped_wart_block'
-Version: 7.0
+Version: 7.0100
