@@ -65,7 +65,7 @@ public class BlockUtils {
 
             BlockData data = block.getBlockData();
 
-            block.setType(Material.AIR);
+            block.setType(Material.AIR, true);
 
             FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), data);
             falling.setDropItem(false); // we do the dropping already, thank you!

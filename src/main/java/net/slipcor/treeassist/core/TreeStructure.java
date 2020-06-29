@@ -1158,13 +1158,14 @@ public class TreeStructure {
             if (statPickup) {
                 player.incrementStatistic(Statistic.PICKUP, block.getType());
             }
-            player.getInventory().addItem(block.getState().getData().toItemStack(1));
-            block.setType(Material.AIR);
+            List<ItemStack> drops = new ArrayList<>(block.getDrops(new ItemStack(tool == null?Material.AIR:tool.getType(), 1)));
+            player.getInventory().addItem(drops.toArray(new ItemStack[0]));
+            block.setType(Material.AIR, true);
         } else {
             if (tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
                     && MaterialUtils.isMushroom(block.getType())) {
                 Material mat = block.getType();
-                block.setType(Material.AIR);
+                block.setType(Material.AIR, true);
                 block.getWorld().dropItemNaturally(
                         block.getLocation(),
                         new ItemStack(mat, 1));

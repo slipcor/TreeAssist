@@ -70,7 +70,7 @@ public class CommandForceGrow extends AbstractCommand {
                             }
 
                             Material oldSapling = block.getType();
-                            block.setType(Material.AIR);
+                            block.setType(Material.AIR, true);
                             for (int i = 0; i < 20; i++) {
                                 if (block.getWorld().generateTree(block.getLocation(), type)) {
                                     continue nextBlock;

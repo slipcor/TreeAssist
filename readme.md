@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.101 - remove log spam about thickness
+- v7.0.102 - Give people stackable logs, and double check physics when breaking blocks
 - [read more](doc/changelog.md)
 
 ***
