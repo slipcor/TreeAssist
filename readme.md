@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.100 - first build for Spigot 1.16.1 - should still work on older versions! - first tested build after moving the API to 1.16.1 and changing some things about nether trees
+- v7.0.101 - remove log spam about thickness
 - [read more](doc/changelog.md)
 
 ***

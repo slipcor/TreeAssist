@@ -15,7 +15,6 @@ import net.slipcor.treeassist.utils.ToolUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -111,7 +110,7 @@ public class TreeStructure {
 
         int thickness = config.getInt(TreeConfig.CFG.TRUNK_THICKNESS);
         boolean branches = config.getBoolean(TreeConfig.CFG.TRUNK_BRANCH);
-        System.err.println("Thickness: " + thickness);
+        debug.i("Thickness: " + thickness);
 
         if (thickness == 1) {
             // Single trunk, that should be easy, right?
@@ -174,7 +173,7 @@ public class TreeStructure {
                 valid = false;
                 return;
             }
-            System.err.println("Trunks: " + bottoms.size());
+            debug.i("Trunks: " + bottoms.size());
             trunk = findTrunks(bottoms);
 
             if (trunk == null) {

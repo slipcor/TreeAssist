@@ -1,6 +1,7 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.101 - remove log spam about thickness
 - v7.0.100 - first build for Spigot 1.16.1 - should still work on older versions! - first tested build after moving the API to 1.16.1 and changing some things about nether trees
 - v7.0.99 - sync jenkins and github - sorry for any confusion
 - v7.0.98 - only auto-plant saplings when this is set in the config!
