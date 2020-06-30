@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TreeConfigUpdater {
     enum Adding {
-        NATURAL_LARGE_FERN(7.0095f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:large_fern"),
+        NATURAL_LARGE_FERN(7.0095f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:large_fern")
         ;
 
         private final float version;
@@ -54,6 +54,8 @@ public class TreeConfigUpdater {
         MUSHROOM_TRUNK(7.0097f, "mushroom", "Trunk.Minimum Height"),
         CRIMSON_TRUNK_WART(7.0100f, "crimson_fungus", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:nether_wart_block"),
         WARPED_TRUNK_WART(7.0100f, "warped_fungus", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:warped_wart_block"),
+        NETHER_TOOL_LIST(7.0103f, "nether", TreeConfig.CFG.TOOL_LIST.getNode()),
+        NETHER_TOOL_CHANCES(7.0103f, "nether", TreeConfig.CFG.CUSTOM_DROP_FACTOR.getNode()),
         //TRUNK_EDGES_WARPED(8.0f, "thick_warped_fungus", "Trunk.Edges")
         ;
 

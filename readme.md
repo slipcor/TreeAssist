@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.102 - Give people stackable logs, and double check physics when breaking blocks
+- v7.0.103 - undo changes to tool "hoe" for nether, as this does not apply at all. Logs still are axeable and the rest is, too.
 - [read more](doc/changelog.md)
 
 ***
