@@ -7,7 +7,7 @@ import java.util.List;
 
 public class TreeConfigUpdater {
     enum Adding {
-        NATURAL_LARGE_FERN(7.0095f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:large_fern")
+        NATURAL_LARGE_FERN(7.0095f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:large_fern"),
         ;
 
         private final float version;

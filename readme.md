@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.103 - undo changes to tool "hoe" for nether, as this does not apply at all. Logs still are axeable and the rest is, too.
+- v7.0.104 - revert changes made while testing
 - [read more](doc/changelog.md)
 
 ***

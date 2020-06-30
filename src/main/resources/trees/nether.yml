@@ -6,8 +6,6 @@ Custom Drop Factor:
   minecraft:iron_hoe: 0.5
   minecraft:stone_hoe: 0.25
   minecraft:wooden_hoe: 0.1
-Destruction:
-  Requires Tools: false
 Ground Blocks:
 - 'minecraft:netherrack'
 Natural Blocks:
@@ -23,7 +21,5 @@ Natural Blocks:
 - 'minecraft:air'
 - 'minecraft:cave_air'
 - 'minecraft:void_air'
-Replanting:
-  Requires Tools: false
 Parent: default
 Version: 7.0102

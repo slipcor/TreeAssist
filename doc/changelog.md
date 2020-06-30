@@ -1,6 +1,7 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.104 - revert changes made while testing
 - v7.0.103 - undo changes to tool "hoe" for nether, as this does not apply at all. Logs still are axeable and the rest is, too.
 - v7.0.102 - Give people stackable logs, and double check physics when breaking blocks
 - v7.0.101 - remove log spam about thickness
