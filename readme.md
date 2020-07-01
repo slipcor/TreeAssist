@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.104 - revert changes made while testing
+- v7.0.105 - fix a nether related possible infinite loop
 - [read more](doc/changelog.md)
 
 ***

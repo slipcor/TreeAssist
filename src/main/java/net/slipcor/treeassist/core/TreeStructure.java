@@ -181,6 +181,12 @@ public class TreeStructure {
                 valid = false;
                 return;
             }
+
+            if (onlyTrunk) {
+                // This will be used by other trees being broken checking OUR trunk for leaf distance and alike
+                return;
+            }
+
             getAllExtras();
 
             if (neighborTrunks.isEmpty()) {
