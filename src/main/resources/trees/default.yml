@@ -56,6 +56,7 @@ Custom Drops:
   minecraft:golden_apple: 0.001
 # These are additional factors, for example, by default, iron has half the chance to get custom drops
 Custom Drop Factor:
+  minecraft:netherite_axe: 1.0
   minecraft:diamond_axe: 1.0
   minecraft:golden_axe: 0.75
   minecraft:iron_axe: 0.5
@@ -149,6 +150,7 @@ Replanting:
   # How long should saplings stay there before they can grow?
   Delay Growth Seconds: 0
 Tool List:
+- 'minecraft:netherite_axe'
 - 'minecraft:diamond_axe'
 - 'minecraft:wooden_axe'
 - 'minecraft:golden_axe'
@@ -171,4 +173,4 @@ Trunk:
   Thickness: 1
   # Can the saplings be at different height?
   Uneven Bottom: false
-Version: 7.0095
+Version: 7.0106

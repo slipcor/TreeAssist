@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.105 - fix a nether related possible infinite loop
+- v7.0.106 - add netherite axe to tool list and drop factors, addresses issue #50
 - [read more](doc/changelog.md)
 
 ***

@@ -8,6 +8,7 @@ import java.util.List;
 public class TreeConfigUpdater {
     enum Adding {
         NATURAL_LARGE_FERN(7.0095f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:large_fern"),
+        TOOL_LIST_NETHERITE(7.0106f, "default", TreeConfig.CFG.TOOL_LIST, "minecraft:netherite_axe"),
         ;
 
         private final float version;
@@ -28,6 +29,30 @@ public class TreeConfigUpdater {
             this.config = config;
             this.node = node;
             this.addition = addition;
+        }
+    }
+    enum PreciseAdding {
+        DROP_CHANCE_NETHERITE(7.0106f, "default", "Custom Drop Factor.minecraft:netherite_axe", 1.0),
+        ;
+
+        private final float version;
+        private final String config;
+        private final String node;
+        private final Object value;
+
+        /**
+         * An addition definition
+         *
+         * @param version the version it was introduced
+         * @param config the affected config
+         * @param node the node to write to
+         * @param value the value to add
+         */
+        PreciseAdding(float version, String config, String node, Object value) {
+            this.version = version;
+            this.config = config;
+            this.node = node;
+            this.value = value;
         }
     }
 
@@ -109,9 +134,21 @@ public class TreeConfigUpdater {
             if (m.version > version && m.config.equals(configPath)) {
                 newVersion = Math.max(newVersion, m.version);
                 List<String> newList = new ArrayList<>(config.getYamlConfiguration().getStringList(m.node.getNode()));
-                newList.add(m.addition);
-                config.getYamlConfiguration().set(m.node.getNode(), newList);
-                TreeAssist.instance.getLogger().info("Config String value added: " + m.toString());
+                if (!newList.contains(m.addition)) {
+                    newList.add(m.addition);
+                    config.getYamlConfiguration().set(m.node.getNode(), newList);
+                    TreeAssist.instance.getLogger().info("Config String list value added: " + m.toString());
+                }
+                changed = true;
+            }
+        }
+        for (PreciseAdding m : PreciseAdding.values()) {
+            if (m.version > version && m.config.equals(configPath)) {
+                newVersion = Math.max(newVersion, m.version);
+                if (config.getYamlConfiguration().get(m.node, null) == null) {
+                    config.getYamlConfiguration().set(m.node, m.value);
+                    TreeAssist.instance.getLogger().info("Config value added: " + m.toString());
+                }
                 changed = true;
             }
         }

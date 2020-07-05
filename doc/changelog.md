@@ -1,6 +1,7 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.106 - add netherite axe to tool list and drop factors, addresses issue #50
 - v7.0.105 - fix a nether related possible infinite loop 
 - v7.0.104 - revert changes made while testing
 - v7.0.103 - undo changes to tool "hoe" for nether, as this does not apply at all. Logs still are axeable and the rest is, too.
