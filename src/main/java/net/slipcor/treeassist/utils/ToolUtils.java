@@ -17,38 +17,91 @@ public class ToolUtils {
     private ToolUtils() {}
 
     /**
-     * Calculate cooldown seconds based on tools used
-     *
-     * Thanks to filbert66 for this determination method!
+     * Calculate cooldown seconds based on tools used and blocks mined
      *
      * @param tool the item being used
-     * @return the seconds that it would take to destroy
+     * @return the seconds that it would take to destroy regularly
      */
     public static int calculateCoolDown(ItemStack tool, List<Block> blockList) {
 
         Material element = (tool != null ? tool.getType() : Material.AIR);
 
-        float singleTime;
+        float logTime;
 
         switch (element) {
             case GOLDEN_AXE:
-                singleTime = 0.25F;
+                logTime = 0.25F;
+                break;
+            case NETHERITE_AXE:
+                logTime = 0.35F;
                 break;
             case DIAMOND_AXE:
-                singleTime = 0.4F;
+                logTime = 0.4F;
                 break;
             case IRON_AXE:
-                singleTime = 0.5F;
+                logTime = 0.5F;
                 break;
             case STONE_AXE:
-                singleTime = 0.75F;
+                logTime = 0.75F;
                 break;
             case WOODEN_AXE:
-                singleTime = 1.5F;
+                logTime = 1.5F;
                 break;
-
             default:
-                singleTime = 3.0F;
+                logTime = 3.0F;
+                break;
+        }
+
+        float strippedLogTime;
+
+        switch (element) {
+            case GOLDEN_AXE:
+                strippedLogTime = 0.15F;
+                break;
+            case NETHERITE_AXE:
+            case DIAMOND_AXE:
+                strippedLogTime = 0.2F;
+                break;
+            case IRON_AXE:
+                strippedLogTime = 0.25F;
+                break;
+            case STONE_AXE:
+                strippedLogTime = 0.4F;
+                break;
+            case WOODEN_AXE:
+                strippedLogTime = 0.75F;
+                break;
+            default:
+                strippedLogTime = 1.5F;
+                break;
+        }
+
+        float leafTime;
+
+        switch (element) {
+            case WOODEN_SWORD:
+            case STONE_SWORD:
+            case IRON_SWORD:
+            case NETHERITE_SWORD:
+            case DIAMOND_SWORD:
+            case GOLDEN_SWORD:
+                leafTime = 0.2f;
+                break;
+            case GOLDEN_HOE:
+            case NETHERITE_HOE:
+            case DIAMOND_HOE:
+            case IRON_HOE:
+            case SHEARS:
+                leafTime = 0.05F;
+                break;
+            case STONE_HOE:
+                leafTime = 0.1F;
+                break;
+            case WOODEN_HOE:
+                leafTime = 0.2F;
+                break;
+            default:
+                leafTime = 0.35F;
                 break;
         }
 
@@ -61,14 +114,19 @@ public class ToolUtils {
             }
         }
 
-        int numLogs = 0;
+        float times = 0;
+
         for (Block b : blockList) {
-            if (MaterialUtils.isLeaf(b.getType())) {
-                numLogs++;
+            if (b.getType().name().contains("STRIPPED")) {
+                times += strippedLogTime;
+            } else if (b.getType().name().contains("LEAVES")) {
+                times += leafTime;
+            } else if (MaterialUtils.isLog(b.getType())) {
+                times += logTime;
             }
         }
 
-        return (int) (numLogs * singleTime * efficiencyFactor);
+        return (int) (times * efficiencyFactor);
     }
 
     /**

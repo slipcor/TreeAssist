@@ -2,6 +2,7 @@ package net.slipcor.treeassist.runnables;
 
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.core.Debugger;
+import net.slipcor.treeassist.core.FailReason;
 import net.slipcor.treeassist.core.TreeStructure;
 import net.slipcor.treeassist.utils.BlockUtils;
 import org.bukkit.Material;
@@ -51,6 +52,7 @@ public class CleanRunner extends BukkitRunnable {
         }
 
         me.setValid(false);
+        me.failReason = FailReason.INVALID_BLOCK;
         try {
             TreeAssist.instance.treeRemove(me);
             this.cancel();

@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.106 - add netherite axe to tool list and drop factors, addresses issue #50
+- v7.0.107 - add more tools to the cooldown calculation; abort tree determination if an invalid block has been found
 - [read more](doc/changelog.md)
 
 ***

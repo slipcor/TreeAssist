@@ -1,6 +1,7 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.107 - add more tools to the cooldown calculation; abort tree determination if an invalid block has been found
 - v7.0.106 - add netherite axe to tool list and drop factors, addresses issue #50
 - v7.0.105 - fix a nether related possible infinite loop 
 - v7.0.104 - revert changes made while testing

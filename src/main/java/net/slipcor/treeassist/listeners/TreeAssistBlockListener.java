@@ -322,7 +322,10 @@ public class TreeAssistBlockListener implements Listener {
 
                             // else:  we did not find a match or we do not want to force remove it - let's try another!
                         }
-                        debug.i("Shape does not match " + matName);
+                        debug.i("Shape does not match " + matName + (trunk.failReason) );
+                        if (trunk.failReason == FailReason.INVALID_BLOCK) {
+                            break configs; // do not try to find a different tree!
+                        }
                     }
                 }
             }

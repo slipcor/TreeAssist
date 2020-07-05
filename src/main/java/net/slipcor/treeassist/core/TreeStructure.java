@@ -53,6 +53,7 @@ public class TreeStructure {
 
     private final boolean trunkDiagonally;
     private boolean valid = true;
+    public FailReason failReason = null;
 
     private final TreeConfig config;
     private Block northWestBlock;
@@ -119,6 +120,7 @@ public class TreeStructure {
             if (trunk == null) {
                 // No tree found, nothing to remove!
                 valid = false;
+                failReason = FailReason.NO_TRUNK;
                 return;
             }
             debug.i("Tree of size " + trunk.size() + " found!");
@@ -134,6 +136,7 @@ public class TreeStructure {
             if (height < min) {
                 debug.i("Lower than minimum: " + height + " < " + min + " for " + trunk.get(0).getType());
                 valid = false;
+                failReason = FailReason.TOO_SMALL;
                 return;
             }
 
@@ -157,6 +160,7 @@ public class TreeStructure {
             getAllExtras();
 
             if (extras == null || (extras.size() < config.getInt(TreeConfig.CFG.BLOCKS_REQUIRED, 10) && hasDistanceTo(neighborTrunks))) {
+                failReason = FailReason.NOT_ENOUGH_LEAVES;
                 valid = false;
             }
             return;
@@ -171,6 +175,7 @@ public class TreeStructure {
             if (bottoms.size() < 3) {
                 debug.i("Not enough trunks found: " + bottoms.size());
                 valid = false;
+                failReason = FailReason.NOT_ENOUGH_TRUNKS;
                 return;
             }
             debug.i("Trunks: " + bottoms.size());
@@ -179,6 +184,7 @@ public class TreeStructure {
             if (trunk == null) {
                 // No tree found, nothing to remove!
                 valid = false;
+                failReason = FailReason.NO_TRUNK;
                 return;
             }
 
@@ -225,6 +231,7 @@ public class TreeStructure {
         if (trunks.size() != 4) {
             debug.i("We do not have 4 trunks, we found " + trunks.size() + "!");
             valid = false;
+            failReason = FailReason.NOT_ENOUGH_TRUNKS;
             return;
         }
 
@@ -233,6 +240,7 @@ public class TreeStructure {
         if (trunk == null) {
             // No tree found, nothing to remove!
             valid = false;
+            failReason = FailReason.NO_TRUNK;
             return;
         }
         debug.i("Tree of size " + trunk.size() + " found!");
@@ -248,6 +256,7 @@ public class TreeStructure {
         if (height < min) {
             debug.i("Lower than thick minimum: " + height + " < " + min + " for " + trunk.get(0).getType());
             valid = false;
+            failReason = FailReason.TOO_SMALL;
             return;
         }
 
@@ -275,6 +284,7 @@ public class TreeStructure {
 
         if (extras == null || (extras.size() < 10 && hasDistanceTo(neighborTrunks))) {
             valid = false;
+            failReason = FailReason.NOT_ENOUGH_LEAVES;
         }
     }
 
@@ -750,6 +760,7 @@ public class TreeStructure {
             for (BlockFace face : neighbors) {
                 if (isInvalidExtraBlock(block.getRelative(face), face, radiusM, 1, true, edgesM, airM, radiusM)) {
                     valid = false;
+                    failReason = FailReason.INVALID_BLOCK;
                     return;
                 }
             }
@@ -758,6 +769,7 @@ public class TreeStructure {
         if (roof == null) {
             debug.i("No more blocks found!");
             valid = false;
+            failReason = FailReason.NO_TRUNK;
             return;
         }
 
@@ -778,6 +790,7 @@ public class TreeStructure {
                     for (BlockFace face : neighbors) {
                         if (isInvalidExtraBlock(checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, radiusT)) {
                             valid = false;
+                            failReason = FailReason.INVALID_BLOCK;
                             return;
                         }
                     }
@@ -787,6 +800,7 @@ public class TreeStructure {
                                 !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
                     debug.i("Invalid block found: " + checkMaterial);
                     valid = false;
+                    failReason = FailReason.INVALID_BLOCK;
                     return;
                 }
             }
@@ -869,6 +883,7 @@ public class TreeStructure {
             for (BlockFace face : getTrunkContinuations(checkBlock)) {
                 if (isInvalidExtraBlock(checkBlock.getRelative(face), face, radiusM, 1, true, edgesM, airM, radiusM)) {
                     valid = false;
+                    failReason = FailReason.INVALID_BLOCK;
                     return;
                 }
             }
@@ -879,6 +894,7 @@ public class TreeStructure {
         if (roofs.size() <= 0) {
             debug.i("No more blocks found!");
             valid = false;
+            failReason = FailReason.NO_TRUNK;
             return;
         }
 
@@ -900,6 +916,7 @@ public class TreeStructure {
                         for (BlockFace face : neighbors) {
                             if (isInvalidExtraBlock(checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, radiusT)) {
                                 valid = false;
+                                failReason = FailReason.INVALID_BLOCK;
                                 return;
                             }
                         }
@@ -909,6 +926,7 @@ public class TreeStructure {
                                     !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
                         debug.i("Invalid block found: " + checkMaterial);
                         valid = false;
+                        failReason = FailReason.INVALID_BLOCK;
                         return;
                     }
                 }
