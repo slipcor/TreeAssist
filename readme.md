@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.107 - add more tools to the cooldown calculation; abort tree determination if an invalid block has been found
+- v7.0.108 - add a warning when an invalid material has been entered; fix 2 entries in the natural block list
 - [read more](doc/changelog.md)
 
 ***

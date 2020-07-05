@@ -460,8 +460,10 @@ public class TreeConfig {
                         matList.add(mat);
                     }
                 }
-            } else {
+            } else if (Material.matchMaterial(matName) != null){
                 matList.add(Material.matchMaterial(matName));
+            } else {
+                TreeAssist.instance.getLogger().warning("Invalid Material in TreeConfig " + configFile.getName() + " - Node " + cfg.node + " entry invalid: " + matName);
             }
         }
 

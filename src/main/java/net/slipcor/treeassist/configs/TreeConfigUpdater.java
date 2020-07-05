@@ -9,6 +9,8 @@ public class TreeConfigUpdater {
     enum Adding {
         NATURAL_LARGE_FERN(7.0095f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:large_fern"),
         TOOL_LIST_NETHERITE(7.0106f, "default", TreeConfig.CFG.TOOL_LIST, "minecraft:netherite_axe"),
+        NATURAL_AZURE_CORRECT(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:azure_bluet"),
+        NATURAL_COCOA_CORRECT(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:cocoa"),
         ;
 
         private final float version;
@@ -81,6 +83,8 @@ public class TreeConfigUpdater {
         WARPED_TRUNK_WART(7.0100f, "warped_fungus", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:warped_wart_block"),
         NETHER_TOOL_LIST(7.0103f, "nether", TreeConfig.CFG.TOOL_LIST.getNode()),
         NETHER_TOOL_CHANCES(7.0103f, "nether", TreeConfig.CFG.CUSTOM_DROP_FACTOR.getNode()),
+        NATURAL_AZURE_WRONG(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:azure-bluet"),
+        NATURAL_COCOA_WRONG(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:cococa"),
         //TRUNK_EDGES_WARPED(8.0f, "thick_warped_fungus", "Trunk.Edges")
         ;
 
