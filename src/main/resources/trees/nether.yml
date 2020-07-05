@@ -1,11 +1,5 @@
 Custom Drops:
   minecraft:netherrack: 0.01
-Custom Drop Factor:
-  minecraft:diamond_hoe: 1.0
-  minecraft:golden_hoe: 0.75
-  minecraft:iron_hoe: 0.5
-  minecraft:stone_hoe: 0.25
-  minecraft:wooden_hoe: 0.1
 Ground Blocks:
 - 'minecraft:netherrack'
 Natural Blocks:
@@ -22,4 +16,4 @@ Natural Blocks:
 - 'minecraft:cave_air'
 - 'minecraft:void_air'
 Parent: default
-Version: 7.0102
+Version: 7.0108

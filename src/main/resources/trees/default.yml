@@ -93,7 +93,7 @@ Natural Blocks:
 - 'minecraft:poppy'
 - '*_orchid'
 - 'minecraft:allium'
-- 'minecraft:azure-bluet'
+- 'minecraft:azure_bluet'
 - 'minecraft:oxeye_daisy'
 - 'minecraft:lilac'
 - 'minecraft:grass'
@@ -106,7 +106,7 @@ Natural Blocks:
 - 'minecraft:melon'
 - 'minecraft:pumpkin'
 - 'minecraft:bee_nest'
-- 'minecraft:cococa'
+- 'minecraft:cocoa'
 - 'minecraft:torch'
 - 'minecraft:rail'
 - 'minecraft:hopper'
@@ -173,4 +173,4 @@ Trunk:
   Thickness: 1
   # Can the saplings be at different height?
   Uneven Bottom: false
-Version: 7.0106
+Version: 7.0108

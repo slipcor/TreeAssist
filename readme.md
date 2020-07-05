@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.108 - add a warning when an invalid material has been entered; fix 2 entries in the natural block list
+- v7.0.109 - update the default ymls
 - [read more](doc/changelog.md)
 
 ***

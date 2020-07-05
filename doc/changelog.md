@@ -1,6 +1,8 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.109 - update the default ymls
+- v7.0.108 - add a warning when an invalid material has been entered; fix 2 entries in the natural block list
 - v7.0.107 - add more tools to the cooldown calculation; abort tree determination if an invalid block has been found
 - v7.0.106 - add netherite axe to tool list and drop factors, addresses issue #50
 - v7.0.105 - fix a nether related possible infinite loop 
