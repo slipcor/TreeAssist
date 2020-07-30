@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.109 - update the default ymls
+- v7.0.110 - add more debug for when a tree determination fails
 - [read more](doc/changelog.md)
 
 ***
