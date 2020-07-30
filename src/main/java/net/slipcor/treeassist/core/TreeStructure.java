@@ -618,7 +618,7 @@ public class TreeStructure {
             return result;
         }
 
-        debug.i("We did not find a roof block. not a valid tree!");
+        debug.i("We did not find a roof block (" + checkBlock.getType() + ") not a valid tree!");
         return null;
     }
 
@@ -646,7 +646,7 @@ public class TreeStructure {
                 roofs.add(checkBlock);
                 continue;
             }
-            debug.i("We did not find a roof block. not a valid tree!");
+            debug.i("We did not find a roof block (" + checkBlock.getType() + ") not a valid tree!");
             return null;
         }
 
