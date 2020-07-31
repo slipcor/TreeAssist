@@ -1110,7 +1110,10 @@ public class TreeStructure {
 
         TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
         TreeAssist.instance.getServer().getPluginManager().callEvent(event);
-        if (event.isCancelled()) return;
+        if (event.isCancelled()) {
+            debug.i(">>> Cancelled by plugin! <<< Aborting breaking!");
+            return;
+        }
 
         Material maat = block.getType();
         boolean calculateCustomDrops =

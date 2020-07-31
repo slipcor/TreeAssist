@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.110 - add more debug for when a tree determination fails
+- v7.0.111 - debug when a plugin cancels the breaking of the tree
 - [read more](doc/changelog.md)
 
 ***

@@ -1,6 +1,7 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.111 - debug when a plugin cancels the breaking of the tree
 - v7.0.110 - add more debug for when a tree determination fails
 - v7.0.109 - update the default ymls
 - v7.0.108 - add a warning when an invalid material has been entered; fix 2 entries in the natural block list
