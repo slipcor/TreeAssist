@@ -52,13 +52,14 @@ public class TreeAssistBlockListener implements Listener {
         if (plugin.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_FAST_LEAF_DECAY) && plugin.Enabled) {
             Block block = event.getBlock();
             World world = block.getWorld();
-            if (!plugin.isActive(world)) {
-                return;
-            }
-            for (TreeConfig config : TreeAssist.treeConfigs.values()) {
-                if (config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS).contains(block.getType())) {
-                    BlockUtils.breakRadiusLeaves(block, config);
+            if (plugin.isActive(world)) {
+                for (TreeConfig config : TreeAssist.treeConfigs.values()) {
+                    if (config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS).contains(block.getType())) {
+                        BlockUtils.breakRadiusLeaves(block, config);
+                    }
                 }
+            } else {
+                debug.i("not in this world: " + event.getBlock().getWorld().getName());
             }
         }
     }
@@ -88,14 +89,13 @@ public class TreeAssistBlockListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         if (plugin.getMainConfig().getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE) &&
                 (TreeStructure.allTrunks.contains(event.getBlock().getType()))) {
-            if (plugin.getMainConfig().getBoolean(MainConfig.CFG.WORLDS_RESTRICT)) {
-                if (!plugin.getMainConfig().getStringList(MainConfig.CFG.WORLDS_ENABLED_WORLDS, new ArrayList<>()).contains(event.getBlock().getWorld().getName())) {
-                    return;
-                }
+            if (plugin.isActive(event.getBlock().getWorld())) {
+                Block block = event.getBlock();
+                plugin.blockList.addBlock(block);
+                plugin.blockList.save();
+            } else {
+                debug.i("not in this world: " + event.getBlock().getWorld().getName());
             }
-            Block block = event.getBlock();
-            plugin.blockList.addBlock(block);
-            plugin.blockList.save();
         }
     }
 
@@ -137,30 +137,28 @@ public class TreeAssistBlockListener implements Listener {
 
 
                     if (config.getBoolean(TreeConfig.CFG.REPLANTING_WHEN_TREE_BURNS_DOWN) && plugin.Enabled) {
-                        if (plugin.getMainConfig().getBoolean(MainConfig.CFG.WORLDS_RESTRICT)) {
-                            if (!plugin.getMainConfig().getStringList(MainConfig.CFG.WORLDS_ENABLED_WORLDS, new ArrayList<>()).contains(block.getWorld().getName())) {
-                                return;
-                            }
-                        }
-                        if (block.getState().getData() instanceof Tree) {
-                            Material logMat = block.getType();
-                            Tree tree = (Tree) block.getState().getData();
-                            Block oneBelow = block.getRelative(BlockFace.DOWN, 1);
-                            Block oneAbove = block.getRelative(BlockFace.UP, 1);
-                            List<Material> grounds = config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS);
-                            if (grounds.contains(oneBelow.getType())) {
-                                Material replantMat = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
-                                if (MaterialUtils.isAir(oneAbove.getType()) || oneAbove.getType() == logMat) {
-                                    TASaplingReplaceEvent event = new TASaplingReplaceEvent(block, replantMat);
-                                    TreeAssist.instance.getServer().getPluginManager().callEvent(event);
-                                    if (event.isCancelled()) {
-                                        debug.i("TreeAssistBlockListener.checkFire() Sapling Replant was cancelled!");
-                                        return;
+                        if (plugin.isActive(block.getWorld())) {
+                            if (block.getState().getData() instanceof Tree) {
+                                Material logMat = block.getType();
+                                Block oneBelow = block.getRelative(BlockFace.DOWN, 1);
+                                Block oneAbove = block.getRelative(BlockFace.UP, 1);
+                                List<Material> grounds = config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS);
+                                if (grounds.contains(oneBelow.getType())) {
+                                    Material replantMat = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
+                                    if (MaterialUtils.isAir(oneAbove.getType()) || oneAbove.getType() == logMat) {
+                                        TASaplingReplaceEvent event = new TASaplingReplaceEvent(block, replantMat);
+                                        TreeAssist.instance.getServer().getPluginManager().callEvent(event);
+                                        if (event.isCancelled()) {
+                                            debug.i("TreeAssistBlockListener.checkFire() Sapling Replant was cancelled!");
+                                            return;
+                                        }
+                                        Runnable b = new TreeAssistReplant(block, event.getType(), config);
+                                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, b, 20);
                                     }
-                                    Runnable b = new TreeAssistReplant(block, event.getType(), config);
-                                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, b, 20);
                                 }
                             }
+                        } else {
+                            debug.i("not in this world: " + block.getWorld().getName());
                         }
                     }
                 }
@@ -171,6 +169,10 @@ public class TreeAssistBlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         if (!plugin.Enabled) {
+            return;
+        }
+        if (!plugin.isActive(event.getBlock().getWorld())) {
+            debug.i("not in this world: " + event.getBlock().getWorld().getName());
             return;
         }
 

@@ -1,6 +1,7 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.112 - properly restrict the plugin if set in the config - addresses issue #52
 - v7.0.111 - debug when a plugin cancels the breaking of the tree
 - v7.0.110 - add more debug for when a tree determination fails
 - v7.0.109 - update the default ymls
