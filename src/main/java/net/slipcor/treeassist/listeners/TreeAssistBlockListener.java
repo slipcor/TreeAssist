@@ -175,6 +175,11 @@ public class TreeAssistBlockListener implements Listener {
             debug.i("not in this world: " + event.getBlock().getWorld().getName());
             return;
         }
+        if (plugin.saplingLocationList.contains(event.getBlock().getLocation())) {
+            event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
+            event.setCancelled(true);
+            return;
+        }
 
         if (!TreeStructure.allTrunks.contains(event.getBlock().getType())) {
             debug.i("Not a tree block: " + event.getBlock().getType());
@@ -184,6 +189,7 @@ public class TreeAssistBlockListener implements Listener {
                     if (event.getBlock().getType() == config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL)) {
                         if (config.getBoolean(TreeConfig.CFG.REPLANTING_FORCE_PROTECT)) {
                             event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_NEVER_BREAK_SAPLINGS));
+                            event.setCancelled(true);
                         }
                     }
                 }

@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.112 - properly restrict the plugin if set in the config - addresses issue #52
+- v7.0.113 - reinstate sapling protection - addresses github issue #53
 - [read more](doc/changelog.md)
 
 ***
