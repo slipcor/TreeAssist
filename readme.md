@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.113 - reinstate sapling protection - addresses github issue #53
+- v7.0.114 - add some debug for github issue #53
 - [read more](doc/changelog.md)
 
 ***

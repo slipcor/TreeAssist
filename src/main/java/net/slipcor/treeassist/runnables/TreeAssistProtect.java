@@ -1,6 +1,7 @@
 package net.slipcor.treeassist.runnables;
 
 import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.core.TreeStructure;
 import org.bukkit.Location;
 
 public class TreeAssistProtect implements Runnable {
@@ -19,6 +20,8 @@ public class TreeAssistProtect implements Runnable {
 	public void run() {
 		if (TreeAssist.instance.isEnabled() && TreeAssist.instance.saplingLocationList.contains(this.location)) {
 			TreeAssist.instance.saplingLocationList.remove(this.location);
+
+			TreeStructure.debug.i("Sapling protection removed: " + this.location.getBlock());
 		}
 	}
 }
