@@ -1327,6 +1327,11 @@ public class TreeStructure {
             TreeAssist.instance.getServer().getScheduler()
                     .scheduleSyncDelayedTask(TreeAssist.instance, b, 20 * delay);
             int timeToProtect = config.getInt(TreeConfig.CFG.REPLANTING_PROTECT_FOR_SECONDS);
+
+            timeToProtect += delay; // prevent the protection running out before the sapling was even planted
+
+            if (config.getBoolean(TreeConfig.CFG.REPLANTING_DELAY))
+
             if (timeToProtect > 0) {
                 debug.i("Sapling at " + saplingBlock.getLocation().getBlock() + " will be protected for " + timeToProtect + " seconds");
                 TreeAssist.instance.saplingLocationList.add(saplingBlock.getLocation());
