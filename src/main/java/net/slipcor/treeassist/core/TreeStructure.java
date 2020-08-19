@@ -1172,7 +1172,7 @@ public class TreeStructure {
         TreeAssist.instance.blockList.logBreak(block, player);
         if (player == null) {
             debug.i("no player, out!");
-            BlockUtils.breakBlock(null, block, tool);
+            BlockUtils.breakBlock(null, block, tool, bottom.getY());
             return;
         }
 
@@ -1200,7 +1200,7 @@ public class TreeStructure {
                     player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
                 }
             } else {
-                BlockUtils.breakBlock(player, block, tool);
+                BlockUtils.breakBlock(player, block, tool, bottom.getY());
             }
         }
         player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
@@ -1329,8 +1329,6 @@ public class TreeStructure {
             int timeToProtect = config.getInt(TreeConfig.CFG.REPLANTING_PROTECT_FOR_SECONDS);
 
             timeToProtect += delay; // prevent the protection running out before the sapling was even planted
-
-            if (config.getBoolean(TreeConfig.CFG.REPLANTING_DELAY))
 
             if (timeToProtect > 0) {
                 debug.i("Sapling at " + saplingBlock.getLocation().getBlock() + " will be protected for " + timeToProtect + " seconds");

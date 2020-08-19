@@ -10,6 +10,7 @@ import net.slipcor.treeassist.events.TALeafDecay;
 import net.slipcor.treeassist.externals.JobsHook;
 import net.slipcor.treeassist.externals.mcMMOHook;
 import net.slipcor.treeassist.runnables.CleanRunner;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -17,6 +18,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
@@ -35,17 +37,7 @@ public class BlockUtils {
      * @param block the block to break
      */
     public static void breakBlock(Block block) {
-        breakBlock(null, block, null);
-    }
-
-    /**
-     * Finally actually break a block
-     *
-     * @param player the player initiating the breaking
-     * @param block the block to break
-     */
-    public static void breakBlock(Player player, Block block) {
-        breakBlock(player, block, null);
+        breakBlock(null, block, null, 0);
     }
 
     /**
@@ -55,7 +47,7 @@ public class BlockUtils {
      * @param block the block to break
      * @param tool the item the player is holding
      */
-    public static void breakBlock(Player player, Block block, ItemStack tool) {
+    public static void breakBlock(Player player, Block block, ItemStack tool, int baseHeight) {
         if (useFallingBlock == null) {
             useFallingBlock = TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_FALLING_BLOCKS);
         }
@@ -67,8 +59,22 @@ public class BlockUtils {
 
             block.setType(Material.AIR, true);
 
-            FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), data);
+            FallingBlock falling = block.getWorld().spawnFallingBlock(
+                    block.getLocation().add(0.5, 0, 0.5), data);
             falling.setDropItem(false); // we do the dropping already, thank you!
+
+            if (player != null && TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_FALLING_BLOCKS_FANCY)) {
+                falling.setGravity(false);
+
+                double level = block.getY() - baseHeight;
+                level /= 80;
+
+                Vector looking = player.getLocation().getDirection().multiply(level);
+                falling.setVelocity(
+                        new Vector(looking.getX(), -level, looking.getZ())
+                );
+                Bukkit.getScheduler().runTaskLater(TreeAssist.instance, () -> falling.setGravity(true), 30L);
+            }
 
             fallingBlocks.add(falling);
 

@@ -1,6 +1,7 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.116 - add fancy tree falling animation - looks almost real!
 - v7.0.115 - enhance the sapling protection by the replant delay - addresses github issue #53
 - v7.0.114 - add some debug for github issue #53
 - v7.0.113 - reinstate sapling protection - addresses github issue #53

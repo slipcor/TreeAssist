@@ -313,6 +313,7 @@ public class TreeAssistBlockListener implements Listener {
                                     }
                                 }
 
+                                event.setCancelled(true);
                                 trunk.maybeReplant(player, event.getBlock());
                                 if (TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
                                     trunk.removeBlocksBelow(event.getBlock());

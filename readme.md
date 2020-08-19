@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.115 - enhance the sapling protection by the replant delay - addresses github issue #53
+- v7.0.116 - add fancy tree falling animation - looks almost real!
 - [read more](doc/changelog.md)
 
 ***
