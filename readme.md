@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.116 - add fancy tree falling animation - looks almost real!
+- v7.0.117 - correct plugin.yml - I only need to be author once
 - [read more](doc/changelog.md)
 
 ***
