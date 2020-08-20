@@ -35,6 +35,7 @@ public class TreeConfigUpdater {
     }
     enum PreciseAdding {
         DROP_CHANCE_NETHERITE(7.0106f, "default", "Custom Drop Factor.minecraft:netherite_axe", 1.0),
+        TALL_JUNGLE_VINES(7.0118f, "tall_jungle", TreeConfig.CFG.BLOCKS_VINES.getNode(), true)
         ;
 
         private final float version;
@@ -61,6 +62,8 @@ public class TreeConfigUpdater {
     enum Updating {
         CRIMSON_MIDDLE_RADIUS(7.0101f, "crimson_fungus", TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS, 2, 3),
         WARPED_MIDDLE_RADIUS(7.0101f, "warped_fungus", TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS, 2, 3),
+        TALL_JUNGLE_TOP_LEAVES(7.0118f, "tall_jungle", TreeConfig.CFG.BLOCKS_TOP_RADIUS, 3, 6),
+        TALL_JUNGLE_MIDDLE_LEAVES(7.0118f, "tall_jungle", TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS, 2, 6),
         ;
         private final float version;
         private final String config;

@@ -1052,6 +1052,9 @@ public class TreeStructure {
 
         if (air || !MaterialUtils.isAir(checkMaterial)) {
             boolean found = air;
+            if (config.getBoolean(TreeConfig.CFG.BLOCKS_VINES) && checkBlock.getType() == Material.VINE) {
+                followVines(checkBlock);
+            }
             if (extraBlocks.contains(checkMaterial)) {
                 extras.add(checkBlock);
                 found = true;
@@ -1092,6 +1095,15 @@ public class TreeStructure {
             }
         }
         return false;
+    }
+
+    private void followVines(Block checkBlock) {
+        if (extras.contains(checkBlock) || checkBlock.getType() != Material.VINE) {
+            return;
+        }
+        System.out.println("VINE: " + checkBlock);
+        extras.add(checkBlock);
+        followVines(checkBlock.getRelative(0, -1, 0));
     }
 
     /**

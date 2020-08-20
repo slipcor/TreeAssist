@@ -1,6 +1,7 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.119 - properly clear tall jungle trees of vines
 - v7.0.118 - update config.yml properly with new values
 - v7.0.117 - correct plugin.yml - I only need to be author once
 - v7.0.116 - add fancy tree falling animation - looks almost real!

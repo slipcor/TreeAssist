@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.118 - update config.yml properly with new values
+- v7.0.119 - properly clear tall jungle trees of vines
 - [read more](doc/changelog.md)
 
 ***

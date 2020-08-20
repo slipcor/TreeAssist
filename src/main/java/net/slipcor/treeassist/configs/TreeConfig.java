@@ -122,6 +122,8 @@ public class TreeConfig {
         BLOCKS_TOP_RADIUS("Blocks.Top.Radius", 3), // the tree top leaf radius
         BLOCKS_TOP_HEIGHT("Blocks.Top.Height", 3),
 
+        BLOCKS_VINES("Blocks.Vines", false), // do we need to look for vines?
+
         CUSTOM_DROPS("Custom Drops", new HashMap<>()),
         CUSTOM_DROP_FACTOR("Custom Drop Factor", new HashMap<>()),
 
