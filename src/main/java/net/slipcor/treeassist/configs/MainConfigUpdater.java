@@ -28,13 +28,37 @@ public class MainConfigUpdater {
         }
     }
 
+    enum Adding {
+
+        DESTRUCTION_FALLING_BLOCKS_FANCY(7.0117f, MainConfig.CFG.DESTRUCTION_FALLING_BLOCKS_FANCY, false)
+        ;
+
+        private final float version;
+        private final MainConfig.CFG node;
+        private final Object value;
+
+        /**
+         * An adding definition
+         *
+         * @param version the version it was introduced
+         * @param node the node
+         * @param value the value
+         */
+        Adding(float version, MainConfig.CFG node, Object value) {
+            this.version = version;
+            this.node = node;
+            this.value = value;
+        }
+    }
+
     /**
      * Check a config for necessary changes
      *
      * @param config the config to check for outdated values
      * @return whether we found a change and thus need to save and reload
      */
-    public static boolean check(FileConfiguration config) {
+    public static boolean check(MainConfig instance, FileConfiguration config) {
+        instance.preLoad();
         double version = config.getDouble("Version", 7.0);
         double newVersion = version;
         boolean changed = false;
@@ -44,6 +68,14 @@ public class MainConfigUpdater {
                 config.set(m.destination, config.get(m.source));
                 config.set(m.source, null);
                 TreeAssist.instance.getLogger().warning("Config node moved: " + m.toString());
+                changed = true;
+            }
+        }
+        for (Adding m : Adding.values()) {
+            if (m.version > version) {
+                newVersion = Math.max(newVersion, m.version);
+                config.set(m.node.getNode(), m.value);
+                TreeAssist.instance.getLogger().warning("Config node added: " + m.toString());
                 changed = true;
             }
         }

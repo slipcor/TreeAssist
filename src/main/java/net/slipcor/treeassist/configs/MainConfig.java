@@ -1,6 +1,7 @@
 package net.slipcor.treeassist.configs;
 
 import net.slipcor.treeassist.TreeAssist;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
@@ -152,7 +153,7 @@ public class MainConfig {
         cfg = new YamlConfiguration();
         this.configFile = configFile;
 
-        if (MainConfigUpdater.check(cfg)) {
+        if (MainConfigUpdater.check(this, cfg)) {
             save();
         }
 
@@ -180,6 +181,17 @@ public class MainConfig {
         } catch (final Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    /**
+     * Load the config file without filling our maps, mainly for checking for config changes
+     */
+    public void preLoad() {
+        try {
+            cfg.load(configFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
         }
     }
 
@@ -220,11 +232,7 @@ public class MainConfig {
                 }
 
                 if (stringLine.trim().startsWith("#")) {
-                    writer.flush();
-                    writer.close();
-                    reader.close();
-                    tempFile.delete();
-                    return;
+                    continue;
                 }
 
                 final int firstDigit = (indent * 2);

@@ -13,6 +13,7 @@ Commands:
     Cooldown Time: 30
 Destruction:
   Falling Blocks: false
+  Falling Blocks Fancy: false
   Fast Leaf Decay: true
   Only Above: false
 Placed Blocks:
@@ -31,4 +32,4 @@ Worlds:
 Modding:
   Disable Durability Fix: false
 Debug: none
-Version: 7.0
+Version: 7.0117

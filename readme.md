@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.117 - correct plugin.yml - I only need to be author once
+- v7.0.118 - update config.yml properly with new values
 - [read more](doc/changelog.md)
 
 ***
