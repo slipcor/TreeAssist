@@ -37,7 +37,7 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 			delay = 1;
 		}
 		
-		Bukkit.getScheduler().runTaskLater(TreeAssist.instance, this, 20L * delay);
+		Bukkit.getScheduler().runTaskLater(TreeAssist.instance, this, delay);
 	}
 
 	@Override

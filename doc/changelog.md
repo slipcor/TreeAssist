@@ -1,6 +1,7 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.122 - actually use sapling replant delay in ticks, not seconds! - addresses github issue #54
 - v7.0.121 - only cancel the initial block break event if we kill it in the same instant anyway - addresses github issue #55
 - v7.0.120 - implement proper TreeConfig map and list inheritance, forwarding values to children
 - v7.0.119 - properly clear tall jungle trees of vines

@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.121 - only cancel the initial block break event if we kill it in the same instant anyway - addresses github issue #55
+- v7.0.122 - actually use sapling replant delay in ticks, not seconds! - addresses github issue #54
 - [read more](doc/changelog.md)
 custom drops:
 ***
