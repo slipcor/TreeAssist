@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.122 - actually use sapling replant delay in ticks, not seconds! - addresses github issue #54
+- v7.0.123 - warn when a config setting does not match the expected data type
 - [read more](doc/changelog.md)
 custom drops:
 ***

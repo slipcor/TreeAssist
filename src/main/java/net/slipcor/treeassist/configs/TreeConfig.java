@@ -270,18 +270,42 @@ public class TreeConfig {
         root: for (final String s : cfg.getKeys(true)) {
             final Object object = cfg.get(s);
 
+            CFG node = CFG.getByNode(s);
+
             if (object instanceof Boolean) {
-                booleans.put(s, (Boolean) object);
+                if (node != null && node.type.equals("boolean")) {
+                    booleans.put(s, (Boolean) object);
+                } else if (node != null) {
+                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected boolean content, " + node.type + " expected - please fix!");
+                }
             } else if (object instanceof Integer) {
-                ints.put(s, (Integer) object);
+                if (node != null && node.type.equals("int")) {
+                    ints.put(s, (Integer) object);
+                } else if (node != null && node.type.equals("double")) {
+                    double value = (Integer) object;
+                    TreeAssist.instance.getLogger().warning(configFile.getName() + ": " + s + " expects double, integer given!");
+                    doubles.put(s, value);
+                } else if (node != null) {
+                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected integer content, " + node.type + " expected - please fix!");
+                }
             } else if (object instanceof Double) {
-                doubles.put(s, (Double) object);
+                if (node != null && node.type.equals("double")) {
+                    doubles.put(s, (Double) object);
+                } else if (node != null && node.type.equals("int")) {
+                    double value = (Double) object;
+                    TreeAssist.instance.getLogger().warning(configFile.getName() + ": " + s + " expects integer, double given. Trying to round!");
+                    ints.put(s, (int) value);
+                } else if (node != null) {
+                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected double content, " + node.type + " expected - please fix!");
+                }
             } else if (object instanceof String) {
                 strings.put(s, (String) object);
+                if (node != null && !node.type.equals("string")) {
+                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected string content, " + node.type + " expected - please fix!");
+                }
             }
 
-            if (CFG.getByNode(s) == null) {
-
+            if (node == null) {
                 for (String test : exceptions) {
                     if (s.equals(test)) {
                         continue root;
