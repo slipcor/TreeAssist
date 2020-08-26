@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.120 - implement proper TreeConfig map and list inheritance, forwarding values to children
+- v7.0.121 - only cancel the initial block break event if we kill it in the same instant anyway - addresses github issue #55
 - [read more](doc/changelog.md)
 custom drops:
 ***
