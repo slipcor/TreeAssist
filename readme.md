@@ -71,9 +71,9 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.119 - properly clear tall jungle trees of vines
+- v7.0.120 - implement proper TreeConfig map and list inheritance, forwarding values to children
 - [read more](doc/changelog.md)
-
+custom drops:
 ***
 
 ## Phoning home

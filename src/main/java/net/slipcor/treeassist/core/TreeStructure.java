@@ -17,7 +17,6 @@ import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -418,6 +417,7 @@ public class TreeStructure {
             TreeConfig treeConfig = processing.get(key);
             TreeConfigUpdater.check(treeConfig, key);
             if (key.equals("default")) {
+                treeConfig.clearMaps();
                 treeConfig.load();
             } else {
                 treeConfig.preLoad();
@@ -443,6 +443,7 @@ public class TreeStructure {
                 }
                 if (TreeAssist.treeConfigs.containsKey(parentKey)) {
                     // we can now read the parent and apply defaults!
+                    treeConfig.clearMaps();
                     treeConfig.loadDefaults(TreeAssist.treeConfigs.get(parentKey));
                     treeConfig.load();
                     TreeAssist.treeConfigs.put(key, treeConfig);
@@ -1101,7 +1102,6 @@ public class TreeStructure {
         if (extras.contains(checkBlock) || checkBlock.getType() != Material.VINE) {
             return;
         }
-        System.out.println("VINE: " + checkBlock);
         extras.add(checkBlock);
         followVines(checkBlock.getRelative(0, -1, 0));
     }
@@ -1139,9 +1139,9 @@ public class TreeStructure {
 
 
         if (calculateCustomDrops && tool != null) {
-            double chance = config.getYamlConfiguration().getDouble(TreeConfig.CFG.CUSTOM_DROP_FACTOR.getNode() + "." + tool.getType().name(), 0.0);
+            double chance = config.getMapEntry(TreeConfig.CFG.CUSTOM_DROP_FACTOR, tool.getType().name(), 0.0);
             debug.i("probability " + chance + " for " + tool.getType().name());
-            double secondChance = config.getYamlConfiguration().getDouble(TreeConfig.CFG.CUSTOM_DROP_FACTOR.getNode() + ".minecraft:" + tool.getType().name().toLowerCase(), 0.0);
+            double secondChance = config.getMapEntry(TreeConfig.CFG.CUSTOM_DROP_FACTOR, "minecraft:" + tool.getType().name().toLowerCase(), 0.0);
             debug.i("probability " + secondChance + " for " + tool.getType().name().toLowerCase());
             if (secondChance > chance) {
                 chance = secondChance;
@@ -1149,12 +1149,13 @@ public class TreeStructure {
 
             if (chance > 0.99 || chanceValue < chance) {
                 debug.i("dropping custom drop!");
-                ConfigurationSection cs = config.getYamlConfiguration().getConfigurationSection(TreeConfig.CFG.CUSTOM_DROPS.getNode());
 
-                debug.i("custom drop count: " + cs.getKeys(false).size());
+                Map<String, Double> chances = config.getMap(TreeConfig.CFG.CUSTOM_DROPS);
 
-                for (String key : cs.getKeys(false)) {
-                    double innerChance = (cs.getDouble(key, 0.0d));
+                debug.i("custom drop count: " + chances.size());
+
+                for (String key : chances.keySet()) {
+                    double innerChance = (chances.get(key));
                     double innerValue = (new Random()).nextDouble();
 
                     if (innerValue < innerChance) {

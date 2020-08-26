@@ -19,70 +19,7 @@ public class TreeConfig {
     private final Map<String, Double> doubles;
     private final Map<String, String> strings;
     private final Map<String, List<Material>> materials;
-
-    /**
-     * Load defaults from a parent config
-     *
-     * @param parent the parent config
-     */
-    public void loadDefaults(TreeConfig parent) {
-        for (CFG c : CFG.values()) {
-            if (c.type.equals("string")) {
-                strings.put(c.node, parent.getString(c));
-            } else if (c.type.equals("boolean")) {
-                booleans.put(c.node, parent.getBoolean(c));
-            } else if (c.type.equals("int")) {
-                ints.put(c.node, parent.getInt(c));
-            } else if (c.type.equals("double")) {
-                doubles.put(c.node, parent.getDouble(c));
-            } else if (c.type.equals("list")) {
-                cfg.addDefault(c.node, parent.getStringList(c, new ArrayList<>()));
-            } else if (c.type.equals("map")) {
-                ConfigurationSection cs = parent.getYamlConfiguration().getConfigurationSection(c.node);
-
-                if (cs != null) {
-                    for (String key : cs.getKeys(false)) {
-                        String subPath = c.node + "." + key;
-                        if (cfg.get(subPath) == null) {
-                            // child does not inherit
-                            cfg.addDefault(subPath, parent.getYamlConfiguration().get(subPath));
-                        }
-                    }
-                }
-
-                cs = cfg.getConfigurationSection(c.node);
-
-                if (cs != null) {
-                    for (String key : cs.getKeys(false)) {
-                        String subPath = c.node + "." + key;
-                        cfg.addDefault(subPath, cfg.get(subPath));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Load the config file without filling our maps, mainly for checking for config changes
-     */
-    public void preLoad() {
-        try {
-            cfg.load(configFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Save the config to disk
-     */
-    public void save() {
-        try {
-            cfg.save(configFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private final Map<String, Map<String, Double>> maps;
 
     public enum CFG {
         AUTOMATIC_DESTRUCTION_ACTIVE("Automatic Destruction.Active", true), // Will we attempt to automatically destroy?
@@ -203,7 +140,7 @@ public class TreeConfig {
             this.type = "list";
         }
 
-        CFG(final String node, final Map<String, String> value) {
+        CFG(final String node, final Map<String, Double> value) {
             this.node = node;
             this.value = value;
             this.type = "map";
@@ -246,6 +183,55 @@ public class TreeConfig {
         doubles = new HashMap<>();
         strings = new HashMap<>();
         materials = new HashMap<>();
+        maps = new HashMap<>();
+    }
+
+    /////////////
+    //         //
+    // LOADING //
+    //         //
+    /////////////
+
+    /**
+     * Clear all definition maps before loading it with default values
+     */
+    public void clearMaps() {
+        booleans.clear();
+        ints.clear();
+        doubles.clear();
+        strings.clear();
+        materials.clear();
+        maps.clear();
+    }
+
+    /**
+     * Load defaults from a parent config
+     *
+     * @param parent the parent config
+     */
+    public void loadDefaults(TreeConfig parent) {
+        for (CFG c : CFG.values()) {
+            if (c.type.equals("string")) {
+                strings.put(c.node, parent.getString(c));
+            } else if (c.type.equals("boolean")) {
+                booleans.put(c.node, parent.getBoolean(c));
+            } else if (c.type.equals("int")) {
+                ints.put(c.node, parent.getInt(c));
+            } else if (c.type.equals("double")) {
+                doubles.put(c.node, parent.getDouble(c));
+            } else if (c.type.equals("list")) {
+                List<Material> mats = parent.getMaterials(c);
+                if (materials.containsKey(c.node)) {
+                    materials.get(c.node).addAll(mats);
+                } else {
+                    materials.put(c.node, new ArrayList<>(mats));
+                }
+            } else if (c.type.equals("map")) {
+                if (parent.maps.containsKey(c.node)) {
+                    maps.put(c.node, new HashMap<>(parent.maps.get(c.node)));
+                }
+            }
+        }
     }
 
     /**
@@ -275,7 +261,6 @@ public class TreeConfig {
      * strings-map, etc.
      */
     public void reloadMaps() {
-        materials.clear();
         // known exceptions (empty nodes)
         String[] exceptions = {"Automatic Destruction",
                 "Block Statistics",
@@ -311,10 +296,12 @@ public class TreeConfig {
                         try {
                             Material testMaterial = Material.matchMaterial(material, false);
                             if (testMaterial != null) {
+                                storeMapEntry(test.substring(0, test.length()-1), material, (Double) object);
                                 continue root;
                             }
                             testMaterial = Material.matchMaterial(material, true);
                             if (testMaterial != null) {
+                                storeMapEntry(test.substring(0, test.length()-1), material, (Double) object);
                                 TreeAssist.instance.getLogger().warning("Legacy name used: " + material + " is now " + testMaterial.name());
                                 continue root;
                             }
@@ -327,6 +314,57 @@ public class TreeConfig {
 
                 TreeAssist.instance.getLogger().warning("No valid node: " + s);
             }
+        }
+
+        for (CFG cfg : CFG.values()) {
+            if (cfg.type.equals("list")) {
+                Set<Material> newMaterials = new LinkedHashSet<>();
+                if (materials.containsKey(cfg.node)) {
+                    // we already have entries from the parent(s)
+                    newMaterials.addAll(materials.get(cfg.node));
+                }
+                newMaterials.addAll(this.readRawMaterials(cfg));
+                materials.put(cfg.node, new ArrayList<>(newMaterials));
+            }
+        }
+    }
+
+    /**
+     * Load the config file without filling our maps, mainly for checking for config changes
+     */
+    public void preLoad() {
+        try {
+            cfg.load(configFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Save the config to disk
+     */
+    public void save() {
+        try {
+            cfg.save(configFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Store a map entry into our map storage
+     *
+     * @param node   the node key
+     * @param key    the map key
+     * @param value  the map value
+     */
+    private void storeMapEntry(String node, String key, Double value) {
+        if (maps.containsKey(node)) {
+            maps.get(node).put(key, value);
+        } else {
+            Map<String, Double> map = new HashMap<>();
+            map.put(key, value);
+            maps.put(node, map);
         }
     }
 
@@ -417,6 +455,24 @@ public class TreeConfig {
     }
 
     /**
+     * Retrieve a Map Entry
+     *
+     * @param cfg the node to read
+     * @param key the map key to read
+     * @param def the fallback value in case there is no config setting
+     * @return the map entry value
+     */
+    public double getMapEntry(CFG cfg, String key, double def) {
+        if (maps.containsKey(cfg.node)) {
+            Map<String, Double> map = maps.get(cfg.node);
+
+            return map.containsKey(key) ? map.get(key) : def;
+        } else {
+            return def;
+        }
+    }
+
+    /**
      * Retrieve a string from the value maps.
      *
      * @param cfg the node of the value
@@ -439,6 +495,13 @@ public class TreeConfig {
         return result == null ? def : result;
     }
 
+    public Map<String, Double> getMap(CFG cfg) {
+        if (maps.containsKey(cfg.node)) {
+            return maps.get(cfg.node);
+        }
+        return new HashMap<>();
+    }
+
     /**
      * Retrieve a list of materials from the value maps
      *
@@ -450,24 +513,7 @@ public class TreeConfig {
             return materials.get(cfg.node);
         }
 
-        List<String> list = getStringList(cfg, new ArrayList<>());
-
-        List<Material> matList = new ArrayList<>();
-
-        for (String matName : list) {
-            if (matName.contains("*")) {
-                String needle = matName.substring(1).toLowerCase();
-                for (Material mat : Material.values()) {
-                    if (mat.name().toLowerCase().endsWith(needle)) {
-                        matList.add(mat);
-                    }
-                }
-            } else if (Material.matchMaterial(matName) != null){
-                matList.add(Material.matchMaterial(matName));
-            } else {
-                TreeAssist.instance.getLogger().warning("Invalid Material in TreeConfig " + configFile.getName() + " - Node " + cfg.node + " entry invalid: " + matName);
-            }
-        }
+        List<Material> matList = readRawMaterials(cfg);
 
         materials.put(cfg.node, matList);
 
@@ -493,5 +539,27 @@ public class TreeConfig {
         }
 
         return this.cfg.getStringList(cfg.node);
+    }
+
+    private List<Material> readRawMaterials(CFG cfg) {
+        List<String> list = getStringList(cfg, new ArrayList<>());
+
+        List<Material> matList = new ArrayList<>();
+
+        for (String matName : list) {
+            if (matName.contains("*")) {
+                String needle = matName.substring(1).toLowerCase();
+                for (Material mat : Material.values()) {
+                    if (mat.name().toLowerCase().endsWith(needle)) {
+                        matList.add(mat);
+                    }
+                }
+            } else if (Material.matchMaterial(matName) != null){
+                matList.add(Material.matchMaterial(matName));
+            } else {
+                TreeAssist.instance.getLogger().warning("Invalid Material in TreeConfig " + configFile.getName() + " - Node " + cfg.node + " entry invalid: " + matName);
+            }
+        }
+        return matList;
     }
 }
