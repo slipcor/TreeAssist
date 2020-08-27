@@ -1345,15 +1345,33 @@ public class TreeStructure {
 
             if (timeToProtect > 0) {
                 debug.i("Sapling at " + saplingBlock.getLocation().getBlock() + " will be protected for " + timeToProtect + " seconds");
-                TreeAssist.instance.saplingLocationList.add(saplingBlock.getLocation());
-                Runnable X = new TreeAssistProtect(saplingBlock.getLocation());
 
-                TreeAssist.instance
-                        .getServer()
-                        .getScheduler()
-                        .scheduleSyncDelayedTask(
-                                TreeAssist.instance,
-                                X,20 * timeToProtect);
+                if (delay > 0) {
+                    Runnable X = new TreeAssistProtect(saplingBlock.getLocation());
+                    TreeAssist.instance
+                            .getServer()
+                            .getScheduler()
+                            .scheduleSyncDelayedTask(
+                                    TreeAssist.instance,
+                                    () -> TreeAssist.instance.saplingLocationList.add(saplingBlock.getLocation()),
+                                    20 * delay);
+                    TreeAssist.instance
+                            .getServer()
+                            .getScheduler()
+                            .scheduleSyncDelayedTask(
+                                    TreeAssist.instance,
+                                    X, 20 * timeToProtect);
+
+                } else {
+                    TreeAssist.instance.saplingLocationList.add(saplingBlock.getLocation());
+                    Runnable X = new TreeAssistProtect(saplingBlock.getLocation());
+                    TreeAssist.instance
+                            .getServer()
+                            .getScheduler()
+                            .scheduleSyncDelayedTask(
+                                    TreeAssist.instance,
+                                    X, 20 * timeToProtect);
+                }
             } else  {
                 debug.i("Saplings do not need to be protected");
             }

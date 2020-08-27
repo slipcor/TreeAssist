@@ -1,6 +1,7 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+- v7.0.124 - actually delay sapling protection instead of enhancing it and starting it when the first block is broken - addresses github issue #53
 - v7.0.123 - warn when a config setting does not match the expected data type
 - v7.0.122 - actually use sapling replant delay in ticks, not seconds! - addresses github issue #54
 - v7.0.121 - only cancel the initial block break event if we kill it in the same instant anyway - addresses github issue #55

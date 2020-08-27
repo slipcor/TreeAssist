@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.123 - warn when a config setting does not match the expected data type
+- v7.0.124 - actually delay sapling protection instead of enhancing it and starting it when the first block is broken - addresses github issue #53
 - [read more](doc/changelog.md)
 custom drops:
 ***
