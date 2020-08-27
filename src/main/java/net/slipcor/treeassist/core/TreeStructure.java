@@ -159,6 +159,9 @@ public class TreeStructure {
             getAllExtras();
 
             if (extras == null || (extras.size() < config.getInt(TreeConfig.CFG.BLOCKS_REQUIRED, 10) && hasDistanceTo(neighborTrunks))) {
+                if (extras != null) {
+                    debug.i("Not enough extra blocks found: " + extras.size());
+                }
                 failReason = FailReason.NOT_ENOUGH_LEAVES;
                 valid = false;
             }
@@ -282,6 +285,9 @@ public class TreeStructure {
         getDirectionalExtras();
 
         if (extras == null || (extras.size() < 10 && hasDistanceTo(neighborTrunks))) {
+            if (extras != null) {
+                debug.i("Not enough extra blocks found: " + extras.size());
+            }
             valid = false;
             failReason = FailReason.NOT_ENOUGH_LEAVES;
         }
@@ -762,6 +768,7 @@ public class TreeStructure {
                 if (isInvalidExtraBlock(block.getRelative(face), face, radiusM, 1, true, edgesM, airM, radiusM)) {
                     valid = false;
                     failReason = FailReason.INVALID_BLOCK;
+                    debug.i("invalid block at " + BlockUtils.printBlock(block.getRelative(face)));
                     return;
                 }
             }
@@ -792,6 +799,7 @@ public class TreeStructure {
                         if (isInvalidExtraBlock(checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, radiusT)) {
                             valid = false;
                             failReason = FailReason.INVALID_BLOCK;
+                            debug.i("invalid block at " + BlockUtils.printBlock(checkBlock.getRelative(face)));
                             return;
                         }
                     }
@@ -799,9 +807,9 @@ public class TreeStructure {
                         !naturalBlocks.contains(checkMaterial) &&
                                 !trunkBlocks.contains(checkMaterial) &&
                                 !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                    debug.i("Invalid block found: " + checkMaterial);
                     valid = false;
                     failReason = FailReason.INVALID_BLOCK;
+                    debug.i("invalid block at " + BlockUtils.printBlock(checkBlock));
                     return;
                 }
             }
@@ -885,6 +893,7 @@ public class TreeStructure {
                 if (isInvalidExtraBlock(checkBlock.getRelative(face), face, radiusM, 1, true, edgesM, airM, radiusM)) {
                     valid = false;
                     failReason = FailReason.INVALID_BLOCK;
+                    debug.i("invalid block at " + BlockUtils.printBlock(checkBlock.getRelative(face)));
                     return;
                 }
             }
@@ -918,6 +927,7 @@ public class TreeStructure {
                             if (isInvalidExtraBlock(checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, radiusT)) {
                                 valid = false;
                                 failReason = FailReason.INVALID_BLOCK;
+                                debug.i("invalid block at " + BlockUtils.printBlock(checkBlock.getRelative(face)));
                                 return;
                             }
                         }
@@ -925,9 +935,9 @@ public class TreeStructure {
                             !naturalBlocks.contains(checkMaterial) &&
                                     !trunkBlocks.contains(checkMaterial) &&
                                     !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                        debug.i("Invalid block found: " + checkMaterial);
                         valid = false;
                         failReason = FailReason.INVALID_BLOCK;
+                        debug.i("invalid block at " + BlockUtils.printBlock(checkBlock));
                         return;
                     }
                 }

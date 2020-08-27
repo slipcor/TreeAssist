@@ -280,4 +280,8 @@ public class BlockUtils {
         set.clear();
         set.addAll(temp);
     }
+
+    public static String printBlock(Block block) {
+        return block.getWorld().getName() +":"+block.getX()+"/"+block.getY()+"/"+block.getZ()+" - " + block.getType().name();
+    }
 }

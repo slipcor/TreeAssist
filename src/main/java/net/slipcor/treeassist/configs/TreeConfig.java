@@ -409,6 +409,10 @@ public class TreeConfig {
         return cfg;
     }
 
+    public String getConfigName() {
+        return configFile.getName();
+    }
+
     /**
      * Retrieve a boolean from the value maps.
      *

@@ -115,7 +115,7 @@ public class TreeAssistBlockListener implements Listener {
         }
 
         if (!TreeStructure.allTrunks.contains(block.getType())) {
-            debug.i("Not a tree block: " + block.getType());
+            debug.i("Not a burning tree block: " + block.getType());
             return;
         }
 
@@ -129,10 +129,9 @@ public class TreeAssistBlockListener implements Listener {
         }
 
         for (TreeConfig config : TreeAssist.treeConfigs.values()) {
-            List<String> list = config.getStringList(TreeConfig.CFG.TRUNK_MATERIALS, new ArrayList<>());
-            for (String matName : list) {
-                Material mat = Material.matchMaterial(matName);
-                debug.i("checking for material " + mat);
+            List<Material> list = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
+            for (Material mat : list) {
+                debug.i("checking for material " + mat + "(" + config.getConfigName() +")");
                 if (block.getType().equals(mat)) {
 
 
@@ -213,19 +212,19 @@ public class TreeAssistBlockListener implements Listener {
         TreeStructure foundTree = null;
 
         configs: for (TreeConfig config : TreeAssist.treeConfigs.values()) {
-            List<String> list = config.getStringList(TreeConfig.CFG.TRUNK_MATERIALS, new ArrayList<>());
-            for (String matName : list) {
-                Material mat = Material.matchMaterial(matName);
+            List<Material> list = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
+            debug.i("--- checking config " + config.getConfigName());
+            for (Material mat : list) {
                 debug.i("checking for material " + mat);
                 if (event.getBlock().getType().equals(mat)) {
                     Block block = TreeStructure.findBottomBlock(event.getBlock(), config);
                     if (block != null) {
-                        debug.i("Tree found for Material " + matName);
+                        debug.i("Tree found for Material " + mat);
 
                         TreeStructure trunk = new TreeStructure(config, block, false);
 
                         if (trunk.isValid()) {
-                            debug.i("Tree matches " + matName);
+                            debug.i("Tree matches " + mat);
 
                             if (plugin.getMainConfig().getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&
                                 !player.hasPermission(config.getString(TreeConfig.CFG.PERMISSION))) {
@@ -332,7 +331,7 @@ public class TreeAssistBlockListener implements Listener {
 
                             // else:  we did not find a match or we do not want to force remove it - let's try another!
                         }
-                        debug.i("Shape does not match " + matName + (trunk.failReason) );
+                        debug.i("Shape does not match " + mat + " (" + trunk.failReason + ")" );
                         if (trunk.failReason == FailReason.INVALID_BLOCK) {
                             break configs; // do not try to find a different tree!
                         }
