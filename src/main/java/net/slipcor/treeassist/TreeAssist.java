@@ -25,7 +25,7 @@ import java.io.*;
 import java.util.*;
 
 public class TreeAssist extends JavaPlugin {
-    public static Map<String, TreeConfig> treeConfigs = new HashMap<>();        // The TreeConfigs which define what constitutes a tree
+    public static Map<String, TreeConfig> treeConfigs = new LinkedHashMap<>();        // The TreeConfigs which define what constitutes a tree
     public static TreeAssist instance;                                          // Static plugin instance
 
     public List<Location> saplingLocationList = new ArrayList<>();              // List of protected saplings

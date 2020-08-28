@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.125 - fix a config loading error causing thick trees and mushrooms not being recognized as trees
+- v7.0.129 - keep tree configs in a sane order to always catch tall oaks properly (child configs have precedence now)
 - [read more](doc/changelog.md)
 custom drops:
 ***

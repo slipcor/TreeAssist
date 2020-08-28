@@ -463,6 +463,14 @@ public class TreeStructure {
         for (String key : processing.keySet()) {
             TreeAssist.instance.getLogger().severe("Parent file not found for: " + key);
         }
+
+        List<String> keys = new ArrayList<>(TreeAssist.treeConfigs.keySet());
+        Collections.reverse(keys);
+        Map<String, TreeConfig> reverseMap = new LinkedHashMap<>();
+        for (String s : keys) {
+            reverseMap.put(s, TreeAssist.treeConfigs.get(s));
+        }
+        TreeAssist.treeConfigs = reverseMap;
     }
 
     ///////////////////

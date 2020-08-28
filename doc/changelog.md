@@ -1,6 +1,11 @@
 # v7.X Changelog
 
 ## v7.0 - Minecraft 1.16 Rewrite
+
+- v7.0.129 - keep tree configs in a sane order to always catch tall oaks properly (child configs have precedence now)
+- v7.0.128 - properly reset debugger to allow for more debugs after closing the first one
+- v7.0.127 - enhance force growing to support tall oak trees
+- v7.0.126 - fix another config parsing error, caused by compatible but wrong config settings
 - v7.0.125 - fix a config loading error causing thick trees and mushrooms not being recognized as trees
 - v7.0.124 - actually delay sapling protection instead of enhancing it and starting it when the first block is broken - addresses github issue #53
 - v7.0.123 - warn when a config setting does not match the expected data type
