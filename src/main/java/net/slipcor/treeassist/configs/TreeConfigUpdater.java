@@ -11,6 +11,7 @@ public class TreeConfigUpdater {
         TOOL_LIST_NETHERITE(7.0106f, "default", TreeConfig.CFG.TOOL_LIST, "minecraft:netherite_axe"),
         NATURAL_AZURE_CORRECT(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:azure_bluet"),
         NATURAL_COCOA_CORRECT(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:cocoa"),
+        NATURAL_PEONY(7.0129f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:peony"),
         ;
 
         private final float version;

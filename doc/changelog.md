@@ -2,6 +2,7 @@
 
 ## v7.0 - Minecraft 1.16 Rewrite
 
+- v7.0.130 - add Peony to the naturally occurring blocks
 - v7.0.129 - keep tree configs in a sane order to always catch tall oaks properly (child configs have precedence now)
 - v7.0.128 - properly reset debugger to allow for more debugs after closing the first one
 - v7.0.127 - enhance force growing to support tall oak trees
