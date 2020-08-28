@@ -272,6 +272,8 @@ public class TreeConfig {
 
             CFG node = CFG.getByNode(s);
 
+            double value = 0;
+
             if (object instanceof Boolean) {
                 if (node != null && node.type.equals("boolean")) {
                     booleans.put(s, (Boolean) object);
@@ -282,7 +284,7 @@ public class TreeConfig {
                 if (node != null && node.type.equals("int")) {
                     ints.put(s, (Integer) object);
                 } else if (node != null && node.type.equals("double")) {
-                    double value = (Integer) object;
+                    value = (Integer) object;
                     TreeAssist.instance.getLogger().warning(configFile.getName() + ": " + s + " expects double, integer given!");
                     doubles.put(s, value);
                 } else if (node != null) {
@@ -291,8 +293,9 @@ public class TreeConfig {
             } else if (object instanceof Double) {
                 if (node != null && node.type.equals("double")) {
                     doubles.put(s, (Double) object);
+                    value = (Double) object;
                 } else if (node != null && node.type.equals("int")) {
-                    double value = (Double) object;
+                    value = (Double) object;
                     TreeAssist.instance.getLogger().warning(configFile.getName() + ": " + s + " expects integer, double given. Trying to round!");
                     ints.put(s, (int) value);
                 } else if (node != null) {
@@ -320,12 +323,12 @@ public class TreeConfig {
                         try {
                             Material testMaterial = Material.matchMaterial(material, false);
                             if (testMaterial != null) {
-                                storeMapEntry(test.substring(0, test.length()-1), material, (Double) object);
+                                storeMapEntry(test.substring(0, test.length()-1), material, value);
                                 continue root;
                             }
                             testMaterial = Material.matchMaterial(material, true);
                             if (testMaterial != null) {
-                                storeMapEntry(test.substring(0, test.length()-1), material, (Double) object);
+                                storeMapEntry(test.substring(0, test.length()-1), material, value);
                                 TreeAssist.instance.getLogger().warning("Legacy name used: " + material + " is now " + testMaterial.name());
                                 continue root;
                             }
