@@ -54,7 +54,7 @@ public class CommandForceGrow extends AbstractCommand {
                             BlockState state = block.getState();
                             Sapling sap = (Sapling) state.getData();
 
-                            TreeType type = TreeType.TREE;
+                            TreeType type = args.length > 2 ? TreeType.BIG_TREE : TreeType.TREE;
 
                             if (sap.getSpecies() != TreeSpecies.GENERIC) {
                                 type = TreeType.valueOf(sap.getSpecies().name());
