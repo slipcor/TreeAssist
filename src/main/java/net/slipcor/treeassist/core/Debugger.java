@@ -141,6 +141,7 @@ public class Debugger {
             }
         }
         loggers.clear();
+        logger = null;
     }
 
     public static String parse(Location location) {
