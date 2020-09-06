@@ -5,7 +5,7 @@ import java.util.Random;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.core.Debugger;
 import net.slipcor.treeassist.configs.TreeConfig;
-import net.slipcor.treeassist.events.TASaplingReplaceEvent;
+import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.runnables.TreeAssistSaplingSelfPlant;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import org.bukkit.entity.Item;
@@ -37,7 +37,7 @@ public class TreeAssistSpawnListener implements Listener {
 					return;
 				}
 
-				TASaplingReplaceEvent newEvent = new TASaplingReplaceEvent(
+				TASaplingPlaceEvent newEvent = new TASaplingPlaceEvent(
 						event.getEntity().getLocation().getBlock(),
 						drop.getItemStack().getType());
 				TreeAssist.instance.getServer().getPluginManager().callEvent(newEvent);

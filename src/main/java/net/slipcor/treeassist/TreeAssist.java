@@ -420,13 +420,24 @@ public class TreeAssist extends JavaPlugin {
      * @return a set of matching trees that match
      */
     public Set<TreeStructure> treesThatQualify(TreeConfig config, Block block) {
+        return treesThatQualify(config, block, 2500);
+    }
+
+    /**
+     * Look for all trees that could be close and match the config
+     *
+     * @param config the config to compare
+     * @param block the block to check against
+     * @return a set of matching trees that match
+     */
+    public Set<TreeStructure> treesThatQualify(TreeConfig config, Block block, int distanceSquared) {
         Set<TreeStructure> checkTrees = new HashSet<>(validTrees);
         Set<TreeStructure> result = new HashSet<>();
         for (TreeStructure tree : checkTrees) {
             if (config.equals(tree.getConfig())) {
                 Location myBlock = block.getLocation();
                 Location otherLocation = tree.bottom.getLocation();
-                if (myBlock.getWorld().equals(otherLocation.getWorld()) && myBlock.distanceSquared(otherLocation) < 2500) {
+                if (myBlock.getWorld().equals(otherLocation.getWorld()) && myBlock.distanceSquared(otherLocation) < distanceSquared) {
                     result.add(tree);
                 }
             }

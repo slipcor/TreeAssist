@@ -2,6 +2,7 @@
 
 ## v7.0 - Minecraft 1.16 Rewrite
 
+- v7.0.132 - delay sapling replant until cleanup is done - addresses github issue #57 and issue #58
 - v7.0.131 - handle sapling replant enforcement with appropriate priority and do not replant before the cleanup - addresses github issue #57
 - v7.0.130 - add Peony to the naturally occurring blocks
 - v7.0.129 - keep tree configs in a sane order to always catch tall oaks properly (child configs have precedence now)

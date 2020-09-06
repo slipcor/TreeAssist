@@ -2,6 +2,8 @@ package net.slipcor.treeassist.runnables;
 
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.configs.TreeConfig;
+import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.utils.BlockUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -26,12 +28,16 @@ public class TreeAssistReplant implements Runnable {
 
     @Override
     public void run() {
+        TreeStructure.debug.i("TreeAssistReplant!");
         Material below = this.block.getRelative(BlockFace.DOWN).getType();
         if (TreeAssist.instance.isEnabled() && (config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS).contains(below))) {
+            TreeStructure.debug.i("Replanting block: " + BlockUtils.printBlock(block));
             this.block.setType(mat);
             if (config.getInt(TreeConfig.CFG.REPLANTING_DELAY_GROWTH_SECONDS) > 0) {
                 TreeAssist.instance.getBlockListener().getAntiGrow().add(this.block, config.getInt(TreeConfig.CFG.REPLANTING_DELAY_GROWTH_SECONDS));
             }
+        } else {
+            TreeStructure.debug.i("Not a ground block: " + below.name());
         }
     }
 }

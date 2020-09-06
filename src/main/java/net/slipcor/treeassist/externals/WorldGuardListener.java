@@ -9,7 +9,7 @@ import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.events.TASaplingReplaceEvent;
+import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.events.TATreeBrokenEvent;
 import org.bukkit.block.Block;
 import org.bukkit.event.Cancellable;
@@ -51,7 +51,7 @@ public class WorldGuardListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onSaplingReplace(TASaplingReplaceEvent event) {
+    public void onSaplingReplace(TASaplingPlaceEvent event) {
         cancelIfProtected(event, event.getBlock(), replantFlag);
     }
 

@@ -6,7 +6,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class TASaplingReplaceEvent extends Event implements Cancellable {
+public class TASaplingPlaceEvent extends Event implements Cancellable {
 
 private static final HandlerList handlers = new HandlerList();
 
@@ -26,10 +26,10 @@ private static final HandlerList handlers = new HandlerList();
     /**
      * TreeAssist Sapling Replace Event
      *
-     * @param block the block that will be replaced
-     * @param type the material we will replace
+     * @param block the block that will be placed
+     * @param type the material we will place
      */
-    public TASaplingReplaceEvent(Block block, Material type)
+    public TASaplingPlaceEvent(Block block, Material type)
     {
     	super();
     	this.block  = block;
@@ -38,14 +38,14 @@ private static final HandlerList handlers = new HandlerList();
     }
 
     /**
-     * @return the block that will be replaced
+     * @return the block that will be placed
      */
     public Block getBlock() {
     	return this.block;
     }
 
     /**
-     * @return the material we will replace with
+     * @return the material we will place
      */
     public Material getType() {
         return this.type;
@@ -69,7 +69,7 @@ private static final HandlerList handlers = new HandlerList();
 	}
 
     /**
-     * Set the replacement material
+     * Set the placement material
      * @param value the value to set to
      */
 	public void setMaterial(Material value) {

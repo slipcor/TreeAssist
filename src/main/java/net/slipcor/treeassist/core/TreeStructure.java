@@ -5,13 +5,13 @@ import net.slipcor.treeassist.configs.MainConfig;
 import net.slipcor.treeassist.configs.TreeConfig;
 import net.slipcor.treeassist.configs.TreeConfigUpdater;
 import net.slipcor.treeassist.runnables.CleanRunner;
-import net.slipcor.treeassist.runnables.TreeAssistProtect;
 import net.slipcor.treeassist.runnables.TreeAssistReplant;
-import net.slipcor.treeassist.events.TASaplingReplaceEvent;
+import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.events.TATreeBrokenEvent;
 import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import net.slipcor.treeassist.utils.ToolUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
@@ -44,6 +44,7 @@ public class TreeStructure {
     private final Set<Material> naturalBlocks;
     private final Set<Material> groundBlocks;
     private List<Block> neighborTrunks = new ArrayList<>();
+    private final List<TreeAssistReplantDelay> saplings = new ArrayList<>();
     private Map<Block, List<Block>> branchMap;
     protected Set<Block> extras;
     private final List<Block> roofs = new ArrayList<>();
@@ -1352,54 +1353,19 @@ public class TreeStructure {
         }
 
         for (Block saplingBlock : bottoms) {
+            debug.i("checking bottom: " + BlockUtils.printBlock(saplingBlock));
 
-            TASaplingReplaceEvent replaceEvent = new TASaplingReplaceEvent(saplingBlock, saplingMat);
-            TreeAssist.instance.getServer().getPluginManager().callEvent(replaceEvent);
+            TASaplingPlaceEvent placeEvent = new TASaplingPlaceEvent(saplingBlock, saplingMat);
+            TreeAssist.instance.getServer().getPluginManager().callEvent(placeEvent);
 
-            if (replaceEvent.isCancelled()) {
-                debug.i("Sapling replace was cancelled by a plugin!");
+            if (placeEvent.isCancelled()) {
+                debug.i("Sapling placement was cancelled by a plugin!");
                 continue;
             }
 
-            Runnable b = new TreeAssistReplant(saplingBlock, replaceEvent.getType(), config);
-            TreeAssist.instance.getServer().getScheduler()
-                    .scheduleSyncDelayedTask(TreeAssist.instance, b, 20 * delay);
-            int timeToProtect = config.getInt(TreeConfig.CFG.REPLANTING_PROTECT_FOR_SECONDS);
+            Runnable b = new TreeAssistReplant(saplingBlock, placeEvent.getType(), config);
 
-            timeToProtect += delay; // prevent the protection running out before the sapling was even planted
-
-            if (timeToProtect > 0) {
-                debug.i("Sapling at " + saplingBlock.getLocation().getBlock() + " will be protected for " + timeToProtect + " seconds");
-
-                if (delay > 0) {
-                    Runnable X = new TreeAssistProtect(saplingBlock.getLocation());
-                    TreeAssist.instance
-                            .getServer()
-                            .getScheduler()
-                            .scheduleSyncDelayedTask(
-                                    TreeAssist.instance,
-                                    () -> TreeAssist.instance.saplingLocationList.add(saplingBlock.getLocation()),
-                                    20 * delay);
-                    TreeAssist.instance
-                            .getServer()
-                            .getScheduler()
-                            .scheduleSyncDelayedTask(
-                                    TreeAssist.instance,
-                                    X, 20 * timeToProtect);
-
-                } else {
-                    TreeAssist.instance.saplingLocationList.add(saplingBlock.getLocation());
-                    Runnable X = new TreeAssistProtect(saplingBlock.getLocation());
-                    TreeAssist.instance
-                            .getServer()
-                            .getScheduler()
-                            .scheduleSyncDelayedTask(
-                                    TreeAssist.instance,
-                                    X, 20 * timeToProtect);
-                }
-            } else  {
-                debug.i("Saplings do not need to be protected");
-            }
+            this.saplings.add(new TreeAssistReplantDelay(this, saplingBlock, b, delay));
         }
     }
 
@@ -1583,5 +1549,19 @@ public class TreeStructure {
 
     public void setValid(boolean value) {
         this.valid = value;
+    }
+
+    public void plantSaplings() {
+        debug.i("We are now planning to replant!");
+        List<TreeAssistReplantDelay> mySaplings = new ArrayList<>(saplings);
+        for (TreeAssistReplantDelay replanting : mySaplings) {
+            replanting.commit();
+        }
+        saplings.clear();
+    }
+
+    public void addReplantDelay(TreeAssistReplantDelay delay) {
+        delay.setTree(this);
+        this.saplings.add(delay);
     }
 }

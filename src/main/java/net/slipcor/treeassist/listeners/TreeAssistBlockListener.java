@@ -6,7 +6,7 @@ import net.slipcor.treeassist.configs.TreeConfig;
 import net.slipcor.treeassist.runnables.TreeAssistAntiGrow;
 import net.slipcor.treeassist.runnables.TreeAssistReplant;
 import net.slipcor.treeassist.core.*;
-import net.slipcor.treeassist.events.TASaplingReplaceEvent;
+import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.externals.mcMMOHook;
 import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
@@ -145,7 +145,7 @@ public class TreeAssistBlockListener implements Listener {
                                 if (grounds.contains(oneBelow.getType())) {
                                     Material replantMat = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
                                     if (MaterialUtils.isAir(oneAbove.getType()) || oneAbove.getType() == logMat) {
-                                        TASaplingReplaceEvent event = new TASaplingReplaceEvent(block, replantMat);
+                                        TASaplingPlaceEvent event = new TASaplingPlaceEvent(block, replantMat);
                                         TreeAssist.instance.getServer().getPluginManager().callEvent(event);
                                         if (event.isCancelled()) {
                                             debug.i("TreeAssistBlockListener.checkFire() Sapling Replant was cancelled!");

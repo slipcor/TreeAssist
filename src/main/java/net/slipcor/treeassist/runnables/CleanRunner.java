@@ -33,14 +33,21 @@ public class CleanRunner extends BukkitRunnable {
                     debug.i("CleanRunner: skipping breaking a sapling");
                     continue;
                 }
+                if (block.getType().isAir()) {
+                    debug.i("CleanRunner: skipping air");
+                    continue;
+                }
                 debug.i("CleanRunner: 1");
                 BlockUtils.breakBlock(block);
             }
-            removeBlocks.clear();
         } else {
             for (Block block : removeBlocks) {
                 if (sapling.equals(block.getType())) {
                     debug.i("CleanRunner: skipping breaking a sapling");
+                    continue;
+                }
+                if (block.getType().isAir()) {
+                    debug.i("CleanRunner: skipping air");
                     continue;
                 }
                 debug.i("CleanRunner: 2");
@@ -50,6 +57,8 @@ public class CleanRunner extends BukkitRunnable {
                 return;
             }
         }
+        me.plantSaplings();
+        removeBlocks.clear();
 
         me.setValid(false);
         me.failReason = FailReason.INVALID_BLOCK;
