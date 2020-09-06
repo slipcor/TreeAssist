@@ -7,7 +7,6 @@ import java.util.Set;
 
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.configs.TreeConfig;
-import net.slipcor.treeassist.core.TreeAssistReplantDelay;
 import net.slipcor.treeassist.core.TreeStructure;
 import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;

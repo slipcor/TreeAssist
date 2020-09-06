@@ -8,10 +8,10 @@ import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.runnables.TreeAssistReplant;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.events.TATreeBrokenEvent;
+import net.slipcor.treeassist.runnables.TreeAssistReplantDelay;
 import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import net.slipcor.treeassist.utils.ToolUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
@@ -1325,12 +1325,6 @@ public class TreeStructure {
         debug.i("we are replacing now!");
 
         int delay = Math.max(1, config.getInt(TreeConfig.CFG.REPLANTING_DELAY));
-
-        int cleanDelay = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CLEANUP_DELAY_TIME);
-
-        if (cleanDelay > 0 && delay < cleanDelay) {
-            delay = cleanDelay + 1; // do not start before the cleanup, and give the server time to clean
-        }
 
         Material saplingMat = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
 

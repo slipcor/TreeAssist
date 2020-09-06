@@ -1,22 +1,22 @@
-package net.slipcor.treeassist.core;
+package net.slipcor.treeassist.runnables;
 
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.configs.TreeConfig;
-import net.slipcor.treeassist.runnables.TreeAssistProtect;
+import net.slipcor.treeassist.core.TreeStructure;
 import net.slipcor.treeassist.utils.BlockUtils;
 import org.bukkit.block.Block;
 
 import java.util.Set;
 
 public class TreeAssistReplantDelay {
-    Runnable b;
-    int delay;
+    Runnable runnable;
+    int delayTicks;
     TreeStructure tree;
     Block saplingBlock;
 
-    public TreeAssistReplantDelay(TreeStructure tree, Block saplingBlock, Runnable b, int delay) {
-        this.b = b;
-        this.delay = delay;
+    public TreeAssistReplantDelay(TreeStructure tree, Block saplingBlock, Runnable runnable, int delayTicks) {
+        this.runnable = runnable;
+        this.delayTicks = delayTicks;
         this.tree = tree;
         this.saplingBlock = saplingBlock;
     }
@@ -39,16 +39,16 @@ public class TreeAssistReplantDelay {
         TreeStructure.debug.i("committing TreeAssistReplantDelay " + this.tree);
 
         TreeAssist.instance.getServer().getScheduler()
-                .scheduleSyncDelayedTask(TreeAssist.instance, b, 20 * delay);
+                .scheduleSyncDelayedTask(TreeAssist.instance, runnable, 20 * delayTicks);
         int timeToProtect = tree.getConfig().getInt(TreeConfig.CFG.REPLANTING_PROTECT_FOR_SECONDS);
 
-        timeToProtect += delay; // prevent the protection running out before the sapling was even planted
+        timeToProtect += delayTicks; // prevent the protection running out before the sapling was even planted
 
         if (timeToProtect > 0) {
             TreeStructure.debug.i("Sapling at " + saplingBlock.getLocation().getBlock() + " will be protected for " + timeToProtect + " seconds");
 
-            if (delay > 0) {
-                TreeStructure.debug.i("Sapling will be protected (after " + delay + ") at " + BlockUtils.printBlock(saplingBlock));
+            if (delayTicks > 0) {
+                TreeStructure.debug.i("Sapling will be protected (after " + delayTicks + ") at " + BlockUtils.printBlock(saplingBlock));
                 Runnable X = new TreeAssistProtect(saplingBlock.getLocation());
                 TreeAssist.instance
                         .getServer()
@@ -56,7 +56,7 @@ public class TreeAssistReplantDelay {
                         .scheduleSyncDelayedTask(
                                 TreeAssist.instance,
                                 () -> TreeAssist.instance.saplingLocationList.add(saplingBlock.getLocation()),
-                                20 * delay);
+                                20 * delayTicks);
                 TreeAssist.instance
                         .getServer()
                         .getScheduler()

@@ -71,9 +71,8 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.133 - also delay saplings that try to plant themselves until after all self cleaning trees are done! - should wrap up tickets #57 and #57 
+- v7.0.134 - remove the former hackfix to try to make saplings appear after the cleanup - this only worked in some cases 
 - [read more](doc/changelog.md)
-custom drops:
 ***
 
 ## Phoning home
