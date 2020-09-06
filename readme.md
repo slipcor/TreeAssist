@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.132 - delay sapling replant until cleanup is done - addresses github issue #57 and issue #58 
+- v7.0.133 - also delay saplings that try to plant themselves until after all self cleaning trees are done! - should wrap up tickets #57 and #57 
 - [read more](doc/changelog.md)
 custom drops:
 ***

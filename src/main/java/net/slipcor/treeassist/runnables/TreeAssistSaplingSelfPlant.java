@@ -1,11 +1,15 @@
 package net.slipcor.treeassist.runnables;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.configs.TreeConfig;
+import net.slipcor.treeassist.core.TreeAssistReplantDelay;
+import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -36,8 +40,32 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 		if (delay < 1) {
 			delay = 1;
 		}
+
+		int radius = config.getInt(TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS);
+
+		List<TreeStructure> trees = new ArrayList<>(TreeAssist.instance.treesThatQualify(config, item.getLocation().getBlock(), radius * radius));
+
+		for (TreeStructure tree : trees) {
+			if (tree.isValid()) {
+				tree.addReplantDelay(new TreeAssistReplantDelay(tree, findBlock(item), this, delay));
+				return;
+			}
+		}
 		
 		Bukkit.getScheduler().runTaskLater(TreeAssist.instance, this, delay);
+	}
+
+	private Block findBlock(Item item) {
+		Block result = item.getLocation().getBlock();
+		while (result.getY() > 1 && !config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS).contains(result.getType()) || !result.getType().isSolid()) {
+			result = result.getRelative(BlockFace.DOWN);
+		}
+		if (result.getY() <= 1) {
+			TreeStructure.debug.i("we did not find a valid block");
+			return item.getLocation().getBlock();
+		}
+		TreeStructure.debug.i("we went down to " + BlockUtils.printBlock(result));
+		return result.getRelative(BlockFace.UP);
 	}
 
 	@Override
