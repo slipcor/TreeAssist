@@ -1307,22 +1307,29 @@ public class TreeStructure {
                     return;
                 }
             }
-        }
-        if (!(block.equals(bottom) ||
-                block.equals(northWestBlock) ||
-                block.equals(southWestBlock) ||
-                block.equals(northEastBlock) ||
-                block.equals(southEastBlock)
-        )) {
-            if (config.getBoolean(TreeConfig.CFG.REPLANTING_ONLY_WHEN_BOTTOM_BLOCK_BROKEN_FIRST)) {
-                debug.i("We did not break the bottom!");
-                return;
+
+            if (!(block.equals(bottom) ||
+                    block.equals(northWestBlock) ||
+                    block.equals(southWestBlock) ||
+                    block.equals(northEastBlock) ||
+                    block.equals(southEastBlock)
+            )) {
+                if (config.getBoolean(TreeConfig.CFG.REPLANTING_ONLY_WHEN_BOTTOM_BLOCK_BROKEN_FIRST)) {
+                    debug.i("We did not break the bottom!");
+                    return;
+                }
             }
         }
 
         debug.i("we are replacing now!");
 
         int delay = Math.max(1, config.getInt(TreeConfig.CFG.REPLANTING_DELAY));
+
+        int cleanDelay = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CLEANUP_DELAY_TIME);
+
+        if (cleanDelay > 0 && delay < cleanDelay) {
+            delay = cleanDelay + 1; // do not start before the cleanup, and give the server time to clean
+        }
 
         Material saplingMat = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
 

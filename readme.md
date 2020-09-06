@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.130 - add Peony to the naturally occurring blocks
+- v7.0.131 - handle sapling replant enforcement with appropriate priority and do not replant before the cleanup - addresses github issue #57 
 - [read more](doc/changelog.md)
 custom drops:
 ***
