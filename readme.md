@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.134 - remove the former hackfix to try to make saplings appear after the cleanup - this only worked in some cases 
+- v7.0.135 - properly actually read map values when reading config values (probabilities) 
 - [read more](doc/changelog.md)
 ***
 

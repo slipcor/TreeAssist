@@ -323,11 +323,13 @@ public class TreeConfig {
                         try {
                             Material testMaterial = Material.matchMaterial(material, false);
                             if (testMaterial != null) {
+                                value = getYamlConfiguration().getDouble(s);
                                 storeMapEntry(test.substring(0, test.length()-1), material, value);
                                 continue root;
                             }
                             testMaterial = Material.matchMaterial(material, true);
                             if (testMaterial != null) {
+                                value = getYamlConfiguration().getDouble(s);
                                 storeMapEntry(test.substring(0, test.length()-1), material, value);
                                 TreeAssist.instance.getLogger().warning("Legacy name used: " + material + " is now " + testMaterial.name());
                                 continue root;
@@ -386,6 +388,7 @@ public class TreeConfig {
      * @param value  the map value
      */
     private void storeMapEntry(String node, String key, Double value) {
+        //debug.i("adding " + configFile.getName() + " map entry " + node + " - " + key + " - " + value);
         if (maps.containsKey(node)) {
             maps.get(node).put(key, value);
         } else {
