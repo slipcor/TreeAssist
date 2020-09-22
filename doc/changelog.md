@@ -2,6 +2,8 @@
 
 ## v7.0 - Minecraft 1.16 Rewrite
 
+- v7.0.137 - do not attempt to drop an AIR block - addresses github issue #60 
+- v7.0.136 - debug version bump
 - v7.0.135 - properly actually read map values when reading config values (probabilities)
 - v7.0.134 - remove the former hackfix to try to make saplings appear after the cleanup - this only worked in some cases
 - v7.0.133 - also delay saplings that try to plant themselves until after all self cleaning trees are done! - should wrap up tickets #57 and #57

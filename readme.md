@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.135 - properly actually read map values when reading config values (probabilities) 
+- v7.0.137 - do not attempt to drop an AIR block - addresses github issue #60 
 - [read more](doc/changelog.md)
 ***
 

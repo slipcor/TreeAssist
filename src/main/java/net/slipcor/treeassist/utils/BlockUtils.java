@@ -83,6 +83,9 @@ public class BlockUtils {
             }
 
             for(ItemStack item : drops) {
+                if (item.getType().isAir()) {
+                    continue; // prevent Spigot from trying to drop air. Why are we even getting an air drop?
+                }
                 block.getWorld().dropItemNaturally(block.getLocation(), item);
             }
         } else {
