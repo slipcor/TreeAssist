@@ -37,6 +37,7 @@ public class TreeConfig {
         AUTOMATIC_DESTRUCTION_REQUIRES_TOOLS("Automatic Destruction.Requires Tools", true),
         AUTOMATIC_DESTRUCTION_WHEN_SNEAKING("Automatic Destruction.When Sneaking", true),
         AUTOMATIC_DESTRUCTION_WHEN_NOT_SNEAKING("Automatic Destruction.When Not Sneaking", true),
+        AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH("Automatic Destruction.Use Silk Touch", true),
 
         BLOCK_STATISTICS_MINE_BLOCK("Block Statistics.Mine Block", false),
         BLOCK_STATISTICS_PICKUP("Block Statistics.Pickup", false),

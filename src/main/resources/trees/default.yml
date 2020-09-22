@@ -23,6 +23,8 @@ Automatic Destruction:
   # Here you can restrict whether automation only happens when sneaking or not sneaking
   When Sneaking: true
   When Not Sneaking: true
+  # Apply silk touch affect when a player has it
+  Use Silk Touch: true
 Block Statistics:
   Mine Block: false
   Pickup: false

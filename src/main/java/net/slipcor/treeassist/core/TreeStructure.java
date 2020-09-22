@@ -1221,7 +1221,7 @@ public class TreeStructure {
             player.getInventory().addItem(drops.toArray(new ItemStack[0]));
             block.setType(Material.AIR, true);
         } else {
-            if (tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
+            if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH) && tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
                     && MaterialUtils.isMushroom(block.getType())) {
                 Material mat = block.getType();
                 block.setType(Material.AIR, true);
@@ -1232,7 +1232,11 @@ public class TreeStructure {
                     player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
                 }
             } else {
-                BlockUtils.breakBlock(player, block, tool, bottom.getY());
+                ItemStack anotherTool = tool;
+                if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH)) {
+                    anotherTool = new ItemStack(tool.getType(), tool.getAmount());
+                }
+                BlockUtils.breakBlock(player, block, anotherTool, bottom.getY());
             }
         }
         player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());

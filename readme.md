@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.137 - do not attempt to drop an AIR block - addresses github issue #60 
+- v7.0.138 - allow to disable silk touch effect with automated destruction 
 - [read more](doc/changelog.md)
 ***
 
