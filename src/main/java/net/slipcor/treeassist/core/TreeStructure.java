@@ -1233,7 +1233,7 @@ public class TreeStructure {
                 }
             } else {
                 ItemStack anotherTool = tool;
-                if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH)) {
+                if (tool != null && !config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH)) {
                     anotherTool = new ItemStack(tool.getType(), tool.getAmount());
                 }
                 BlockUtils.breakBlock(player, block, anotherTool, bottom.getY());

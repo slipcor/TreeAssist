@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.138 - allow to disable silk touch effect with automated destruction 
+- v7.0.139 - simplify leaf decay check to support jungle bushes 
 - [read more](doc/changelog.md)
 ***
 

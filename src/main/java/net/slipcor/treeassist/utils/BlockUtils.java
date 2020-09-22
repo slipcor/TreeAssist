@@ -104,9 +104,8 @@ public class BlockUtils {
      *
      * @param block the block to check
      * @param config the tree config to check against
-     * @param trees known trees so far
      */
-    private static boolean isLonelyLeaf(Block block, TreeConfig config, Set<TreeStructure> trees) {
+    private static boolean isLonelyLeaf(Block block, TreeConfig config) {
         List<Material> extras = config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS);
         if (!extras.contains(block.getType())) {
             return false;
@@ -132,10 +131,9 @@ public class BlockUtils {
                 }
             }
 
-            for (TreeStructure tree : trees) {
-                if (tree.containsBlock(block)) {
-                    return false;
-                }
+
+            if (TreeStructure.allTrunks.contains(block.getType())) {
+                return false;
             }
 
             return true;
@@ -162,15 +160,13 @@ public class BlockUtils {
         int y = block.getY();
         int z = block.getZ();
 
-        Set<TreeStructure> validTrees = new HashSet<>(TreeAssist.instance.treesThatQualify(config, block));
-
         Set<Block> breakables = new LinkedHashSet<>();
 
         for (int x2 = -8; x2 < 9; x2++) {
             for (int y2 = - 2; y2 < + 3; y2++) {
                 for (int z2 = -8; z2 < 9; z2++) {
                     Block checkBlock = world.getBlockAt(x + x2, y + y2, z + z2);
-                    if (isLonelyLeaf(checkBlock, config, validTrees)) {
+                    if (isLonelyLeaf(checkBlock, config)) {
                         breakables.add(checkBlock);
                     }
                 }

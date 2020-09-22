@@ -2,6 +2,7 @@
 
 ## v7.0 - Minecraft 1.16 Rewrite
 
+- v7.0.139 - simplify leaf decay check to support jungle bushes
 - v7.0.138 - allow to disable silk touch effect with automated destruction
 - v7.0.137 - do not attempt to drop an AIR block - addresses github issue #60 
 - v7.0.136 - debug version bump
