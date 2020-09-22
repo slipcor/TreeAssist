@@ -2,6 +2,7 @@ package net.slipcor.treeassist.configs;
 
 import net.slipcor.treeassist.TreeAssist;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class TreeConfigUpdater {
             this.addition = addition;
         }
     }
+
     enum PreciseAdding {
         DROP_CHANCE_NETHERITE(7.0106f, "default", "Custom Drop Factor.minecraft:netherite_axe", 1.0),
         TALL_JUNGLE_VINES(7.0118f, "tall_jungle", TreeConfig.CFG.BLOCKS_VINES.getNode(), true),
@@ -58,6 +60,20 @@ public class TreeConfigUpdater {
             this.config = config;
             this.node = node;
             this.value = value;
+        }
+    }
+
+    enum WholeAdding {
+        JUNGLE_BUSH(7.0140f, "default", "trees/overworld/bush_jungle.yml");
+
+        private final float version;
+        private final String config;
+        private final String file;
+
+        WholeAdding(float v, String c, String f) {
+            version = v;
+            config = c;
+            file = f;
         }
     }
 
@@ -139,6 +155,7 @@ public class TreeConfigUpdater {
         double version = config.getYamlConfiguration().getDouble(TreeConfig.CFG.VERSION.getNode(), 7.0);
         double newVersion = version;
         boolean changed = false;
+
         for (Adding m : Adding.values()) {
             if (m.version > version && m.config.equals(configPath)) {
                 newVersion = Math.max(newVersion, m.version);
@@ -158,6 +175,16 @@ public class TreeConfigUpdater {
                     config.getYamlConfiguration().set(m.node, m.value);
                     TreeAssist.instance.getLogger().info("Config value added: " + m.toString());
                 }
+                changed = true;
+            }
+        }
+        for (WholeAdding m : WholeAdding.values()) {
+            if (m.version > version && m.config.equals(configPath)) {
+                newVersion = Math.max(newVersion, m.version);
+
+                TreeAssist.instance.saveResource(m.file, false);
+                TreeAssist.instance.getLogger().info("Config added: " + m.toString());
+
                 changed = true;
             }
         }

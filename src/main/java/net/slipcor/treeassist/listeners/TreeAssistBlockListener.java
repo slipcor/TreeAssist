@@ -55,7 +55,6 @@ public class TreeAssistBlockListener implements Listener {
             if (plugin.isActive(world)) {
                 for (TreeConfig config : TreeAssist.treeConfigs.values()) {
                     if (config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS).contains(block.getType())) {
-                        System.out.println("config " + config.getConfigName() + " is breaking " + block.getType());
                         BlockUtils.breakRadiusLeaves(block, config);
                     }
                 }

@@ -2,6 +2,7 @@
 
 ## v7.0 - Minecraft 1.16 Rewrite
 
+- v7.0.140 - add new definition for jungle bush tree, this is another attempt to address github issue 59 part 1
 - v7.0.139 - simplify leaf decay check to support jungle bushes
 - v7.0.138 - allow to disable silk touch effect with automated destruction
 - v7.0.137 - do not attempt to drop an AIR block - addresses github issue #60 

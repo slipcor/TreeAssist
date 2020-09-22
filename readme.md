@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.139 - simplify leaf decay check to support jungle bushes 
+- v7.0.140 - add new definition for jungle bush tree, this is another attempt to address github issue 59 part 1 
 - [read more](doc/changelog.md)
 ***
 
