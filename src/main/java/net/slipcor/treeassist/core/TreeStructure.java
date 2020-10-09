@@ -44,7 +44,7 @@ public class TreeStructure {
     private final Set<Material> naturalBlocks;
     private final Set<Material> groundBlocks;
     private List<Block> neighborTrunks = new ArrayList<>();
-    private final List<TreeAssistReplantDelay> saplings = new ArrayList<>();
+    public final List<TreeAssistReplantDelay> saplings = new ArrayList<>();
     private Map<Block, List<Block>> branchMap;
     protected Set<Block> extras;
     private final List<Block> roofs = new ArrayList<>();

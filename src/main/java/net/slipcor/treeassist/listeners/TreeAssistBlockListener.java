@@ -352,6 +352,9 @@ public class TreeAssistBlockListener implements Listener {
                     foundTree.removeBlocksBelow(event.getBlock());
                 }
                 foundTree.removeTreeLater(null, null);
+            } else {
+                // do we maybe need to place saplings still?
+                foundTree.plantSaplings();
             }
         }
     }
