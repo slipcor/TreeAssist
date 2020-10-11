@@ -366,7 +366,9 @@ public class TreeConfig {
         try {
             cfg.load(configFile);
         } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
+            if (!this.getConfigName().contains("bush_jungle")) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -132,7 +132,7 @@ public class BlockUtils {
             }
 
 
-            if (TreeStructure.allTrunks.contains(block.getType())) {
+            if (TreeStructure.allExtras.contains(block.getType())) {
                 return false;
             }
 

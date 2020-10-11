@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.141 - actually do place enforced saplings without auto destruction 
+- v7.0.142 - remove jungle bush definition and repair leaf decay, causing a lot of issues bundled in github #61 
 - [read more](doc/changelog.md)
 ***
 

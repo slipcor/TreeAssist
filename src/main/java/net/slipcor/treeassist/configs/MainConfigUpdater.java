@@ -3,6 +3,8 @@ package net.slipcor.treeassist.configs;
 import net.slipcor.treeassist.TreeAssist;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.io.File;
+
 public class MainConfigUpdater {
     enum Moving {
         //APPLY_TOOL_DAMAGE(7.0f, "Main.Apply Full Tool Damage", "Automatic Tree Destruction.Apply Full Tool Damage"),
@@ -25,6 +27,22 @@ public class MainConfigUpdater {
             this.version = version;
             this.source = source;
             this.destination = destination;
+        }
+    }
+
+    enum WholeRemoving {
+        JUNGLE_BUSH(7.0142f, "default", "overworld", "bush_jungle.yml");
+
+        private final float version;
+        private final String config;
+        private final String path;
+        private final String file;
+
+        WholeRemoving(float v, String c, String p, String f) {
+            version = v;
+            config = c;
+            path = p;
+            file = f;
         }
     }
 
@@ -76,6 +94,24 @@ public class MainConfigUpdater {
                 newVersion = Math.max(newVersion, m.version);
                 config.set(m.node.getNode(), m.value);
                 TreeAssist.instance.getLogger().warning("Config node added: " + m.toString());
+                changed = true;
+            }
+        }
+        for (WholeRemoving m : WholeRemoving.values()) {
+            if (m.version > version) {
+                newVersion = Math.max(newVersion, m.version);
+
+                File trees = new File(TreeAssist.instance.getDataFolder(), "trees");
+                File subTree = new File(trees, m.path);
+                File configFile = new File(subTree, m.file);
+
+                if (configFile.exists()) {
+
+                    configFile.delete();
+                    TreeAssist.instance.getLogger().info("Config deleted: " + m.toString());
+
+                }
+
                 changed = true;
             }
         }

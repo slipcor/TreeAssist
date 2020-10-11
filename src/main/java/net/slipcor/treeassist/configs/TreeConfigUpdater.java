@@ -63,20 +63,6 @@ public class TreeConfigUpdater {
         }
     }
 
-    enum WholeAdding {
-        JUNGLE_BUSH(7.0140f, "default", "trees/overworld/bush_jungle.yml");
-
-        private final float version;
-        private final String config;
-        private final String file;
-
-        WholeAdding(float v, String c, String f) {
-            version = v;
-            config = c;
-            file = f;
-        }
-    }
-
     enum Updating {
         CRIMSON_MIDDLE_RADIUS(7.0101f, "crimson_fungus", TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS, 2, 3),
         WARPED_MIDDLE_RADIUS(7.0101f, "warped_fungus", TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS, 2, 3),
@@ -175,16 +161,6 @@ public class TreeConfigUpdater {
                     config.getYamlConfiguration().set(m.node, m.value);
                     TreeAssist.instance.getLogger().info("Config value added: " + m.toString());
                 }
-                changed = true;
-            }
-        }
-        for (WholeAdding m : WholeAdding.values()) {
-            if (m.version > version && m.config.equals(configPath)) {
-                newVersion = Math.max(newVersion, m.version);
-
-                TreeAssist.instance.saveResource(m.file, false);
-                TreeAssist.instance.getLogger().info("Config added: " + m.toString());
-
                 changed = true;
             }
         }
