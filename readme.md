@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.145 - add new WorldGuard flag "treeassist.saplingbreak" to prevent sapling breaking in regions
+- v7.0.146 - add stripped log variants to support trees with stripped barks 
 - [read more](doc/changelog.md)
 ***
 

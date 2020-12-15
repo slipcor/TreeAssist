@@ -2,6 +2,7 @@
 
 ## v7.0 - Minecraft 1.16 Rewrite
 
+- v7.0.146 - add stripped log variants to support trees with stripped barks
 - v7.0.145 - add new WorldGuard flag "treeassist.saplingbreak" to prevent sapling breaking in regions
 - v7.0.144 - allow to set and remove default tools by omitting trunk type
 - v7.0.143 - do not protect trunks that grew from protected saplings

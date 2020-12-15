@@ -13,6 +13,14 @@ public class TreeConfigUpdater {
         NATURAL_AZURE_CORRECT(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:azure_bluet"),
         NATURAL_COCOA_CORRECT(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:cocoa"),
         NATURAL_PEONY(7.0129f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:peony"),
+        TRUNK_STRIPPED_CRIMSON_FUNGUS(7.0145f, "crimson_fungus", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_crimson_stem"),
+        TRUNK_STRIPPED_WARPED_FUNGUS(7.0145f, "warped_fungus", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_warped_stem"),
+        TRUNK_STRIPPED_ACACIA(7.0145f, "acacia", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_acacia_log"),
+        TRUNK_STRIPPED_BIRCH(7.0145f, "birch", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_birch_log"),
+        TRUNK_STRIPPED_DARK_OAK(7.0145f, "dark_oak", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_dark_oak_log"),
+        TRUNK_STRIPPED_JUNGLE(7.0145f, "jungle", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_jungle_log"),
+        TRUNK_STRIPPED_OAK(7.0145f, "oak", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_oak_log"),
+        TRUNK_STRIPPED_SPRUCE(7.0145f, "spruce", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_spruce_log"),
         ;
 
         private final float version;
