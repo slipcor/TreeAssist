@@ -3,6 +3,7 @@ package net.slipcor.treeassist.listeners;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.configs.MainConfig;
 import net.slipcor.treeassist.configs.TreeConfig;
+import net.slipcor.treeassist.events.TASaplingBreakEvent;
 import net.slipcor.treeassist.runnables.TreeAssistAntiGrow;
 import net.slipcor.treeassist.runnables.TreeAssistReplant;
 import net.slipcor.treeassist.core.*;
@@ -174,11 +175,22 @@ public class TreeAssistBlockListener implements Listener {
             debug.i("not in this world: " + event.getBlock().getWorld().getName());
             return;
         }
-        if (plugin.saplingLocationList.contains(event.getBlock().getLocation()) &&
-            MaterialUtils.isSapling(event.getBlock().getType())) {
-            event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
-            event.setCancelled(true);
-            return;
+        if (MaterialUtils.isSapling(event.getBlock().getType())) {
+            if (plugin.saplingLocationList.contains(event.getBlock().getLocation())) {
+                event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
+                event.setCancelled(true);
+                return;
+            }
+            TASaplingBreakEvent saplingBreakEvent = new TASaplingBreakEvent(event.getBlock(), event.getBlock().getType());
+
+            TreeAssist.instance.getServer().getPluginManager().callEvent(saplingBreakEvent);
+
+            if (saplingBreakEvent.isCancelled()) {
+                debug.i("Another plugin prevented sapling breaking!");
+                event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
+                event.setCancelled(true);
+                return;
+            }
         }
 
         if (!TreeStructure.allTrunks.contains(event.getBlock().getType())) {

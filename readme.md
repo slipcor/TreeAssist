@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.144 - allow to set and remove default tools by omitting trunk type 
+- v7.0.145 - add new WorldGuard flag "treeassist.saplingbreak" to prevent sapling breaking in regions
 - [read more](doc/changelog.md)
 ***
 

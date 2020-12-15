@@ -9,6 +9,7 @@ import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.events.TASaplingBreakEvent;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.events.TATreeBrokenEvent;
 import org.bukkit.block.Block;
@@ -20,10 +21,12 @@ import org.bukkit.event.Listener;
 public class WorldGuardListener implements Listener {
     StateFlag replantFlag;
     StateFlag autoChopFlag;
+    StateFlag saplingFlag;
 
     public WorldGuardListener() {
         replantFlag = tryRegister("treeassist-replant");
         autoChopFlag = tryRegister("treeassist-autochop");
+        saplingFlag = tryRegister("treeassist-saplingbreak");
     }
 
     /**
@@ -53,6 +56,11 @@ public class WorldGuardListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onSaplingReplace(TASaplingPlaceEvent event) {
         cancelIfProtected(event, event.getBlock(), replantFlag);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onSaplingBreak(TASaplingBreakEvent event) {
+        cancelIfProtected(event, event.getBlock(), saplingFlag);
     }
 
     /**
