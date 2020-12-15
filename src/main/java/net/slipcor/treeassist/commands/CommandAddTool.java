@@ -25,8 +25,18 @@ public class CommandAddTool extends AbstractCommand {
             return;
         }
 
-        if (args.length < 2) {
+        if (args.length < 1) {
             sender.sendMessage(ChatColor.DARK_RED + this.getShortInfo());
+            return;
+        }
+
+        if (args.length < 2) {
+            Player player = (Player) sender;
+            for (TreeConfig config : TreeAssist.treeConfigs.values()) {
+                if (config.getConfigName().contains("default")) {
+                    ToolUtils.toolAdd(player, config);
+                }
+            }
             return;
         }
 

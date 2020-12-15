@@ -2,6 +2,7 @@
 
 ## v7.0 - Minecraft 1.16 Rewrite
 
+- v7.0.144 - allow to set and remove default tools by omitting trunk type
 - v7.0.143 - do not protect trunks that grew from protected saplings
 - v7.0.142 - remove jungle bush definition and repair leaf decay, causing a lot of issues bundled in github #61
 - v7.0.141 - actually do place enforced saplings without auto destruction

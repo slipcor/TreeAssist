@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.143 - do not protect trunks that grew from protected saplings 
+- v7.0.144 - allow to set and remove default tools by omitting trunk type 
 - [read more](doc/changelog.md)
 ***
 
