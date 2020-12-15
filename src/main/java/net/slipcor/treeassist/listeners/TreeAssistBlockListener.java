@@ -174,7 +174,8 @@ public class TreeAssistBlockListener implements Listener {
             debug.i("not in this world: " + event.getBlock().getWorld().getName());
             return;
         }
-        if (plugin.saplingLocationList.contains(event.getBlock().getLocation())) {
+        if (plugin.saplingLocationList.contains(event.getBlock().getLocation()) &&
+            MaterialUtils.isSapling(event.getBlock().getType())) {
             event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
             event.setCancelled(true);
             return;

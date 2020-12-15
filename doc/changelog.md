@@ -2,6 +2,7 @@
 
 ## v7.0 - Minecraft 1.16 Rewrite
 
+- v7.0.143 - do not protect trunks that grew from protected saplings
 - v7.0.142 - remove jungle bush definition and repair leaf decay, causing a lot of issues bundled in github #61
 - v7.0.141 - actually do place enforced saplings without auto destruction
 - v7.0.140 - add new definition for jungle bush tree, this is another attempt to address github issue 59 part 1

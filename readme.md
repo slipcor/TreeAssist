@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.142 - remove jungle bush definition and repair leaf decay, causing a lot of issues bundled in github #61 
+- v7.0.143 - do not protect trunks that grew from protected saplings 
 - [read more](doc/changelog.md)
 ***
 
