@@ -59,7 +59,10 @@ public class MainConfig {
 
         MODDING_DISABLE_DURABILITY_FIX("Modding.Disable Durability Fix", false, "This is for hacky mods that use infinity durability"),
 
-        VERSION("Version", 7.0, "The config version for update checks"),
+        BSTATS("bStats", "=== [ bStats Metrics Settings ] ==="),
+        BSTATS_ACTIVE("bStats.Active", true, "Should we send stats at all? Please keep this in so we have an overview of spread of versions <3"),
+        BSTATS_FULL("bStats.Full", true, "This setting sends a bit more detailed information about which features are used at all. Thank you for supporting me!"),
+        VERSION("Version", 7.0147, "The config version for update checks"),
         DEBUG("Debug", "none", "");
 
         private final String node;

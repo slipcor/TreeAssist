@@ -8,6 +8,7 @@ import net.slipcor.treeassist.externals.WorldGuardListener;
 import net.slipcor.treeassist.listeners.TreeAssistBlockListener;
 import net.slipcor.treeassist.listeners.TreeAssistSpawnListener;
 import net.slipcor.treeassist.metrics.MetricsLite;
+import net.slipcor.treeassist.metrics.MetricsMain;
 import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.runnables.CoolDownCounter;
 import net.slipcor.treeassist.core.*;
@@ -229,7 +230,13 @@ public class TreeAssist extends JavaPlugin {
         this.spawnListener = new TreeAssistSpawnListener(this);
         getServer().getPluginManager().registerEvents(spawnListener, this);
 
-        MetricsLite metrics = new MetricsLite(this);
+        if (config.getBoolean(MainConfig.CFG.BSTATS_ACTIVE)) {
+            if (config.getBoolean(MainConfig.CFG.BSTATS_FULL)) {
+                MetricsMain fullMetrics = new MetricsMain(this);
+            } else {
+                MetricsLite liteMetrics = new MetricsLite(this);
+            }
+        }
 
         TreeStructure.debug = new Debugger(this, 1);
         CleanRunner.debug = new Debugger(this, 2);

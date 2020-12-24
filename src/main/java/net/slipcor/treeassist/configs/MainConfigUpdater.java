@@ -48,7 +48,9 @@ public class MainConfigUpdater {
 
     enum Adding {
 
-        DESTRUCTION_FALLING_BLOCKS_FANCY(7.0117f, MainConfig.CFG.DESTRUCTION_FALLING_BLOCKS_FANCY, false)
+        DESTRUCTION_FALLING_BLOCKS_FANCY(7.0117f, MainConfig.CFG.DESTRUCTION_FALLING_BLOCKS_FANCY, false),
+        BSTATS_ACTIVE(7.0147f, MainConfig.CFG.BSTATS_ACTIVE, true),
+        BSTATS_FULL(7.0147f, MainConfig.CFG.BSTATS_FULL, true)
         ;
 
         private final float version;

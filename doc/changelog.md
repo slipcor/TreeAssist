@@ -2,6 +2,7 @@
 
 ## v7.0 - Minecraft 1.16 Rewrite
 
+- v7.0.147 - enhance bStats Metrics, allow to disable that - merry christmas!
 - v7.0.146 - add stripped log variants to support trees with stripped barks
 - v7.0.145 - add new WorldGuard flag "treeassist.saplingbreak" to prevent sapling breaking in regions
 - v7.0.144 - allow to set and remove default tools by omitting trunk type

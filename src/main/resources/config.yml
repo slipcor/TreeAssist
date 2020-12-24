@@ -32,4 +32,7 @@ Worlds:
 Modding:
   Disable Durability Fix: false
 Debug: none
-Version: 7.0143
+bStats:
+  Active: true
+  Full: true
+Version: 7.0147

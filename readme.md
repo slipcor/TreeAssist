@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.146 - add stripped log variants to support trees with stripped barks 
+- v7.0.147 - enhance bStats Metrics, allow to disable that - merry christmas! 
 - [read more](doc/changelog.md)
 ***
 
@@ -81,7 +81,7 @@ By default, the server contacts www.bstats.org to notify that you are using my p
 
 Please refer to their website to learn about what they collect and how they handle the data.
 
-If you want to disable the tracker, set "enabled" to false in __/plugins/bStats/config.yml__ !
+If you want to disable the tracker, set "bStats.Active" to false in the __config.yml__ !
 
 ***
 
