@@ -12,6 +12,7 @@ import net.slipcor.treeassist.metrics.MetricsMain;
 import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.runnables.CoolDownCounter;
 import net.slipcor.treeassist.core.*;
+import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.ToolUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -242,6 +243,7 @@ public class TreeAssist extends JavaPlugin {
         CleanRunner.debug = new Debugger(this, 2);
         TreeAssistBlockListener.debug = new Debugger(this, 6);
         TreeAssistSpawnListener.debug = new Debugger(this, 7);
+        BlockUtils.debug = new Debugger(this, 8);
         Debugger.load(this, Bukkit.getConsoleSender());
 
         if (config.getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE)) {

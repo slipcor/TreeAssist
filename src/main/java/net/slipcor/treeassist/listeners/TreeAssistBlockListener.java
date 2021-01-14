@@ -50,12 +50,16 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onLeavesDecay(LeavesDecayEvent event) {
+        debug.i("leaf is decaying: " + BlockUtils.printBlock(event.getBlock()));
         if (plugin.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_FAST_LEAF_DECAY) && plugin.Enabled) {
+            debug.i("we want fast decay!");
             Block block = event.getBlock();
             World world = block.getWorld();
             if (plugin.isActive(world)) {
+                debug.i("we are active here!");
                 for (TreeConfig config : TreeAssist.treeConfigs.values()) {
                     if (config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS).contains(block.getType())) {
+                        debug.i("let's go!");
                         BlockUtils.breakRadiusLeaves(block, config);
                     }
                 }
