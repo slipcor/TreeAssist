@@ -85,6 +85,16 @@ If you want to disable the tracker, set "bStats.Active" to false in the __config
 
 ***
 
+## Support
+
+I am developing this plugin in my free time, so if you have an issue, please create an issue describing the problem in detail. I will do my best to reply as soon as possible, but that can take a few days sometimes.
+
+For some problems, it might be easier to join the [Discord](https://discord.gg/DSNfjYA) and open a ticket there. It allows for quicker transfer of log files, debug files and so on. Moreover, simple questions can be answered more quickly there rather than opening an issue for them.
+
+Joining the Discord Server gets you early access to latest builds, and maybe it is your preferred method to interact with me? Be my guest!
+
+***
+
 ## Credits
 
 - FriendlyBaron formerly known as itsatacoshop247 for the original source, the stable foundation that to this day runs strong in TreeAssist
