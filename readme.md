@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.148 - fix fast decay not working. removed safeguard to prevent foliage destruction, replace with hackfix 
+- v7.0.149 - nerf fast decay to check less blocks, possibly by a factor of 45
 - [read more](doc/changelog.md)
 ***
 

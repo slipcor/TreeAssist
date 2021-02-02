@@ -103,18 +103,10 @@ public class BlockUtils {
      * b) 5 unexpected blocks
      *
      * @param block the block to check
-     * @param config the tree config to check against
      */
-    private static boolean isLonelyLeaf(Block block, TreeConfig config) {
-        List<Material> extras = config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS);
+    private static boolean isLonelyLeaf(Block block, List<Material> extras, List<Material> trunks, List<Material> naturals) {
         if (!extras.contains(block.getType())) {
             return false;
-        }
-        List<Material> trunks = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
-        List<Material> naturals = config.getMaterials(TreeConfig.CFG.NATURAL_BLOCKS);
-
-        if (extras.contains(Material.OAK_LEAVES)) {
-            trunks.add(Material.JUNGLE_LOG); // hack in the fact that we can have bushes that are oak leaves and jungle logs
         }
 
         TALeafDecay event = new TALeafDecay(block);
@@ -147,6 +139,7 @@ public class BlockUtils {
      * @param config the tree config to take into account
      */
     public static void breakRadiusLeaves(Block block, TreeConfig config) {
+        debug.i("breaking radius leaves around " + printBlock(block));
         TALeafDecay event = new TALeafDecay(block);
         TreeAssist.instance.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) {
@@ -160,25 +153,91 @@ public class BlockUtils {
         int y = block.getY();
         int z = block.getZ();
 
-        Set<Block> breakables = new LinkedHashSet<>();
+        List<Material> extras = config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS);
+        List<Material> trunks = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
+        List<Material> naturals = config.getMaterials(TreeConfig.CFG.NATURAL_BLOCKS);
 
-        for (int x2 = -8; x2 < 9; x2++) {
-            for (int y2 = - 2; y2 < + 3; y2++) {
-                for (int z2 = -8; z2 < 9; z2++) {
+        if (extras.contains(Material.OAK_LEAVES)) {
+            trunks.add(Material.JUNGLE_LOG); // hack in the fact that we can have bushes that are oak leaves and jungle logs
+        }
+
+        List<BasicVector> preventList = new ArrayList<>();
+        List<BasicVector> calculateList = new ArrayList<>();
+        List<Block> leafBlocks = new ArrayList<>();
+
+        for (int x2 = -10; x2 < 11; x2++) {
+            for (int y2 = - 4; y2 < + 5; y2++) {
+                for (int z2 = -10; z2 < 11; z2++) {
                     Block checkBlock = world.getBlockAt(x + x2, y + y2, z + z2);
-                    if (isLonelyLeaf(checkBlock, config)) {
-                        debug.i("one more block: " + BlockUtils.printBlock(checkBlock));
-                        breakables.add(checkBlock);
+
+                    if (extras.contains(checkBlock.getType())) {
+                        if (x2 > -8 && x2 < 9 && y2 > -2 && y2 < 3 && z2 > -8 && z2 < 9) {
+                            if (x2 != 0 && y2 != 0 && z2 != 0) {
+                                leafBlocks.add(checkBlock);
+                            }
+                        }
+                    } else {
+                        int prevent = decayPreventionValue(checkBlock, trunks, naturals);
+                        if (prevent > 4) {
+                            preventList.add(new BasicVector(checkBlock.getX(), checkBlock.getY(), checkBlock.getZ()));
+                        } else if (prevent > 0) {
+                            calculateList.add(new BasicVector(checkBlock.getX(), checkBlock.getY(), checkBlock.getZ()));
+                        }
                     }
                 }
             }
         }
+        // do we have other leaves to decide about?
+        if (leafBlocks.size() > 0) {
+            // preventList contains values that will completely disable decaying around them
+            for (BasicVector vector : preventList) {
+                int pos=0;
+                while (pos < leafBlocks.size()) {
+                    Block leafBlock = leafBlocks.get(pos);
+                    if (Math.abs(leafBlock.getX()-vector.x) <= 2 && Math.abs(leafBlock.getY() - vector.y) <= 2 &&
+                        Math.abs(leafBlock.getZ() - vector.z) <= 2) {
+                        leafBlocks.remove(pos);
+                        continue;
+                    }
+                    pos++;
+                }
+            }
+        }
+
+        // calculateList contains values that require additional checking
+        int pos = 0;
+
+        leaves: while (pos < leafBlocks.size()) {
+            Block leafBlock = leafBlocks.get(pos);
+            TALeafDecay decayEvent = new TALeafDecay(leafBlock);
+            TreeAssist.instance.getServer().getPluginManager().callEvent(decayEvent);
+
+            if (!decayEvent.isCancelled()) {
+                int prevent = 0;
+
+                // calculateList contains values that require additional checking
+                for (BasicVector vector : calculateList) {
+                    if (Math.abs(leafBlock.getX() - vector.x) <= 2 && Math.abs(leafBlock.getY() - vector.y) <= 2 &&
+                            Math.abs(leafBlock.getZ() - vector.z) <= 2) {
+                        if (++prevent > 4) {
+                            leafBlocks.remove(pos);
+                            continue leaves;
+                        }
+                    }
+                }
+            }
+
+            pos++;
+        }
+
+        Set<Block> breakables = new LinkedHashSet<>(leafBlocks);
 
         int delay = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_DELAY);
 
         if (delay < 0) {
             for (Block bye : breakables) {
                 TreeAssist.instance.blockList.logBreak(bye, null);
+                debug.i("instantly breaking leaf: " + printBlock(bye));
                 breakBlock(bye);
             }
         } else {
@@ -190,6 +249,35 @@ public class BlockUtils {
                 CleanRunner cleaner = (new CleanRunner(leaves, delay, new LinkedHashSet<>(breakables), Material.AIR));
                 cleaner.runTaskTimer(TreeAssist.instance, delay, delay);
             }
+        }
+    }
+
+    static class BasicVector {
+        int x;
+        int y;
+        int z;
+
+        BasicVector(int x, int y, int z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            BasicVector vector = (BasicVector) o;
+            return x == vector.x && y == vector.y && z == vector.z;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y, z);
         }
     }
 
@@ -228,14 +316,14 @@ public class BlockUtils {
      */
     private static int decayPreventionValue(Block block, List<Material> trunks, List<Material> naturals) {
         if (trunks.contains(block.getType())) {
-            debug.i("prevention raised by 5: " + BlockUtils.printBlock(block));
+            debug.i("prevention 5: " + BlockUtils.printBlock(block));
             // our valid trunk blocks should prevent leaf decay
             return 5;
         } else if (MaterialUtils.isAir(block.getType()) || TreeStructure.allExtras.contains(block.getType()) || naturals.contains(block.getType())) {
             // air, all types of leaves and our naturally occurring blocks should not be an issue
             return 0;
         } else {
-            debug.i("prevention raised by 1: " + BlockUtils.printBlock(block));
+            debug.i("prevention 1: " + BlockUtils.printBlock(block));
             // anything else, check for too many of them
             return 1;
         }

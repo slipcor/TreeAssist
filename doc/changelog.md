@@ -2,6 +2,7 @@
 
 ## v7.0 - Minecraft 1.16 Rewrite
 
+- v7.0.149 - nerf fast decay to check less blocks, possibly by a factor of 45
 - v7.0.148 - fix fast decay not working. removed safeguard to prevent foliage destruction, replace with hackfix
 - v7.0.147 - enhance bStats Metrics, allow to disable that - merry christmas!
 - v7.0.146 - add stripped log variants to support trees with stripped barks
