@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.149 - nerf fast decay to check less blocks, possibly by a factor of 45
+- v7.0.150 - only replace a sapling if the block is still free after the delay - or we are enforcing
 - [read more](doc/changelog.md)
 ***
 
