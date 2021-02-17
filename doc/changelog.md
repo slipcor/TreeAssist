@@ -1,5 +1,9 @@
 # v7.X Changelog
 
+## v7.1 - New CI
+
+- v7.1.1 - use GitHub actions to build snapshots
+
 ## v7.0 - Minecraft 1.16 Rewrite
 
 - v7.0.151 - attempt to safeguard against crashes, addresses github issue #66

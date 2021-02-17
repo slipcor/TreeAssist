@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.151 - attempt to safeguard against crashes, addresses github issue #66
+- v7.1.1 - use GitHub actions to build snapshots
 - [read more](doc/changelog.md)
 ***
 
