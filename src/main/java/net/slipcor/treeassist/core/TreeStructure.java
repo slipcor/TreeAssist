@@ -325,7 +325,14 @@ public class TreeStructure {
 
         boolean diagonalTrunk = config.getBoolean(TreeConfig.CFG.TRUNK_DIAGONAL);
 
+        int overflowCheck = 0;
+
         while (trunkBlocks.contains(checkBlock.getType())) {
+            if (++overflowCheck > 256) {
+                debug.i("Overflow! Not a valid tree!");
+                System.out.println("overflow block: " + BlockUtils.printBlock(block));
+                return null;
+            }
             // As long as find more logs, keep going!
             checkBlock = checkBlock.getRelative(BlockFace.DOWN);
 

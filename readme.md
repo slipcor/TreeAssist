@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.0.150 - only replace a sapling if the block is still free after the delay - or we are enforcing
+- v7.0.151 - attempt to safeguard against crashes, addresses github issue #66
 - [read more](doc/changelog.md)
 ***
 
