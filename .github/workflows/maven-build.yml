@@ -3,8 +3,6 @@ name: Java CI with Maven
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -26,6 +24,7 @@ jobs:
         path: target/TreeAssist.jar
     - name: Post discord notification
       run: |
-        commits="${{ join(github.event.commits.*.message, '\n - ') }}"
-        payload_json='{"embeds":[{"color": 3066993,"title":"A new dev build of TreeAssist is available!","description":":arrow_down: Download it from the link below. \n\n :spiral_note_pad: **New commits:**\n\n - '$commits' \n\n :arrow_right: [Download]('$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID')","footer":{"text":"Build '$GITHUB_RUN_ID' created at '$(date +'%Y-%m-%d %H:%M:%S')'"}}]}'
+        commits=`echo "${{ join(github.event.commits.*.message, '\n - ') }}" | tr '\n' ' '`
+        payload_json='{"embeds":[{"color": 3066993,"title":"A new dev build of TreeAssist is available!","description":":spiral_note_pad: **New commits:**\n\n - '$commits' \n\n :arrow_right: [GitHub]('$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID')","footer":{"text":"Build '$GITHUB_RUN_ID' created at '$(date +'%Y-%m-%d %H:%M:%S')'"}}]}'
         curl -X POST ${{ secrets.DISCORD_WEBHOOK }} -F payload_json="${payload_json}"
+        curl -X POST ${{ secrets.DISCORD_WEBHOOK }} -F file=@target/TreeAssist.jar

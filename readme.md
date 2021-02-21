@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.1 - use GitHub actions to build snapshots
+- v7.1.2 - add proper release upload to Discord
 - [read more](doc/changelog.md)
 ***
 
