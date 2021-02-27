@@ -4,6 +4,8 @@ Automatic Destruction:
   Apply Full Tool Damage: true
   Auto Add To Inventory: false
   Cooldown Seconds: 0
+  # The custom drops below completely replace the item drops
+  Custom Drops Override: false
   # Seconds to wait before (force) removing remnants of the tree
   Cleanup Delay Seconds: 20
   # Ticks to wait before breaking the next block, set to -1 for instant breaking
@@ -175,4 +177,4 @@ Trunk:
   Thickness: 1
   # Can the saplings be at different height?
   Uneven Bottom: false
-Version: 7.0108
+Version: 7.1004

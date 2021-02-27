@@ -90,7 +90,10 @@ public class BlockUtils {
             }
         } else {
             if (tool == null) {
-                block.breakNaturally();
+                block.setType(Material.AIR, true);
+                if (player != null) {
+                    player.sendBlockChange(block.getLocation(), block.getBlockData());
+                }
             } else {
                 block.breakNaturally(tool);
             }
@@ -147,7 +150,7 @@ public class BlockUtils {
             return;
         }
         TreeAssist.instance.blockList.logBreak(block, null);
-        breakBlock(block);
+        breakBlock(null, block, new ItemStack(Material.AIR, 1), 0);
         World world = block.getWorld();
         int x = block.getX();
         int y = block.getY();
@@ -238,7 +241,7 @@ public class BlockUtils {
             for (Block bye : breakables) {
                 TreeAssist.instance.blockList.logBreak(bye, null);
                 debug.i("instantly breaking leaf: " + printBlock(bye));
-                breakBlock(bye);
+                breakBlock(null, bye, new ItemStack(Material.AIR, 1), 0);
             }
         } else {
             sortInsideOut(breakables, block);

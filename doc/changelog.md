@@ -2,6 +2,7 @@
 
 ## v7.1 - New CI
 
+- v7.1.3 - add "Custom Drops Override" to allow replacing leaf drops completely with given custom drops
 - v7.1.2 - add proper release upload to Discord
 - v7.1.1 - use GitHub actions to build snapshots
 

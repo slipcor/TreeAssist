@@ -1221,6 +1221,7 @@ public class TreeStructure {
 
         if (MaterialUtils.isLog(block.getType())
                 && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
+            debug.i("auto adding!");
             if (statPickup) {
                 player.incrementStatistic(Statistic.PICKUP, block.getType());
             }
@@ -1228,8 +1229,11 @@ public class TreeStructure {
             player.getInventory().addItem(drops.toArray(new ItemStack[0]));
             block.setType(Material.AIR, true);
         } else {
+            debug.i("not auto adding!");
             if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH) && tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
                     && MaterialUtils.isMushroom(block.getType())) {
+                debug.i("silk touching mushroom!");
+
                 Material mat = block.getType();
                 block.setType(Material.AIR, true);
                 block.getWorld().dropItemNaturally(
@@ -1241,7 +1245,13 @@ public class TreeStructure {
             } else {
                 ItemStack anotherTool = tool;
                 if (tool != null && !config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH)) {
+                    debug.i("duplicating tool of type " + tool.getType());
                     anotherTool = new ItemStack(tool.getType(), tool.getAmount());
+                } else if (!MaterialUtils.isLog(block.getType()) && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE)) {
+                    debug.i("null tool for " + BlockUtils.printBlock(block));
+                    anotherTool = null;
+                } else {
+                    debug.i("simply breaking " + BlockUtils.printBlock(block));
                 }
                 BlockUtils.breakBlock(player, block, anotherTool, bottom.getY());
             }

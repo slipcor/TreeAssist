@@ -26,6 +26,7 @@ public class TreeConfig {
         AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE("Automatic Destruction.Apply Full Tool Damage", true),
         AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Destruction.Auto Add To Inventory", false),
         AUTOMATIC_DESTRUCTION_COOLDOWN("Automatic Destruction.Cooldown Seconds", 0),
+        AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE("Automatic Destruction.Custom Drops Override", false),
         AUTOMATIC_DESTRUCTION_DELAY("Automatic Destruction.Delay Ticks", 0),
         AUTOMATIC_DESTRUCTION_FORCED_REMOVAL("Automatic Destruction.Forced Removal", false),
         AUTOMATIC_DESTRUCTION_INCREASES_STATISTICS("Automatic Destruction.Increases Statistics", false),

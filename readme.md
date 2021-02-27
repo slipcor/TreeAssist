@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.2 - add proper release upload to Discord
+- v7.1.3 - add "Custom Drops Override" to allow replacing leaf drops completely with given custom drops
 - [read more](doc/changelog.md)
 ***
 
