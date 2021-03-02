@@ -2,13 +2,13 @@ package net.slipcor.treeassist.configs;
 
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class TreeConfig {
@@ -22,86 +22,87 @@ public class TreeConfig {
     private final Map<String, Map<String, Double>> maps;
 
     public enum CFG {
-        AUTOMATIC_DESTRUCTION_ACTIVE("Automatic Destruction.Active", true), // Will we attempt to automatically destroy?
-        AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE("Automatic Destruction.Apply Full Tool Damage", true),
-        AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Destruction.Auto Add To Inventory", false),
-        AUTOMATIC_DESTRUCTION_COOLDOWN("Automatic Destruction.Cooldown Seconds", 0),
-        AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE("Automatic Destruction.Custom Drops Override", false),
-        AUTOMATIC_DESTRUCTION_DELAY("Automatic Destruction.Delay Ticks", 0),
-        AUTOMATIC_DESTRUCTION_FORCED_REMOVAL("Automatic Destruction.Forced Removal", false),
-        AUTOMATIC_DESTRUCTION_INCREASES_STATISTICS("Automatic Destruction.Increases Statistics", false),
-        AUTOMATIC_DESTRUCTION_INITIAL_DELAY("Automatic Destruction.Initial Delay", false),
-        AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME("Automatic Destruction.Initial Delay Seconds", 10),
-        AUTOMATIC_DESTRUCTION_CLEANUP_DELAY_TIME("Automatic Destruction.Cleanup Delay Seconds", 20),
-        AUTOMATIC_DESTRUCTION_REMOVE_LEAVES("Automatic Destruction.Remove Leaves", true),
-        AUTOMATIC_DESTRUCTION_REQUIRED_LORE("Automatic Destruction.Required Lore",""),
-        AUTOMATIC_DESTRUCTION_REQUIRES_TOOLS("Automatic Destruction.Requires Tools", true),
-        AUTOMATIC_DESTRUCTION_WHEN_SNEAKING("Automatic Destruction.When Sneaking", true),
-        AUTOMATIC_DESTRUCTION_WHEN_NOT_SNEAKING("Automatic Destruction.When Not Sneaking", true),
-        AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH("Automatic Destruction.Use Silk Touch", true),
+        AUTOMATIC_DESTRUCTION_ACTIVE("Automatic Destruction.Active", true, "Main switch to deactivate automatic destruction"),
+        AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE("Automatic Destruction.Apply Full Tool Damage", true, "Damage the player's tool for every block of the tree, not just the first they broke"),
+        AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Destruction.Auto Add To Inventory", false, "Add the logs the player's inventory"),
+        AUTOMATIC_DESTRUCTION_CLEANUP_DELAY_TIME("Automatic Destruction.Cleanup Delay Seconds", 20, "Seconds to wait before (force) removing remnants of the tree"),
+        AUTOMATIC_DESTRUCTION_COOLDOWN("Automatic Destruction.Cooldown Seconds", 0, "Time to wait before allowing the player to automatically destroy again"),
+        AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE("Automatic Destruction.Custom Drops Override", false, "Custom Drops below completely replace the leaf drops"),
+        AUTOMATIC_DESTRUCTION_DELAY("Automatic Destruction.Delay Ticks", 0, "Ticks to wait before breaking the next block, set to -1 for instant breaking"),
+        AUTOMATIC_DESTRUCTION_FORCED_REMOVAL("Automatic Destruction.Forced Removal", false, "Always remove remnants of the tree, as soon as a tree has been verified and is being broken"),
+        AUTOMATIC_DESTRUCTION_INCREASES_STATISTICS("Automatic Destruction.Increases Statistics", false, "Main switch for the Block Statistic nodes"),
+        AUTOMATIC_DESTRUCTION_INITIAL_DELAY("Automatic Destruction.Initial Delay", false, "Initial Delay before actually starting to break the tree"),
+        AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME("Automatic Destruction.Initial Delay Seconds", 10, "Seconds to delay automatic destruction"),
+        AUTOMATIC_DESTRUCTION_REMOVE_LEAVES("Automatic Destruction.Remove Leaves", true, "Remove not only logs, but also leaves"),
+        AUTOMATIC_DESTRUCTION_REQUIRED_LORE("Automatic Destruction.Required Lore","", "Required lore on tool in order to automatically remove a tree. Empty means no requirement"),
+        AUTOMATIC_DESTRUCTION_REQUIRES_TOOLS("Automatic Destruction.Requires Tools", true, "Only automatically destroy with the right tools, they are set in the tree definitions or via command"),
+        AUTOMATIC_DESTRUCTION_WHEN_SNEAKING("Automatic Destruction.When Sneaking", true, "Automatically destroy when sneaking"),
+        AUTOMATIC_DESTRUCTION_WHEN_NOT_SNEAKING("Automatic Destruction.When Not Sneaking", true, "Automatically destroy when not sneaking"),
+        AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH("Automatic Destruction.Use Silk Touch", true, "Support silk touch affect when a player has it"),
 
-        BLOCK_STATISTICS_MINE_BLOCK("Block Statistics.Mine Block", false),
-        BLOCK_STATISTICS_PICKUP("Block Statistics.Pickup", false),
+        BLOCK_STATISTICS_MINE_BLOCK("Block Statistics.Mine Block", false, "Count minecraft block breaking statistics when automatically breaking"),
+        BLOCK_STATISTICS_PICKUP("Block Statistics.Pickup", false, "Count minecraft pickup statistics when automaticall adding blocks to inventory"),
 
-        BLOCKS_CAP_HEIGHT("Blocks.Cap.Height", 2), // Branch Topping Leaves Height
-        BLOCKS_CAP_RADIUS("Blocks.Cap.Radius", 3), // Branch Topping Leaves Radius
+        BLOCKS_CAP_HEIGHT("Blocks.Cap.Height", 2, "Max height of a branch cap"),
+        BLOCKS_CAP_RADIUS("Blocks.Cap.Radius", 3, "Max radius of a branch cap"),
 
-        BLOCKS_CUSTOM_DROPS("Blocks.Custom Drops", true),
+        BLOCKS_CUSTOM_DROPS("Blocks.Custom Drops", true, "Generate custom drops according to the list"),
 
-        BLOCKS_MATERIALS("Blocks.Materials", new ArrayList<>()), // the expected blocks part of the tree, next to the trunk
+        BLOCKS_MATERIALS("Blocks.Materials", new ArrayList<>(), "Here you can add extra blocks that can be expected inside or around tree leaves"),
 
-        BLOCKS_MIDDLE_AIR("Blocks.Middle.Air", false), // allow air pockets?
-        BLOCKS_MIDDLE_EDGES("Blocks.Middle.Edges", false), // would edges be populated?
-        BLOCKS_MIDDLE_RADIUS("Blocks.Middle.Radius", 2), // the tree middle leaf radius (radius starts away from trunk!)
+        BLOCKS_MIDDLE_AIR("Blocks.Middle.Air", false, "Allow air pockets in leaves"),
+        BLOCKS_MIDDLE_EDGES("Blocks.Middle.Edges", false, "Check cubic edges"),
+        BLOCKS_MIDDLE_RADIUS("Blocks.Middle.Radius", 2, "Radius around the trunk to check for leaves"),
 
-        BLOCKS_REQUIRED("Blocks.Required", 10), // how many extra blocks do we need to find for it to count as a tree??
+        BLOCKS_REQUIRED("Blocks.Required", 10, "How many leaves do we require for it to be a valid tree"),
 
-        BLOCKS_TOP_AIR("Blocks.Top.Air", false), // allow air pockets?
-        BLOCKS_TOP_EDGES("Blocks.Top.Edges", false), // would edges be populated?
-        BLOCKS_TOP_RADIUS("Blocks.Top.Radius", 3), // the tree top leaf radius
-        BLOCKS_TOP_HEIGHT("Blocks.Top.Height", 3),
+        BLOCKS_TOP_AIR("Blocks.Top.Air", false, "Allow air pockets in leaves"),
+        BLOCKS_TOP_EDGES("Blocks.Top.Edges", false, "Check cubic edges"),
+        BLOCKS_TOP_RADIUS("Blocks.Top.Radius", 3, "Radius around the trunk to check for leaves"),
+        BLOCKS_TOP_HEIGHT("Blocks.Top.Height", 3, "Height above the trunk to check for leaves"),
 
-        BLOCKS_VINES("Blocks.Vines", false), // do we need to look for vines?
+        BLOCKS_VINES("Blocks.Vines", false, "Do follow vines"), // do we need to look for vines?
 
-        CUSTOM_DROPS("Custom Drops", new HashMap<>()),
-        CUSTOM_DROP_FACTOR("Custom Drop Factor", new HashMap<>()),
+        CUSTOM_DROPS("Custom Drops", new HashMap<>(), "Drop chances for extra drops. 1.0 would be 100% chance!"),
+        CUSTOM_DROP_FACTOR("Custom Drop Factor", new HashMap<>(), "These are additional factors, for example, by default, iron has half the chance to get custom drops"),
 
-        GROUND_BLOCKS("Ground Blocks", new ArrayList<>()), // the allowed blocks below the tree trunk
+        GROUND_BLOCKS("Ground Blocks", new ArrayList<>(), "Valid blocks that are below and around the saplings"),
 
-        NATURAL_BLOCKS("Natural Blocks", new ArrayList<>()), // blocks that are okay to have around trees
+        NATURAL_BLOCKS("Natural Blocks", new ArrayList<>(), "Blocks that you can expect to be around the tree - these are the exceptions from player building safeguards"),
 
-        PARENT("Parent", "default"),
-        PERMISSION("Permission", ""),
+        PARENT("Parent", "default", "The parent tree config to inherit from, recursively"),
+        PERMISSION("Permission", "", "The permission required for this tree type"),
 
-        REPLANTING_ACTIVE("Replanting.Active", true),
-        REPLANTING_DELAY_GROWTH_SECONDS("Replanting.Delay Growth Seconds", 0),
-        REPLANTING_ENFORCE("Replanting.Enforce", false),
-        REPLANTING_FORCE_PROTECT("Replanting.Force Protect", false),
-        REPLANTING_DELAY("Replanting.Delay", 1),
-        REPLANTING_DROPPED_SAPLINGS("Replanting.Dropped.Active", false),
-        REPLANTING_DROPPED_SAPLINGS_PROBABILITY("Replanting.Dropped.Probability", 0.1),
-        REPLANTING_DROPPED_SAPLINGS_DELAY("Replanting.Dropped.Delay Ticks", 5),
-        REPLANTING_MATERIAL("Replanting.Material", "minecraft:air"),
-        REPLANTING_ONLY_WHEN_BOTTOM_BLOCK_BROKEN_FIRST("Replanting.Only When Bottom Block Broken First", true),
-        REPLANTING_PROTECT_FOR_SECONDS("Replanting.Protect For Seconds", 0),
-        REPLANTING_REQUIRES_TOOLS("Replanting.Requires Tools", true),
-        REPLANTING_WHEN_TREE_BURNS_DOWN("Replanting.When Tree Burns Down", true),
+        REPLANTING_ACTIVE("Replanting.Active", true, "Main switch to deactivate sapling replanting"),
+        REPLANTING_DELAY("Replanting.Delay", 1, "How long to wait before placing a sapling. Should stay above 0 because of bukkit event handling"),
+        REPLANTING_DELAY_GROWTH_SECONDS("Replanting.Delay Growth Seconds", 0, "How long should saplings stay there before they can grow"),
+        REPLANTING_DROPPED_SAPLINGS("Replanting.Dropped.Active", false, "Attempt to plant a dropped sapling item"),
+        REPLANTING_DROPPED_SAPLINGS_PROBABILITY("Replanting.Dropped.Probability", 0.1, "What is the chance for us doing this, 1.0 means 100%"),
+        REPLANTING_DROPPED_SAPLINGS_DELAY("Replanting.Dropped.Delay Ticks", 5, "How many ticks should we wait until attempting to plant it"),
+        REPLANTING_ENFORCE("Replanting.Enforce", false, "Even if something would prevent sapling replacement or auto destruction, we will place a sapling"),
+        REPLANTING_FORCE_PROTECT("Replanting.Force Protect", false, "Prevent from breaking this type of sapling at all costs"),
+        REPLANTING_MATERIAL("Replanting.Material", "minecraft:air", "The material to place"),
+        REPLANTING_ONLY_WHEN_BOTTOM_BLOCK_BROKEN_FIRST("Replanting.Only When Bottom Block Broken First", true, "Only place saplings when the bottom block was broken"),
+        REPLANTING_PROTECT_FOR_SECONDS("Replanting.Protect For Seconds", 0, "How long to protect saplings"),
+        REPLANTING_REQUIRES_TOOLS("Replanting.Requires Tools", true, "Only replant with the right tools, they are set in the tree definitions or via command"),
+        REPLANTING_WHEN_TREE_BURNS_DOWN("Replanting.When Tree Burns Down", true, "Replant when a tree block burns"),
 
-        TRUNK_BRANCH("Trunk.Branch", false),
-        TRUNK_CUSTOM_DROPS("Trunk.Custom Drops", false), // Trunk will generate custom drops
-        TRUNK_DIAGONAL("Trunk.Diagonal", false), // Trunk can move diagonally even (Acacia)
-        TRUNK_MINIMUM_HEIGHT("Trunk.Minimum Height", 4),
-        TRUNK_MATERIALS("Trunk.Materials", new ArrayList<>()), // the expected materials part of the tree trunk
-        TRUNK_THICKNESS("Trunk.Thickness", 1), // This value is also used for radius calculation!
-        TRUNK_UNEVEN_BOTTOM("Trunk.Uneven Bottom", false), // Can saplings/lowest trunks be on different Y?
+        TRUNK_BRANCH("Trunk.Branch", false, "Look for branches"),
+        TRUNK_CUSTOM_DROPS("Trunk.Custom Drops", false, "Generate custom drops"),
+        TRUNK_DIAGONAL("Trunk.Diagonal", false, "The trunk can go diagonally"),
+        TRUNK_MINIMUM_HEIGHT("Trunk.Minimum Height", 4, "How high does it need to be to qualify as a tree"),
+        TRUNK_MATERIALS("Trunk.Materials", new ArrayList<>(), "One of these materials needs to be part of the trunk for it to count as a trunk"),
+        TRUNK_THICKNESS("Trunk.Thickness", 1, "How thick is the trunk"),
+        TRUNK_UNEVEN_BOTTOM("Trunk.Uneven Bottom", false, "Saplings can be at different height"),
 
-        TOOL_LIST("Tool List", new ArrayList<>()),
+        TOOL_LIST("Tool List", new ArrayList<>(), "This is the list that can be required to use when auto destructing or sapling replanting"),
 
-        VERSION("Version", 7.0);
+        VERSION("Version", 7.0, "Version number for automagical config updates");
 
         private final String node;
         private final Object value;
         private final String type;
+        private final String comment;
 
         public static CFG getByNode(final String node) {
             for (final CFG m : CFG.getValues()) {
@@ -112,40 +113,46 @@ public class TreeConfig {
             return null;
         }
 
-        CFG(final String node, final String value) {
+        CFG(final String node, final String value, String comment) {
             this.node = node;
             this.value = value;
             type = "string";
+            this.comment = comment;
         }
 
-        CFG(final String node, final Boolean value) {
+        CFG(final String node, final Boolean value, String comment) {
             this.node = node;
             this.value = value;
             type = "boolean";
+            this.comment = comment;
         }
 
-        CFG(final String node, final Integer value) {
+        CFG(final String node, final Integer value, String comment) {
             this.node = node;
             this.value = value;
             type = "int";
+            this.comment = comment;
         }
 
-        CFG(final String node, final Double value) {
+        CFG(final String node, final Double value, String comment) {
             this.node = node;
             this.value = value;
             type = "double";
+            this.comment = comment;
         }
 
-        CFG(final String node, final List<String> value) {
+        CFG(final String node, final List<String> value, String comment) {
             this.node = node;
             this.value = value;
             this.type = "list";
+            this.comment = comment;
         }
 
-        CFG(final String node, final Map<String, Double> value) {
+        CFG(final String node, final Map<String, Double> value, String comment) {
             this.node = node;
             this.value = value;
             this.type = "map";
+            this.comment = comment;
         }
 
         public String getNode() {
@@ -258,6 +265,142 @@ public class TreeConfig {
     }
 
     /**
+     * Append the comments.
+     *
+     * Iterate over the config file and add comments, if we didn't do that already.
+     */
+    private void appendComments() {
+        try {
+
+            final FileInputStream fis = new FileInputStream(configFile);
+            final DataInputStream dis = new DataInputStream(fis);
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(dis));
+
+            final File tempFile = new File(TreeAssist.instance.getDataFolder(), "config-temp.yml");
+            if (!tempFile.exists()) {
+                tempFile.createNewFile();
+            }
+
+            final FileOutputStream fos = new FileOutputStream(tempFile);
+            final DataOutputStream dos = new DataOutputStream(fos);
+            final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(dos));
+
+            String readLine;
+
+            int indent = 0;
+
+            String key = null;
+
+            while ((readLine = reader.readLine()) != null) {
+                if (key == null && writer.toString().length() < 1 && !readLine.startsWith("#")) {
+                    writer.append("# === [ TreeAssist TreeConfig ] ===");
+                    writer.newLine();
+                }
+
+                if (readLine.trim().startsWith("#")) {
+                    continue;
+                }
+
+                final int firstContentCharacter = (indent * 2);
+
+                if (readLine.contains(":")) {
+                    final String newStringLine = readLine.split(":")[0] + ":";
+                    int pos;
+                    final StringBuilder builder = new StringBuilder();
+                    int newDigit = -1;
+
+                    for (pos = 0; pos<newStringLine.length(); pos++) {
+                        if (newStringLine.charAt(pos) != ' '
+                                && newStringLine.charAt(pos) != ':') {
+                            if (newDigit == -1) {
+                                newDigit = pos;
+                            }
+                            builder.append(newStringLine.charAt(pos));
+                        } else if (newStringLine.charAt(pos) == ' ') {
+                            if (builder.length() > 0) {
+                                builder.append(newStringLine.charAt(pos));
+                            }
+                        } else if (newStringLine.charAt(pos) != ':') {
+                            builder.append(newStringLine.charAt(pos));
+                        }
+                    }
+
+                    if (key == null) {
+                        key = builder.toString();
+                    }
+
+                    String[] split = key.split("\\.");
+
+                    if (newDigit > firstContentCharacter) {
+                        indent++;
+
+                        final String[] newString = new String[split.length+1];
+                        System.arraycopy(split, 0, newString, 0, split.length);
+                        newString[split.length] = builder.toString();
+                        split = newString;
+                    } else if (newDigit < firstContentCharacter) {
+
+                        indent = (newDigit/2);
+
+                        final String[] newString = new String[indent+1];
+
+                        System.arraycopy(split, 0, newString, 0, indent);
+
+                        newString[newString.length-1] = builder.toString();
+                        split = newString;
+                    } else {
+                        split[split.length-1] = builder.toString();
+                    }
+
+                    final StringBuilder buffer = new StringBuilder();
+                    for (String string : split) {
+                        buffer.append('.');
+                        buffer.append(string);
+                    }
+
+                    key = buffer.substring(1);
+
+                    final TreeConfig.CFG entry = TreeConfig.CFG.getByNode(key);
+
+                    if (entry == null) {
+                        writer.append(readLine);
+                        writer.newLine();
+                        continue;
+                    }
+
+                    final StringBuilder value = new StringBuilder();
+
+                    for (int k=0; k<indent; k++) {
+                        value.append("  ");
+                    }
+                    if (entry.comment != null && !entry.comment.isEmpty()) {
+                        writer.append(value);
+                        writer.append("# ");
+                        writer.append(entry.comment);
+                        writer.newLine();
+                    }
+                }
+                writer.append(readLine);
+                writer.newLine();
+            }
+
+            writer.flush();
+            writer.close();
+            reader.close();
+
+            if (!configFile.delete()) {
+                TreeAssist.instance.getLogger().severe("Could not delete un-commented config!");
+            }
+            if (!tempFile.renameTo(configFile)) {
+                TreeAssist.instance.getLogger().severe("Could not rename Config!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Iterates through all keys in the config-file, and populates the value
      * maps. Boolean values are stored in the booleans-map, Strings in the
      * strings-map, etc.
@@ -358,6 +501,7 @@ public class TreeConfig {
                 materials.put(cfg.node, new ArrayList<>(newMaterials));
             }
         }
+        appendComments();
     }
 
     /**
@@ -379,6 +523,7 @@ public class TreeConfig {
     public void save() {
         try {
             cfg.save(configFile);
+            appendComments();
         } catch (IOException e) {
             e.printStackTrace();
         }

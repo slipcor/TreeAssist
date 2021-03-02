@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.3 - add "Custom Drops Override" to allow replacing leaf drops completely with given custom drops
+- v7.1.4 - repair main config.yml commenting, add tree config commenting
 - [read more](doc/changelog.md)
 ***
 

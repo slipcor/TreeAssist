@@ -240,13 +240,6 @@ public class MainConfig {
 
                 final int firstDigit = (indent * 2);
 
-                if (stringLine.startsWith("#") || stringLine.length() < firstDigit+1 || stringLine.charAt(firstDigit) == '#') {
-
-                    writer.append(stringLine);
-                    writer.newLine();
-                    continue;
-                }
-
                 if (stringLine.contains(":")) {
                     final String newStringLine = stringLine.split(":")[0] + ":";
                     int pos;
@@ -259,6 +252,12 @@ public class MainConfig {
                             if (newDigit == -1) {
                                 newDigit = pos;
                             }
+                            builder.append(newStringLine.charAt(pos));
+                        } else if (newStringLine.charAt(pos) == ' ') {
+                            if (builder.length() > 0) {
+                                builder.append(newStringLine.charAt(pos));
+                            }
+                        } else if (newStringLine.charAt(pos) != ':') {
                             builder.append(newStringLine.charAt(pos));
                         }
                     }
