@@ -44,7 +44,7 @@ It also will take down an entire tree when it is enabled in the config.
 ## Downloads
 
 - [spigotmc.org](https://www.spigotmc.org/resources/treeassist.67436/)
-- [jenkins - dev builds](https://ci2.craftyn.com/job/TreeAssist/)
+- [Discord - #treeassist-builds](https://discord.gg/kZzmAqzQ9j)
 
 
 ***
