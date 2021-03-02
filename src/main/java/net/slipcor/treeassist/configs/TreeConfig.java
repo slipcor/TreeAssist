@@ -2,26 +2,18 @@ package net.slipcor.treeassist.configs;
 
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.core.TreeStructure;
-import net.slipcor.treeassist.utils.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
 import java.util.*;
 
-public class TreeConfig {
-    private final YamlConfiguration cfg;
-    private final File configFile;
-    private final Map<String, Boolean> booleans;
-    private final Map<String, Integer> ints;
-    private final Map<String, Double> doubles;
-    private final Map<String, String> strings;
+public class TreeConfig extends CommentableConfig {
     private final Map<String, List<Material>> materials;
     private final Map<String, Map<String, Double>> maps;
 
-    public enum CFG {
+    public enum CFG implements ConfigEntry {
         AUTOMATIC_DESTRUCTION_ACTIVE("Automatic Destruction.Active", true, "Main switch to deactivate automatic destruction"),
         AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE("Automatic Destruction.Apply Full Tool Damage", true, "Damage the player's tool for every block of the tree, not just the first they broke"),
         AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Destruction.Auto Add To Inventory", false, "Add the logs the player's inventory"),
@@ -101,79 +93,75 @@ public class TreeConfig {
 
         private final String node;
         private final Object value;
-        private final String type;
+        private final Type type;
         private final String comment;
-
-        public static CFG getByNode(final String node) {
-            for (final CFG m : CFG.getValues()) {
-                if (m.node.equals(node)) {
-                    return m;
-                }
-            }
-            return null;
-        }
 
         CFG(final String node, final String value, String comment) {
             this.node = node;
             this.value = value;
-            type = "string";
+            type = Type.STRING;
             this.comment = comment;
         }
 
         CFG(final String node, final Boolean value, String comment) {
             this.node = node;
             this.value = value;
-            type = "boolean";
+            type = Type.BOOLEAN;
             this.comment = comment;
         }
 
         CFG(final String node, final Integer value, String comment) {
             this.node = node;
             this.value = value;
-            type = "int";
+            type = Type.INT;
             this.comment = comment;
         }
 
         CFG(final String node, final Double value, String comment) {
             this.node = node;
             this.value = value;
-            type = "double";
+            type = Type.DOUBLE;
             this.comment = comment;
         }
 
         CFG(final String node, final List<String> value, String comment) {
             this.node = node;
             this.value = value;
-            this.type = "list";
+            this.type = Type.LIST;
             this.comment = comment;
         }
 
         CFG(final String node, final Map<String, Double> value, String comment) {
             this.node = node;
             this.value = value;
-            this.type = "map";
+            this.type = Type.MAP;
             this.comment = comment;
         }
 
+
+        @Override
+        public String getComment() {
+            return comment;
+        }
+
+        @Override
         public String getNode() {
             return node;
         }
 
         @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
         public Object getValue() {
             return value;
         }
 
-        public static CFG[] getValues() {
-            return values();
+        @Override
+        public Type getType() {
+            return type;
         }
 
-        public String getType() {
-            return type;
+        @Override
+        public String toString() {
+            return String.valueOf(value);
         }
     }
 
@@ -183,16 +171,26 @@ public class TreeConfig {
      * @param configFile a YAML file
      */
     public TreeConfig (final File configFile) {
+        super(configFile);
         TreeAssist.instance.getLogger().info("Loading tree config file: " + configFile.getAbsolutePath().replace(TreeAssist.instance.getDataFolder().getAbsolutePath(), ""));
 
-        cfg = new YamlConfiguration();
-        this.configFile = configFile;
-        booleans = new HashMap<>();
-        ints = new HashMap<>();
-        doubles = new HashMap<>();
-        strings = new HashMap<>();
         materials = new HashMap<>();
         maps = new HashMap<>();
+
+        emptyNodes = new String[]{
+                "Automatic Destruction",  "Block Statistics",
+                "Blocks", "Blocks.Cap", "Blocks.Top", "Blocks.Middle",
+                "Replanting", "Replanting.Dropped", "Trunk"
+        };
+    }
+
+    public CFG getByNode(final String node) {
+        for (final CFG m : CFG.values()) {
+            if (m.node.equals(node)) {
+                return m;
+            }
+        }
+        return null;
     }
 
     /////////////
@@ -220,22 +218,22 @@ public class TreeConfig {
      */
     public void loadDefaults(TreeConfig parent) {
         for (CFG c : CFG.values()) {
-            if (c.type.equals("string")) {
+            if (c.type == ConfigEntry.Type.STRING) {
                 strings.put(c.node, parent.getString(c));
-            } else if (c.type.equals("boolean")) {
+            } else if (c.type == ConfigEntry.Type.BOOLEAN) {
                 booleans.put(c.node, parent.getBoolean(c));
-            } else if (c.type.equals("int")) {
+            } else if (c.type == ConfigEntry.Type.INT) {
                 ints.put(c.node, parent.getInt(c));
-            } else if (c.type.equals("double")) {
+            } else if (c.type == ConfigEntry.Type.DOUBLE) {
                 doubles.put(c.node, parent.getDouble(c));
-            } else if (c.type.equals("list")) {
+            } else if (c.type == ConfigEntry.Type.LIST) {
                 List<Material> mats = parent.getMaterials(c);
                 if (materials.containsKey(c.node)) {
                     materials.get(c.node).addAll(mats);
                 } else {
                     materials.put(c.node, new ArrayList<>(mats));
                 }
-            } else if (c.type.equals("map")) {
+            } else if (c.type == ConfigEntry.Type.MAP) {
                 if (parent.maps.containsKey(c.node)) {
                     maps.put(c.node, new HashMap<>(parent.maps.get(c.node)));
                 }
@@ -264,244 +262,56 @@ public class TreeConfig {
         }
     }
 
-    /**
-     * Append the comments.
-     *
-     * Iterate over the config file and add comments, if we didn't do that already.
-     */
-    private void appendComments() {
-        try {
-
-            final FileInputStream fis = new FileInputStream(configFile);
-            final DataInputStream dis = new DataInputStream(fis);
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(dis));
-
-            final File tempFile = new File(TreeAssist.instance.getDataFolder(), "config-temp.yml");
-            if (!tempFile.exists()) {
-                tempFile.createNewFile();
-            }
-
-            final FileOutputStream fos = new FileOutputStream(tempFile);
-            final DataOutputStream dos = new DataOutputStream(fos);
-            final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(dos));
-
-            String readLine;
-
-            int indent = 0;
-
-            String key = null;
-
-            while ((readLine = reader.readLine()) != null) {
-                if (key == null && writer.toString().length() < 1 && !readLine.startsWith("#")) {
-                    writer.append("# === [ TreeAssist TreeConfig ] ===");
-                    writer.newLine();
+    @Override
+    protected void loadMaterials() {
+        for (CFG cfg : CFG.values()) {
+            if (cfg.type == ConfigEntry.Type.LIST) {
+                Set<Material> newMaterials = new LinkedHashSet<>();
+                if (materials.containsKey(cfg.getNode())) {
+                    // we already have entries from the parent(s)
+                    newMaterials.addAll(materials.get(cfg.getNode()));
                 }
-
-                if (readLine.trim().startsWith("#")) {
-                    continue;
-                }
-
-                final int firstContentCharacter = (indent * 2);
-
-                if (readLine.contains(":")) {
-                    final String newStringLine = readLine.split(":")[0] + ":";
-                    int pos;
-                    final StringBuilder builder = new StringBuilder();
-                    int newDigit = -1;
-
-                    for (pos = 0; pos<newStringLine.length(); pos++) {
-                        if (newStringLine.charAt(pos) != ' '
-                                && newStringLine.charAt(pos) != ':') {
-                            if (newDigit == -1) {
-                                newDigit = pos;
-                            }
-                            builder.append(newStringLine.charAt(pos));
-                        } else if (newStringLine.charAt(pos) == ' ') {
-                            if (builder.length() > 0) {
-                                builder.append(newStringLine.charAt(pos));
-                            }
-                        } else if (newStringLine.charAt(pos) != ':') {
-                            builder.append(newStringLine.charAt(pos));
-                        }
-                    }
-
-                    if (key == null) {
-                        key = builder.toString();
-                    }
-
-                    String[] split = key.split("\\.");
-
-                    if (newDigit > firstContentCharacter) {
-                        indent++;
-
-                        final String[] newString = new String[split.length+1];
-                        System.arraycopy(split, 0, newString, 0, split.length);
-                        newString[split.length] = builder.toString();
-                        split = newString;
-                    } else if (newDigit < firstContentCharacter) {
-
-                        indent = (newDigit/2);
-
-                        final String[] newString = new String[indent+1];
-
-                        System.arraycopy(split, 0, newString, 0, indent);
-
-                        newString[newString.length-1] = builder.toString();
-                        split = newString;
-                    } else {
-                        split[split.length-1] = builder.toString();
-                    }
-
-                    final StringBuilder buffer = new StringBuilder();
-                    for (String string : split) {
-                        buffer.append('.');
-                        buffer.append(string);
-                    }
-
-                    key = buffer.substring(1);
-
-                    final TreeConfig.CFG entry = TreeConfig.CFG.getByNode(key);
-
-                    if (entry == null) {
-                        writer.append(readLine);
-                        writer.newLine();
-                        continue;
-                    }
-
-                    final StringBuilder value = new StringBuilder();
-
-                    for (int k=0; k<indent; k++) {
-                        value.append("  ");
-                    }
-                    if (entry.comment != null && !entry.comment.isEmpty()) {
-                        writer.append(value);
-                        writer.append("# ");
-                        writer.append(entry.comment);
-                        writer.newLine();
-                    }
-                }
-                writer.append(readLine);
-                writer.newLine();
+                newMaterials.addAll(this.readRawMaterials(cfg));
+                materials.put(cfg.getNode(), new ArrayList<>(newMaterials));
             }
-
-            writer.flush();
-            writer.close();
-            reader.close();
-
-            if (!configFile.delete()) {
-                TreeAssist.instance.getLogger().severe("Could not delete un-commented config!");
-            }
-            if (!tempFile.renameTo(configFile)) {
-                TreeAssist.instance.getLogger().severe("Could not rename Config!");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
     /**
-     * Iterates through all keys in the config-file, and populates the value
-     * maps. Boolean values are stored in the booleans-map, Strings in the
-     * strings-map, etc.
+     * Check for invalid materials
+     *
+     * @param node the full node ending in the material name
+     *
+     * @return whether the material is valid or legacy
      */
-    public void reloadMaps() {
-        // known exceptions (empty nodes)
-        String[] exceptions = {"Automatic Destruction",
-                "Block Statistics",
-                "Blocks", "Blocks.Cap", "Blocks.Top", "Blocks.Middle",
-                "Replanting", "Replanting.Dropped", "Trunk"};
+    protected boolean checkMaterials(String node) {
 
-        root: for (final String s : cfg.getKeys(true)) {
-            final Object object = cfg.get(s);
+        String[] materialPaths = {"Custom Drops.", "Custom Drop Factor."};
 
-            CFG node = CFG.getByNode(s);
-
-            double value = 0;
-
-            if (object instanceof Boolean) {
-                if (node != null && node.type.equals("boolean")) {
-                    booleans.put(s, (Boolean) object);
-                } else if (node != null) {
-                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected boolean content, " + node.type + " expected - please fix!");
-                }
-            } else if (object instanceof Integer) {
-                if (node != null && node.type.equals("int")) {
-                    ints.put(s, (Integer) object);
-                } else if (node != null && node.type.equals("double")) {
-                    value = (Integer) object;
-                    TreeAssist.instance.getLogger().warning(configFile.getName() + ": " + s + " expects double, integer given!");
-                    doubles.put(s, value);
-                } else if (node != null) {
-                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected integer content, " + node.type + " expected - please fix!");
-                }
-            } else if (object instanceof Double) {
-                if (node != null && node.type.equals("double")) {
-                    doubles.put(s, (Double) object);
-                    value = (Double) object;
-                } else if (node != null && node.type.equals("int")) {
-                    value = (Double) object;
-                    TreeAssist.instance.getLogger().warning(configFile.getName() + ": " + s + " expects integer, double given. Trying to round!");
-                    ints.put(s, (int) value);
-                } else if (node != null) {
-                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected double content, " + node.type + " expected - please fix!");
-                }
-            } else if (object instanceof String) {
-                strings.put(s, (String) object);
-                if (node != null && !node.type.equals("string")) {
-                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected string content, " + node.type + " expected - please fix!");
-                }
-            }
-
-            if (node == null) {
-                for (String test : exceptions) {
-                    if (s.equals(test)) {
-                        continue root;
+        for (String test : materialPaths) {
+            if (node.startsWith(test)) {
+                String material = node.replace(test, "");
+                try {
+                    Material testMaterial = Material.matchMaterial(material, false);
+                    if (testMaterial != null) {
+                        Double value = getYamlConfiguration().getDouble(node);
+                        storeMapEntry(test.substring(0, test.length()-1), material, value);
+                        return true;
                     }
-                }
-
-                String[] materialPaths = {"Custom Drops.", "Custom Drop Factor."};
-
-                for (String test : materialPaths) {
-                    if (s.startsWith(test)) {
-                        String material = s.replace(test, "");
-                        try {
-                            Material testMaterial = Material.matchMaterial(material, false);
-                            if (testMaterial != null) {
-                                value = getYamlConfiguration().getDouble(s);
-                                storeMapEntry(test.substring(0, test.length()-1), material, value);
-                                continue root;
-                            }
-                            testMaterial = Material.matchMaterial(material, true);
-                            if (testMaterial != null) {
-                                value = getYamlConfiguration().getDouble(s);
-                                storeMapEntry(test.substring(0, test.length()-1), material, value);
-                                TreeAssist.instance.getLogger().warning("Legacy name used: " + material + " is now " + testMaterial.name());
-                                continue root;
-                            }
-                            TreeAssist.instance.getLogger().warning("No valid material " + material + " in node " + s);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    testMaterial = Material.matchMaterial(material, true);
+                    if (testMaterial != null) {
+                        Double value = getYamlConfiguration().getDouble(node);
+                        storeMapEntry(test.substring(0, test.length()-1), material, value);
+                        TreeAssist.instance.getLogger().warning("Legacy name used: " + material + " is now " + testMaterial.name());
+                        return true;
                     }
+                    TreeAssist.instance.getLogger().warning("No valid material " + material + " in node " + node);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
-                TreeAssist.instance.getLogger().warning("No valid node: " + s);
             }
         }
-
-        for (CFG cfg : CFG.values()) {
-            if (cfg.type.equals("list")) {
-                Set<Material> newMaterials = new LinkedHashSet<>();
-                if (materials.containsKey(cfg.node)) {
-                    // we already have entries from the parent(s)
-                    newMaterials.addAll(materials.get(cfg.node));
-                }
-                newMaterials.addAll(this.readRawMaterials(cfg));
-                materials.put(cfg.node, new ArrayList<>(newMaterials));
-            }
-        }
-        appendComments();
+        return false;
     }
 
     /**
@@ -514,18 +324,6 @@ public class TreeConfig {
             if (!this.getConfigName().contains("bush_jungle")) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    /**
-     * Save the config to disk
-     */
-    public void save() {
-        try {
-            cfg.save(configFile);
-            appendComments();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -553,88 +351,8 @@ public class TreeConfig {
     //         //
     /////////////
 
-    /**
-     * Get the YamlConfiguration associated with this Config instance. Note that
-     * changes made directly to the YamlConfiguration will cause an
-     * inconsistency with the value maps unless reloadMaps() is called.
-     *
-     * @return the YamlConfiguration of this Config instance
-     */
-    public YamlConfiguration getYamlConfiguration() {
-        return cfg;
-    }
-
     public String getConfigName() {
         return configFile.getName();
-    }
-
-    /**
-     * Retrieve a boolean from the value maps.
-     *
-     * @param cfg the node of the value
-     * @return the boolean value of the path if the path exists, false otherwise
-     */
-    public boolean getBoolean(final CFG cfg) {
-        return getBoolean(cfg, (Boolean) cfg.getValue());
-    }
-
-    /**
-     * Retrieve a boolean from the value maps.
-     *
-     * @param cfg the node of the value
-     * @param def a default value to return if the value was not in the map
-     * @return the boolean value of the path if it exists, def otherwise
-     */
-    private boolean getBoolean(final CFG cfg, final boolean def) {
-        final String path = cfg.getNode();
-        final Boolean result = booleans.get(path);
-        return result == null ? def : result;
-    }
-
-    /**
-     * Retrieve an int from the value maps.
-     *
-     * @param cfg the node of the value
-     * @return the int value of the path if the path exists, 0 otherwise
-     */
-    public int getInt(final CFG cfg) {
-        return getInt(cfg, (Integer) cfg.getValue());
-    }
-
-    /**
-     * Retrieve an int from the value maps.
-     *
-     * @param cfg the node of the value
-     * @param def a default value to return if the value was not in the map
-     * @return the int value of the path if it exists, def otherwise
-     */
-    public int getInt(final CFG cfg, final int def) {
-        final String path = cfg.getNode();
-        final Integer result = ints.get(path);
-        return result == null ? def : result;
-    }
-
-    /**
-     * Retrieve a double from the value maps.
-     *
-     * @param cfg the node of the value
-     * @return the double value of the path if the path exists, 0D otherwise
-     */
-    public double getDouble(final CFG cfg) {
-        return getDouble(cfg, (Double) cfg.getValue());
-    }
-
-    /**
-     * Retrieve a double from the value maps.
-     *
-     * @param cfg the node of the value
-     * @param def a default value to return if the value was not in the map
-     * @return the double value of the path if it exists, def otherwise
-     */
-    public double getDouble(final CFG cfg, final double def) {
-        final String path = cfg.getNode();
-        final Double result = doubles.get(path);
-        return result == null ? def : result;
     }
 
     /**
@@ -653,29 +371,6 @@ public class TreeConfig {
         } else {
             return def;
         }
-    }
-
-    /**
-     * Retrieve a string from the value maps.
-     *
-     * @param cfg the node of the value
-     * @return the string value of the path if the path exists, null otherwise
-     */
-    public String getString(final CFG cfg) {
-        return getString(cfg, (String) cfg.getValue());
-    }
-
-    /**
-     * Retrieve a string from the value maps.
-     *
-     * @param cfg the node of the value
-     * @param def a default value to return if the value was not in the map
-     * @return the string value of the path if it exists, def otherwise
-     */
-    public String getString(final CFG cfg, final String def) {
-        final String path = cfg.getNode();
-        final String result = strings.get(path);
-        return result == null ? def : result;
     }
 
     public Map<String, Double> getMap(CFG cfg) {
@@ -714,14 +409,6 @@ public class TreeConfig {
 
         final ConfigurationSection section = cfg.getConfigurationSection(path);
         return section == null ? new HashSet<>() : section.getKeys(false);
-    }
-
-    public List<String> getStringList(final CFG cfg, final List<String> def) {
-        if (this.cfg.get(cfg.node) == null) {
-            return def == null ? new LinkedList<>() : def;
-        }
-
-        return this.cfg.getStringList(cfg.node);
     }
 
     private List<Material> readRawMaterials(CFG cfg) {

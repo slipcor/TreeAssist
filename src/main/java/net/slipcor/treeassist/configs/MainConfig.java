@@ -2,29 +2,13 @@ package net.slipcor.treeassist.configs;
 
 import net.slipcor.treeassist.TreeAssist;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
 import java.util.*;
 
-public class MainConfig {
-    private final YamlConfiguration cfg;
-    private final File configFile;
-    private final Map<String, Boolean> booleans;
-    private final Map<String, Integer> ints;
-    private final Map<String, Double> doubles;
-    private final Map<String, String> strings;
+public class MainConfig extends CommentableConfig {
 
-    public void save() {
-        try {
-            cfg.save(configFile);
-            appendComments();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public enum CFG {
+    public enum CFG implements ConfigEntry {
         GENERAL("General", "=== [ General Settings ] ==="),
         GENERAL_LANGUAGE("General.Language", "lang_en", "Language file to load. Does not need YML extension!"),
         GENERAL_TOGGLE_DEFAULT("General.Toggle Default", true, "For the toggling command, should players start with TreeAssist active?"),
@@ -67,103 +51,104 @@ public class MainConfig {
 
         private final String node;
         private final Object value;
-        private final String type;
+        private final Type type;
         private final String comment;
-
-        public static CFG getByNode(final String node) {
-            for (final CFG m : CFG.getValues()) {
-                if (m.node.equals(node)) {
-                    return m;
-                }
-            }
-            return null;
-        }
 
         CFG(final String node, String comment) {
             this.node = node;
             this.value = comment;
-            type = "comment";
+            type = Type.COMMENT;
             this.comment = comment;
         }
 
         CFG(final String node, final String value, String comment) {
             this.node = node;
             this.value = value;
-            type = "string";
+            type = Type.STRING;
             this.comment = comment;
         }
 
         CFG(final String node, final Boolean value, String comment) {
             this.node = node;
             this.value = value;
-            type = "boolean";
+            type = Type.BOOLEAN;
             this.comment = comment;
         }
 
         CFG(final String node, final Integer value, String comment) {
             this.node = node;
             this.value = value;
-            type = "int";
+            type = Type.INT;
             this.comment = comment;
         }
 
         CFG(final String node, final Double value, String comment) {
             this.node = node;
             this.value = value;
-            type = "double";
+            type = Type.DOUBLE;
             this.comment = comment;
         }
 
         CFG(final String node, final List<String> value, String comment) {
             this.node = node;
             this.value = value;
-            this.type = "list";
+            this.type = Type.LIST;
             this.comment = comment;
         }
 
+
+        @Override
+        public String getComment() {
+            return comment;
+        }
+
+        @Override
         public String getNode() {
             return node;
+        }
+
+        @Override
+        public Object getValue() {
+            return value;
+        }
+
+        @Override
+        public Type getType() {
+            return type;
         }
 
         @Override
         public String toString() {
             return String.valueOf(value);
         }
-
-        public Object getValue() {
-            return value;
-        }
-
-        public static CFG[] getValues() {
-            return values();
-        }
-
-        public String getType() {
-            return type;
-        }
-
     }
 
-
     /**
-     * Create a new TreeConfig instance that uses the specified file for loading
+     * Create a new MainConfig instance that uses the specified file for loading
      *
      * @param configFile a YAML file
      */
     public MainConfig(final File configFile) {
-        TreeAssist.instance.getLogger().info("Loading main config file: " + configFile.getAbsolutePath().replace(TreeAssist.instance.getDataFolder().getAbsolutePath(), ""));
+        super(configFile);
 
-        cfg = new YamlConfiguration();
-        this.configFile = configFile;
+        TreeAssist.instance.getLogger().info("Loading main config file: " + configFile.getAbsolutePath().replace(TreeAssist.instance.getDataFolder().getAbsolutePath(), ""));
 
         if (MainConfigUpdater.check(this, cfg)) {
             save();
         }
+        emptyNodes = new String[]{
+                "General", "Commands", "Commands.Force Break", "Commands.Force Grow", "Commands.No Replant",
+                "Destruction", "Placed Blocks", "Plugins", "Worlds", "Modding"
+        };
+    }
 
-        booleans = new HashMap<>();
-        ints = new HashMap<>();
-        doubles = new HashMap<>();
-        strings = new HashMap<>();
+    public CFG getByNode(final String node) {
+        for (final CFG m : CFG.values()) {
+            if (m.node.equals(node)) {
+                return m;
+            }
+        }
+        return null;
     }
 
     /**
@@ -199,320 +184,17 @@ public class MainConfig {
     }
 
     /**
-     * Append the comments.
+     * Check for invalid materials
      *
-     * Iterate over the config file and add comments, if we didn't do that already.
-     */
-    private void appendComments() {
-        final File ymlFile = new File(TreeAssist.instance.getDataFolder(), "config.yml");
-
-        try {
-
-            final FileInputStream fis = new FileInputStream(ymlFile);
-            final DataInputStream dis = new DataInputStream(fis);
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(dis));
-
-            final File tempFile = new File(TreeAssist.instance.getDataFolder(), "config-temp.yml");
-            if (!tempFile.exists()) {
-                tempFile.createNewFile();
-            }
-
-            final FileOutputStream fos = new FileOutputStream(tempFile);
-            final DataOutputStream dos = new DataOutputStream(fos);
-            final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(dos));
-
-            String stringLine;
-
-            int indent = 0;
-
-            String key = null;
-
-            while ((stringLine = reader.readLine()) != null) {
-
-                if (key == null && writer.toString().length() < 1 && !stringLine.startsWith("#")) {
-                    writer.append("# === [ TreeAssist Config ] ===");
-                    writer.newLine();
-                }
-
-                if (stringLine.trim().startsWith("#")) {
-                    continue;
-                }
-
-                final int firstDigit = (indent * 2);
-
-                if (stringLine.contains(":")) {
-                    final String newStringLine = stringLine.split(":")[0] + ":";
-                    int pos;
-                    final StringBuilder builder = new StringBuilder();
-                    int newDigit = -1;
-
-                    for (pos = 0; pos<newStringLine.length(); pos++) {
-                        if (newStringLine.charAt(pos) != ' '
-                                && newStringLine.charAt(pos) != ':') {
-                            if (newDigit == -1) {
-                                newDigit = pos;
-                            }
-                            builder.append(newStringLine.charAt(pos));
-                        } else if (newStringLine.charAt(pos) == ' ') {
-                            if (builder.length() > 0) {
-                                builder.append(newStringLine.charAt(pos));
-                            }
-                        } else if (newStringLine.charAt(pos) != ':') {
-                            builder.append(newStringLine.charAt(pos));
-                        }
-                    }
-
-                    if (key == null) {
-                        key = builder.toString();
-                    }
-
-                    String[] split = key.split("\\.");
-
-                    if (newDigit > firstDigit) {
-                        indent++;
-
-                        final String[] newString = new String[split.length+1];
-                        System.arraycopy(split, 0, newString, 0, split.length);
-                        newString[split.length] = builder.toString();
-                        split = newString;
-                    } else if (newDigit < firstDigit) {
-
-                        indent = (newDigit/2);
-
-                        final String[] newString = new String[indent+1];
-
-                        System.arraycopy(split, 0, newString, 0, indent);
-
-                        newString[newString.length-1] = builder.toString();
-                        split = newString;
-                    } else {
-                        split[split.length-1] = builder.toString();
-                    }
-
-                    final StringBuilder buffer = new StringBuilder();
-                    for (String string : split) {
-                        buffer.append('.');
-                        buffer.append(string);
-                    }
-
-                    key = buffer.substring(1);
-
-                    final CFG entry = CFG.getByNode(key);
-
-                    if (entry == null) {
-                        writer.append(stringLine);
-                        writer.newLine();
-                        continue;
-                    }
-
-                    final StringBuilder value = new StringBuilder();
-
-                    for (int k=0; k<indent; k++) {
-                        value.append("  ");
-                    }
-                    if (entry.comment != null && !entry.comment.isEmpty()) {
-                        writer.append(value);
-                        writer.append("# ");
-                        writer.append(entry.comment);
-                        writer.newLine();
-                    }
-                }
-                writer.append(stringLine);
-                writer.newLine();
-            }
-
-            writer.flush();
-            writer.close();
-            reader.close();
-
-            if (!ymlFile.delete()) {
-                TreeAssist.instance.getLogger().severe("Could not delete un-commented config!");
-            }
-            if (!tempFile.renameTo(ymlFile)) {
-                TreeAssist.instance.getLogger().severe("Could not rename Config!");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Iterates through all keys in the config-file, and populates the value
-     * maps. Boolean values are stored in the booleans-map, Strings in the
-     * strings-map, etc.
-     */
-    public void reloadMaps() {
-        // known exceptions (empty nodes)
-        String[] exceptions = {"General", "Commands", "Commands.Force Break", "Commands.Force Grow", "Commands.No Replant",
-                "Destruction", "Placed Blocks", "Plugins", "Worlds", "Modding"};
-
-        root: for (final String s : cfg.getKeys(true)) {
-            final Object object = cfg.get(s);
-
-            CFG node = CFG.getByNode(s);
-
-            if (object instanceof Boolean) {
-                if (node != null && node.type.equals("boolean")) {
-                    booleans.put(s, (Boolean) object);
-                } else if (node != null) {
-                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected boolean content, " + node.type + " expected - please fix!");
-                }
-            } else if (object instanceof Integer) {
-                if (node != null && node.type.equals("int")) {
-                    ints.put(s, (Integer) object);
-                } else if (node != null && node.type.equals("double")) {
-                    double value = (Integer) object;
-                    TreeAssist.instance.getLogger().warning(configFile.getName() + ": " + s + " expects double, integer given!");
-                    doubles.put(s, value);
-                } else if (node != null) {
-                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected integer content, " + node.type + " expected - please fix!");
-                }
-            } else if (object instanceof Double) {
-                if (node != null && node.type.equals("double")) {
-                    doubles.put(s, (Double) object);
-                } else if (node != null && node.type.equals("int")) {
-                    double value = (Double) object;
-                    TreeAssist.instance.getLogger().warning(configFile.getName() + ": " + s + " expects integer, double given. Trying to round!");
-                    ints.put(s, (int) value);
-                } else if (node != null) {
-                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected double content, " + node.type + " expected - please fix!");
-                }
-            } else if (object instanceof String) {
-                strings.put(s, (String) object);
-                if (node != null && !node.type.equals("string")) {
-                    TreeAssist.instance.getLogger().severe(configFile.getName() + ": " + s + " has unexpected string content, " + node.type + " expected - please fix!");
-                }
-            }
-
-            if (CFG.getByNode(s) == null) {
-
-                for (String test : exceptions) {
-                    if (s.equals(test)) {
-                        continue root;
-                    }
-                }
-
-                TreeAssist.instance.getLogger().warning("No valid node: " + s);
-            }
-        }
-        appendComments();
-    }
-
-    /////////////
-    //         //
-    // GETTERS //
-    //         //
-    /////////////
-
-    /**
-     * Get the YamlConfiguration associated with this Config instance. Note that
-     * changes made directly to the YamlConfiguration will cause an
-     * inconsistency with the value maps unless reloadMaps() is called.
+     * @param node the full node ending in the material name
      *
-     * @return the YamlConfiguration of this Config instance
+     * @return whether the material is valid or legacy
      */
-    public YamlConfiguration getYamlConfiguration() {
-        return cfg;
+    protected boolean checkMaterials(String node) {
+        return false;
     }
 
-    /**
-     * Retrieve a boolean from the value maps.
-     *
-     * @param cfg the node of the value
-     * @return the boolean value of the path if the path exists, false otherwise
-     */
-    public boolean getBoolean(final CFG cfg) {
-        return getBoolean(cfg, (Boolean) cfg.getValue());
-    }
-
-    /**
-     * Retrieve a boolean from the value maps.
-     *
-     * @param cfg the node of the value
-     * @param def a default value to return if the value was not in the map
-     * @return the boolean value of the path if it exists, def otherwise
-     */
-    private boolean getBoolean(final CFG cfg, final boolean def) {
-        final String path = cfg.getNode();
-        final Boolean result = booleans.get(path);
-        return result == null ? def : result;
-    }
-
-    /**
-     * Retrieve an int from the value maps.
-     *
-     * @param cfg the node of the value
-     * @return the int value of the path if the path exists, 0 otherwise
-     */
-    public int getInt(final CFG cfg) {
-        return getInt(cfg, (Integer) cfg.getValue());
-    }
-
-    /**
-     * Retrieve an int from the value maps.
-     *
-     * @param cfg the node of the value
-     * @param def a default value to return if the value was not in the map
-     * @return the int value of the path if it exists, def otherwise
-     */
-    public int getInt(final CFG cfg, final int def) {
-        final String path = cfg.getNode();
-        final Integer result = ints.get(path);
-        return result == null ? def : result;
-    }
-
-    /**
-     * Retrieve a double from the value maps.
-     *
-     * @param cfg the node of the value
-     * @return the double value of the path if the path exists, 0D otherwise
-     */
-    public double getDouble(final CFG cfg) {
-        return getDouble(cfg, (Double) cfg.getValue());
-    }
-
-    /**
-     * Retrieve a double from the value maps.
-     *
-     * @param cfg the node of the value
-     * @param def a default value to return if the value was not in the map
-     * @return the double value of the path if it exists, def otherwise
-     */
-    public double getDouble(final CFG cfg, final double def) {
-        final String path = cfg.getNode();
-        final Double result = doubles.get(path);
-        return result == null ? def : result;
-    }
-
-    /**
-     * Retrieve a string from the value maps.
-     *
-     * @param cfg the node of the value
-     * @return the string value of the path if the path exists, null otherwise
-     */
-    public String getString(final CFG cfg) {
-        return getString(cfg, (String) cfg.getValue());
-    }
-
-    /**
-     * Retrieve a string from the value maps.
-     *
-     * @param cfg the node of the value
-     * @param def a default value to return if the value was not in the map
-     * @return the string value of the path if it exists, def otherwise
-     */
-    public String getString(final CFG cfg, final String def) {
-        final String path = cfg.getNode();
-        final String result = strings.get(path);
-        return result == null ? def : result;
-    }
-
-    public List<String> getStringList(final CFG cfg, final List<String> def) {
-        if (this.cfg.get(cfg.node) == null) {
-            return def == null ? new LinkedList<>() : def;
-        }
-
-        return this.cfg.getStringList(cfg.node);
+    @Override
+    protected void loadMaterials() {
     }
 }

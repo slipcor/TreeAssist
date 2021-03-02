@@ -146,7 +146,7 @@ public class ConfigV7Updater {
                 config.set(defaultTree.oldMainNode, null); // Remove old node
             } else {
                 if (config.contains(defaultTree.oldMainNode)) {
-                    if (defaultTree.newTreeNode.getType().equals("map")) {
+                    if (defaultTree.newTreeNode.getType() == ConfigEntry.Type.MAP) {
                         ConfigurationSection sec = config.getConfigurationSection(defaultTree.oldMainNode);
                         if (sec == null) {
                             continue;
@@ -157,7 +157,7 @@ public class ConfigV7Updater {
                             System.out.println("Moving " + defaultTree.oldMainNode + " to " + newNode);
                             treeConfig.set(newNode, sec.get(key));
                         }
-                    } else if (defaultTree.newTreeNode.getType().equals("list")) {
+                    } else if (defaultTree.newTreeNode.getType() == ConfigEntry.Type.LIST) {
                         List<String> copy = new ArrayList<>(config.getStringList(defaultTree.oldMainNode));
 
                         System.out.println("Moving " + defaultTree.oldMainNode + " to " + defaultTree.newTreeNode.getNode());

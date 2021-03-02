@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.4 - repair main config.yml commenting, add tree config commenting
+- v7.1.5 - remove duplicated code by merging config logic
 - [read more](doc/changelog.md)
 ***
 
