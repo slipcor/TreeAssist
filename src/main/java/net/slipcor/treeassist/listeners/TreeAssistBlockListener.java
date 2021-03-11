@@ -119,6 +119,11 @@ public class TreeAssistBlockListener implements Listener {
             return;
         }
 
+        if (!plugin.isActive(block.getWorld())) {
+            debug.i("not in this world: " + block.getWorld().getName());
+            return;
+        }
+
         if (!TreeStructure.allTrunks.contains(block.getType())) {
             debug.i("Not a burning tree block: " + block.getType());
             return;
@@ -137,35 +142,36 @@ public class TreeAssistBlockListener implements Listener {
             List<Material> list = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
             for (Material mat : list) {
                 debug.i("checking for material " + mat + "(" + config.getConfigName() +")");
-                if (block.getType().equals(mat)) {
-
-
-                    if (config.getBoolean(TreeConfig.CFG.REPLANTING_WHEN_TREE_BURNS_DOWN) && plugin.Enabled) {
-                        if (plugin.isActive(block.getWorld())) {
-                            if (block.getState().getData() instanceof Tree) {
-                                Material logMat = block.getType();
-                                Block oneBelow = block.getRelative(BlockFace.DOWN, 1);
-                                Block oneAbove = block.getRelative(BlockFace.UP, 1);
-                                List<Material> grounds = config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS);
-                                if (grounds.contains(oneBelow.getType())) {
-                                    Material replantMat = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
-                                    if (MaterialUtils.isAir(oneAbove.getType()) || oneAbove.getType() == logMat) {
-                                        TASaplingPlaceEvent event = new TASaplingPlaceEvent(block, replantMat);
-                                        TreeAssist.instance.getServer().getPluginManager().callEvent(event);
-                                        if (event.isCancelled()) {
-                                            debug.i("TreeAssistBlockListener.checkFire() Sapling Replant was cancelled!");
-                                            return;
-                                        }
-                                        Runnable b = new TreeAssistReplant(block, event.getType(), config);
-                                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, b, 20);
-                                    }
-                                }
-                            }
-                        } else {
-                            debug.i("not in this world: " + block.getWorld().getName());
-                        }
-                    }
+                if (!block.getType().equals(mat)) {
+                    continue;
                 }
+
+                if (!config.getBoolean(TreeConfig.CFG.REPLANTING_WHEN_TREE_BURNS_DOWN)) {
+                    debug.i("burn replanting disabled in config");
+                    continue;
+                }
+
+                Block oneBelow = block.getRelative(BlockFace.DOWN, 1);
+                List<Material> grounds = config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS);
+                if (!grounds.contains(oneBelow.getType())) {
+                    debug.i("not a valid ground: " + BlockUtils.printBlock(oneBelow));
+                    continue;
+                }
+                Block oneAbove = block.getRelative(BlockFace.UP, 1);
+                if (!MaterialUtils.isAir(oneAbove.getType()) && !list.contains(oneAbove.getType())) {
+                    debug.i("not a valid block above: " + BlockUtils.printBlock(oneAbove));
+                    continue;
+                }
+                Material replantMat = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
+                TASaplingPlaceEvent event = new TASaplingPlaceEvent(block, replantMat);
+                TreeAssist.instance.getServer().getPluginManager().callEvent(event);
+                if (event.isCancelled()) {
+                    debug.i("TreeAssistBlockListener.checkFire() Sapling Replant was cancelled!");
+                    return;
+                }
+                Runnable b = new TreeAssistReplant(block, event.getType(), config);
+                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, b, 20);
+                return;
             }
         }
     }
@@ -175,10 +181,12 @@ public class TreeAssistBlockListener implements Listener {
         if (!plugin.Enabled) {
             return;
         }
+
         if (!plugin.isActive(event.getBlock().getWorld())) {
             debug.i("not in this world: " + event.getBlock().getWorld().getName());
             return;
         }
+
         if (MaterialUtils.isSapling(event.getBlock().getType())) {
             if (plugin.saplingLocationList.contains(event.getBlock().getLocation())) {
                 event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
@@ -195,22 +203,20 @@ public class TreeAssistBlockListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
+
+            for (TreeConfig config : TreeAssist.treeConfigs.values()) {
+                if (event.getBlock().getType() == config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL)) {
+                    if (config.getBoolean(TreeConfig.CFG.REPLANTING_FORCE_PROTECT)) {
+                        event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_NEVER_BREAK_SAPLINGS));
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+            }
         }
 
         if (!TreeStructure.allTrunks.contains(event.getBlock().getType())) {
             debug.i("Not a tree block: " + event.getBlock().getType());
-
-            if (MaterialUtils.isSapling(event.getBlock().getType())) {
-                for (TreeConfig config : TreeAssist.treeConfigs.values()) {
-                    if (event.getBlock().getType() == config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL)) {
-                        if (config.getBoolean(TreeConfig.CFG.REPLANTING_FORCE_PROTECT)) {
-                            event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_NEVER_BREAK_SAPLINGS));
-                            event.setCancelled(true);
-                        }
-                    }
-                }
-            }
-
             return;
         }
 
@@ -226,133 +232,137 @@ public class TreeAssistBlockListener implements Listener {
         Player player = event.getPlayer();
 
         TreeConfig matchingTreeConfig = null;
-        TreeStructure foundTree = null;
+        TreeStructure matchingTreeStructure = null;
 
         configs: for (TreeConfig config : TreeAssist.treeConfigs.values()) {
             List<Material> list = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
             debug.i("--- checking config " + config.getConfigName());
             for (Material mat : list) {
                 debug.i("checking for material " + mat);
-                if (event.getBlock().getType().equals(mat)) {
-                    Block block = TreeStructure.findBottomBlock(event.getBlock(), config);
-                    if (block != null) {
-                        debug.i("Tree found for Material " + mat);
+                if (!event.getBlock().getType().equals(mat)) {
+                    continue;
+                }
+                Block block = TreeStructure.findBottomBlock(event.getBlock(), config);
+                if (block == null) {
+                    continue;
+                }
+                debug.i("Tree found for Material " + mat);
 
-                        TreeStructure trunk = new TreeStructure(config, block, false);
+                TreeStructure checkTreeStructure = new TreeStructure(config, block, false);
 
-                        if (trunk.isValid()) {
-                            debug.i("Tree matches " + mat);
+                if (checkTreeStructure.isValid()) {
+                    debug.i("Tree matches " + mat);
 
-                            if (plugin.getMainConfig().getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&
-                                !player.hasPermission(config.getString(TreeConfig.CFG.PERMISSION))) {
-                                debug.i("Player does not have permission " + config.getString(TreeConfig.CFG.PERMISSION));
-                                matchingTreeConfig = config; // for maybe forcing something later
-                                foundTree = trunk;
-                                break;
-                            }
-
-                            if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_ACTIVE)) {
-                                if (TreeAssist.instance.hasCoolDown(player)) {
-                                    debug.i("Cooldown!");
-                                    player.sendMessage(Language.parse(Language.MSG.INFO_COOLDOWN_STILL));
-                                    player.sendMessage(Language.parse(Language.MSG.INFO_COOLDOWN_VALUE, String.valueOf(TreeAssist.instance.getCoolDown(player))));
-                                    matchingTreeConfig = config; // for maybe forcing something later
-                                    foundTree = trunk;
-                                    break configs; // no need to keep checking
-                                }
-
-                                if (plugin.isDisabled(player.getWorld().getName(), player.getName())) {
-                                    debug.i("Disabled for this player in this world!");
-                                    matchingTreeConfig = config; // for maybe forcing something later
-                                    foundTree = trunk;
-                                    break configs; // no need to keep checking
-                                }
-
-                                String lore = config.getString(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REQUIRED_LORE);
-                                if (!"".equals(lore)) {
-                                    ItemStack item = player.getInventory().getItemInMainHand();
-                                    if (!item.hasItemMeta() || !item.getItemMeta().hasLore() || !item.getItemMeta().getLore().contains(lore)) {
-                                        debug.i("Lore not found: " + lore);
-                                        matchingTreeConfig = config; // for maybe forcing something later
-                                        foundTree = trunk;
-                                        break;
-                                    }
-                                }
-
-                                if (player.isSneaking()) {
-                                    if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_WHEN_SNEAKING)) {
-                                        debug.i("Sneaking is bad!");
-                                        matchingTreeConfig = config; // for maybe forcing something later
-                                        foundTree = trunk;
-                                        break;
-                                    }
-                                } else {
-                                    if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_WHEN_NOT_SNEAKING)) {
-                                        debug.i("Not sneaking is bad!");
-                                        matchingTreeConfig = config; // for maybe forcing something later
-                                        foundTree = trunk;
-                                        break;
-                                    }
-                                }
-
-                                if (TreeAssist.instance.mcMMO && mcMMOHook.mcMMOTreeFeller(player)) {
-                                    debug.i("mcMMO Tree Feller!");
-                                    matchingTreeConfig = config; // for maybe forcing something later
-                                    foundTree = trunk;
-                                    break;
-                                }
-
-                                if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REQUIRES_TOOLS)) {
-                                    if (!ToolUtils.isMatchingTool(player.getInventory().getItemInMainHand(), config)) {
-                                        debug.i("Player has not the right tool!");
-                                        matchingTreeConfig = config; // for maybe forcing something later
-                                        foundTree = trunk;
-                                        break;
-                                    }
-                                }
-
-                                debug.i("success!");
-                                ItemStack item = player.getInventory().getItemInMainHand();
-
-                                if (!plugin.getMainConfig().getBoolean(MainConfig.CFG.MODDING_DISABLE_DURABILITY_FIX)) {
-                                    if (item.hasItemMeta()) {
-                                        short durability = (short)((Damageable)item.getItemMeta()).getDamage();
-                                        short maxDurability = item.getType().getMaxDurability();
-
-                                        if (((durability > maxDurability) || durability < 0)
-                                                && ToolUtils.isVanillaTool(item)) {
-                                            debug.i("removing item: " + item.getType().name() +
-                                                    " (durability " + durability + ">" + maxDurability);
-                                            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                                            player.updateInventory();
-                                        }
-                                    }
-                                }
-
-                                event.setCancelled(!trunk.getConfig().getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY) ||
-                                        trunk.getConfig().getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME) <= 0);
-                                trunk.maybeReplant(player, event.getBlock());
-                                if (TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
-                                    trunk.removeBlocksBelow(event.getBlock());
-                                }
-                                TreeAssist.instance.treeAdd(trunk);
-                                trunk.removeTreeLater(player, item);
-                                return;
-
-                            } else if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL) ||
-                                        config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE)) {
-                                matchingTreeConfig = config;
-                                foundTree = trunk;
-                                break;
-                            }
-
-                            // else:  we did not find a match or we do not want to force remove it - let's try another!
-                        }
-                        debug.i("Shape does not match " + mat + " (" + trunk.failReason + ")" );
-                        if (trunk.failReason == FailReason.INVALID_BLOCK) {
-                            break configs; // do not try to find a different tree!
-                        }
+                    if (plugin.getMainConfig().getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&
+                            !player.hasPermission(config.getString(TreeConfig.CFG.PERMISSION))) {
+                        debug.i("Player does not have permission " + config.getString(TreeConfig.CFG.PERMISSION));
+                        matchingTreeConfig = config; // for maybe forcing something later
+                        matchingTreeStructure = checkTreeStructure;
+                        continue configs;
                     }
+
+                    if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_ACTIVE)) {
+                        if (TreeAssist.instance.hasCoolDown(player)) {
+                            debug.i("Cooldown!");
+                            player.sendMessage(Language.parse(Language.MSG.INFO_COOLDOWN_STILL));
+                            player.sendMessage(Language.parse(Language.MSG.INFO_COOLDOWN_VALUE, String.valueOf(TreeAssist.instance.getCoolDown(player))));
+                            matchingTreeConfig = config; // for maybe forcing something later
+                            matchingTreeStructure = checkTreeStructure;
+
+                            break configs;
+                        }
+
+                        if (plugin.isDisabled(player.getWorld().getName(), player.getName())) {
+                            debug.i("Disabled for this player in this world!");
+                            matchingTreeConfig = config; // for maybe forcing something later
+                            matchingTreeStructure = checkTreeStructure;
+
+                            break configs;
+                        }
+
+                        String lore = config.getString(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REQUIRED_LORE);
+                        if (!"".equals(lore)) {
+                            ItemStack item = player.getInventory().getItemInMainHand();
+                            if (!item.hasItemMeta() || !item.getItemMeta().hasLore() || !item.getItemMeta().getLore().contains(lore)) {
+                                debug.i("Lore not found: " + lore);
+                                matchingTreeConfig = config; // for maybe forcing something later
+                                matchingTreeStructure = checkTreeStructure;
+                                continue configs;
+                            }
+                        }
+
+                        if (player.isSneaking()) {
+                            if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_WHEN_SNEAKING)) {
+                                debug.i("Sneaking is bad!");
+                                matchingTreeConfig = config; // for maybe forcing something later
+                                matchingTreeStructure = checkTreeStructure;
+                                continue configs;
+                            }
+                        } else {
+                            if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_WHEN_NOT_SNEAKING)) {
+                                debug.i("Not sneaking is bad!");
+                                matchingTreeConfig = config; // for maybe forcing something later
+                                matchingTreeStructure = checkTreeStructure;
+                                continue configs;
+                            }
+                        }
+
+                        if (TreeAssist.instance.mcMMO && mcMMOHook.mcMMOTreeFeller(player)) {
+                            debug.i("mcMMO Tree Feller!");
+                            matchingTreeConfig = config; // for maybe forcing something later
+                            matchingTreeStructure = checkTreeStructure;
+                            continue configs;
+                        }
+
+                        if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REQUIRES_TOOLS)) {
+                            if (!ToolUtils.isMatchingTool(player.getInventory().getItemInMainHand(), config)) {
+                                debug.i("Player has not the right tool!");
+                                matchingTreeConfig = config; // for maybe forcing something later
+                                matchingTreeStructure = checkTreeStructure;
+                                continue configs;
+                            }
+                        }
+
+                        debug.i("success!");
+                        ItemStack item = player.getInventory().getItemInMainHand();
+
+                        if (!plugin.getMainConfig().getBoolean(MainConfig.CFG.MODDING_DISABLE_DURABILITY_FIX)) {
+                            if (item.hasItemMeta()) {
+                                short durability = (short)((Damageable)item.getItemMeta()).getDamage();
+                                short maxDurability = item.getType().getMaxDurability();
+
+                                if (((durability > maxDurability) || durability < 0)
+                                        && ToolUtils.isVanillaTool(item)) {
+                                    debug.i("removing item: " + item.getType().name() +
+                                            " (durability " + durability + ">" + maxDurability);
+                                    player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                                    player.updateInventory();
+                                }
+                            }
+                        }
+
+                        event.setCancelled(!checkTreeStructure.getConfig().getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY) ||
+                                checkTreeStructure.getConfig().getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME) <= 0);
+                        checkTreeStructure.maybeReplant(player, event.getBlock());
+                        if (TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
+                            checkTreeStructure.removeBlocksBelow(event.getBlock());
+                        }
+                        TreeAssist.instance.treeAdd(checkTreeStructure);
+                        checkTreeStructure.removeTreeLater(player, item);
+                        return;
+
+                    } else if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL) ||
+                            config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE)) {
+                        matchingTreeConfig = config;
+                        matchingTreeStructure = checkTreeStructure;
+                        continue configs;
+                    }
+
+                    // we did not find a match or we do not want to force remove it - let's try another!
+                }
+                debug.i("Shape does not match " + mat + " (" + checkTreeStructure.failReason + ")" );
+                if (checkTreeStructure.failReason == FailReason.INVALID_BLOCK) {
+                    break configs;
                 }
             }
         }
@@ -360,18 +370,18 @@ public class TreeAssistBlockListener implements Listener {
         if (matchingTreeConfig != null) {
             debug.i("Fallback to enforcing something!");
             if (matchingTreeConfig.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE)) {
-                foundTree.maybeReplant(null, event.getBlock());
+                matchingTreeStructure.maybeReplant(null, event.getBlock());
             }
 
             if (matchingTreeConfig.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL)) {
-                TreeAssist.instance.treeAdd(foundTree);
+                TreeAssist.instance.treeAdd(matchingTreeStructure);
                 if (TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
-                    foundTree.removeBlocksBelow(event.getBlock());
+                    matchingTreeStructure.removeBlocksBelow(event.getBlock());
                 }
-                foundTree.removeTreeLater(null, null);
+                matchingTreeStructure.removeTreeLater(null, null);
             } else {
                 // do we maybe need to place saplings still?
-                foundTree.plantSaplings();
+                matchingTreeStructure.plantSaplings();
             }
         }
     }
@@ -402,6 +412,9 @@ public class TreeAssistBlockListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (!plugin.getMainConfig().getBoolean(MainConfig.CFG.GENERAL_TOGGLE_DEFAULT)) {
             plugin.toggleGlobal(event.getPlayer().getName());
+        }
+        if (event.getPlayer().isOp() && plugin.getUpdater() != null) {
+            plugin.getUpdater().message(event.getPlayer());
         }
     }
 

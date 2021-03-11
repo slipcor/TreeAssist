@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.5 - remove duplicated code by merging config logic
+- v7.1.6 - prepare updater and internal versioning logic for more rigid update cycle
 - [read more](doc/changelog.md)
 ***
 

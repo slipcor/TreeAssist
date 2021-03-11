@@ -52,6 +52,8 @@ public class TreeAssist extends JavaPlugin {
     private TreeAssistBlockListener listener;       // Block Listener instance
     private TreeAssistSpawnListener spawnListener;  // Item Spawn Listener instance
 
+    private Updater updater = null;
+
 
     /**
      * Check for mcMMO if requested
@@ -127,6 +129,10 @@ public class TreeAssist extends JavaPlugin {
      */
     public MainConfig getMainConfig() {
         return config;
+    }
+
+    public Updater getUpdater() {
+        return updater;
     }
 
     /**
@@ -268,6 +274,8 @@ public class TreeAssist extends JavaPlugin {
         loadCommands();
 
         Language.init(this, config.getString(MainConfig.CFG.GENERAL_LANGUAGE, "lang_en"));
+
+        this.updater = new Updater(this, getFile());
     }
 
     @Override

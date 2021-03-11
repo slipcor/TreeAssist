@@ -50,7 +50,9 @@ public class MainConfigUpdater {
 
         DESTRUCTION_FALLING_BLOCKS_FANCY(7.0117f, MainConfig.CFG.DESTRUCTION_FALLING_BLOCKS_FANCY, false),
         BSTATS_ACTIVE(7.0147f, MainConfig.CFG.BSTATS_ACTIVE, true),
-        BSTATS_FULL(7.0147f, MainConfig.CFG.BSTATS_FULL, true)
+        BSTATS_FULL(7.0147f, MainConfig.CFG.BSTATS_FULL, true),
+        UPDATE_MODE(7.1010f, MainConfig.CFG.UPDATE_MODE, "both"),
+        UPDATE_TYPE(7.1010f, MainConfig.CFG.UPDATE_TYPE, "beta")
         ;
 
         private final float version;

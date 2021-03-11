@@ -46,7 +46,11 @@ public class MainConfig extends CommentableConfig {
         BSTATS("bStats", "=== [ bStats Metrics Settings ] ==="),
         BSTATS_ACTIVE("bStats.Active", true, "Should we send stats at all? Please keep this in so we have an overview of spread of versions <3"),
         BSTATS_FULL("bStats.Full", true, "This setting sends a bit more detailed information about which features are used at all. Thank you for supporting me!"),
-        VERSION("Version", 7.0147, "The config version for update checks"),
+
+        UPDATE_MODE("Update.Mode", "what to do? Valid values: off, announce, download, both", "both"),
+        UPDATE_TYPE("Update.Type", "which type of branch to get updates? Valid values: dev, alpha, beta, release", "beta"),
+
+        VERSION("Version", 7.1009, "The config version for update checks"),
         DEBUG("Debug", "none", "");
 
         private final String node;

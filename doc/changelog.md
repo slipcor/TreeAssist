@@ -2,6 +2,7 @@
 
 ## v7.1 - New CI
 
+- v7.1.6 - prepare updater and internal versioning logic for more rigid update cycle
 - v7.1.5 - remove duplicated code by merging config logic
 - v7.1.4 - repair main config.yml commenting, add tree config commenting
 - v7.1.3 - add "Custom Drops Override" to allow replacing leaf drops completely with given custom drops
