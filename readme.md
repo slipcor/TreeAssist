@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.6 - prepare updater and internal versioning logic for more rigid update cycle
+- v7.1.7 - properly populate config node and comments, announce update setting
 - [read more](doc/changelog.md)
 ***
 

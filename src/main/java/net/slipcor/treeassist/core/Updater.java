@@ -92,10 +92,15 @@ public class Updater extends Thread {
 
         if (mode == UpdateMode.OFF) {
             type = UpdateType.RELEASE;
+
+            TreeAssist.instance.getLogger().info("Updates deactivated. Please check spigotmc.org for updates");
+
         } else {
             instances.clear();
             type = UpdateType.getBySetting(plugin.getMainConfig().getString(MainConfig.CFG.UPDATE_TYPE));
             instances.add(new UpdateInstance("treeassist"));
+
+            TreeAssist.instance.getLogger().info("Checking for updates...");
 
             this.start();
         }
