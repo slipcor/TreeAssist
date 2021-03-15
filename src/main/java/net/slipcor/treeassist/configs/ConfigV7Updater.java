@@ -10,6 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * A temporary solution to migrate config from prior to v7.0
+ *
+ * @deprecated as it was implemented in 2020 as a one-time measure, it will be removed in the next major version
+ */
 public class ConfigV7Updater {
     enum ToDefaultTree {
         APPLY_FULL_TOOL_DAMAGE("Main.Apply Full Tool Damage", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE),
