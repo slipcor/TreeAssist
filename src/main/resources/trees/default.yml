@@ -141,6 +141,7 @@ Natural Blocks:
 - 'minecraft:cave_air'
 - 'minecraft:void_air'
 - 'minecraft:large_fern'
+- 'minecraft:tall_flowers'
 # The permission required for this tree type
 Permission: treeassist.destroy.*
 # Sapling replant settings
@@ -199,4 +200,4 @@ Trunk:
   # Saplings can be at different height
   Uneven Bottom: false
 # Version number for automagical config updates
-Version: 7.1004
+Version: 7.1009

@@ -21,6 +21,7 @@ public class TreeConfigUpdater {
         TRUNK_STRIPPED_JUNGLE(7.0145f, "jungle", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_jungle_log"),
         TRUNK_STRIPPED_OAK(7.0145f, "oak", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_oak_log"),
         TRUNK_STRIPPED_SPRUCE(7.0145f, "spruce", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_spruce_log"),
+        NATURAL_TALL_FLOWERS(7.1008f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:tall_flowers"),
         ;
 
         private final float version;
@@ -48,7 +49,8 @@ public class TreeConfigUpdater {
         DROP_CHANCE_NETHERITE(7.0106f, "default", "Custom Drop Factor.minecraft:netherite_axe", 1.0),
         TALL_JUNGLE_VINES(7.0118f, "tall_jungle", TreeConfig.CFG.BLOCKS_VINES.getNode(), true),
         SILK_TOUCH(7.0137f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH.getNode(), true),
-        AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE(7.1003f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE.getNode(), false)
+        AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE(7.1003f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE.getNode(), false),
+        DARK_OAK_MINIMUM_HEIGHT(7.1008f, "dark_oak", TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT.getNode(), 3),
         ;
 
         private final float version;

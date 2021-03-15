@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.8 - allow to set up mcMMO and Jobs to give only the full tree - TreeMcMMO and TreeJobs
+- v7.1.9 - allow "tall_flowers" (sunflowers) next to trees, support dark oak trees that are 3 blocks high
 - [read more](doc/changelog.md)
 ***
 

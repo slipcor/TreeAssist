@@ -12,6 +12,7 @@ Permission: treeassist.destroy.darkoak
 Replanting:
   Material: 'minecraft:dark_oak_sapling'
 Trunk:
+  Minimum Height: 3
   Thickness: 2
   Materials:
   - 'minecraft:dark_oak_log'
