@@ -59,7 +59,7 @@ public class TreeAssist extends JavaPlugin {
      * Check for mcMMO if requested
      */
     private void checkMcMMO() {
-        if (config.getBoolean(MainConfig.CFG.PLUGINS_USE_MCMMO)) {
+        if (config.getBoolean(MainConfig.CFG.PLUGINS_USE_MCMMO) || config.getBoolean(MainConfig.CFG.PLUGINS_USE_TREEMCMMO)) {
             try {
                 if (getServer().getPluginManager().isPluginEnabled("mcMMO")) {
                     Class.forName("com.gmail.nossr50.datatypes.skills.PrimarySkillType");
@@ -78,7 +78,7 @@ public class TreeAssist extends JavaPlugin {
      * Check for Jobs if requested
      */
     private void checkJobs() {
-        if (config.getBoolean(MainConfig.CFG.PLUGINS_USE_JOBS)) {
+        if (config.getBoolean(MainConfig.CFG.PLUGINS_USE_JOBS) || config.getBoolean(MainConfig.CFG.PLUGINS_USE_TREEJOBS)) {
             this.jobs = getServer().getPluginManager().isPluginEnabled("Jobs");
         } else {
             this.jobs = false;

@@ -289,17 +289,20 @@ public class BlockUtils {
      *
      * @param block the block being broken
      * @param player the player initiating the breaking
+     * @param fullTree the call is for the full tree
      */
-    public static void callExternals(Block block, Player player) {
+    public static void callExternals(Block block, Player player, boolean fullTree) {
         boolean leaf = TreeStructure.allExtras.contains(block.getType());
 
         if (!leaf && player != null) {
-            if (TreeAssist.instance.mcMMO) {
+            if (TreeAssist.instance.mcMMO &&
+                    (fullTree == TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.PLUGINS_USE_TREEMCMMO))) {
                 TreeStructure.debug.i("Adding mcMMO EXP!");
                 mcMMOHook.mcMMOAddExp(player, block);
             }
 
-            if (TreeAssist.instance.jobs) {
+            if (TreeAssist.instance.jobs &&
+                    (fullTree == TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.PLUGINS_USE_TREEJOBS))) {
                 TreeStructure.debug.i("Adding Jobs EXP!");
                 JobsHook.addJobsExp(player, block);
             }

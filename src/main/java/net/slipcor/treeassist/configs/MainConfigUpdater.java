@@ -52,7 +52,9 @@ public class MainConfigUpdater {
         BSTATS_ACTIVE(7.0147f, MainConfig.CFG.BSTATS_ACTIVE, true),
         BSTATS_FULL(7.0147f, MainConfig.CFG.BSTATS_FULL, true),
         UPDATE_MODE(7.1010f, MainConfig.CFG.UPDATE_MODE, "both"),
-        UPDATE_TYPE(7.1010f, MainConfig.CFG.UPDATE_TYPE, "beta")
+        UPDATE_TYPE(7.1010f, MainConfig.CFG.UPDATE_TYPE, "beta"),
+        FULL_MCMMO_TREE(7.1011f, MainConfig.CFG.PLUGINS_USE_TREEMCMMO, true),
+        FULL_JOBS_TREE(7.1011f, MainConfig.CFG.PLUGINS_USE_TREEJOBS, true)
         ;
 
         private final float version;

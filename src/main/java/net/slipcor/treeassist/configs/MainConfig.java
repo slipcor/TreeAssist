@@ -29,7 +29,9 @@ public class MainConfig extends CommentableConfig {
 
         PLUGINS("Plugins", "=== [ Plugin Integration Settings ] ==="),
         PLUGINS_USE_MCMMO("Plugins.mcMMO", true, "Count broken blocks towards the TreeFeller ability"),
+        PLUGINS_USE_TREEMCMMO("Plugins.TreeMcMMO", false, "Count broken trees towards the TreeFeller ability"),
         PLUGINS_USE_JOBS("Plugins.Jobs", true, "Count broken blocks towards Jobs jobs that fit"),
+        PLUGINS_USE_TREEJOBS("Plugins.TreeJobs", false, "Count broken trees towards Jobs jobs that fit"),
         PLUGINS_USE_WORLDGUARD("Plugins.WorldGuard", false, "Allow to set up regions with WorldGuard to prevent destruction with 'treeassist-autochop' and sapling replacement with 'treeassist-replant'"),
 
         WORLDS("Worlds", "=== [ World Related Settings ] ==="),

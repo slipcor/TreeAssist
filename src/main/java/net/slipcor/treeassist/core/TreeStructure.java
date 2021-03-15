@@ -1162,7 +1162,7 @@ public class TreeStructure {
         double chanceValue = (new Random()).nextDouble();
         debug.i("breaking " + block.getType() +". custom drops: " + calculateCustomDrops + " - roll: " + chanceValue);
 
-        BlockUtils.callExternals(block, player);
+        BlockUtils.callExternals(block, player, false);
 
 
         if (calculateCustomDrops && tool != null) {

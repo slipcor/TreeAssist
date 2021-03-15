@@ -348,6 +348,7 @@ public class TreeAssistBlockListener implements Listener {
                             checkTreeStructure.removeBlocksBelow(event.getBlock());
                         }
                         TreeAssist.instance.treeAdd(checkTreeStructure);
+                        BlockUtils.callExternals(event.getBlock(), player, true);
                         checkTreeStructure.removeTreeLater(player, item);
                         return;
 
@@ -378,6 +379,7 @@ public class TreeAssistBlockListener implements Listener {
                 if (TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
                     matchingTreeStructure.removeBlocksBelow(event.getBlock());
                 }
+                BlockUtils.callExternals(event.getBlock(), player, true);
                 matchingTreeStructure.removeTreeLater(null, null);
             } else {
                 // do we maybe need to place saplings still?

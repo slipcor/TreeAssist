@@ -37,8 +37,12 @@ Placed Blocks:
 Plugins:
   # Count broken blocks towards the TreeFeller ability
   mcMMO: true
+  # Count broken trees towards the TreeFeller ability
+  TreeMcMMO: true
   # Count broken blocks towards Jobs jobs that fit
   Jobs: true
+  # Count broken trees towards Jobs jobs that fit
+  TreeJobs: true
   # Allow to set up regions with WorldGuard to prevent destruction with 'treeassist-autochop' and sapling replacement with 'treeassist-replant'
   WorldGuard: false
 # === [ World Related Settings ] ===
@@ -66,4 +70,4 @@ Update:
   # which type of branch to get updates? Valid values: dev, alpha, beta, release
   Type: beta
 # The config version for update checks
-Version: 7.1009
+Version: 7.1010

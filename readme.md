@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.7 - properly populate config node and comments, announce update setting
+- v7.1.8 - allow to set up mcMMO and Jobs to give only the full tree - TreeMcMMO and TreeJobs
 - [read more](doc/changelog.md)
 ***
 
