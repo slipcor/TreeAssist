@@ -160,7 +160,7 @@ public class BlockUtils {
         List<Material> trunks = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
         List<Material> naturals = config.getMaterials(TreeConfig.CFG.NATURAL_BLOCKS);
 
-        if (extras.contains(Material.OAK_LEAVES)) {
+        if (extras.contains(Material.OAK_LEAVES) && !trunks.contains(Material.JUNGLE_LOG)) {
             trunks.add(Material.JUNGLE_LOG); // hack in the fact that we can have bushes that are oak leaves and jungle logs
         }
 
