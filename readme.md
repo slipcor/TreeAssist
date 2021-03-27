@@ -71,7 +71,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.10 - fix jungle logs dominating oak block lists
+- v7.1.11 - allow to disable auto-leaf-destruction causing damage to tools ("Apply Tool Damage For Leaves")
 - [read more](doc/changelog.md)
 ***
 

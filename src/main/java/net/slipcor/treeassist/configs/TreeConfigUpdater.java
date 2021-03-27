@@ -51,6 +51,7 @@ public class TreeConfigUpdater {
         SILK_TOUCH(7.0137f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH.getNode(), true),
         AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE(7.1003f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE.getNode(), false),
         DARK_OAK_MINIMUM_HEIGHT(7.1008f, "dark_oak", TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT.getNode(), 3),
+        TOOL_DAMAGE_FOR_LEAVES(7.1010f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_TOOL_DAMAGE_FOR_LEAVES.getNode(), true),
         ;
 
         private final float version;

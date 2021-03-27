@@ -3,6 +3,8 @@ Automatic Destruction:
   Active: true
   # Damage the player's tool for every block of the tree, not just the first they broke
   Apply Full Tool Damage: true
+  # Damage the player's tool for leaves broken automatically
+  Apply Tool Damage For Leaves: true
   # Add the logs the player's inventory
   Auto Add To Inventory: false
   # Seconds to wait before (force) removing remnants of the tree
@@ -200,4 +202,4 @@ Trunk:
   # Saplings can be at different height
   Uneven Bottom: false
 # Version number for automagical config updates
-Version: 7.1009
+Version: 7.1011

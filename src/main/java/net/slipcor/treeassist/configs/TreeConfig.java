@@ -16,6 +16,7 @@ public class TreeConfig extends CommentableConfig {
     public enum CFG implements ConfigEntry {
         AUTOMATIC_DESTRUCTION_ACTIVE("Automatic Destruction.Active", true, "Main switch to deactivate automatic destruction"),
         AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE("Automatic Destruction.Apply Full Tool Damage", true, "Damage the player's tool for every block of the tree, not just the first they broke"),
+        AUTOMATIC_DESTRUCTION_TOOL_DAMAGE_FOR_LEAVES("Automatic Destruction.Apply Tool Damage For Leaves", true, "Damage the player's tool for leaves broken automatically"),
         AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Destruction.Auto Add To Inventory", false, "Add the logs the player's inventory"),
         AUTOMATIC_DESTRUCTION_CLEANUP_DELAY_TIME("Automatic Destruction.Cleanup Delay Seconds", 20, "Seconds to wait before (force) removing remnants of the tree"),
         AUTOMATIC_DESTRUCTION_COOLDOWN("Automatic Destruction.Cooldown Seconds", 0, "Time to wait before allowing the player to automatically destroy again"),

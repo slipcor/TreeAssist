@@ -1,6 +1,7 @@
 package net.slipcor.treeassist.core;
 
 import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.configs.ConfigEntry;
 import net.slipcor.treeassist.configs.MainConfig;
 import net.slipcor.treeassist.configs.TreeConfig;
 import net.slipcor.treeassist.configs.TreeConfigUpdater;
@@ -1258,6 +1259,11 @@ public class TreeStructure {
             }
         }
         player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
+
+        if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_TOOL_DAMAGE_FOR_LEAVES) && MaterialUtils.isLeaf(block.getType())) {
+            debug.i("skipping damage because of nodamage setting in config");
+            return;
+        }
 
         if (!calculateCustomDrops && tool != null) {
             if (tool.containsEnchantment(Enchantment.DURABILITY)) {

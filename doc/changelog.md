@@ -2,6 +2,7 @@
 
 ## v7.1 - New CI
 
+- v7.1.11 - allow to disable auto-leaf-destruction causing damage to tools ("Apply Tool Damage For Leaves")
 - v7.1.10 - fix jungle logs dominating oak block lists
 - v7.1.9 - allow "tall_flowers" (sunflowers) next to trees, support dark oak trees that are 3 blocks high
 - v7.1.8 - allow to set up mcMMO and Jobs to give only the full tree - TreeMcMMO and TreeJobs
