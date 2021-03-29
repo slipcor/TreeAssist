@@ -1155,13 +1155,13 @@ public class TreeStructure {
             return;
         }
 
-        Material maat = block.getType();
+        Material blockMaterial = block.getType();
         boolean calculateCustomDrops =
-                (config.getBoolean(TreeConfig.CFG.BLOCKS_CUSTOM_DROPS) && this.extraBlocks.contains(maat)) ||
-                        (config.getBoolean(TreeConfig.CFG.TRUNK_CUSTOM_DROPS) && this.trunkBlocks.contains(maat));
+                (config.getBoolean(TreeConfig.CFG.BLOCKS_CUSTOM_DROPS) && this.extraBlocks.contains(blockMaterial)) ||
+                        (config.getBoolean(TreeConfig.CFG.TRUNK_CUSTOM_DROPS) && this.trunkBlocks.contains(blockMaterial));
 
         double chanceValue = (new Random()).nextDouble();
-        debug.i("breaking " + block.getType() +". custom drops: " + calculateCustomDrops + " - roll: " + chanceValue);
+        debug.i("breaking " + blockMaterial +". custom drops: " + calculateCustomDrops + " - roll: " + chanceValue);
 
         BlockUtils.callExternals(block, player, false);
 
@@ -1208,7 +1208,7 @@ public class TreeStructure {
                 }
             }
         } else {
-            debug.i("mat: " + maat.name());
+            debug.i("mat: " + blockMaterial.name());
         }
         TreeAssist.instance.blockList.logBreak(block, player);
         if (player == null) {
@@ -1218,14 +1218,14 @@ public class TreeStructure {
         }
 
         if (statMineBlock) {
-            player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+            player.incrementStatistic(Statistic.MINE_BLOCK, blockMaterial);
         }
 
-        if (MaterialUtils.isLog(block.getType())
+        if (MaterialUtils.isLog(blockMaterial)
                 && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
             debug.i("auto adding!");
             if (statPickup) {
-                player.incrementStatistic(Statistic.PICKUP, block.getType());
+                player.incrementStatistic(Statistic.PICKUP, blockMaterial);
             }
             List<ItemStack> drops = new ArrayList<>(block.getDrops(new ItemStack(tool == null?Material.AIR:tool.getType(), 1)));
             player.getInventory().addItem(drops.toArray(new ItemStack[0]));
@@ -1233,23 +1233,22 @@ public class TreeStructure {
         } else {
             debug.i("not auto adding!");
             if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH) && tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
-                    && MaterialUtils.isMushroom(block.getType())) {
+                    && MaterialUtils.isMushroom(blockMaterial)) {
                 debug.i("silk touching mushroom!");
 
-                Material mat = block.getType();
                 block.setType(Material.AIR, true);
                 block.getWorld().dropItemNaturally(
                         block.getLocation(),
-                        new ItemStack(mat, 1));
+                        new ItemStack(blockMaterial, 1));
                 if (config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_MINE_BLOCK)) {
-                    player.incrementStatistic(Statistic.MINE_BLOCK, block.getType());
+                    player.incrementStatistic(Statistic.MINE_BLOCK, blockMaterial);
                 }
             } else {
                 ItemStack anotherTool = tool;
                 if (tool != null && !config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH)) {
                     debug.i("duplicating tool of type " + tool.getType());
                     anotherTool = new ItemStack(tool.getType(), tool.getAmount());
-                } else if (!MaterialUtils.isLog(block.getType()) && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE)) {
+                } else if (!MaterialUtils.isLog(blockMaterial) && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE)) {
                     debug.i("null tool for " + BlockUtils.printBlock(block));
                     anotherTool = null;
                 } else {
@@ -1260,7 +1259,7 @@ public class TreeStructure {
         }
         player.sendBlockChange(block.getLocation(), Material.AIR.createBlockData());
 
-        if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_TOOL_DAMAGE_FOR_LEAVES) && MaterialUtils.isLeaf(block.getType())) {
+        if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_TOOL_DAMAGE_FOR_LEAVES) && MaterialUtils.isLeaf(blockMaterial)) {
             debug.i("skipping damage because of nodamage setting in config");
             return;
         }
