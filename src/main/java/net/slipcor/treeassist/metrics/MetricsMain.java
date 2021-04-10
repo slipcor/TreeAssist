@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 
 /**
  * bStats collects some data for plugin authors.
- * <p>
+ *
  * Check out https://bStats.org/ to learn more about bStats!
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
