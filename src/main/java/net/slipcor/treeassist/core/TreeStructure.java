@@ -1,7 +1,6 @@
 package net.slipcor.treeassist.core;
 
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.configs.ConfigEntry;
 import net.slipcor.treeassist.configs.MainConfig;
 import net.slipcor.treeassist.configs.TreeConfig;
 import net.slipcor.treeassist.configs.TreeConfigUpdater;
@@ -19,7 +18,6 @@ import org.bukkit.Statistic;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -1157,19 +1155,24 @@ public class TreeStructure {
 
         Material blockMaterial = block.getType();
         boolean calculateCustomDrops =
-                (config.getBoolean(TreeConfig.CFG.BLOCKS_CUSTOM_DROPS) && this.extraBlocks.contains(blockMaterial)) ||
-                        (config.getBoolean(TreeConfig.CFG.TRUNK_CUSTOM_DROPS) && this.trunkBlocks.contains(blockMaterial));
+                (config.getBoolean(TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ACTIVE) && this.extraBlocks.contains(blockMaterial)) ||
+                        (config.getBoolean(TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ACTIVE) && this.trunkBlocks.contains(blockMaterial));
 
         double chanceValue = (new Random()).nextDouble();
         debug.i("breaking " + blockMaterial +". custom drops: " + calculateCustomDrops + " - roll: " + chanceValue);
 
         BlockUtils.callExternals(block, player, false);
 
+        boolean isTrunk = this.trunkBlocks.contains(blockMaterial);
 
         if (calculateCustomDrops && tool != null) {
-            double chance = config.getMapEntry(TreeConfig.CFG.CUSTOM_DROP_FACTOR, tool.getType().name(), 0.0);
+            double chance = isTrunk
+                    ? config.getMapEntry(TreeConfig.CFG.TRUNK_CUSTOM_DROPS_FACTORS, tool.getType().name(), 0.0)
+                    : config.getMapEntry(TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_FACTORS, tool.getType().name(), 0.0);
             debug.i("probability " + chance + " for " + tool.getType().name());
-            double secondChance = config.getMapEntry(TreeConfig.CFG.CUSTOM_DROP_FACTOR, "minecraft:" + tool.getType().name().toLowerCase(), 0.0);
+            double secondChance = isTrunk
+                    ? config.getMapEntry(TreeConfig.CFG.TRUNK_CUSTOM_DROPS_FACTORS, "minecraft:" + tool.getType().name().toLowerCase(), 0.0)
+                    : config.getMapEntry(TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_FACTORS, "minecraft:" + tool.getType().name().toLowerCase(), 0.0);
             debug.i("probability " + secondChance + " for " + tool.getType().name().toLowerCase());
             if (secondChance > chance) {
                 chance = secondChance;
@@ -1178,7 +1181,7 @@ public class TreeStructure {
             if (chance > 0.99 || chanceValue < chance) {
                 debug.i("dropping custom drop!");
 
-                Map<String, Double> chances = config.getMap(TreeConfig.CFG.CUSTOM_DROPS);
+                Map<String, Double> chances = isTrunk ? config.getMap(TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ITEMS) : config.getMap(TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS);
 
                 debug.i("custom drop count: " + chances.size());
 
@@ -1248,8 +1251,11 @@ public class TreeStructure {
                 if (tool != null && !config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH)) {
                     debug.i("duplicating tool of type " + tool.getType());
                     anotherTool = new ItemStack(tool.getType(), tool.getAmount());
-                } else if (!MaterialUtils.isLog(blockMaterial) && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE)) {
-                    debug.i("null tool for " + BlockUtils.printBlock(block));
+                } else if (MaterialUtils.isLeaf(blockMaterial) && config.getBoolean(TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_OVERRIDE)) {
+                    debug.i("null tool for leaf " + BlockUtils.printBlock(block));
+                    anotherTool = null;
+                } else if (MaterialUtils.isLog(blockMaterial) && config.getBoolean(TreeConfig.CFG.TRUNK_CUSTOM_DROPS_OVERRIDE)) {
+                    debug.i("null tool for log " + BlockUtils.printBlock(block));
                     anotherTool = null;
                 } else {
                     debug.i("simply breaking " + BlockUtils.printBlock(block));

@@ -11,8 +11,6 @@ Automatic Destruction:
   Cleanup Delay Seconds: 20
   # Time to wait before allowing the player to automatically destroy again
   Cooldown Seconds: 0
-  # Custom Drops below completely replace the leaf drops
-  Custom Drops Override: false
   # Ticks to wait before breaking the next block, set to -1 for instant breaking
   Delay Ticks: 0
   # Always remove remnants of the tree, as soon as a tree has been verified and is being broken
@@ -47,8 +45,23 @@ Blocks:
     Height: 2
     # Max radius of a branch cap
     Radius: 3
-  # Generate custom drops according to the list
-  Custom Drops: true
+  Custom Drops:
+    # Generate custom drops according to the list
+    Active: true
+    # Drop chances for extra drops. 1.0 would be 100% chance!
+    Items:
+      minecraft:apple: 0.01
+      minecraft:golden_apple: 0.001
+    # These are additional factors, for example, by default, iron has half the chance to get custom drops
+    Factors:
+      minecraft:netherite_axe: 1.0
+      minecraft:diamond_axe: 1.0
+      minecraft:golden_axe: 0.75
+      minecraft:iron_axe: 0.5
+      minecraft:stone_axe: 0.25
+      minecraft:wooden_axe: 0.1
+    # Custom Drops below completely replace the leaf drops
+    Override: false
   # Here you can add extra blocks that can be expected inside or around tree leaves
   Materials:
   - 'minecraft:bee_nest'
@@ -72,18 +85,6 @@ Blocks:
     Radius: 3
     # Height above the trunk to check for leaves
     Height: 3
-# Drop chances for extra drops. 1.0 would be 100% chance!
-Custom Drops:
-  minecraft:apple: 0.01
-  minecraft:golden_apple: 0.001
-# These are additional factors, for example, by default, iron has half the chance to get custom drops
-Custom Drop Factor:
-  minecraft:netherite_axe: 1.0
-  minecraft:diamond_axe: 1.0
-  minecraft:golden_axe: 0.75
-  minecraft:iron_axe: 0.5
-  minecraft:stone_axe: 0.25
-  minecraft:wooden_axe: 0.1
 # Valid blocks that are below and around the saplings
 Ground Blocks:
 - 'minecraft:podzol'
@@ -188,8 +189,22 @@ Tool List:
 Trunk:
   # Look for branches
   Branch: false
-  # Generate custom drops
-  Custom Drops: false
+  Custom Drops:
+    # Generate custom drops
+    Active: false
+    # Drop chances for extra drops. 1.0 would be 100% chance!
+    Items:
+      minecraft:golden_apple: 0.0001
+    # These are additional factors, for example, by default, iron has half the chance to get custom drops
+    Factors:
+      minecraft:netherite_axe: 1.0
+      minecraft:diamond_axe: 1.0
+      minecraft:golden_axe: 0.75
+      minecraft:iron_axe: 0.5
+      minecraft:stone_axe: 0.25
+      minecraft:wooden_axe: 0.1
+    # Custom Drops below completely replace the leaf drops
+    Override: false
   # The trunk can go diagonally
   Diagonal: false
   # How high does it need to be to qualify as a tree
@@ -202,4 +217,4 @@ Trunk:
   # Saplings can be at different height
   Uneven Bottom: false
 # Version number for automagical config updates
-Version: 7.1011
+Version: 7.1013

@@ -72,7 +72,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.12 - actually check the leaves based on the material they had before we broke them
+- v7.1.13 - split custom drops definitions in two, in Blocks and in Trunk, the latter defaulting to false
 - [read more](doc/changelog.md)
 ***
 

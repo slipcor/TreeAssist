@@ -1,10 +1,11 @@
 package net.slipcor.treeassist.configs;
 
 import net.slipcor.treeassist.TreeAssist;
+import org.bukkit.configuration.ConfigurationSection;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class TreeConfigUpdater {
     enum Adding {
@@ -46,12 +47,23 @@ public class TreeConfigUpdater {
     }
 
     enum PreciseAdding {
-        DROP_CHANCE_NETHERITE(7.0106f, "default", "Custom Drop Factor.minecraft:netherite_axe", 1.0),
         TALL_JUNGLE_VINES(7.0118f, "tall_jungle", TreeConfig.CFG.BLOCKS_VINES.getNode(), true),
         SILK_TOUCH(7.0137f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH.getNode(), true),
-        AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE(7.1003f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE.getNode(), false),
+        AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE(7.1003f, "default", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_OVERRIDE.getNode(), false),
         DARK_OAK_MINIMUM_HEIGHT(7.1008f, "dark_oak", TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT.getNode(), 3),
         TOOL_DAMAGE_FOR_LEAVES(7.1010f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_TOOL_DAMAGE_FOR_LEAVES.getNode(), true),
+
+        TRUNK_CUSTOM_DROPS_ACTIVE(7.1012f, "default", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ACTIVE.getNode(), false),
+        TRUNK_CUSTOM_DROPS_OVERRIDE(7.1012f, "default", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_OVERRIDE.getNode(), false),
+
+        TRUNK_DROP_CHANCE_NETHERITE_AXE(7.1012f, "default", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_FACTORS.getNode() + ".minecraft:netherite_axe", 1.0),
+        TRUNK_DROP_CHANCE_DIAMOND_AXE(7.1012f, "default", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_FACTORS.getNode() + ".minecraft:diamond_axe", 1.0),
+        TRUNK_DROP_CHANCE_GOLD_AXE(7.1012f, "default", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_FACTORS.getNode() + ".minecraft:golden_axe", 0.75),
+        TRUNK_DROP_CHANCE_IRON_AXE(7.1012f, "default", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_FACTORS.getNode() + ".minecraft:iron_axe", 0.5),
+        TRUNK_DROP_CHANCE_STONE_AXE(7.1012f, "default", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_FACTORS.getNode() + ".minecraft:stone_axe", 0.25),
+        TRUNK_DROP_CHANCE_WOOD_AXE(7.1012f, "default", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_FACTORS.getNode() + ".minecraft:wooden_axe", 0.1),
+
+        TRUNK_DROP_FACTOR_GOLDEN(7.1012f, "default", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:golden_apple", 0.0001),
         ;
 
         private final float version;
@@ -96,12 +108,62 @@ public class TreeConfigUpdater {
         }
     }
 
+    enum MapMoving {
+        CUSTOM_DROPS_ITEMS(7.1012f, null, "Custom Drops", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS),
+        CUSTOM_DROPS_FACTORS(7.1012f, null, "Custom Drop Factor", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_FACTORS);
+
+        private final float version;
+        private final String config;
+        private final String source;
+        private final TreeConfig.CFG destination;
+
+        /**
+         * A map moving definition
+         *
+         * @param version the version it was introduced
+         * @param config the affected config (or null if all)
+         * @param source the node to read
+         * @param destination the node to write
+         */
+        MapMoving(float version, String config, String source, TreeConfig.CFG destination) {
+            this.version = version;
+            this.config = config;
+            this.source = source;
+            this.destination = destination;
+        }
+    }
+
+    enum Moving {
+        CUSTOM_DROPS_ACTIVE(7.1012f, null, "Blocks.Custom Drops", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ACTIVE),
+        CUSTOM_DROPS_OVERRIDE(7.1012f, null, "Automatic Destruction.Custom Drops Override", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_OVERRIDE);
+
+        private final float version;
+        private final String config;
+        private final String source;
+        private final TreeConfig.CFG destination;
+
+        /**
+         * A moving definition
+         *
+         * @param version the version it was introduced
+         * @param config the affected config (or null if all)
+         * @param source the node to read
+         * @param destination the node to write
+         */
+        Moving(float version, String config, String source, TreeConfig.CFG destination) {
+            this.version = version;
+            this.config = config;
+            this.source = source;
+            this.destination = destination;
+        }
+    }
+
     enum Removing {
         MUSHROOM_TRUNK(7.0097f, "mushroom", "Trunk.Minimum Height"),
         CRIMSON_TRUNK_WART(7.0100f, "crimson_fungus", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:nether_wart_block"),
         WARPED_TRUNK_WART(7.0100f, "warped_fungus", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:warped_wart_block"),
         NETHER_TOOL_LIST(7.0103f, "nether", TreeConfig.CFG.TOOL_LIST.getNode()),
-        NETHER_TOOL_CHANCES(7.0103f, "nether", TreeConfig.CFG.CUSTOM_DROP_FACTOR.getNode()),
+        NETHER_TOOL_CHANCES(7.0103f, "nether", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_FACTORS.getNode()),
         NATURAL_AZURE_WRONG(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:azure-bluet"),
         NATURAL_COCOA_WRONG(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:cococa"),
         //TRUNK_EDGES_WARPED(8.0f, "thick_warped_fungus", "Trunk.Edges")
@@ -166,6 +228,44 @@ public class TreeConfigUpdater {
                 changed = true;
             }
         }
+
+        for (Moving m : Moving.values()) {
+            if (m.version > version && (m.config == null || m.config.equals(configPath))) {
+                newVersion = Math.max(newVersion, m.version);
+                Object moving = config.getYamlConfiguration().get(m.source);
+                if (moving != null) {
+                    config.getYamlConfiguration().set(m.destination.getNode(), moving);
+                    if (!m.destination.getNode().startsWith(m.source)) {
+                        config.getYamlConfiguration().set(m.source, null);
+                    }
+
+                    TreeAssist.instance.getLogger().info("Config value moved: " + m.toString());
+                }
+                changed = true;
+            }
+        }
+
+        for (MapMoving m : MapMoving.values()) {
+            if (m.version > version && (m.config == null || m.config.equals(configPath))) {
+                newVersion = Math.max(newVersion, m.version);
+                ConfigurationSection section = config.getYamlConfiguration().getConfigurationSection(m.source);
+                if (section != null) {
+                    Set<String> set = section.getKeys(true);
+
+                    for (String node : set) {
+                        config.getYamlConfiguration().set(m.destination.getNode() + "." + node, config.getYamlConfiguration().get(m.source + "." + node));
+                    }
+
+                    if (!set.isEmpty()) {
+                        TreeAssist.instance.getLogger().info("Config value moved: " + m.toString());
+                    }
+
+                    config.getYamlConfiguration().set(m.source, null);
+                }
+                changed = true;
+            }
+        }
+
         for (PreciseAdding m : PreciseAdding.values()) {
             if (m.version > version && m.config.equals(configPath)) {
                 newVersion = Math.max(newVersion, m.version);

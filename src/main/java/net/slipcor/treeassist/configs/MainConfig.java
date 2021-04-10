@@ -144,7 +144,7 @@ public class MainConfig extends CommentableConfig {
         }
         emptyNodes = new String[]{
                 "General", "Commands", "Commands.Force Break", "Commands.Force Grow", "Commands.No Replant",
-                "Destruction", "Placed Blocks", "Plugins", "Worlds", "Modding"
+                "Destruction", "Placed Blocks", "Plugins", "Worlds", "Modding", "Update"
         };
     }
 

@@ -20,7 +20,6 @@ public class TreeConfig extends CommentableConfig {
         AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Destruction.Auto Add To Inventory", false, "Add the logs the player's inventory"),
         AUTOMATIC_DESTRUCTION_CLEANUP_DELAY_TIME("Automatic Destruction.Cleanup Delay Seconds", 20, "Seconds to wait before (force) removing remnants of the tree"),
         AUTOMATIC_DESTRUCTION_COOLDOWN("Automatic Destruction.Cooldown Seconds", 0, "Time to wait before allowing the player to automatically destroy again"),
-        AUTOMATIC_DESTRUCTION_CUSTOM_DROPS_OVERRIDE("Automatic Destruction.Custom Drops Override", false, "Custom Drops below completely replace the leaf drops"),
         AUTOMATIC_DESTRUCTION_DELAY("Automatic Destruction.Delay Ticks", 0, "Ticks to wait before breaking the next block, set to -1 for instant breaking"),
         AUTOMATIC_DESTRUCTION_FORCED_REMOVAL("Automatic Destruction.Forced Removal", false, "Always remove remnants of the tree, as soon as a tree has been verified and is being broken"),
         AUTOMATIC_DESTRUCTION_INCREASES_STATISTICS("Automatic Destruction.Increases Statistics", false, "Main switch for the Block Statistic nodes"),
@@ -39,7 +38,10 @@ public class TreeConfig extends CommentableConfig {
         BLOCKS_CAP_HEIGHT("Blocks.Cap.Height", 2, "Max height of a branch cap"),
         BLOCKS_CAP_RADIUS("Blocks.Cap.Radius", 3, "Max radius of a branch cap"),
 
-        BLOCKS_CUSTOM_DROPS("Blocks.Custom Drops", true, "Generate custom drops according to the list"),
+        BLOCKS_CUSTOM_DROPS_ACTIVE("Blocks.Custom Drops.Active", true, "Generate custom drops according to the list"),
+        BLOCKS_CUSTOM_DROPS_ITEMS("Blocks.Custom Drops.Items", new HashMap<>(), "Drop chances for extra drops. 1.0 would be 100% chance!"),
+        BLOCKS_CUSTOM_DROPS_FACTORS("Blocks.Custom Drops.Factors", new HashMap<>(), "These are additional factors, for example, by default, iron has half the chance to get custom drops"),
+        BLOCKS_CUSTOM_DROPS_OVERRIDE("Blocks.Custom Drops.Override", false, "Custom Drops below completely replace the leaf drops"),
 
         BLOCKS_MATERIALS("Blocks.Materials", new ArrayList<>(), "Here you can add extra blocks that can be expected inside or around tree leaves"),
 
@@ -55,9 +57,6 @@ public class TreeConfig extends CommentableConfig {
         BLOCKS_TOP_HEIGHT("Blocks.Top.Height", 3, "Height above the trunk to check for leaves"),
 
         BLOCKS_VINES("Blocks.Vines", false, "Do follow vines"), // do we need to look for vines?
-
-        CUSTOM_DROPS("Custom Drops", new HashMap<>(), "Drop chances for extra drops. 1.0 would be 100% chance!"),
-        CUSTOM_DROP_FACTOR("Custom Drop Factor", new HashMap<>(), "These are additional factors, for example, by default, iron has half the chance to get custom drops"),
 
         GROUND_BLOCKS("Ground Blocks", new ArrayList<>(), "Valid blocks that are below and around the saplings"),
 
@@ -81,7 +80,12 @@ public class TreeConfig extends CommentableConfig {
         REPLANTING_WHEN_TREE_BURNS_DOWN("Replanting.When Tree Burns Down", true, "Replant when a tree block burns"),
 
         TRUNK_BRANCH("Trunk.Branch", false, "Look for branches"),
-        TRUNK_CUSTOM_DROPS("Trunk.Custom Drops", false, "Generate custom drops"),
+
+        TRUNK_CUSTOM_DROPS_ACTIVE("Trunk.Custom Drops.Active", false, "Generate custom drops"),
+        TRUNK_CUSTOM_DROPS_ITEMS("Trunk.Custom Drops.Items", new HashMap<>(), "Drop chances for extra drops. 1.0 would be 100% chance!"),
+        TRUNK_CUSTOM_DROPS_FACTORS("Trunk.Custom Drops.Factors", new HashMap<>(), "These are additional factors, for example, by default, iron has half the chance to get custom drops"),
+        TRUNK_CUSTOM_DROPS_OVERRIDE("Trunk.Custom Drops.Override", false, "The configured drops override regular drops, including logs!"),
+
         TRUNK_DIAGONAL("Trunk.Diagonal", false, "The trunk can go diagonally"),
         TRUNK_MINIMUM_HEIGHT("Trunk.Minimum Height", 4, "How high does it need to be to qualify as a tree"),
         TRUNK_MATERIALS("Trunk.Materials", new ArrayList<>(), "One of these materials needs to be part of the trunk for it to count as a trunk"),
@@ -180,8 +184,8 @@ public class TreeConfig extends CommentableConfig {
 
         emptyNodes = new String[]{
                 "Automatic Destruction",  "Block Statistics",
-                "Blocks", "Blocks.Cap", "Blocks.Top", "Blocks.Middle",
-                "Replanting", "Replanting.Dropped", "Trunk"
+                "Blocks", "Blocks.Custom Drops", "Blocks.Cap", "Blocks.Top", "Blocks.Middle",
+                "Replanting", "Replanting.Dropped", "Trunk", "Trunk.Custom Drops"
         };
     }
 
@@ -287,7 +291,7 @@ public class TreeConfig extends CommentableConfig {
      */
     protected boolean checkMaterials(String node) {
 
-        String[] materialPaths = {"Custom Drops.", "Custom Drop Factor."};
+        String[] materialPaths = {"Blocks.Custom Drops.Items.", "Blocks.Custom Drops.Factors.", "Trunk.Custom Drops.Items.", "Trunk.Custom Drops.Factors."};
 
         for (String test : materialPaths) {
             if (node.startsWith(test)) {

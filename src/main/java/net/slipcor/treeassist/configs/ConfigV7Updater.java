@@ -53,7 +53,7 @@ public class ConfigV7Updater {
         TOOLS_SAPLING_REPLANT_REQUIRE_TOOLS("Tools.Sapling Replant Require Tools", TreeConfig.CFG.REPLANTING_REQUIRES_TOOLS),
         TOOLS_TREE_DESTRUCTION_REQUIRE_TOOLS("Tools.Tree Destruction Require Tools", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REQUIRES_TOOLS),
         TOOLS_TOOLS_LIST("Tools.Tools List", TreeConfig.CFG.TOOL_LIST),
-        TOOLS_DROP_CHANCE("Tools.Drop Chance", TreeConfig.CFG.CUSTOM_DROP_FACTOR, 0.01);
+        TOOLS_DROP_CHANCE("Tools.Drop Chance", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_FACTORS, 0.01);
 
         private final String oldMainNode;
         private final TreeConfig.CFG newTreeNode;
