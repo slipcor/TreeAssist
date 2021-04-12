@@ -72,7 +72,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.13 - split custom drops definitions in two, in Blocks and in Trunk, the latter defaulting to false
+- v7.1.14 - address github issue #69 and support unbreakable tools
 - [read more](doc/changelog.md)
 ***
 

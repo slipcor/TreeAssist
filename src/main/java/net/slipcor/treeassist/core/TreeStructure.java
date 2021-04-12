@@ -1426,7 +1426,7 @@ public class TreeStructure {
      * @param playerTool an optional tool the player is holding
      */
     public void removeTreeLater(Player player, ItemStack playerTool) {
-        boolean damage = config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE);
+        boolean damage = ToolUtils.receivesDamage(config, playerTool);
 
         debug.i("Removing The Tree!");
 

@@ -2,6 +2,7 @@
 
 ## v7.1 - New CI
 
+- v7.1.14 - address github issue #69 and support unbreakable tools
 - v7.1.13 - split custom drops definitions in two, in Blocks and in Trunk, the latter defaulting to false
 - v7.1.12 - actually check the leaves based on the material they had before we broke them
 - v7.1.11 - allow to disable auto-leaf-destruction causing damage to tools ("Apply Tool Damage For Leaves")

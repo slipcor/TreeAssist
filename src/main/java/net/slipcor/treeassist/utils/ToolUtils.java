@@ -9,6 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -325,5 +326,15 @@ public class ToolUtils {
         treeConfig.getYamlConfiguration().set(TreeConfig.CFG.TOOL_LIST.getNode(), fromConfig);
         treeConfig.save();
         player.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_REMOVETOOL, definition));
+    }
+
+    public static boolean receivesDamage(TreeConfig config, ItemStack tool) {
+        if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE)) {
+            return false;
+        }
+        if (tool.hasItemMeta() && tool.getItemMeta() != null) {
+            return !tool.getItemMeta().isUnbreakable();
+        }
+        return true;
     }
 }
