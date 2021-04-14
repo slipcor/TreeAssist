@@ -337,4 +337,11 @@ public class ToolUtils {
         }
         return true;
     }
+
+    public static String printTool(ItemStack tool) {
+        if (tool == null) {
+            return "null";
+        }
+        return tool.getType().name();
+    }
 }

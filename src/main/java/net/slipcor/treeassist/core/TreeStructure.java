@@ -1259,6 +1259,8 @@ public class TreeStructure {
                     anotherTool = null;
                 } else {
                     debug.i("simply breaking " + BlockUtils.printBlock(block));
+
+                    debug.i("tool used: " + ToolUtils.printTool(anotherTool));
                 }
                 BlockUtils.breakBlock(player, block, anotherTool, bottom.getY());
             }
