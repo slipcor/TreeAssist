@@ -1144,7 +1144,8 @@ public class TreeStructure {
      * @param toolDamage whether we should damage the tool
      * @param creative whether the player is in creative mode
      */
-    private void maybeBreakBlock(Block block, ItemStack tool, Player player, boolean statPickup, boolean statMineBlock, boolean toolDamage, boolean creative) {
+    private void maybeBreakBlock(Block block, ItemStack tool, Player player,
+                                 boolean statPickup, boolean statMineBlock, boolean toolDamage, boolean creative) {
 
         TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
         TreeAssist.instance.getServer().getPluginManager().callEvent(event);
@@ -1433,8 +1434,8 @@ public class TreeStructure {
      * @param tool an optional tool the player is holding
      */
     public void removeTreeLater(Player player, ItemStack tool) {
-        boolean damage = ToolUtils.receivesDamage(config, tool);
         boolean creative = player != null && player.getGameMode() == GameMode.CREATIVE;
+        boolean damage = !creative && ToolUtils.receivesDamage(config, tool);
 
         debug.i("Removing The Tree!");
 

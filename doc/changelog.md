@@ -2,6 +2,7 @@
 
 ## v7.1 - New CI
 
+- v7.1.17 - fix damage being applied to creative axes
 - v7.1.16 - address issue #69 - unbreakable tools now should work properly!
 - v7.1.15 - still dealing with github issue #69 - more tool debug to investigate
 - v7.1.14 - address github issue #69 and support unbreakable tools

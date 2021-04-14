@@ -72,7 +72,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.16 - address issue #69 - unbreakable tools now should work properly!
+- v7.1.17 - fix damage being applied to creative axes 
 - [read more](doc/changelog.md)
 ***
 
