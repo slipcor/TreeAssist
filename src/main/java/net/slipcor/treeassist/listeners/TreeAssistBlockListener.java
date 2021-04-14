@@ -327,16 +327,18 @@ public class TreeAssistBlockListener implements Listener {
                         ItemStack item = player.getInventory().getItemInMainHand();
 
                         if (!plugin.getMainConfig().getBoolean(MainConfig.CFG.MODDING_DISABLE_DURABILITY_FIX)) {
-                            if (item.hasItemMeta()) {
-                                short durability = (short)((Damageable)item.getItemMeta()).getDamage();
-                                short maxDurability = item.getType().getMaxDurability();
+                            if (item.hasItemMeta() && item.getItemMeta() != null) {
+                                if (!item.getItemMeta().isUnbreakable()) {
+                                    short durability = (short) ((Damageable) item.getItemMeta()).getDamage();
+                                    short maxDurability = item.getType().getMaxDurability();
 
-                                if (((durability > maxDurability) || durability < 0)
-                                        && ToolUtils.isVanillaTool(item)) {
-                                    debug.i("removing item: " + item.getType().name() +
-                                            " (durability " + durability + ">" + maxDurability);
-                                    player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                                    player.updateInventory();
+                                    if (((durability > maxDurability) || durability < 0)
+                                            && ToolUtils.isVanillaTool(item)) {
+                                        debug.i("removing item: " + item.getType().name() +
+                                                " (durability " + durability + ">" + maxDurability);
+                                        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                                        player.updateInventory();
+                                    }
                                 }
                             }
                         }

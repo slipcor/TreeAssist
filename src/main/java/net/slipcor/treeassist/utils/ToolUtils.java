@@ -344,4 +344,15 @@ public class ToolUtils {
         }
         return tool.getType().name();
     }
+
+    public static boolean willBreak(ItemStack tool, Player player) {
+        if (tool != null && tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
+
+            TreeStructure.debug.i("removing item: " + player.getInventory().getItemInMainHand().getType().name() +
+                    " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
+            player.getInventory().remove(tool);
+            return true;
+        }
+        return false;
+    }
 }

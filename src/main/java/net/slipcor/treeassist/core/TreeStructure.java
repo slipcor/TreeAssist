@@ -1141,10 +1141,10 @@ public class TreeStructure {
      * @param player a player doing the breaking
      * @param statPickup whether we should increase the pickup statistic
      * @param statMineBlock whether we should increase the block mining statistic
+     * @param toolDamage whether we should damage the tool
+     * @param creative whether the player is in creative mode
      */
-    private void maybeBreakBlock(Block block, ItemStack tool, Player player, boolean statPickup, boolean statMineBlock) {
-
-        if ((tool != null) && (tool.getDurability() > tool.getType().getMaxDurability())) return;
+    private void maybeBreakBlock(Block block, ItemStack tool, Player player, boolean statPickup, boolean statMineBlock, boolean toolDamage, boolean creative) {
 
         TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
         TreeAssist.instance.getServer().getPluginManager().callEvent(event);
@@ -1154,7 +1154,7 @@ public class TreeStructure {
         }
 
         Material blockMaterial = block.getType();
-        boolean calculateCustomDrops =
+        boolean calculateCustomDrops = !creative &&
                 (config.getBoolean(TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ACTIVE) && this.extraBlocks.contains(blockMaterial)) ||
                         (config.getBoolean(TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ACTIVE) && this.trunkBlocks.contains(blockMaterial));
 
@@ -1252,10 +1252,10 @@ public class TreeStructure {
                     debug.i("duplicating tool of type " + tool.getType());
                     anotherTool = new ItemStack(tool.getType(), tool.getAmount());
                 } else if (MaterialUtils.isLeaf(blockMaterial) && config.getBoolean(TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_OVERRIDE)) {
-                    debug.i("null tool for leaf " + BlockUtils.printBlock(block));
+                    debug.i("nulling tool for leaf " + BlockUtils.printBlock(block));
                     anotherTool = null;
                 } else if (MaterialUtils.isLog(blockMaterial) && config.getBoolean(TreeConfig.CFG.TRUNK_CUSTOM_DROPS_OVERRIDE)) {
-                    debug.i("null tool for log " + BlockUtils.printBlock(block));
+                    debug.i("nulling tool for log " + BlockUtils.printBlock(block));
                     anotherTool = null;
                 } else {
                     debug.i("simply breaking " + BlockUtils.printBlock(block));
@@ -1269,6 +1269,11 @@ public class TreeStructure {
 
         if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_TOOL_DAMAGE_FOR_LEAVES) && MaterialUtils.isLeaf(blockMaterial)) {
             debug.i("skipping damage because of nodamage setting in config");
+            return;
+        }
+
+        if (!toolDamage) {
+            debug.i("skipping damage for other reasons");
             return;
         }
 
@@ -1425,22 +1430,19 @@ public class TreeStructure {
      * Remove a tree later, or maybe even now!
      *
      * @param player the player initiating the breaking
-     * @param playerTool an optional tool the player is holding
+     * @param tool an optional tool the player is holding
      */
-    public void removeTreeLater(Player player, ItemStack playerTool) {
-        boolean damage = ToolUtils.receivesDamage(config, playerTool);
+    public void removeTreeLater(Player player, ItemStack tool) {
+        boolean damage = ToolUtils.receivesDamage(config, tool);
+        boolean creative = player != null && player.getGameMode() == GameMode.CREATIVE;
 
         debug.i("Removing The Tree!");
-
 
         final int delay = config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY) ? config.getInt(
                 TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME) * 20 : 0;
         final int offset = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_DELAY);
 
         debug.i("delay: " + delay +"; offset: " + offset);
-
-        final ItemStack tool = (damage && player != null && player.getGameMode() != GameMode.CREATIVE) ? playerTool
-                : null;
 
         Material sapling = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
 
@@ -1482,14 +1484,11 @@ public class TreeStructure {
                             continue;
                         }
                         debug.i("InstantRunner: 1 " + Debugger.parse(block.getLocation()));
-                        maybeBreakBlock(block, tool, player, statPickup, statMineBlock);
-                        if (tool != null && tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
-
-                            debug.i("removing item: " + player.getInventory().getItemInMainHand().getType().name() +
-                                    " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
-                            player.getInventory().remove(tool);
+                        maybeBreakBlock(block, tool, player, statPickup, statMineBlock, damage, creative);
+                        if (damage && ToolUtils.willBreak(tool, player)) {
                             this.cancel();
-                            return; // we skip clearing the block list because there was an issue that requires cleanup
+                            // we skip clearing the block list because there was an issue that requires cleanup
+                            return;
                         }
                     }
                     removeBlocks.clear();
@@ -1504,12 +1503,10 @@ public class TreeStructure {
                             continue;
                         } else {
                             debug.i("InstantRunner: 2b " + Debugger.parse(block.getLocation()));
-                            maybeBreakBlock(block, tool, player, statPickup, statMineBlock);
-                            if (tool != null && tool.getType().getMaxDurability() > 0 && tool.getDurability() == tool.getType().getMaxDurability()) {
-                                debug.i("removing item: " + player.getInventory().getItemInMainHand().getType().name() +
-                                        " (durability " + tool.getDurability() + "==" + tool.getType().getMaxDurability());
-                                player.getInventory().remove(tool);
+                            maybeBreakBlock(block, tool, player, statPickup, statMineBlock, damage, creative);
+                            if (damage && ToolUtils.willBreak(tool, player)) {
                                 this.cancel();
+                                // we skip clearing the block list because there was an issue that requires cleanup
                                 return;
                             }
                         }

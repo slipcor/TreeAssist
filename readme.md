@@ -72,7 +72,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.15 - still dealing with github issue #69 - more tool debug to investigate
+- v7.1.16 - address issue #69 - unbreakable tools now should work properly!
 - [read more](doc/changelog.md)
 ***
 
