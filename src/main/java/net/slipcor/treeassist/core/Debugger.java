@@ -112,15 +112,15 @@ public class Debugger {
         check.clear();
         override = false;
         final String debugs = instance.getConfig().getString("Debug", "none");
-        if (debugs.equals("none")) {
-            instance.getLogger().info("debugging: off");
+        if (debugs.equals("none") || debugs.equals("off")) {
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_DEBUG_X, "off"));
         } else {
             if (debugs.equals("all") || debugs.equals("full") || debugs.equals("on")) {
                 override = true;
-                sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_DEBUG_ALL));
+                TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_DEBUG_ALL));
             } else {
                 final String[] sIds = debugs.split(",");
-                sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_DEBUG_X, debugs));
+                TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_DEBUG_X, debugs));
                 for (String s : sIds) {
                     try {
                         check.add(Integer.valueOf(s));

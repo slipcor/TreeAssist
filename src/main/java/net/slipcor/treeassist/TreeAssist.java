@@ -208,7 +208,7 @@ public class TreeAssist extends JavaPlugin {
         boolean found = false;
         for (AbstractCommand command : commandList) {
             if (command.hasPerms(sender)) {
-                sender.sendMessage(ChatColor.YELLOW + command.getShortInfo());
+                sendPrefixed(sender, ChatColor.YELLOW + command.getShortInfo());
                 found = true;
             }
         }
@@ -362,7 +362,7 @@ public class TreeAssist extends JavaPlugin {
             return;
         } else if (coolDown < 0) {
             coolDown = ToolUtils.calculateCoolDown(player.getInventory().getItemInMainHand(), logs);
-            player.sendMessage(Language.parse(
+            sendPrefixed(player, Language.parse(
                     Language.MSG.INFO_COOLDOWN_WAIT, String.valueOf(coolDown)));
         }
         CoolDownCounter cc = new CoolDownCounter(player, coolDown);
@@ -382,6 +382,23 @@ public class TreeAssist extends JavaPlugin {
         } else {
             coolDownOverrides.remove(player);
         }
+    }
+
+    /**
+     * Send a prefixed message
+     *
+     * @param sender the CommandSender we want to send a message to
+     * @param message the message content to be prefixed
+     */
+    public void sendPrefixed(final CommandSender sender, final String message) {
+        if ("".equals(message)) {
+            return;
+        }
+        if (sender instanceof Player) {
+            sender.sendMessage(Language.parse(Language.MSG.INFO_PLUGIN_PREFIX) + message);
+            return;
+        }
+        getLogger().info(message);
     }
 
     /**

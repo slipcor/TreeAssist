@@ -218,11 +218,11 @@ public class ToolUtils {
             item = player.getInventory().getItemInOffHand();
         }
         if (item.getType() == Material.AIR) {
-            player.sendMessage(Language.parse(Language.MSG.ERROR_EMPTY_HAND));
+            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.ERROR_EMPTY_HAND));
             return;
         }
         if (isMatchingTool(item, treeConfig)) {
-            player.sendMessage(Language.parse(Language.MSG.ERROR_ADDTOOL_ALREADY));
+            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.ERROR_ADDTOOL_ALREADY));
             return;
         }
         StringBuilder entry = new StringBuilder();
@@ -232,7 +232,7 @@ public class ToolUtils {
         } catch (Exception e) {
             final String msg = "Could not retrieve item type name: " + item.getType();
             TreeAssist.instance.getLogger().severe(msg);
-            player.sendMessage(Language.parse(Language.MSG.ERROR_ADDTOOL_OTHER, msg));
+            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.ERROR_ADDTOOL_OTHER, msg));
             return;
         }
 
@@ -240,7 +240,7 @@ public class ToolUtils {
 
         for (Enchantment ench : item.getEnchantments().keySet()) {
             if (found) {
-                player.sendMessage(Language.parse(Language.MSG.WARNING_ADDTOOL_ONLYONE, ench.getKey().getKey()));
+                TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.WARNING_ADDTOOL_ONLYONE, ench.getKey().getKey()));
                 break;
             }
             entry.append(':');
@@ -255,7 +255,7 @@ public class ToolUtils {
         result.add(entry.toString());
         treeConfig.getYamlConfiguration().set(TreeConfig.CFG.TOOL_LIST.getNode(), result);
         treeConfig.save();
-        player.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_ADDTOOL, entry.toString()));
+        TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.SUCCESSFUL_ADDTOOL, entry.toString()));
     }
 
     /**
@@ -270,7 +270,7 @@ public class ToolUtils {
             inHand = player.getInventory().getItemInOffHand();
         }
         if (inHand.getType() == Material.AIR) {
-            player.sendMessage(Language.parse(Language.MSG.ERROR_EMPTY_HAND));
+            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.ERROR_EMPTY_HAND));
             return;
         }
 
@@ -316,7 +316,7 @@ public class ToolUtils {
                 }
             }
             if (definition == null) {
-                player.sendMessage(Language.parse(Language.MSG.ERROR_REMOVETOOL_NOTDONE));
+                TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.ERROR_REMOVETOOL_NOTDONE));
                 return;
             } else {
                 fromConfig.remove(definition);
@@ -325,7 +325,7 @@ public class ToolUtils {
 
         treeConfig.getYamlConfiguration().set(TreeConfig.CFG.TOOL_LIST.getNode(), fromConfig);
         treeConfig.save();
-        player.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_REMOVETOOL, definition));
+        TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.SUCCESSFUL_REMOVETOOL, definition));
     }
 
     public static boolean receivesDamage(TreeConfig config, ItemStack tool) {

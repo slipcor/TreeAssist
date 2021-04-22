@@ -23,7 +23,7 @@ public class CommandForceBreak extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_FORCEBREAK));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_FORCEBREAK));
             return;
         }
         if (sender instanceof Player) {
@@ -36,7 +36,7 @@ public class CommandForceBreak extends AbstractCommand {
                     radius = Math.max(1, Integer.parseInt(args[1]));
                     int configValue = TreeAssist.instance.getMainConfig().getInt(MainConfig.CFG.COMMANDS_FORCE_BREAK_MAX_RADIUS, 30);
                     if (radius > configValue) {
-                        sender.sendMessage(Language.parse(Language.MSG.ERROR_OUT_OF_RANGE, String.valueOf(configValue)));
+                        TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_OUT_OF_RANGE, String.valueOf(configValue)));
                         return;
                     }
                 } catch (Exception e) {
@@ -66,7 +66,7 @@ public class CommandForceBreak extends AbstractCommand {
 
             return;
         }
-        sender.sendMessage(Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
+        TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
     }
 
     @Override

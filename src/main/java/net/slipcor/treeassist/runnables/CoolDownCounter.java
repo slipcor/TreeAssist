@@ -37,7 +37,7 @@ public class CoolDownCounter extends BukkitRunnable {
         TreeAssist.instance.removeCountDown(name);
         Player player = Bukkit.getPlayer(name);
         if (player != null) {
-            player.sendMessage(Language.parse(Language.MSG.INFO_COOLDOWN_DONE));
+            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.INFO_COOLDOWN_DONE));
         }
     }
 

@@ -10,8 +10,6 @@ public final class Language {
     private Language() {
     }
 
-    private static TreeAssist instance;
-
     public enum MSG {
         ERROR_ADDTOOL_ALREADY("error.addtool.already", "&cYou have already added this as required tool!"),
         ERROR_ADDTOOL_OTHER("error.addtool.other", "&cSomething went wrong trying to add the required tool: %1%"),
@@ -46,16 +44,17 @@ public final class Language {
         ERROR_ONLY_PLAYERS("error.only.players", "Only for players!"),
         ERROR_ONLY_TREEASSIST_BLOCKLIST("error.only.treeassist_blocklist", "&cThis command only is available for the TreeAssist BlockList!"),
 
-        INFO_COOLDOWN_DONE("info.cooldown_done", "&aTreeAssist cooled down!"),
-        INFO_COOLDOWN_STILL("info.cooldown_still", "&aTreeAssist is still cooling down!"),
-        INFO_COOLDOWN_VALUE("info.cooldown_value", "&a%1% seconds remaining!"),
-        INFO_COOLDOWN_WAIT("info.cooldown_wait", "&aWait %1% seconds for TreeAssist cooldown!"),
+        INFO_COOLDOWN_DONE("info.cooldown.done", "&aCooldown reset!"),
+        INFO_COOLDOWN_STILL("info.cooldown.still", "&aYou are still cooling down!"),
+        INFO_COOLDOWN_VALUE("info.cooldown.value", "&a%1% seconds remaining!"),
+        INFO_COOLDOWN_WAIT("info.cooldown.wait", "&aWait for the %1% second cooldown!"),
 
         INFO_CUSTOM_ADDED("info.custom.added", "&aCustom block group definition added!"),
         INFO_CUSTOM_REMOVED("info.custom.removed", "&aCustom block group definition removed!"),
 
         INFO_NEVER_BREAK_SAPLINGS("info.never_break_saplings", "&aYou cannot break saplings on this server!"),
         INFO_SAPLING_PROTECTED("info.sapling_protected", "&aThis sapling is protected!"),
+        INFO_PLUGIN_PREFIX("info.plugin_prefix", "&8[&2TreeAssist&8]&r "),
 
         WARNING_ADDTOOL_ONLYONE("warning.sapling_protected", "&6You can only use one enchantment. Using: %1%"),
 
@@ -122,7 +121,6 @@ public final class Language {
      * Create a language manager instance
      */
     public static void init(final TreeAssist instance, final String langString) {
-        Language.instance = instance;
         instance.getDataFolder().mkdir();
         final File configFile = new File(instance.getDataFolder().getPath()
                 + "/" + langString + ".yml");

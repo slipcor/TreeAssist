@@ -16,12 +16,12 @@ public class CommandNoReplant extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_NOREPLANT));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_NOREPLANT));
             return;
         }
         int seconds = TreeAssist.instance.getMainConfig().getInt(MainConfig.CFG.COMMANDS_NOREPLANT_COMMAND_TIME_COOLDOWN, 30);
         TreeAssist.instance.getBlockListener().noReplant(sender.getName(), seconds);
-        sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_NOREPLANT, String.valueOf(seconds)));
+        TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_NOREPLANT, String.valueOf(seconds)));
     }
 
     @Override

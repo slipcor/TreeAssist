@@ -19,7 +19,7 @@ public class CommandToggle extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE));
             return;
         }
 
@@ -31,25 +31,25 @@ public class CommandToggle extends AbstractCommand {
 
             if (args.length > 2) {
                 if (Bukkit.getWorld(args[2]) == null) {
-                    sender.sendMessage(Language.parse(Language.MSG.ERROR_NOTFOUND_WORLD, args[2]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_NOTFOUND_WORLD, args[2]));
                     return;
                 }
 
                 if (!sender.hasPermission("treeassist.toggle.other")) {
-                    sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE_OTHER));
+                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE_OTHER));
                     return;
                 }
 
                 if (TreeAssist.instance.toggleWorld(args[2], args[1])) {
-                    sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_ON, args[1], args[2]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_ON, args[1], args[2]));
                 } else {
-                    sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_OFF, args[1], args[2]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_OFF, args[1], args[2]));
                 }
                 return;
             }
             if (Bukkit.getWorld(args[1]) == null) {
                 if (!sender.hasPermission("treeassist.toggle.other")) {
-                    sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE_OTHER));
+                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE_OTHER));
                     return;
                 }
 

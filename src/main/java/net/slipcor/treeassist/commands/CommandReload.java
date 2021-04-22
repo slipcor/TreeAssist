@@ -17,7 +17,7 @@ public class CommandReload extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_RELOAD));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_RELOAD));
             return;
         }
         TreeAssist.instance.blockList.save(true);
@@ -25,7 +25,7 @@ public class CommandReload extends AbstractCommand {
         TreeAssist.instance.reloadLists();
         BlockUtils.useFallingBlock = null; // reset this value to allow re-loading
         Language.init(TreeAssist.instance, TreeAssist.instance.getMainConfig().getString(MainConfig.CFG.GENERAL_LANGUAGE, "lang_en"));
-        sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_RELOAD));
+        TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_RELOAD));
     }
 
     @Override

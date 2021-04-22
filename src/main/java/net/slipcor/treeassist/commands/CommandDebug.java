@@ -17,7 +17,7 @@ public class CommandDebug extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_DEBUG));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_DEBUG));
             return;
         }
         Debugger.destroy();

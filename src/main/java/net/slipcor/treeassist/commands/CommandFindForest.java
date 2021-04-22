@@ -1,5 +1,6 @@
 package net.slipcor.treeassist.commands;
 
+import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.core.Language;
 import net.slipcor.treeassist.utils.StringUtils;
 import org.bukkit.ChatColor;
@@ -28,17 +29,17 @@ public class CommandFindForest extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_FINDFOREST));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_FINDFOREST));
             return;
         }
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
             return;
         }
 
         if (args.length < 2) {
-            sender.sendMessage(ChatColor.DARK_RED + this.getShortInfo());
+            TreeAssist.instance.sendPrefixed(sender, ChatColor.DARK_RED + this.getShortInfo());
             return;
         }
 
@@ -46,7 +47,7 @@ public class CommandFindForest extends AbstractCommand {
 
         if (biomes == null) {
             String list = StringUtils.joinArray(biomeMap.keySet().toArray(), ", ");
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_INVALID_ARGUMENT_LIST, list));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_INVALID_ARGUMENT_LIST, list));
             return;
         }
 
@@ -68,10 +69,10 @@ public class CommandFindForest extends AbstractCommand {
             }
         }
         if (distanceSquared < Integer.MAX_VALUE) {
-            player.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_FINDFOREST,
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_FINDFOREST,
                     foundBlock.getX() + "/" + foundBlock.getY() + "/" + foundBlock.getZ()));
         } else {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_FINDFOREST, args[1]));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_FINDFOREST, args[1]));
         }
     }
 

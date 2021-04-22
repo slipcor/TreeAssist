@@ -18,7 +18,7 @@ public class CommandTool extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE_TOOL));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE_TOOL));
             return;
 
         }
@@ -30,7 +30,7 @@ public class CommandTool extends AbstractCommand {
                     if (item.hasItemMeta()) {
                         if (TreeAssist.instance.getBlockListener().isProtectTool(item)) {
                             player.getInventory().removeItem(item);
-                            sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOOL_OFF));
+                            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_TOOL_OFF));
                             found = true;
                             break;
                         }
@@ -39,11 +39,11 @@ public class CommandTool extends AbstractCommand {
             }
             if (!found) {
                 player.getInventory().addItem(TreeAssist.instance.getBlockListener().getProtectionTool());
-                sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOOL_ON));
+                TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_TOOL_ON));
             }
             return;
         }
-        sender.sendMessage(Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
+        TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
     }
 
     @Override

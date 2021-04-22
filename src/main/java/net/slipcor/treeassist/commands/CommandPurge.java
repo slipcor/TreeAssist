@@ -19,7 +19,7 @@ public class CommandPurge extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_PURGE));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_PURGE));
             return;
         }
         if (!argCountValid(sender, args, new Integer[]{2})) {
@@ -31,18 +31,18 @@ public class CommandPurge extends AbstractCommand {
                 int days = Integer.parseInt(args[1]);
                 int done = bl.purge(days);
 
-                sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_PURGE_DAYS, String.valueOf(done), args[1]));
+                TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_PURGE_DAYS, String.valueOf(done), args[1]));
             } catch (NumberFormatException e) {
                 if (args[1].equalsIgnoreCase("global")) {
                     int done = bl.purge();
-                    sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_PURGE_GLOBAL, String.valueOf(done)));
+                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_PURGE_GLOBAL, String.valueOf(done)));
                 } else {
                     int done = bl.purge(args[1]);
-                    sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_PURGE_WORLD, String.valueOf(done), args[1]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_PURGE_WORLD, String.valueOf(done), args[1]));
                 }
             }
         } else {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_ONLY_TREEASSIST_BLOCKLIST));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_ONLY_TREEASSIST_BLOCKLIST));
         }
     }
 

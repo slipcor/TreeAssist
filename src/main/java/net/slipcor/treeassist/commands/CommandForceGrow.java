@@ -25,7 +25,7 @@ public class CommandForceGrow extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_FORCEGROW));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_FORCEGROW));
             return;
         }
         if (sender instanceof Player) {
@@ -38,7 +38,7 @@ public class CommandForceGrow extends AbstractCommand {
                     radius = Math.max(1, Integer.parseInt(args[1]));
                     int configValue = TreeAssist.instance.getMainConfig().getInt(MainConfig.CFG.COMMANDS_FORCE_GROW_MAX_RADIUS, 30);
                     if (radius > configValue) {
-                        sender.sendMessage(Language.parse(Language.MSG.ERROR_OUT_OF_RANGE, String.valueOf(configValue)));
+                        TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_OUT_OF_RANGE, String.valueOf(configValue)));
                         return;
                     }
                 } catch (Exception e) {
@@ -84,7 +84,7 @@ public class CommandForceGrow extends AbstractCommand {
 
             return;
         }
-        sender.sendMessage(Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
+        TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
     }
 
     @Override

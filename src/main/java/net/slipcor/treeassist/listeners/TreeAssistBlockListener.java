@@ -78,11 +78,11 @@ public class TreeAssistBlockListener implements Listener {
                 if (clicked != null && MaterialUtils.isSapling(clicked.getType())) {
                     if (plugin.saplingLocationList.contains(clicked.getLocation())) {
                         plugin.saplingLocationList.remove(clicked.getLocation());
-                        event.getPlayer().sendMessage(
+                        TreeAssist.instance.sendPrefixed(event.getPlayer(),
                                 Language.parse(Language.MSG.SUCCESSFUL_PROTECT_OFF));
                     } else {
                         plugin.saplingLocationList.add(clicked.getLocation());
-                        event.getPlayer().sendMessage(
+                        TreeAssist.instance.sendPrefixed(event.getPlayer(),
                                 Language.parse(Language.MSG.SUCCESSFUL_PROTECT_ON));
                     }
                 }
@@ -189,7 +189,7 @@ public class TreeAssistBlockListener implements Listener {
 
         if (MaterialUtils.isSapling(event.getBlock().getType())) {
             if (plugin.saplingLocationList.contains(event.getBlock().getLocation())) {
-                event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
+                TreeAssist.instance.sendPrefixed(event.getPlayer(), Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
                 event.setCancelled(true);
                 return;
             }
@@ -199,7 +199,7 @@ public class TreeAssistBlockListener implements Listener {
 
             if (saplingBreakEvent.isCancelled()) {
                 debug.i("Another plugin prevented sapling breaking!");
-                event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
+                TreeAssist.instance.sendPrefixed(event.getPlayer(), Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
                 event.setCancelled(true);
                 return;
             }
@@ -207,7 +207,7 @@ public class TreeAssistBlockListener implements Listener {
             for (TreeConfig config : TreeAssist.treeConfigs.values()) {
                 if (event.getBlock().getType() == config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL)) {
                     if (config.getBoolean(TreeConfig.CFG.REPLANTING_FORCE_PROTECT)) {
-                        event.getPlayer().sendMessage(Language.parse(Language.MSG.INFO_NEVER_BREAK_SAPLINGS));
+                        TreeAssist.instance.sendPrefixed(event.getPlayer(), Language.parse(Language.MSG.INFO_NEVER_BREAK_SAPLINGS));
                         event.setCancelled(true);
                         return;
                     }
@@ -264,8 +264,8 @@ public class TreeAssistBlockListener implements Listener {
                     if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_ACTIVE)) {
                         if (TreeAssist.instance.hasCoolDown(player)) {
                             debug.i("Cooldown!");
-                            player.sendMessage(Language.parse(Language.MSG.INFO_COOLDOWN_STILL));
-                            player.sendMessage(Language.parse(Language.MSG.INFO_COOLDOWN_VALUE, String.valueOf(TreeAssist.instance.getCoolDown(player))));
+                            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.INFO_COOLDOWN_STILL));
+                            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.INFO_COOLDOWN_VALUE, String.valueOf(TreeAssist.instance.getCoolDown(player))));
                             matchingTreeConfig = config; // for maybe forcing something later
                             matchingTreeStructure = checkTreeStructure;
 

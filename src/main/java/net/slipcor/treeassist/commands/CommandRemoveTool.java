@@ -21,13 +21,13 @@ public class CommandRemoveTool extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_REMOVETOOL));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_REMOVETOOL));
             return;
 
         }
 
         if (args.length < 1) {
-            sender.sendMessage(ChatColor.DARK_RED + this.getShortInfo());
+            TreeAssist.instance.sendPrefixed(sender, ChatColor.DARK_RED + this.getShortInfo());
             return;
         }
 
@@ -50,7 +50,7 @@ public class CommandRemoveTool extends AbstractCommand {
             }
             return;
         }
-        sender.sendMessage(Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
+        TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package net.slipcor.treeassist.commands;
 
+import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.core.Language;
 import net.slipcor.treeassist.utils.StringUtils;
 import org.bukkit.command.CommandSender;
@@ -32,7 +33,7 @@ public abstract class AbstractCommand {
             }
         }
 
-        sender.sendMessage(
+        TreeAssist.instance.sendPrefixed(sender,
                 Language.parse(Language.MSG.ERROR_INVALID_ARGUMENT_COUNT,
                         String.valueOf(args.length),
                         StringUtils.joinArray(validCounts, "|")));

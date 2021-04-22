@@ -15,7 +15,7 @@ public class CommandGlobal extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            sender.sendMessage(Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE_GLOBAL));
+            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE_GLOBAL));
             return;
         }
         if (!TreeAssist.instance.Enabled) {
