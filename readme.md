@@ -72,7 +72,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.19 - fix build numbering, introduce message prefix, apply it to messages that need it 
+- v7.1.20 - fix several nether issues. no more custom apple drops, support for a ton of netherrack around 
 - [read more](doc/changelog.md)
 ***
 

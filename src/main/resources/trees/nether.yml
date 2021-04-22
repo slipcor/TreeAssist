@@ -16,4 +16,18 @@ Natural Blocks:
 - 'minecraft:cave_air'
 - 'minecraft:void_air'
 Parent: default
-Version: 7.0108
+Blocks:
+  Custom Drops:
+    # Drop chances for extra drops. 1.0 would be 100% chance!
+    Items:
+      minecraft:netherrack: 0.01
+      minecraft:apple: 0
+      minecraft:golden_apple: 0
+Trunk:
+  # Look for branches
+  Branch: false
+  Custom Drops:
+    # Drop chances for extra drops. 1.0 would be 100% chance!
+    Items:
+      minecraft:golden_apple: 0
+Version: 7.1020
