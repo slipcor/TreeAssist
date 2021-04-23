@@ -144,7 +144,6 @@ Natural Blocks:
 - 'minecraft:cave_air'
 - 'minecraft:void_air'
 - 'minecraft:large_fern'
-- 'minecraft:tall_flowers'
 # The permission required for this tree type
 Permission: treeassist.destroy.*
 # Sapling replant settings

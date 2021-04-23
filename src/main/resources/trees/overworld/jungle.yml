@@ -5,8 +5,9 @@ Blocks:
   Top:
     Height: 2
     Radius: 2
-Custom Drops:
-  'minecraft:jungle_leaves': 0.01
+  Custom Drops:
+    Items:
+      'minecraft:jungle_leaves': 0.01
 Parent: default
 Permission: treeassist.destroy.jungle
 Replanting:
@@ -14,4 +15,4 @@ Replanting:
 Trunk:
   Materials:
   - 'minecraft:jungle_log'
-Version: 7.0145
+Version: 7.1013

@@ -5,9 +5,11 @@ Blocks:
     Radius: 3
   Middle:
     Radius: 0
-Custom Drops:
-  'minecraft:brown_mushroom_block': 0.01
+  Custom Drops:
+    Items:
+      'minecraft:brown_mushroom_block': 0.01
 Parent: mushroom
 Permission: treeassist.destroy.brownshroom
 Replanting:
   Material: 'minecraft:brown_mushroom'
+Version: 7.1020

@@ -22,7 +22,6 @@ public class TreeConfigUpdater {
         TRUNK_STRIPPED_JUNGLE(7.0145f, "jungle", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_jungle_log"),
         TRUNK_STRIPPED_OAK(7.0145f, "oak", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_oak_log"),
         TRUNK_STRIPPED_SPRUCE(7.0145f, "spruce", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_spruce_log"),
-        NATURAL_TALL_FLOWERS(7.1008f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:tall_flowers"),
         NETHER_NATURAL_BLOCK(7.1019f, "nether", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:netherrack"),
         ;
 
@@ -66,9 +65,9 @@ public class TreeConfigUpdater {
 
         TRUNK_DROP_FACTOR_GOLDEN(7.1012f, "default", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:golden_apple", 0.0001),
 
-        NETHER_LEAF_GAPPLE(7.1019f, "nether", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + "minecraft:golden_apple", 0f),
-        NETHER_LEAF_APPLE(7.1019f, "nether", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + "minecraft:apple", 0f),
-        NETHER_TRUNK_GAPPLE(7.1019f, "nether", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ITEMS.getNode() + "minecraft:golden_apple", 0f),
+        NETHER_LEAF_GAPPLE(7.1019f, "nether", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:golden_apple", 0f),
+        NETHER_LEAF_APPLE(7.1019f, "nether", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:apple", 0f),
+        NETHER_TRUNK_GAPPLE(7.1019f, "nether", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:golden_apple", 0f),
         ;
 
         private final float version;
@@ -139,13 +138,18 @@ public class TreeConfigUpdater {
     }
 
     enum Moving {
-        CUSTOM_DROPS_ACTIVE(7.1012f, null, "Blocks.Custom Drops", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ACTIVE),
-        CUSTOM_DROPS_OVERRIDE(7.1012f, null, "Automatic Destruction.Custom Drops Override", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_OVERRIDE);
+        CUSTOM_DROPS_ACTIVE(7.1012f, null, "Blocks.Custom Drops", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ACTIVE.getNode()),
+        CUSTOM_DROPS_OVERRIDE(7.1012f, null, "Automatic Destruction.Custom Drops Override", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_OVERRIDE.getNode()),
+
+        NETHER_LEAF_GAPPLE(7.1020f, "nether", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + "minecraft:golden_apple", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:golden_apple"),
+        NETHER_LEAF_APPLE(7.1020f, "nether", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + "minecraft:apple", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:apple"),
+        NETHER_TRUNK_GAPPLE(7.1020f, "nether", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ITEMS.getNode() + "minecraft:golden_apple", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:golden_apple"),
+        ;
 
         private final float version;
         private final String config;
         private final String source;
-        private final TreeConfig.CFG destination;
+        private final String destination;
 
         /**
          * A moving definition
@@ -155,7 +159,7 @@ public class TreeConfigUpdater {
          * @param source the node to read
          * @param destination the node to write
          */
-        Moving(float version, String config, String source, TreeConfig.CFG destination) {
+        Moving(float version, String config, String source, String destination) {
             this.version = version;
             this.config = config;
             this.source = source;
@@ -239,8 +243,8 @@ public class TreeConfigUpdater {
                 newVersion = Math.max(newVersion, m.version);
                 Object moving = config.getYamlConfiguration().get(m.source);
                 if (moving != null) {
-                    config.getYamlConfiguration().set(m.destination.getNode(), moving);
-                    if (!m.destination.getNode().startsWith(m.source)) {
+                    config.getYamlConfiguration().set(m.destination, moving);
+                    if (!m.destination.startsWith(m.source)) {
                         config.getYamlConfiguration().set(m.source, null);
                     }
 

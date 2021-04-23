@@ -72,7 +72,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.20 - fix several nether issues. no more custom apple drops, support for a ton of netherrack around 
+- v7.1.21 - repair the config reparation, update default configs and mark them as current 
 - [read more](doc/changelog.md)
 ***
 

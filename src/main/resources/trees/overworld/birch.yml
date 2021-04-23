@@ -4,8 +4,9 @@ Blocks:
   Top:
     Height: 2
     Radius: 2
-Custom Drops:
-  'minecraft:birch_leaves': 0.01
+  Custom Drops:
+    Items:
+      'minecraft:birch_leaves': 0.01
 Parent: default
 Permission: treeassist.destroy.birch
 Replanting:
@@ -13,4 +14,4 @@ Replanting:
 Trunk:
   Materials:
   - 'minecraft:birch_log'
-Version: 7.0145
+Version: 7.1013

@@ -5,8 +5,9 @@ Blocks:
     Radius: 4
   Cap:
     Radius: 4
-Custom Drops:
-  'minecraft:acacia_leaves': 0.01
+  Custom Drops:
+    Items:
+      'minecraft:acacia_leaves': 0.01
 Parent: default
 Permission: treeassist.destroy.acacia
 Replanting:
@@ -16,4 +17,4 @@ Trunk:
   - 'minecraft:acacia_log'
   Diagonal: true
   Branch: true
-Version: 7.0145
+Version: 7.1013

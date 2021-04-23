@@ -7,9 +7,10 @@ Blocks:
   Middle:
     Radius: 2
     Air: true
-Custom Drops:
-  'minecraft:oak_leaves': 0.01
+  Custom Drops:
+    Items:
+      'minecraft:oak_leaves': 0.01
 Parent: oak
 Trunk:
   Branch: true
-Version: 7.0
+Version: 7.1013

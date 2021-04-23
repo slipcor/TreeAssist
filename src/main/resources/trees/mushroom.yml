@@ -3,8 +3,9 @@ Blocks:
     Height: 1
   Middle:
     Radius: 0
-Custom Drops:
-  'minecraft:mushroom_stem': 0.01
+  Custom Drops:
+    Items:
+      'minecraft:mushroom_stem': 0.01
 Ground Blocks:
 - 'minecraft:podzol'
 - 'minecraft:mycelium'
@@ -16,4 +17,4 @@ Trunk:
   Minimum Height: 5
   Materials:
   - 'minecraft:mushroom_stem'
-Version: 7.0
+Version: 7.1013
