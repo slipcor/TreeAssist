@@ -72,7 +72,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.22 - update updater to JSON logic, the checking happens online, uses one less connection, and messages only when updates are available 
+- v7.1.23 - do not shade GSON in - this has been in the server jar for years 
 - [read more](doc/changelog.md)
 ***
 

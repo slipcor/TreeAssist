@@ -2,6 +2,7 @@
 
 ## v7.1 - New CI
 
+- v7.1.23 - do not shade GSON in - this has been in the server jar for years
 - v7.1.22 - update updater to JSON logic, the checking happens online, uses one less connection, and messages only when updates are available
 - v7.1.21 - repair the config reparation, update default configs and mark them as current
 - v7.1.20 - fix several nether issues. no more custom apple drops, support for a ton of netherrack around

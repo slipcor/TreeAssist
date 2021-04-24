@@ -14,8 +14,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Updater extends Thread {
     private final UpdateMode mode;
