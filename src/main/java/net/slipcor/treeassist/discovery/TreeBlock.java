@@ -1,4 +1,4 @@
-package net.slipcor.treeassist.core;
+package net.slipcor.treeassist.discovery;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;

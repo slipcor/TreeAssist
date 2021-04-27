@@ -1,10 +1,12 @@
 package net.slipcor.treeassist.commands;
 
+import net.slipcor.core.CoreCommand;
+import net.slipcor.core.CorePlugin;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.core.Language;
-import net.slipcor.treeassist.configs.TreeConfig;
 import net.slipcor.treeassist.utils.StringUtils;
 import net.slipcor.treeassist.utils.ToolUtils;
+import net.slipcor.treeassist.yml.Language;
+import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,15 +15,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandRemoveTool extends AbstractCommand {
-    public CommandRemoveTool() {
-        super(new String[]{"treeassist.removetool"});
+public class CommandRemoveTool extends CoreCommand {
+    public CommandRemoveTool(CorePlugin plugin) {
+        super(plugin, "treeassist.removetool", Language.MSG.ERROR_INVALID_ARGUMENT_COUNT);
     }
 
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_REMOVETOOL));
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_PERMISSION_REMOVETOOL.parse());
             return;
 
         }
@@ -50,7 +52,7 @@ public class CommandRemoveTool extends AbstractCommand {
             }
             return;
         }
-        TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
+        TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_ONLY_PLAYERS.parse());
     }
 
     @Override
@@ -66,5 +68,10 @@ public class CommandRemoveTool extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist removetool {trunk block type} - remove a required tool";
+    }
+
+    @Override
+    public List<String> completeTab(String[] strings) {
+        return new ArrayList<>(); // we have no arguments
     }
 }

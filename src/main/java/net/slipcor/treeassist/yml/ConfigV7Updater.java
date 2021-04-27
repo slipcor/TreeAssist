@@ -1,5 +1,6 @@
-package net.slipcor.treeassist.configs;
+package net.slipcor.treeassist.yml;
 
+import net.slipcor.core.ConfigEntry;
 import net.slipcor.treeassist.TreeAssist;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -130,7 +131,7 @@ public class ConfigV7Updater {
      * Commit updating the config, moving the nodes from the 6.X logic to the 7.X logic
      */
     public static void commit() {
-        FileConfiguration config = TreeAssist.instance.getMainConfig().getYamlConfiguration();
+        FileConfiguration config = TreeAssist.instance.config().getYamlConfiguration();
 
         FileConfiguration treeConfig = TreeAssist.treeConfigs.get("default").getYamlConfiguration();
 

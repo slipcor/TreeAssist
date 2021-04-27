@@ -1,13 +1,11 @@
 package net.slipcor.treeassist.listeners;
 
-import java.util.Random;
-
+import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.core.Debugger;
-import net.slipcor.treeassist.configs.TreeConfig;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.runnables.TreeAssistSaplingSelfPlant;
 import net.slipcor.treeassist.utils.MaterialUtils;
+import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,10 +13,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.ItemSpawnEvent;
 
+import java.util.Random;
+
 public class TreeAssistSpawnListener implements Listener {
 
 	public TreeAssist plugin;
-	public static Debugger debug;
+	public static CoreDebugger debug;
 	
 	public TreeAssistSpawnListener(TreeAssist instance)
 	{

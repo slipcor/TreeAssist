@@ -1,16 +1,25 @@
-package net.slipcor.treeassist.core;
+package net.slipcor.treeassist.yml;
 
+import net.slipcor.core.CoreLanguage;
+import net.slipcor.core.CorePlugin;
+import net.slipcor.core.LanguageEntry;
 import net.slipcor.treeassist.TreeAssist;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-public final class Language {
-    private Language() {
+public final class Language extends CoreLanguage {
+    public Language(CorePlugin plugin) {
+        super(plugin);
     }
 
-    public enum MSG {
+    @Override
+    protected LanguageEntry[] getAllNodes() {
+        return MSG.values();
+    }
+
+    public enum MSG implements LanguageEntry {
         ERROR_ADDTOOL_ALREADY("error.addtool.already", "&cYou have already added this as required tool!"),
         ERROR_ADDTOOL_OTHER("error.addtool.other", "&cSomething went wrong trying to add the required tool: %1%"),
         ERROR_CUSTOM_LISTS("error.custom.lists", "&cSomething is wrong with your custom lists. Please fix them! They need have to same item count!"),
@@ -102,10 +111,40 @@ public final class Language {
             this.value = value;
         }
 
+        /**
+         * read a node from the config and return its value after replacing
+         *
+         * @param args    strings to replace
+         * @return the replaced node string
+         */
+        public String parse(final String... args) {
+            String result = toString();
+            int i = 0;
+            for (final String word : args) {
+                result = result.replace("%" + ++i + '%', word);
+            }
+            return ChatColor.translateAlternateColorCodes('&', result);
+        }
+
+        /**
+         * read a node from the config and return its value
+         *
+         * @return the node string
+         */
+        public String parse() {
+            return ChatColor.translateAlternateColorCodes('&', toString());
+        }
+
         public String getNode() {
             return node;
         }
 
+        @Override
+        public String getValue() {
+            return value;
+        }
+
+        @Override
         public void setValue(final String sValue) {
             value = sValue;
         }
@@ -149,34 +188,10 @@ public final class Language {
         } catch (final Exception e) {
             e.printStackTrace();
         }
+
         for (final MSG m : MSG.values()) {
             m.setValue(config.getString(m.getNode()));
         }
     }
 
-    /**
-     * read a node from the config and return its value
-     *
-     * @param message the node name
-     * @return the node string
-     */
-    public static String parse(final MSG message) {
-        return ChatColor.translateAlternateColorCodes('&', message.toString());
-    }
-
-    /**
-     * read a node from the config and return its value after replacing
-     *
-     * @param message the node name
-     * @param args    strings to replace
-     * @return the replaced node string
-     */
-    public static String parse(final MSG message, final String... args) {
-        String result = message.toString();
-        int i = 0;
-        for (final String word : args) {
-            result = result.replace("%" + ++i + '%', word);
-        }
-        return ChatColor.translateAlternateColorCodes('&', result);
-    }
 }

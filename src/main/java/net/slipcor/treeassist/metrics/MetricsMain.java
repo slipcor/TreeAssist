@@ -2,8 +2,9 @@ package net.slipcor.treeassist.metrics;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.slipcor.core.CoreMetrics;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.configs.MainConfig;
+import net.slipcor.treeassist.yml.MainConfig;
 import org.bukkit.plugin.Plugin;
 
 import java.util.concurrent.Callable;
@@ -13,8 +14,7 @@ import java.util.concurrent.Callable;
  *
  * Check out https://bStats.org/ to learn more about bStats!
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
-public class MetricsMain extends MetricsBase {
+public class MetricsMain extends CoreMetrics {
 
     /**
      * Class constructor.
@@ -22,7 +22,7 @@ public class MetricsMain extends MetricsBase {
      * @param plugin The plugin which stats should be submitted.
      */
     public MetricsMain(Plugin plugin) {
-        super(plugin);
+        super(plugin, 4784);
 
         this.addChart(MainConfig.CFG.GENERAL_TOGGLE_DEFAULT, "toggle_default");
         this.addChart(MainConfig.CFG.WORLDS_RESTRICT, "restrict_worlds");
@@ -45,10 +45,10 @@ public class MetricsMain extends MetricsBase {
 
     private void addChart(MainConfig.CFG cfg, String id) {
 
-        this.addCustomChart(new MetricsBase.SimplePie(id, new Callable<String>() {
+        this.addCustomChart(new SimplePie(id, new Callable<String>() {
             @Override
             public String call() throws Exception {
-                return String.valueOf(TreeAssist.instance.getMainConfig().getBoolean(cfg));
+                return String.valueOf(TreeAssist.instance.config().getBoolean(cfg));
             }
         }));
     }
@@ -56,7 +56,7 @@ public class MetricsMain extends MetricsBase {
     @Override
     protected JsonArray calculateCharts() {
         JsonArray customCharts = new JsonArray();
-        for (MetricsBase.CustomChart customChart : charts) {
+        for (CustomChart customChart : charts) {
             // Add the data of the custom charts
             JsonObject chart = customChart.getRequestJsonObject();
             if (chart == null) { // If the chart is null, we skip it

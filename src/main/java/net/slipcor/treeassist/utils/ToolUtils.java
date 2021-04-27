@@ -1,15 +1,14 @@
 package net.slipcor.treeassist.utils;
 
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.configs.TreeConfig;
-import net.slipcor.treeassist.core.Language;
-import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.discovery.TreeStructure;
+import net.slipcor.treeassist.yml.Language;
+import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -218,11 +217,11 @@ public class ToolUtils {
             item = player.getInventory().getItemInOffHand();
         }
         if (item.getType() == Material.AIR) {
-            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.ERROR_EMPTY_HAND));
+            TreeAssist.instance.sendPrefixed(player, Language.MSG.ERROR_EMPTY_HAND.parse());
             return;
         }
         if (isMatchingTool(item, treeConfig)) {
-            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.ERROR_ADDTOOL_ALREADY));
+            TreeAssist.instance.sendPrefixed(player, Language.MSG.ERROR_ADDTOOL_ALREADY.parse());
             return;
         }
         StringBuilder entry = new StringBuilder();
@@ -232,7 +231,7 @@ public class ToolUtils {
         } catch (Exception e) {
             final String msg = "Could not retrieve item type name: " + item.getType();
             TreeAssist.instance.getLogger().severe(msg);
-            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.ERROR_ADDTOOL_OTHER, msg));
+            TreeAssist.instance.sendPrefixed(player, Language.MSG.ERROR_ADDTOOL_OTHER.parse(msg));
             return;
         }
 
@@ -240,7 +239,7 @@ public class ToolUtils {
 
         for (Enchantment ench : item.getEnchantments().keySet()) {
             if (found) {
-                TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.WARNING_ADDTOOL_ONLYONE, ench.getKey().getKey()));
+                TreeAssist.instance.sendPrefixed(player, Language.MSG.WARNING_ADDTOOL_ONLYONE.parse(ench.getKey().getKey()));
                 break;
             }
             entry.append(':');
@@ -255,7 +254,7 @@ public class ToolUtils {
         result.add(entry.toString());
         treeConfig.getYamlConfiguration().set(TreeConfig.CFG.TOOL_LIST.getNode(), result);
         treeConfig.save();
-        TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.SUCCESSFUL_ADDTOOL, entry.toString()));
+        TreeAssist.instance.sendPrefixed(player, Language.MSG.SUCCESSFUL_ADDTOOL.parse(entry.toString()));
     }
 
     /**
@@ -270,7 +269,7 @@ public class ToolUtils {
             inHand = player.getInventory().getItemInOffHand();
         }
         if (inHand.getType() == Material.AIR) {
-            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.ERROR_EMPTY_HAND));
+            TreeAssist.instance.sendPrefixed(player, Language.MSG.ERROR_EMPTY_HAND.parse());
             return;
         }
 
@@ -316,7 +315,7 @@ public class ToolUtils {
                 }
             }
             if (definition == null) {
-                TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.ERROR_REMOVETOOL_NOTDONE));
+                TreeAssist.instance.sendPrefixed(player, Language.MSG.ERROR_REMOVETOOL_NOTDONE.parse());
                 return;
             } else {
                 fromConfig.remove(definition);
@@ -325,7 +324,7 @@ public class ToolUtils {
 
         treeConfig.getYamlConfiguration().set(TreeConfig.CFG.TOOL_LIST.getNode(), fromConfig);
         treeConfig.save();
-        TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.SUCCESSFUL_REMOVETOOL, definition));
+        TreeAssist.instance.sendPrefixed(player, Language.MSG.SUCCESSFUL_REMOVETOOL.parse(definition));
     }
 
     public static boolean receivesDamage(TreeConfig config, ItemStack tool) {

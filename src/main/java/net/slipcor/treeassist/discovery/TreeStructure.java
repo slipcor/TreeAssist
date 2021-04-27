@@ -1,17 +1,18 @@
-package net.slipcor.treeassist.core;
+package net.slipcor.treeassist.discovery;
 
+import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.configs.MainConfig;
-import net.slipcor.treeassist.configs.TreeConfig;
-import net.slipcor.treeassist.configs.TreeConfigUpdater;
-import net.slipcor.treeassist.runnables.CleanRunner;
-import net.slipcor.treeassist.runnables.TreeAssistReplant;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.events.TATreeBrokenEvent;
+import net.slipcor.treeassist.runnables.CleanRunner;
+import net.slipcor.treeassist.runnables.TreeAssistReplant;
 import net.slipcor.treeassist.runnables.TreeAssistReplantDelay;
 import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import net.slipcor.treeassist.utils.ToolUtils;
+import net.slipcor.treeassist.yml.MainConfig;
+import net.slipcor.treeassist.yml.TreeConfig;
+import net.slipcor.treeassist.yml.TreeConfigUpdater;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
@@ -35,7 +36,7 @@ public class TreeStructure {
 
     private final static Map<BlockFace, BlockFace[]> diagonalContinuations              // Followup diagonal directions based on a given direction
             = new EnumMap<>(BlockFace.class);
-    public static Debugger debug;
+    public static CoreDebugger debug;
 
     public Block bottom;
     public List<Block> trunk;
@@ -413,14 +414,14 @@ public class TreeStructure {
                 for (File subFile : file.listFiles()) {
                     if (subFile.getName().toLowerCase().endsWith(".yml")) {
                         String subNode = subFile.getName().toLowerCase().replace(".yml", "");
-                        TreeConfig subTree = new TreeConfig(subFile);
+                        TreeConfig subTree = new TreeConfig(TreeAssist.instance, subFile);
 
                         processing.put(subNode, subTree);
                     }
                 }
             } else if (file.getName().toLowerCase().endsWith(".yml")){
                 String node = file.getName().toLowerCase().replace(".yml", "");
-                TreeConfig tree = new TreeConfig(file);
+                TreeConfig tree = new TreeConfig(TreeAssist.instance, file);
 
                 processing.put(node, tree);
             }
@@ -1328,7 +1329,7 @@ public class TreeStructure {
             return;
         }
 
-        MainConfig globalConfig = TreeAssist.instance.getMainConfig();
+        MainConfig globalConfig = TreeAssist.instance.config();
 
         if (!config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE)) {
 
@@ -1484,7 +1485,7 @@ public class TreeStructure {
                             debug.i("InstantRunner: skipping breaking a sapling");
                             continue;
                         }
-                        debug.i("InstantRunner: 1 " + Debugger.parse(block.getLocation()));
+                        debug.i("InstantRunner: 1 " + BlockUtils.printBlock(block));
                         maybeBreakBlock(block, tool, player, statPickup, statMineBlock, damage, creative);
                         if (damage && ToolUtils.willBreak(tool, player)) {
                             this.cancel();
@@ -1500,10 +1501,10 @@ public class TreeStructure {
                             continue;
                         }
                         if (block.getType() == Material.AIR) {
-                            debug.i("InstantRunner: 2 AIR " + Debugger.parse(block.getLocation()));
+                            debug.i("InstantRunner: 2 AIR " + BlockUtils.printBlock(block));
                             continue;
                         } else {
-                            debug.i("InstantRunner: 2b " + Debugger.parse(block.getLocation()));
+                            debug.i("InstantRunner: 2b " + BlockUtils.printBlock(block));
                             maybeBreakBlock(block, tool, player, statPickup, statMineBlock, damage, creative);
                             if (damage && ToolUtils.willBreak(tool, player)) {
                                 this.cancel();

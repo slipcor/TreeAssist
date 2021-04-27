@@ -1,8 +1,9 @@
 package net.slipcor.treeassist.commands;
 
+import net.slipcor.core.CoreCommand;
+import net.slipcor.core.CorePlugin;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.core.Language;
-import net.slipcor.treeassist.utils.StringUtils;
+import net.slipcor.treeassist.yml.Language;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -11,11 +12,11 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class CommandFindForest extends AbstractCommand {
+public class CommandFindForest extends CoreCommand {
     Map<String, List<Biome>> biomeMap = new HashMap<>();
 
-    public CommandFindForest() {
-        super(new String[]{"treeassist.findforest"});
+    public CommandFindForest(CorePlugin plugin) {
+        super(plugin, "treeassist.findforest", Language.MSG.ERROR_INVALID_ARGUMENT_COUNT);
 
         biomeMap.put("ACACIA", Arrays.asList(Biome.SAVANNA));
         biomeMap.put("BIRCH", Arrays.asList(Biome.BIRCH_FOREST, Biome.BIRCH_FOREST_HILLS));
@@ -29,12 +30,12 @@ public class CommandFindForest extends AbstractCommand {
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_FINDFOREST));
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_PERMISSION_FINDFOREST.parse());
             return;
         }
 
         if (!(sender instanceof Player)) {
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_ONLY_PLAYERS.parse());
             return;
         }
 
@@ -46,8 +47,8 @@ public class CommandFindForest extends AbstractCommand {
         List<Biome> biomes = biomeMap.get(args[1].toUpperCase());
 
         if (biomes == null) {
-            String list = StringUtils.joinArray(biomeMap.keySet().toArray(), ", ");
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_INVALID_ARGUMENT_LIST, list));
+            String list = org.apache.commons.lang.StringUtils.join(biomeMap.keySet().toArray(), ", ");
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_INVALID_ARGUMENT_LIST.parse(list));
             return;
         }
 
@@ -69,10 +70,10 @@ public class CommandFindForest extends AbstractCommand {
             }
         }
         if (distanceSquared < Integer.MAX_VALUE) {
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_FINDFOREST,
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_FINDFOREST.parse(
                     foundBlock.getX() + "/" + foundBlock.getY() + "/" + foundBlock.getZ()));
         } else {
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_FINDFOREST, args[1]));
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_FINDFOREST.parse(args[1]));
         }
     }
 

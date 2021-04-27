@@ -1,8 +1,10 @@
 package net.slipcor.treeassist.commands;
 
+import net.slipcor.core.CoreCommand;
+import net.slipcor.core.CorePlugin;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.blocklist.FlatFileBlockList;
-import net.slipcor.treeassist.core.Language;
+import net.slipcor.treeassist.blocklists.FlatFileBlockList;
+import net.slipcor.treeassist.yml.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -11,15 +13,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandPurge extends AbstractCommand {
-    public CommandPurge() {
-        super(new String[]{"treeassist.purge"});
+public class CommandPurge extends CoreCommand {
+    public CommandPurge(CorePlugin plugin) {
+        super(plugin, "treeassist.purge", Language.MSG.ERROR_INVALID_ARGUMENT_COUNT);
     }
 
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_PURGE));
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_PERMISSION_PURGE.parse());
             return;
         }
         if (!argCountValid(sender, args, new Integer[]{2})) {
@@ -31,18 +33,18 @@ public class CommandPurge extends AbstractCommand {
                 int days = Integer.parseInt(args[1]);
                 int done = bl.purge(days);
 
-                TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_PURGE_DAYS, String.valueOf(done), args[1]));
+                TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_PURGE_DAYS.parse(String.valueOf(done), args[1]));
             } catch (NumberFormatException e) {
                 if (args[1].equalsIgnoreCase("global")) {
                     int done = bl.purge();
-                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_PURGE_GLOBAL, String.valueOf(done)));
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_PURGE_GLOBAL.parse(String.valueOf(done)));
                 } else {
                     int done = bl.purge(args[1]);
-                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_PURGE_WORLD, String.valueOf(done), args[1]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_PURGE_WORLD.parse(String.valueOf(done), args[1]));
                 }
             }
         } else {
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_ONLY_TREEASSIST_BLOCKLIST));
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_ONLY_TREEASSIST_BLOCKLIST.parse());
         }
     }
 

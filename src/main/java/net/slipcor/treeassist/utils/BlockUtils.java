@@ -1,15 +1,15 @@
 package net.slipcor.treeassist.utils;
 
+import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.configs.MainConfig;
-import net.slipcor.treeassist.configs.TreeConfig;
-import net.slipcor.treeassist.core.Debugger;
-import net.slipcor.treeassist.core.LeavesStructure;
-import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.discovery.LeavesStructure;
+import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TALeafDecay;
 import net.slipcor.treeassist.externals.JobsHook;
 import net.slipcor.treeassist.externals.mcMMOHook;
 import net.slipcor.treeassist.runnables.CleanRunner;
+import net.slipcor.treeassist.yml.MainConfig;
+import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -27,7 +27,7 @@ import java.util.*;
  */
 public class BlockUtils {
     private BlockUtils() {}
-    public static Debugger debug;
+    public static CoreDebugger debug;
     public static Boolean useFallingBlock = null;
     private static final List<FallingBlock> fallingBlocks = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class BlockUtils {
      */
     public static void breakBlock(Player player, Block block, ItemStack tool, int baseHeight) {
         if (useFallingBlock == null) {
-            useFallingBlock = TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_FALLING_BLOCKS);
+            useFallingBlock = TreeAssist.instance.config().getBoolean(MainConfig.CFG.DESTRUCTION_FALLING_BLOCKS);
         }
 
         if (useFallingBlock) {
@@ -63,7 +63,7 @@ public class BlockUtils {
                     block.getLocation().add(0.5, 0, 0.5), data);
             falling.setDropItem(false); // we do the dropping already, thank you!
 
-            if (player != null && TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_FALLING_BLOCKS_FANCY)) {
+            if (player != null && TreeAssist.instance.config().getBoolean(MainConfig.CFG.DESTRUCTION_FALLING_BLOCKS_FANCY)) {
                 falling.setGravity(false);
 
                 double level = block.getY() - baseHeight;
@@ -296,13 +296,13 @@ public class BlockUtils {
 
         if (!leaf && player != null) {
             if (TreeAssist.instance.mcMMO &&
-                    (fullTree == TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.PLUGINS_USE_TREEMCMMO))) {
+                    (fullTree == TreeAssist.instance.config().getBoolean(MainConfig.CFG.PLUGINS_USE_TREEMCMMO))) {
                 TreeStructure.debug.i("Adding mcMMO EXP!");
                 mcMMOHook.mcMMOAddExp(player, block);
             }
 
             if (TreeAssist.instance.jobs &&
-                    (fullTree == TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.PLUGINS_USE_TREEJOBS))) {
+                    (fullTree == TreeAssist.instance.config().getBoolean(MainConfig.CFG.PLUGINS_USE_TREEJOBS))) {
                 TreeStructure.debug.i("Adding Jobs EXP!");
                 JobsHook.addJobsExp(player, block);
             }

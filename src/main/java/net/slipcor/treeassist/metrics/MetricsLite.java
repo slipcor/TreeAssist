@@ -1,5 +1,6 @@
 package net.slipcor.treeassist.metrics;
 
+import net.slipcor.core.CoreMetrics;
 import net.slipcor.treeassist.TreeAssist;
 import org.bukkit.plugin.Plugin;
 
@@ -8,8 +9,7 @@ import org.bukkit.plugin.Plugin;
  *
  * Check out https://bStats.org/ to learn more about bStats!
  */
-@SuppressWarnings({"WeakerAccess", "unused"})
-public class MetricsLite extends MetricsBase {
+public class MetricsLite extends CoreMetrics {
 
     /**
      * Class constructor.
@@ -17,7 +17,7 @@ public class MetricsLite extends MetricsBase {
      * @param plugin The plugin which stats should be submitted.
      */
     public MetricsLite(Plugin plugin) {
-        super(plugin);
+        super(plugin, 4784);
         TreeAssist.instance.getLogger().info("sending minimum Metrics <3");
     }
 }

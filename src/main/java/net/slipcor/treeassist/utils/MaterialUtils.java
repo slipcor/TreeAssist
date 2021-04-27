@@ -1,8 +1,8 @@
 package net.slipcor.treeassist.utils;
 
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.configs.TreeConfig;
-import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.discovery.TreeStructure;
+import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.Material;
 
 public class MaterialUtils {

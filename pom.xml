@@ -87,9 +87,9 @@
 			<systemPath>${project.basedir}/lib/Jobs4.14.3.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.8.6</version>
+			<groupId>net.slipcor</groupId>
+			<artifactId>core</artifactId>
+			<version>0.1-SNAPSHOT</version>
 			<type>jar</type>
 		</dependency>
 	</dependencies>
@@ -111,6 +111,47 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.2.0</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>net.slipcor:core</include>
+								</includes>
+								<excludes>
+									<exclude>META-INF/MANIFEST.MF</exclude>
+								</excludes>
+							</artifactSet>
+							<filters>
+								<filter>
+									<artifact>net.slipcor:core</artifact>
+									<excludes>
+										<exclude>META-INF/**</exclude>
+									</excludes>
+								</filter>
+							</filters>
+							<relocations>
+								<relocation>
+									<pattern>net.slipcor.core</pattern>
+									<shadedPattern>net.slipcor.treeassist.discovery</shadedPattern>
+									<includes>
+										<include>net.slipcor.core.*</include>
+									</includes>
+								</relocation>
+							</relocations>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

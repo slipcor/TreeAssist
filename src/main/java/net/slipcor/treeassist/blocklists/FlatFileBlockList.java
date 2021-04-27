@@ -1,7 +1,7 @@
-package net.slipcor.treeassist.blocklist;
+package net.slipcor.treeassist.blocklists;
 
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.core.TreeBlock;
+import net.slipcor.treeassist.discovery.TreeBlock;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

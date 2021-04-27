@@ -1,8 +1,8 @@
-package net.slipcor.treeassist.blocklist;
+package net.slipcor.treeassist.blocklists;
 
-import net.slipcor.treeassist.TreeAssist;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
+import net.slipcor.treeassist.TreeAssist;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

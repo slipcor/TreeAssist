@@ -1,12 +1,17 @@
-package net.slipcor.treeassist.configs;
+package net.slipcor.treeassist.yml;
 
+import net.slipcor.core.ConfigEntry;
+import net.slipcor.core.CoreConfig;
 import net.slipcor.treeassist.TreeAssist;
 import org.bukkit.configuration.InvalidConfigurationException;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class MainConfig extends CommentableConfig {
+public class MainConfig extends CoreConfig {
 
     public enum CFG implements ConfigEntry {
         GENERAL("General", "=== [ General Settings ] ==="),
@@ -134,8 +139,8 @@ public class MainConfig extends CommentableConfig {
      *
      * @param configFile a YAML file
      */
-    public MainConfig(final File configFile) {
-        super(configFile);
+    public MainConfig(final TreeAssist plugin, final File configFile) {
+        super(plugin, "TreeAssist Main Config", configFile);
 
         TreeAssist.instance.getLogger().info("Loading main config file: " + configFile.getAbsolutePath().replace(TreeAssist.instance.getDataFolder().getAbsolutePath(), ""));
 

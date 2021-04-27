@@ -1,7 +1,7 @@
 package net.slipcor.treeassist.runnables;
 
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.core.Language;
+import net.slipcor.treeassist.yml.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -37,7 +37,7 @@ public class CoolDownCounter extends BukkitRunnable {
         TreeAssist.instance.removeCountDown(name);
         Player player = Bukkit.getPlayer(name);
         if (player != null) {
-            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.INFO_COOLDOWN_DONE));
+            TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_COOLDOWN_DONE.parse());
         }
     }
 

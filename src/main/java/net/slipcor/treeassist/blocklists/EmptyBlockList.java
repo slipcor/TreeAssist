@@ -1,7 +1,7 @@
-package net.slipcor.treeassist.blocklist;
+package net.slipcor.treeassist.blocklists;
 
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.configs.MainConfig;
+import net.slipcor.treeassist.yml.MainConfig;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -12,7 +12,7 @@ public class EmptyBlockList implements BlockList {
 	protected int lookupTime;
 
 	public EmptyBlockList() {
-		lookupTime = TreeAssist.instance.getMainConfig().getInt(MainConfig.CFG.PLACED_BLOCKS_LOOKUP_TIME, 60*60*24);
+		lookupTime = TreeAssist.instance.config().getInt(MainConfig.CFG.PLACED_BLOCKS_LOOKUP_TIME, 60*60*24);
 	}
 
 	@Override
