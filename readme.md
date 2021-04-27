@@ -38,6 +38,7 @@ It also will take down an entire tree when it is enabled in the config.
 ## Dependencies
 
 - Spigot 1.13
+- My [Core](https://github.com/slipcor/Core) library (automatically added to the plugin before release)
 
 ***
 
