@@ -1,5 +1,9 @@
 # v7.X Changelog
 
+## v7.2 - Library
+
+- v7.2.1 - refactor several features into a library that gets shaded in
+
 ## v7.1 - New CI
 
 - v7.1.23 - do not shade GSON in - this has been in the server jar for years

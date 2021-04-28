@@ -4,7 +4,7 @@
 
 	<groupId>net.slipcor.TreeAssist</groupId>
 	<artifactId>TreeAssist</artifactId>
-	<version>7.1-SNAPSHOT</version>
+	<version>7.2-SNAPSHOT</version>
 	<name>TreeAssist</name>
 
 	<repositories>
@@ -128,9 +128,6 @@
 								<includes>
 									<include>net.slipcor:core</include>
 								</includes>
-								<excludes>
-									<exclude>META-INF/MANIFEST.MF</exclude>
-								</excludes>
 							</artifactSet>
 							<filters>
 								<filter>
