@@ -1,9 +1,11 @@
 package net.slipcor.treeassist.commands;
 
+import net.slipcor.core.CoreCommand;
+import net.slipcor.core.CorePlugin;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.configs.MainConfig;
-import net.slipcor.treeassist.core.Language;
 import net.slipcor.treeassist.utils.MaterialUtils;
+import net.slipcor.treeassist.yml.Language;
+import net.slipcor.treeassist.yml.MainConfig;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.TreeType;
@@ -14,31 +16,32 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.material.Sapling;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandForceGrow extends AbstractCommand {
-    public CommandForceGrow() {
-        super(new String[]{"treeassist.forcegrow"});
+public class CommandForceGrow extends CoreCommand {
+    public CommandForceGrow(CorePlugin plugin) {
+        super(plugin, "treeassist.forcegrow", Language.MSG.ERROR_INVALID_ARGUMENT_COUNT);
     }
 
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_FORCEGROW));
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_PERMISSION_FORCEGROW.parse());
             return;
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            int radius = TreeAssist.instance.getMainConfig().getInt(MainConfig.CFG.COMMANDS_FORCE_GROW_DEFAULT_RADIUS, 10);
+            int radius = TreeAssist.instance.config().getInt(MainConfig.CFG.COMMANDS_FORCE_GROW_DEFAULT_RADIUS, 10);
 
             if (args.length > 1) {
                 try {
                     radius = Math.max(1, Integer.parseInt(args[1]));
-                    int configValue = TreeAssist.instance.getMainConfig().getInt(MainConfig.CFG.COMMANDS_FORCE_GROW_MAX_RADIUS, 30);
+                    int configValue = TreeAssist.instance.config().getInt(MainConfig.CFG.COMMANDS_FORCE_GROW_MAX_RADIUS, 30);
                     if (radius > configValue) {
-                        TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_OUT_OF_RANGE, String.valueOf(configValue)));
+                        TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_OUT_OF_RANGE.parse(String.valueOf(configValue)));
                         return;
                     }
                 } catch (Exception e) {
@@ -84,7 +87,7 @@ public class CommandForceGrow extends AbstractCommand {
 
             return;
         }
-        TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_ONLY_PLAYERS));
+        TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_ONLY_PLAYERS.parse());
     }
 
     @Override
@@ -100,5 +103,10 @@ public class CommandForceGrow extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist forcegrow - force saplings around you to grow";
+    }
+
+    @Override
+    public List<String> completeTab(String[] strings) {
+        return new ArrayList<>(); // we have no arguments
     }
 }

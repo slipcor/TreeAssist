@@ -1,9 +1,9 @@
 package net.slipcor.treeassist.runnables;
 
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.configs.TreeConfig;
-import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.utils.BlockUtils;
+import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.block.Block;
 
 import java.util.Set;

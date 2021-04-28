@@ -38,6 +38,7 @@ It also will take down an entire tree when it is enabled in the config.
 ## Dependencies
 
 - Spigot 1.13
+- My [Core](https://github.com/slipcor/Core) library (automatically added to the plugin before release)
 
 ***
 
@@ -72,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.1.23 - do not shade GSON in - this has been in the server jar for years 
+- v7.2.1 - refactor several features into a library that gets shaded in 
 - [read more](doc/changelog.md)
 ***
 

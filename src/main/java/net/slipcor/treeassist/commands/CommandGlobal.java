@@ -1,29 +1,32 @@
 package net.slipcor.treeassist.commands;
 
+import net.slipcor.core.CoreCommand;
+import net.slipcor.core.CorePlugin;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.core.Language;
+import net.slipcor.treeassist.yml.Language;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandGlobal extends AbstractCommand {
-    public CommandGlobal() {
-        super(new String[]{"treeassist.toggle.global"});
+public class CommandGlobal extends CoreCommand {
+    public CommandGlobal(CorePlugin plugin) {
+        super(plugin, "treeassist.toggle.global", Language.MSG.ERROR_INVALID_ARGUMENT_COUNT);
     }
 
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE_GLOBAL));
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_PERMISSION_TOGGLE_GLOBAL.parse());
             return;
         }
         if (!TreeAssist.instance.Enabled) {
             TreeAssist.instance.Enabled = true;
-            sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_GLOBAL_ON));
+            sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_GLOBAL_ON.parse());
         } else {
             TreeAssist.instance.Enabled = false;
-            sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_GLOBAL_OFF));
+            sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_GLOBAL_OFF.parse());
         }
     }
 
@@ -40,5 +43,10 @@ public class CommandGlobal extends AbstractCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist global - toggle global plugin availability";
+    }
+
+    @Override
+    public List<String> completeTab(String[] strings) {
+        return new ArrayList<>(); // we have no arguments
     }
 }

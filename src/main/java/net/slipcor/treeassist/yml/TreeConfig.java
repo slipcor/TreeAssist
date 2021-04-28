@@ -1,15 +1,18 @@
-package net.slipcor.treeassist.configs;
+package net.slipcor.treeassist.yml;
 
+import net.slipcor.core.ConfigEntry;
+import net.slipcor.core.CoreConfig;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.discovery.TreeStructure;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
-public class TreeConfig extends CommentableConfig {
+public class TreeConfig extends CoreConfig {
     private final Map<String, List<Material>> materials;
     private final Map<String, Map<String, Double>> maps;
 
@@ -175,8 +178,8 @@ public class TreeConfig extends CommentableConfig {
      *
      * @param configFile a YAML file
      */
-    public TreeConfig (final File configFile) {
-        super(configFile);
+    public TreeConfig (final TreeAssist plugin, final File configFile) {
+        super(plugin, "TreeAssist Tree Config", configFile);
         TreeAssist.instance.getLogger().info("Loading tree config file: " + configFile.getAbsolutePath().replace(TreeAssist.instance.getDataFolder().getAbsolutePath(), ""));
 
         materials = new HashMap<>();
@@ -267,6 +270,9 @@ public class TreeConfig extends CommentableConfig {
         }
     }
 
+    /**
+     * Fill the materials map
+     */
     @Override
     protected void loadMaterials() {
         for (CFG cfg : CFG.values()) {

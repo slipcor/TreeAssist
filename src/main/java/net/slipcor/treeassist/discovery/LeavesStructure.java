@@ -1,6 +1,6 @@
-package net.slipcor.treeassist.core;
+package net.slipcor.treeassist.discovery;
 
-import net.slipcor.treeassist.configs.TreeConfig;
+import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.block.Block;
 
 import java.util.ArrayList;

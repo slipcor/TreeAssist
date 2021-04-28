@@ -1,26 +1,27 @@
 package net.slipcor.treeassist.commands;
 
+import net.slipcor.core.CoreCommand;
+import net.slipcor.core.CorePlugin;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.core.Debugger;
-import net.slipcor.treeassist.core.Language;
+import net.slipcor.treeassist.yml.Language;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandDebug extends AbstractCommand {
-    public CommandDebug() {
-        super(new String[]{"treeassist.debug"});
+public class CommandDebug extends CoreCommand {
+    public CommandDebug(CorePlugin plugin) {
+        super(plugin, "treeassist.debug", Language.MSG.ERROR_INVALID_ARGUMENT_COUNT);
     }
 
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_DEBUG));
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_PERMISSION_DEBUG.parse());
             return;
         }
-        Debugger.destroy();
+        TreeAssist.instance.destroyDebugger();
         if (args.length < 2 || args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false") || args[1].equalsIgnoreCase("none")) {
             TreeAssist.instance.getConfig().set("Debug", "none");
         } else {
@@ -30,7 +31,7 @@ public class CommandDebug extends AbstractCommand {
                 TreeAssist.instance.getConfig().set("Debug", args[1]);
             }
         }
-        Debugger.load(TreeAssist.instance, sender);
+        TreeAssist.instance.loadDebugger("Debug", sender);
     }
 
     @Override

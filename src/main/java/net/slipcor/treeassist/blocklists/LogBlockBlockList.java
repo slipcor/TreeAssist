@@ -1,4 +1,4 @@
-package net.slipcor.treeassist.blocklist;
+package net.slipcor.treeassist.blocklists;
 
 import de.diddiz.LogBlock.BlockChange;
 import de.diddiz.LogBlock.Consumer;

@@ -1,4 +1,4 @@
-package net.slipcor.treeassist.configs;
+package net.slipcor.treeassist.yml;
 
 import net.slipcor.treeassist.TreeAssist;
 import org.bukkit.configuration.file.FileConfiguration;

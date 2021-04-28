@@ -4,7 +4,7 @@ import com.gmail.nossr50.api.AbilityAPI;
 import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.util.player.UserManager;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.discovery.TreeStructure;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 

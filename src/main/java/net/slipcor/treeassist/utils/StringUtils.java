@@ -1,29 +1,10 @@
 package net.slipcor.treeassist.utils;
 
-import java.util.*;
+import java.util.List;
 
 public final class StringUtils {
 	private StringUtils() {
 	}
-
-    /**
-     * Construct a string out of an array
-     *
-     * @param array the array to read
-     * @param glue the separator to insert
-     * @return the constructed string
-     */
-    public static String joinArray(final Object[] array, final String glue) {
-        final StringBuilder result = new StringBuilder();
-        for (final Object o : array) {
-            result.append(glue);
-            result.append(o);
-        }
-        if (result.length() <= glue.length()) {
-            return result.toString();
-        }
-        return result.substring(glue.length());
-    }
 
     /**
      * Check whether a given string is contained loosely in a list of strings

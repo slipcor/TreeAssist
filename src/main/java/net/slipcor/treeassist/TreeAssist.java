@@ -1,9 +1,10 @@
 package net.slipcor.treeassist;
 
-import net.slipcor.treeassist.blocklist.*;
+import net.slipcor.core.*;
+import net.slipcor.treeassist.blocklists.*;
 import net.slipcor.treeassist.commands.*;
-import net.slipcor.treeassist.configs.MainConfig;
-import net.slipcor.treeassist.configs.TreeConfig;
+import net.slipcor.treeassist.discovery.TreeBlock;
+import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.externals.WorldGuardListener;
 import net.slipcor.treeassist.listeners.TreeAssistBlockListener;
 import net.slipcor.treeassist.listeners.TreeAssistSpawnListener;
@@ -11,29 +12,33 @@ import net.slipcor.treeassist.metrics.MetricsLite;
 import net.slipcor.treeassist.metrics.MetricsMain;
 import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.runnables.CoolDownCounter;
-import net.slipcor.treeassist.core.*;
 import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.ToolUtils;
-import org.bukkit.*;
+import net.slipcor.treeassist.yml.Language;
+import net.slipcor.treeassist.yml.MainConfig;
+import net.slipcor.treeassist.yml.TreeConfig;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.*;
+import java.io.File;
 import java.util.*;
 
-public class TreeAssist extends JavaPlugin {
+public class TreeAssist extends CorePlugin {
     public static Map<String, TreeConfig> treeConfigs = new LinkedHashMap<>();        // The TreeConfigs which define what constitutes a tree
     public static TreeAssist instance;                                          // Static plugin instance
 
     public List<Location> saplingLocationList = new ArrayList<>();              // List of protected saplings
     private final Map<String, List<String>> disabledMap = new HashMap<>();      // List of player names who disabled TreeAssist
-    final Map<String, AbstractCommand> commandMap = new HashMap<>();            // Map of commands
-    final List<AbstractCommand> commandList = new ArrayList<>();                // List of commands
+    final Map<String, CoreCommand> commandMap = new HashMap<>();            // Map of commands
+    final List<CoreCommand> commandList = new ArrayList<>();                // List of commands
     private final Map<String, CoolDownCounter> coolDowns = new HashMap<>();     // Maps of player names to active CoolDown Runnables
     private final Set<String> coolDownOverrides = new HashSet<>();              // List of player names who override cooldowns
 
@@ -52,8 +57,9 @@ public class TreeAssist extends JavaPlugin {
     private TreeAssistBlockListener listener;       // Block Listener instance
     private TreeAssistSpawnListener spawnListener;  // Item Spawn Listener instance
 
-    private Updater updater = null;
-
+    private CoreUpdater updater = null;
+    private CoreTabCompleter completer;
+    private CoreLanguage language;
 
     /**
      * Check for mcMMO if requested
@@ -127,11 +133,11 @@ public class TreeAssist extends JavaPlugin {
     /**
      * @return the MainConfig instance
      */
-    public MainConfig getMainConfig() {
+    public MainConfig config() {
         return config;
     }
 
-    public Updater getUpdater() {
+    public CoreUpdater getUpdater() {
         return updater;
     }
 
@@ -183,30 +189,33 @@ public class TreeAssist extends JavaPlugin {
     /**
      * Load all commands
      */
-    private void loadCommands() {
-        new CommandAddTool().load(commandList, commandMap);
-        new CommandDebug().load(commandList, commandMap);
-        new CommandFindForest().load(commandList, commandMap);
-        new CommandForceBreak().load(commandList, commandMap);
-        new CommandForceGrow().load(commandList, commandMap);
-        new CommandGlobal().load(commandList, commandMap);
-        new CommandNoReplant().load(commandList, commandMap);
-        new CommandPurge().load(commandList, commandMap);
-        new CommandReload().load(commandList, commandMap);
-        new CommandRemoveTool().load(commandList, commandMap);
-        new CommandToggle().load(commandList, commandMap);
-        new CommandTool().load(commandList, commandMap);
+    public void loadCommands() {
+        commandList.clear();
+        commandMap.clear();
+        completer = null;
+        new CommandAddTool(this).load(commandList, commandMap);
+        new CommandDebug(this).load(commandList, commandMap);
+        new CommandFindForest(this).load(commandList, commandMap);
+        new CommandForceBreak(this).load(commandList, commandMap);
+        new CommandForceGrow(this).load(commandList, commandMap);
+        new CommandGlobal(this).load(commandList, commandMap);
+        new CommandNoReplant(this).load(commandList, commandMap);
+        new CommandPurge(this).load(commandList, commandMap);
+        new CommandReload(this).load(commandList, commandMap);
+        new CommandRemoveTool(this).load(commandList, commandMap);
+        new CommandToggle(this).load(commandList, commandMap);
+        new CommandTool(this).load(commandList, commandMap);
     }
 
     @EventHandler
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        final AbstractCommand acc = (args.length > 0) ? commandMap.get(args[0].toLowerCase()) : null;
+        final CoreCommand acc = (args.length > 0) ? commandMap.get(args[0].toLowerCase()) : null;
         if (acc != null) {
             acc.commit(sender, args);
             return true;
         }
         boolean found = false;
-        for (AbstractCommand command : commandList) {
+        for (CoreCommand command : commandList) {
             if (command.hasPerms(sender)) {
                 sendPrefixed(sender, ChatColor.YELLOW + command.getShortInfo());
                 found = true;
@@ -220,7 +229,7 @@ public class TreeAssist extends JavaPlugin {
         if (this.blockList instanceof FlatFileBlockList) {
             blockList.save(true);
         }
-        Debugger.destroy();
+        destroyDebugger();
     }
 
     public void onEnable() {
@@ -245,12 +254,12 @@ public class TreeAssist extends JavaPlugin {
             }
         }
 
-        TreeStructure.debug = new Debugger(this, 1);
-        CleanRunner.debug = new Debugger(this, 2);
-        TreeAssistBlockListener.debug = new Debugger(this, 6);
-        TreeAssistSpawnListener.debug = new Debugger(this, 7);
-        BlockUtils.debug = new Debugger(this, 8);
-        Debugger.load(this, Bukkit.getConsoleSender());
+        TreeStructure.debug = new CoreDebugger(this, 1);
+        CleanRunner.debug = new CoreDebugger(this, 2);
+        TreeAssistBlockListener.debug = new CoreDebugger(this, 6);
+        TreeAssistSpawnListener.debug = new CoreDebugger(this, 7);
+        BlockUtils.debug = new CoreDebugger(this, 8);
+        loadDebugger("Debug", Bukkit.getConsoleSender());
 
         if (config.getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE)) {
             String pluginName = config.getString(
@@ -272,15 +281,23 @@ public class TreeAssist extends JavaPlugin {
         blockList.initiate();
 
         loadCommands();
+        if (loadLanguage() != null) {
+            getPluginLoader().disablePlugin(this);
+            return;
+        }
 
-        Language.init(this, config.getString(MainConfig.CFG.GENERAL_LANGUAGE, "lang_en"));
+        this.updater = new CoreUpdater(this, getFile(), "treeassist",
+                "https://www.spigotmc.org/resources/treeassist.67436/", MainConfig.CFG.UPDATE_MODE, MainConfig.CFG.UPDATE_TYPE);
+    }
 
-        this.updater = new Updater(this, getFile());
+    public String loadLanguage() {
+        return language.load("lang_en");
     }
 
     @Override
     public void onLoad() {
         instance = this;
+        language = new Language(this);
         ConfigurationSerialization.registerClass(TreeBlock.class);
 
         this.configFile = new File(getDataFolder(), "config.yml");
@@ -289,7 +306,7 @@ public class TreeAssist extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        this.config = new MainConfig(configFile);
+        this.config = new MainConfig(this, configFile);
         reloadLists();
         this.config.load();
 
@@ -300,7 +317,10 @@ public class TreeAssist extends JavaPlugin {
 
     @Override
     public List<String> onTabComplete(final CommandSender sender, final Command cmd, final String alias, final String[] args) {
-        return TabComplete.getMatches(sender, commandList, args);
+        if (completer == null) {
+            completer = new CoreTabCompleter(true);
+        }
+        return completer.getMatches(sender, commandList, args);
     }
 
     /**
@@ -362,8 +382,8 @@ public class TreeAssist extends JavaPlugin {
             return;
         } else if (coolDown < 0) {
             coolDown = ToolUtils.calculateCoolDown(player.getInventory().getItemInMainHand(), logs);
-            sendPrefixed(player, Language.parse(
-                    Language.MSG.INFO_COOLDOWN_WAIT, String.valueOf(coolDown)));
+            sendPrefixed(player, Language.MSG.INFO_COOLDOWN_WAIT.parse(
+                    String.valueOf(coolDown)));
         }
         CoolDownCounter cc = new CoolDownCounter(player, coolDown);
         cc.runTaskTimer(this, 20L, 20L);
@@ -384,21 +404,14 @@ public class TreeAssist extends JavaPlugin {
         }
     }
 
-    /**
-     * Send a prefixed message
-     *
-     * @param sender the CommandSender we want to send a message to
-     * @param message the message content to be prefixed
-     */
-    public void sendPrefixed(final CommandSender sender, final String message) {
-        if ("".equals(message)) {
-            return;
-        }
-        if (sender instanceof Player) {
-            sender.sendMessage(Language.parse(Language.MSG.INFO_PLUGIN_PREFIX) + message);
-            return;
-        }
-        getLogger().info(message);
+    @Override
+    public String getDebugPrefix() {
+        return "";
+    }
+
+    @Override
+    public String getMessagePrefix() {
+        return Language.MSG.INFO_PLUGIN_PREFIX.parse();
     }
 
     /**

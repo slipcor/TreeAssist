@@ -1,7 +1,9 @@
 package net.slipcor.treeassist.commands;
 
+import net.slipcor.core.CoreCommand;
+import net.slipcor.core.CorePlugin;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.core.Language;
+import net.slipcor.treeassist.yml.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -11,15 +13,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class CommandToggle extends AbstractCommand {
-    public CommandToggle() {
-        super(new String[]{"treeassist.toggle"});
+public class CommandToggle extends CoreCommand {
+    public CommandToggle(CorePlugin plugin) {
+        super(plugin, "treeassist.toggle", Language.MSG.ERROR_INVALID_ARGUMENT_COUNT);
     }
 
     @Override
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
-            TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE));
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_PERMISSION_TOGGLE.parse());
             return;
         }
 
@@ -31,49 +33,49 @@ public class CommandToggle extends AbstractCommand {
 
             if (args.length > 2) {
                 if (Bukkit.getWorld(args[2]) == null) {
-                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_NOTFOUND_WORLD, args[2]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_NOTFOUND_WORLD.parse(args[2]));
                     return;
                 }
 
                 if (!sender.hasPermission("treeassist.toggle.other")) {
-                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE_OTHER));
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_PERMISSION_TOGGLE_OTHER.parse());
                     return;
                 }
 
                 if (TreeAssist.instance.toggleWorld(args[2], args[1])) {
-                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_ON, args[1], args[2]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_ON.parse(args[1], args[2]));
                 } else {
-                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_OFF, args[1], args[2]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_OFF.parse(args[1], args[2]));
                 }
                 return;
             }
             if (Bukkit.getWorld(args[1]) == null) {
                 if (!sender.hasPermission("treeassist.toggle.other")) {
-                    TreeAssist.instance.sendPrefixed(sender, Language.parse(Language.MSG.ERROR_PERMISSION_TOGGLE_OTHER));
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_PERMISSION_TOGGLE_OTHER.parse());
                     return;
                 }
 
                 if (TreeAssist.instance.toggleGlobal(args[1])) {
-                    sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_ON, args[1]));
+                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_ON.parse(args[1]));
                 } else {
-                    sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_OFF, args[1]));
+                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_OFF.parse(args[1]));
                 }
                 return;
             }
 
             if (TreeAssist.instance.toggleWorld(args[1], sender.getName())) {
-                sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_ON, args[1]));
+                sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_ON.parse(args[1]));
             } else {
-                sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_OFF, args[1]));
+                sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_OFF.parse(args[1]));
             }
 
             return;
         }
 
         if (TreeAssist.instance.toggleGlobal(sender.getName())) {
-            sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_YOU_ON));
+            sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_ON.parse());
         } else {
-            sender.sendMessage(Language.parse(Language.MSG.SUCCESSFUL_TOGGLE_YOU_OFF));
+            sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_OFF.parse());
         }
     }
 

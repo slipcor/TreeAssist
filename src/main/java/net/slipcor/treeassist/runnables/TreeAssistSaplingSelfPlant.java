@@ -1,20 +1,20 @@
 package net.slipcor.treeassist.runnables;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.configs.TreeConfig;
-import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
+import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Item;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class TreeAssistSaplingSelfPlant implements Runnable {
 	private final TreeConfig config;

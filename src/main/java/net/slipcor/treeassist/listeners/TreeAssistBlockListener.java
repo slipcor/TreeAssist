@@ -1,17 +1,20 @@
 package net.slipcor.treeassist.listeners;
 
+import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.configs.MainConfig;
-import net.slipcor.treeassist.configs.TreeConfig;
+import net.slipcor.treeassist.discovery.FailReason;
+import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TASaplingBreakEvent;
-import net.slipcor.treeassist.runnables.TreeAssistAntiGrow;
-import net.slipcor.treeassist.runnables.TreeAssistReplant;
-import net.slipcor.treeassist.core.*;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.externals.mcMMOHook;
+import net.slipcor.treeassist.runnables.TreeAssistAntiGrow;
+import net.slipcor.treeassist.runnables.TreeAssistReplant;
 import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import net.slipcor.treeassist.utils.ToolUtils;
+import net.slipcor.treeassist.yml.Language;
+import net.slipcor.treeassist.yml.MainConfig;
+import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,19 +26,22 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Tree;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TreeAssistBlockListener implements Listener {
-    public static Debugger debug;
+    public static CoreDebugger debug;
 
     public TreeAssist plugin;
 
@@ -51,7 +57,7 @@ public class TreeAssistBlockListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onLeavesDecay(LeavesDecayEvent event) {
         debug.i("leaf is decaying: " + BlockUtils.printBlock(event.getBlock()));
-        if (plugin.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_FAST_LEAF_DECAY) && plugin.Enabled) {
+        if (plugin.config().getBoolean(MainConfig.CFG.DESTRUCTION_FAST_LEAF_DECAY) && plugin.Enabled) {
             debug.i("we want fast decay!");
             Block block = event.getBlock();
             World world = block.getWorld();
@@ -79,11 +85,11 @@ public class TreeAssistBlockListener implements Listener {
                     if (plugin.saplingLocationList.contains(clicked.getLocation())) {
                         plugin.saplingLocationList.remove(clicked.getLocation());
                         TreeAssist.instance.sendPrefixed(event.getPlayer(),
-                                Language.parse(Language.MSG.SUCCESSFUL_PROTECT_OFF));
+                                Language.MSG.SUCCESSFUL_PROTECT_OFF.parse());
                     } else {
                         plugin.saplingLocationList.add(clicked.getLocation());
                         TreeAssist.instance.sendPrefixed(event.getPlayer(),
-                                Language.parse(Language.MSG.SUCCESSFUL_PROTECT_ON));
+                                Language.MSG.SUCCESSFUL_PROTECT_ON.parse());
                     }
                 }
             }
@@ -92,7 +98,7 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (plugin.getMainConfig().getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE) &&
+        if (plugin.config().getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE) &&
                 (TreeStructure.allTrunks.contains(event.getBlock().getType()))) {
             if (plugin.isActive(event.getBlock().getWorld())) {
                 Block block = event.getBlock();
@@ -129,7 +135,7 @@ public class TreeAssistBlockListener implements Listener {
             return;
         }
 
-        if (plugin.getMainConfig().getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE)) {
+        if (plugin.config().getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE)) {
             if (plugin.blockList.isPlayerPlaced(block)) {
                 debug.i("User placed block. Removing!");
                 plugin.blockList.removeBlock(block);
@@ -189,7 +195,7 @@ public class TreeAssistBlockListener implements Listener {
 
         if (MaterialUtils.isSapling(event.getBlock().getType())) {
             if (plugin.saplingLocationList.contains(event.getBlock().getLocation())) {
-                TreeAssist.instance.sendPrefixed(event.getPlayer(), Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
+                TreeAssist.instance.sendPrefixed(event.getPlayer(), Language.MSG.INFO_SAPLING_PROTECTED.parse());
                 event.setCancelled(true);
                 return;
             }
@@ -199,7 +205,7 @@ public class TreeAssistBlockListener implements Listener {
 
             if (saplingBreakEvent.isCancelled()) {
                 debug.i("Another plugin prevented sapling breaking!");
-                TreeAssist.instance.sendPrefixed(event.getPlayer(), Language.parse(Language.MSG.INFO_SAPLING_PROTECTED));
+                TreeAssist.instance.sendPrefixed(event.getPlayer(), Language.MSG.INFO_SAPLING_PROTECTED.parse());
                 event.setCancelled(true);
                 return;
             }
@@ -207,7 +213,7 @@ public class TreeAssistBlockListener implements Listener {
             for (TreeConfig config : TreeAssist.treeConfigs.values()) {
                 if (event.getBlock().getType() == config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL)) {
                     if (config.getBoolean(TreeConfig.CFG.REPLANTING_FORCE_PROTECT)) {
-                        TreeAssist.instance.sendPrefixed(event.getPlayer(), Language.parse(Language.MSG.INFO_NEVER_BREAK_SAPLINGS));
+                        TreeAssist.instance.sendPrefixed(event.getPlayer(), Language.MSG.INFO_NEVER_BREAK_SAPLINGS.parse());
                         event.setCancelled(true);
                         return;
                     }
@@ -220,7 +226,7 @@ public class TreeAssistBlockListener implements Listener {
             return;
         }
 
-        if (plugin.getMainConfig().getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE)) {
+        if (plugin.config().getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE)) {
             if (plugin.blockList.isPlayerPlaced(event.getBlock())) {
                 debug.i("User placed block. Removing!");
                 plugin.blockList.removeBlock(event.getBlock());
@@ -253,7 +259,7 @@ public class TreeAssistBlockListener implements Listener {
                 if (checkTreeStructure.isValid()) {
                     debug.i("Tree matches " + mat);
 
-                    if (plugin.getMainConfig().getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&
+                    if (plugin.config().getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&
                             !player.hasPermission(config.getString(TreeConfig.CFG.PERMISSION))) {
                         debug.i("Player does not have permission " + config.getString(TreeConfig.CFG.PERMISSION));
                         matchingTreeConfig = config; // for maybe forcing something later
@@ -264,8 +270,8 @@ public class TreeAssistBlockListener implements Listener {
                     if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_ACTIVE)) {
                         if (TreeAssist.instance.hasCoolDown(player)) {
                             debug.i("Cooldown!");
-                            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.INFO_COOLDOWN_STILL));
-                            TreeAssist.instance.sendPrefixed(player, Language.parse(Language.MSG.INFO_COOLDOWN_VALUE, String.valueOf(TreeAssist.instance.getCoolDown(player))));
+                            TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_COOLDOWN_STILL.parse());
+                            TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_COOLDOWN_VALUE.parse(String.valueOf(TreeAssist.instance.getCoolDown(player))));
                             matchingTreeConfig = config; // for maybe forcing something later
                             matchingTreeStructure = checkTreeStructure;
 
@@ -326,7 +332,7 @@ public class TreeAssistBlockListener implements Listener {
                         debug.i("success!");
                         ItemStack item = player.getInventory().getItemInMainHand();
 
-                        if (!plugin.getMainConfig().getBoolean(MainConfig.CFG.MODDING_DISABLE_DURABILITY_FIX)) {
+                        if (!plugin.config().getBoolean(MainConfig.CFG.MODDING_DISABLE_DURABILITY_FIX)) {
                             if (item.hasItemMeta() && item.getItemMeta() != null) {
                                 if (!item.getItemMeta().isUnbreakable()) {
                                     short durability = (short) ((Damageable) item.getItemMeta()).getDamage();
@@ -346,7 +352,7 @@ public class TreeAssistBlockListener implements Listener {
                         event.setCancelled(!checkTreeStructure.getConfig().getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY) ||
                                 checkTreeStructure.getConfig().getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME) <= 0);
                         checkTreeStructure.maybeReplant(player, event.getBlock());
-                        if (TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
+                        if (TreeAssist.instance.config().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
                             checkTreeStructure.removeBlocksBelow(event.getBlock());
                         }
                         TreeAssist.instance.treeAdd(checkTreeStructure);
@@ -378,7 +384,7 @@ public class TreeAssistBlockListener implements Listener {
 
             if (matchingTreeConfig.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL)) {
                 TreeAssist.instance.treeAdd(matchingTreeStructure);
-                if (TreeAssist.instance.getMainConfig().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
+                if (TreeAssist.instance.config().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
                     matchingTreeStructure.removeBlocksBelow(event.getBlock());
                 }
                 BlockUtils.callExternals(event.getBlock(), player, true);
@@ -414,7 +420,7 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (!plugin.getMainConfig().getBoolean(MainConfig.CFG.GENERAL_TOGGLE_DEFAULT)) {
+        if (!plugin.config().getBoolean(MainConfig.CFG.GENERAL_TOGGLE_DEFAULT)) {
             plugin.toggleGlobal(event.getPlayer().getName());
         }
         if (event.getPlayer().isOp() && plugin.getUpdater() != null) {

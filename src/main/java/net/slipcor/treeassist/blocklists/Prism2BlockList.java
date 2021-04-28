@@ -1,4 +1,4 @@
-package net.slipcor.treeassist.blocklist;
+package net.slipcor.treeassist.blocklists;
 
 import me.botsko.prism.Prism;
 import me.botsko.prism.actionlibs.ActionsQuery;

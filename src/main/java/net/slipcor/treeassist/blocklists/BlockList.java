@@ -1,4 +1,4 @@
-package net.slipcor.treeassist.blocklist;
+package net.slipcor.treeassist.blocklists;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

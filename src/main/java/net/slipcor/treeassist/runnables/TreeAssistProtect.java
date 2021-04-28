@@ -1,7 +1,7 @@
 package net.slipcor.treeassist.runnables;
 
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.core.TreeStructure;
+import net.slipcor.treeassist.discovery.TreeStructure;
 import org.bukkit.Location;
 
 public class TreeAssistProtect implements Runnable {
