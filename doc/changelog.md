@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.2 - fix shading package - no functional differences to 7.2.1!
 - v7.2.1 - refactor several features into a library that gets shaded in
 
 ## v7.1 - New CI

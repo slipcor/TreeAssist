@@ -73,8 +73,9 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.1 - refactor several features into a library that gets shaded in 
+- v7.2.2 - fix shading package - no functional differences to 7.2.1!
 - [read more](doc/changelog.md)
+
 ***
 
 ## Phoning home

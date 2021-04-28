@@ -140,7 +140,7 @@
 							<relocations>
 								<relocation>
 									<pattern>net.slipcor.core</pattern>
-									<shadedPattern>net.slipcor.treeassist.discovery</shadedPattern>
+									<shadedPattern>net.slipcor.treeassist.core</shadedPattern>
 									<includes>
 										<include>net.slipcor.core.*</include>
 									</includes>
