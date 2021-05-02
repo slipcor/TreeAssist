@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.2 - fix shading package - no functional differences to 7.2.1!
+- v7.2.3 - prevent players from dropping a sapling if that sapling would and should not grow
 - [read more](doc/changelog.md)
 
 ***
