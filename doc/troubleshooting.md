@@ -61,6 +61,11 @@ Questions:
    
    By default, it is not. Set it to ```true``` and use ```/treeassist reload```.
 
+
+4) **Have you waited 20 seconds?**
+
+   By default, the `Automatic Destruction.Cleanup Delay Seconds` is set to 20. This is in place to account for big trees taking a long time to completely auto destruct before we replace saplings. You can lower this setting at your own risk.
+
 Full graph for you to check the config: [open graph (png)](images/graph_replanting.png)
 
 ***
