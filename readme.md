@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.4 - refine grow prevention logic
+- v7.2.5 - Core update: do not inform people when they use an experimental version
 - [read more](doc/changelog.md)
 
 ***
