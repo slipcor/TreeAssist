@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.5 - Core update: do not inform people when they use an experimental version
+- v7.2.6 - Stop duplicating Saplings in certain circumstances
 - [read more](doc/changelog.md)
 
 ***

@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.6 - Stop duplicating Saplings in certain circumstances
 - v7.2.5 - Core update: do not inform people when they use an experimental version
 - v7.2.4 - refine grow prevention logic
 - v7.2.3 - prevent players from dropping a sapling if that sapling would and should not grow

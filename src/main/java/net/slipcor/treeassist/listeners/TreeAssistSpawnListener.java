@@ -101,6 +101,7 @@ public class TreeAssistSpawnListener implements Listener {
 					}
 
 					new TreeAssistSaplingSelfPlant(config, drop, newEvent.getType());
+					break;
                 }
 			}
 		}
