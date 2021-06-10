@@ -54,7 +54,7 @@ public class MainConfig extends CoreConfig {
         BSTATS_ACTIVE("bStats.Active", true, "Should we send stats at all? Please keep this in so we have an overview of spread of versions <3"),
         BSTATS_FULL("bStats.Full", true, "This setting sends a bit more detailed information about which features are used at all. Thank you for supporting me!"),
 
-        UPDATE_MODE("Update.Mode", "both", "what to do? Valid values: off, announce, download, both"),
+        UPDATE_MODE("Update.Mode", "both", "what to do? Valid values: disable, announce, download, both"),
         UPDATE_TYPE("Update.Type", "beta", "which type of branch to get updates? Valid values: dev, alpha, beta, release"),
 
         VERSION("Version", 7.1009, "The config version for update checks"),

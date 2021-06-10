@@ -69,7 +69,7 @@ This is the default main configuration file.
       Full: true
     # === [ Updater Settings ] ===
     Update:
-      # what to do? Valid values: off, announce, download, both
+      # what to do? Valid values: disable, announce, download, both
       Mode: both
       # which type of branch to get updates? Valid values: dev, alpha, beta, release
       Type: beta
