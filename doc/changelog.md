@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.8 - support using hands to break trees
 - v7.2.7 - Improve updater comment to include proper disable example
 - v7.2.6 - Stop duplicating Saplings in certain circumstances
 - v7.2.5 - Core update: do not inform people when they use an experimental version

@@ -328,6 +328,9 @@ public class ToolUtils {
     }
 
     public static boolean receivesDamage(TreeConfig config, ItemStack tool) {
+        if (tool == null) {
+            return false;
+        }
         if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_APPLY_FULL_TOOL_DAMAGE)) {
             return false;
         }

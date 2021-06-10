@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.7 - Improve updater comment to include proper disable example
+- v7.2.8 - support using hands to break trees
 - [read more](doc/changelog.md)
 
 ***
