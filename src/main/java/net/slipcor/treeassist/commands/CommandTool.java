@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,12 +50,12 @@ public class CommandTool extends CoreCommand {
 
     @Override
     public List<String> getMain() {
-        return Arrays.asList("commandtool", "tool");
+        return Collections.singletonList("commandtool");
     }
 
     @Override
     public List<String> getShort() {
-        return Collections.singletonList("!t");
+        return Collections.singletonList("!pt");
     }
 
     @Override

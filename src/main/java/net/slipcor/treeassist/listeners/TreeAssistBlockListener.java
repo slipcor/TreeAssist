@@ -17,6 +17,7 @@ import net.slipcor.treeassist.yml.MainConfig;
 import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -36,6 +37,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +50,7 @@ public class TreeAssistBlockListener implements Listener {
     private final TreeAssistAntiGrow antiGrow;
     private final Map<String, Long> noreplant = new HashMap<>();
     private final String protectToolDisplayName = "" + ChatColor.GREEN + ChatColor.ITALIC + "TreeAssist Protect";
+    private final String growToolDisplayName = "" + ChatColor.GREEN + ChatColor.ITALIC + "TreeAssist Grow";
 
     public TreeAssistBlockListener(TreeAssist instance) {
         plugin = instance;
@@ -91,6 +94,20 @@ public class TreeAssistBlockListener implements Listener {
                         TreeAssist.instance.sendPrefixed(event.getPlayer(),
                                 Language.MSG.SUCCESSFUL_PROTECT_ON.parse());
                     }
+                }
+            } else if (this.isGrowTool(event.getPlayer().getInventory().getItemInMainHand())) {
+                if (event.getBlockFace().equals(BlockFace.UP)) {
+                    ItemStack tool = event.getPlayer().getInventory().getItemInMainHand();
+                    TreeType type = TreeType.valueOf(tool.getItemMeta().getLore().get(0));
+
+                    Block destination = event.getClickedBlock().getRelative(BlockFace.UP);
+                    for (int i=0; i< 20; i++) {
+                        if (destination.getWorld().generateTree(destination.getLocation(), type)) {
+                            return;
+                        }
+                    }
+
+                    TreeAssist.instance.sendPrefixed(event.getPlayer(), Language.MSG.ERROR_GROW.parse());
                 }
             }
         }
@@ -448,12 +465,27 @@ public class TreeAssistBlockListener implements Listener {
         }
     }
 
+    public ItemStack getGrowTool(TreeType treeType) {
+        ItemStack item = new ItemStack(Material.GOLDEN_HOE);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(growToolDisplayName);
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(treeType.name());
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        return item;
+    }
+
     public ItemStack getProtectionTool() {
         ItemStack item = new ItemStack(Material.GOLDEN_HOE);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(protectToolDisplayName);
         item.setItemMeta(meta);
         return item;
+    }
+
+    public boolean isGrowTool(ItemStack item) {
+        return item != null && item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().getDisplayName().equals(growToolDisplayName);
     }
 
     public boolean isProtectTool(ItemStack item) {

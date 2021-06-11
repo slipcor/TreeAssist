@@ -29,8 +29,10 @@ public final class Language extends CoreLanguage {
         ERROR_DATA_YML("error.data_yml", "&cYou have a messed up data.yml - fix or remove it!"),
         ERROR_EMPTY_HAND("error.emptyhand", "&cYou don't have an item in your hand"),
         ERROR_FINDFOREST("error.findforest", "&cForest not found in 500 block radius: &r%1%"),
+        ERROR_GROW("error.grow", "&cCould not grow a tree here. Is there enough space?"),
         ERROR_INVALID_ARGUMENT_COUNT("error.invalid_argumentcount", "&cInvalid number of arguments&r (%1% instead of %2%)!"),
         ERROR_INVALID_ARGUMENT_LIST("error.invalid_argumentlist", "&cInvalid arguments! Valid:&r %1%"),
+        ERROR_INVALID_TREETYPE("error.invalid_treetype", "&cInvalid TreeType! Valid:&r %1%"),
         ERROR_NOT_TOOL("error.nottool", "&cYou don't have the required tool to do that!"),
         ERROR_OUT_OF_RANGE("error.outofrange", "&cThe max range for this command is: %1%"),
         ERROR_PERMISSION_ADDTOOL("error.permission.addtool", "&cYou don't have 'treeassist.addtool'"),
@@ -46,6 +48,7 @@ public final class Language extends CoreLanguage {
         ERROR_PERMISSION_TOGGLE_OTHER("error.permission.toggle_other", "&cYou don't have 'treeassist.toggle.other'"),
         ERROR_PERMISSION_TOGGLE_GLOBAL("error.permission.toggle_global", "&cYou don't have 'treeassist.toggle.global'"),
         ERROR_PERMISSION_TOGGLE_TOOL("error.permission.toggle_tool", "&cYou don't have 'treeassist.tool'"),
+        ERROR_PERMISSION_TOGGLE_GROWTOOL("error.permission.toggle_growtool", "&cYou don't have 'treeassist.growtool'"),
         ERROR_REMOVETOOL_NOTDONE("error.removetool.not_done", "&cTool is no required tool!"),
 
         ERROR_NOTFOUND_WORLD("error.notfound.world", "&cWorld not found: %1%'"),
@@ -98,6 +101,9 @@ public final class Language extends CoreLanguage {
         SUCCESSFUL_TOGGLE_YOU_ON("successful.toggle.you_global_on", "&aTreeAssist functions are now turned on for you!"),
         SUCCESSFUL_TOGGLE_YOU_WORLD_OFF("successful.toggle.you_world_off", "&aTreeAssist functions are turned off for you in world %1%!"),
         SUCCESSFUL_TOGGLE_YOU_WORLD_ON("successful.toggle.you_world_on", "&aTreeAssist functions are now turned on for you in world %1%!"),
+
+        SUCCESSFUL_GROWTOOL_OFF("successful.grow_tool_off", "&aGrow Tool removed!"),
+        SUCCESSFUL_GROWTOOL_ON("successful.grow_tool_on", "&aYou have been given the Grow Tool! It will try to grow a tree of type &e%1%&a!"),
 
         SUCCESSFUL_TOOL_OFF("successful.tool_off", "&aProtection Tool removed!"),
         SUCCESSFUL_TOOL_ON("successful.tool_on", "&aYou have been given the Protection Tool!");

@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.11 - add grow tool command, works like the protection tool but it grows a tree.
 - v7.2.10 - repair forcegrow
 - v7.2.9 - support using forcegrow from console
 - v7.2.8 - support using hands to break trees

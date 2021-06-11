@@ -40,9 +40,10 @@ Command | Shorthand | Definition
 ------------- | ------------- | -------------
 [/treeassist debug](commands/debug.md) | /ta !d | start/stop debug
 [/treeassist findforest](commands/findforest.md) [treetype] | /ta !ff  | find biome based on tree type
+[/treeassist growtool](commands/growtool.md) | /ta !gt [treetype] | toggle the grow tool for [treetype]
 [/treeassist noreplant](commands/noreplant.md) | /ta !nr | stop replanting saplings for some time
 [/treeassist purge](commands/purge.md) global | /ta !p global | purge block placement entries globally
 [/treeassist purge](commands/purge.md) [world] | /ta !p [world] | purge block placement entries of [world]
 [/treeassist purge](commands/purge.md) [days] | /ta !p [days] | purge block placement entries older than [days]
 [/treeassist reload](commands/reload.md) | /ta !r | reload the plugin
-[/treeassist tool](commands/tool.md) | /ta !t | toggle the sapling protection tool
+[/treeassist tool](commands/tool.md) | /ta !pt | toggle the sapling protection tool

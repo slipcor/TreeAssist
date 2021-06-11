@@ -205,6 +205,7 @@ public class TreeAssist extends CorePlugin {
         new CommandRemoveTool(this).load(commandList, commandMap);
         new CommandToggle(this).load(commandList, commandMap);
         new CommandTool(this).load(commandList, commandMap);
+        new CommandGrowTool(this).load(commandList, commandMap);
     }
 
     @EventHandler

@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.10 - repair forcegrow
+- v7.2.11 - add grow tool command, works like the protection tool but it grows a tree.
 - [read more](doc/changelog.md)
 
 ***
@@ -98,6 +98,15 @@ Joining the Discord Server gets you early access to latest builds, and maybe it 
 
 ***
 
+## Todos
+
+* Cooldown for forcebreak and forcegrow
+* Refactor configuration nodes to not include spaces to allow for config command logic
+* Add more custom WorldGuard flags to deny functionality by region
+* Improve debug functionality [Core?] by implementing String filter logic
+
+***
+
 ## Credits
 
 - FriendlyBaron formerly known as itsatacoshop247 for the original source, the stable foundation that to this day runs strong in TreeAssist
@@ -106,5 +115,3 @@ Joining the Discord Server gets you early access to latest builds, and maybe it 
 - btilm305 for keeping the repo together in time of need
 - uroskn for some critical fixes regarding durability
 
-
-***

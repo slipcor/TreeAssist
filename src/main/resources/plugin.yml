@@ -101,3 +101,6 @@ permissions:
   treeassist.tool:
     description: allows to gain the protection tool
     default: op
+  treeassist.growtool:
+    description: allows to gain the grow tool
+    default: op
