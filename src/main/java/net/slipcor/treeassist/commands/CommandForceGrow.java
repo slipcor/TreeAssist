@@ -6,9 +6,7 @@ import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import net.slipcor.treeassist.yml.Language;
 import net.slipcor.treeassist.yml.MainConfig;
-import org.bukkit.Material;
-import org.bukkit.TreeSpecies;
-import org.bukkit.TreeType;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -31,63 +29,80 @@ public class CommandForceGrow extends CoreCommand {
             TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_PERMISSION_FORCEGROW.parse());
             return;
         }
-        if (sender instanceof Player) {
+
+        int loc_x = 0;
+        int loc_y = 0;
+        int loc_z = 0;
+        int radius = TreeAssist.instance.config().getInt(MainConfig.CFG.COMMANDS_FORCE_GROW_DEFAULT_RADIUS, 10);
+        String worldName;
+
+        if (args.length > 4) {
+            worldName = args[1];
+            loc_x = Integer.parseInt(args[2]);
+            loc_y = Integer.parseInt(args[3]);
+            loc_z = Integer.parseInt(args[4]);
+            if (args.length > 5) {
+                radius = Integer.parseInt(args[5]);
+            }
+        } else if (sender instanceof Player) {
             Player player = (Player) sender;
-
-            int radius = TreeAssist.instance.config().getInt(MainConfig.CFG.COMMANDS_FORCE_GROW_DEFAULT_RADIUS, 10);
-
+            loc_x = player.getLocation().getBlockX();
+            loc_y = player.getLocation().getBlockY();
+            loc_z = player.getLocation().getBlockZ();
+            worldName = player.getWorld().getName();
             if (args.length > 1) {
-                try {
-                    radius = Math.max(1, Integer.parseInt(args[1]));
-                    int configValue = TreeAssist.instance.config().getInt(MainConfig.CFG.COMMANDS_FORCE_GROW_MAX_RADIUS, 30);
-                    if (radius > configValue) {
-                        TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_OUT_OF_RANGE.parse(String.valueOf(configValue)));
-                        return;
-                    }
-                } catch (Exception e) {
-                }
+                radius = Integer.parseInt(args[1]);
             }
-
-            for (int x = -radius; x <= radius; x++) {
-                for (int y = -radius; y <= radius; y++) {
-                    nextBlock:
-                    for (int z = -radius; z <= radius; z++) {
-                        if (MaterialUtils.isSapling(player.getLocation().add(x, y, z).getBlock().getType())) {
-                            Block block = player.getLocation().add(x, y, z).getBlock();
-                            BlockState state = block.getState();
-                            Sapling sap = (Sapling) state.getData();
-
-                            TreeType type = args.length > 2 ? TreeType.BIG_TREE : TreeType.TREE;
-
-                            if (sap.getSpecies() != TreeSpecies.GENERIC) {
-                                type = TreeType.valueOf(sap.getSpecies().name());
-                            }
-                            if (type == TreeType.JUNGLE) {
-                                type = TreeType.SMALL_JUNGLE;
-                            }
-
-                            for (int offset = 0; offset < 7; offset++) {
-                                if (block.getRelative(BlockFace.UP, offset).getType() == Material.DIRT) {
-                                    continue nextBlock;
-                                }
-                            }
-
-                            Material oldSapling = block.getType();
-                            block.setType(Material.AIR, true);
-                            for (int i = 0; i < 20; i++) {
-                                if (block.getWorld().generateTree(block.getLocation(), type)) {
-                                    continue nextBlock;
-                                }
-                            }
-                            block.setType(oldSapling);
-                        }
-                    }
-                }
-            }
-
+        } else {
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_ONLY_PLAYERS.parse());
             return;
         }
-        TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_ONLY_PLAYERS.parse());
+
+        World world = Bukkit.getWorld(worldName);
+        Location center = new Location(world, loc_x, loc_y, loc_z);
+        radius = Math.max(1, radius);
+        int configValue = TreeAssist.instance.config().getInt(MainConfig.CFG.COMMANDS_FORCE_GROW_MAX_RADIUS, 30);
+        if (radius > configValue) {
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_OUT_OF_RANGE.parse(String.valueOf(configValue)));
+            return;
+        }
+
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                nextBlock:
+                for (int z = -radius; z <= radius; z++) {
+                    if (MaterialUtils.isSapling(center.add(x, y, z).getBlock().getType())) {
+                        Block block = center.add(x, y, z).getBlock();
+                        BlockState state = block.getState();
+                        Sapling sap = (Sapling) state.getData();
+
+                        TreeType type = args.length > 2 ? TreeType.BIG_TREE : TreeType.TREE;
+
+                        if (sap.getSpecies() != TreeSpecies.GENERIC) {
+                            type = TreeType.valueOf(sap.getSpecies().name());
+                        }
+                        if (type == TreeType.JUNGLE) {
+                            type = TreeType.SMALL_JUNGLE;
+                        }
+
+                        for (int offset = 0; offset < 7; offset++) {
+                            if (block.getRelative(BlockFace.UP, offset).getType() == Material.DIRT) {
+                                continue nextBlock;
+                            }
+                        }
+
+                        Material oldSapling = block.getType();
+                        block.setType(Material.AIR, true);
+                        for (int i = 0; i < 20; i++) {
+                            if (block.getWorld().generateTree(block.getLocation(), type)) {
+                                continue nextBlock;
+                            }
+                        }
+                        block.setType(oldSapling);
+                    }
+                }
+            }
+        }
     }
 
     @Override

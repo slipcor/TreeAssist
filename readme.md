@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.8 - support using hands to break trees
+- v7.2.9 - support using forcegrow from console
 - [read more](doc/changelog.md)
 
 ***

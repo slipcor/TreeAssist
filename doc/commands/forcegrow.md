@@ -10,6 +10,7 @@ Command |  Definition
 ------------- | -------------
 /ta forgegrow | Grow trees around you
 /ta forgegrow 20 | Grow trees in a 20 block radius around you
+/ta forcegrow world 10 64 10 30 | Grow trees in a 30 block radius around (10/64/10) in world 'world'
 
 ## Hazards
 
