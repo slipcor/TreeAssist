@@ -1,0 +1,36 @@
+Blocks:
+  Materials:
+  - 'minecraft:azalea_leaves'
+  - 'minecraft:flowering_azalea_leaves'
+  Top:
+    Radius: 4
+  Cap:
+    Radius: 4
+  Custom Drops:
+    Items:
+      'minecraft:azalea_leaves': 0.01
+  # How far out do leaves go
+  Middle:
+    # Radius around the trunk to check for leaves
+    Radius: 4
+Parent: default
+Permission: treeassist.destroy.azalea
+Replanting:
+  Material: 'minecraft:azalea'
+Trunk:
+  Materials:
+  - 'minecraft:oak_log'
+  Diagonal: true
+  Branch: true
+# Valid blocks that are below and around the saplings
+Ground Blocks:
+- 'minecraft:podzol'
+- 'minecraft:mycelium'
+- 'minecraft:grass_block'
+- 'minecraft:dirt'
+- 'minecraft:coarse_dirt'
+- 'minecraft:sand'
+- 'minecraft:moss_block'
+- 'minecraft:rooted_dirt'
+- 'minecraft:farmland'
+Version: 7.2011

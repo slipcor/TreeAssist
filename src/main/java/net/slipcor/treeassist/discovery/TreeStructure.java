@@ -635,7 +635,7 @@ public class TreeStructure {
             }
         }
 
-        if (allExtras.contains(checkBlock.getType())) {
+        if (allExtras.contains(checkBlock.getType()) || MaterialUtils.isAir(checkBlock.getType())) {
             debug.i("We hit the roof!");
 
             // we hit the roof and no problems

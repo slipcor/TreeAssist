@@ -40,6 +40,8 @@ permissions:
     description: allows to use tree-assist for brown shrooms
   treeassist.destroy.redshroom:
     description: allows to use tree-assist for red shrooms
+  treeassist.destroy.azalea:
+    description: allows to use tree-assist for azalea trees
   treeassist.commands:
     description: allows to use all tree-assist commands
     children:

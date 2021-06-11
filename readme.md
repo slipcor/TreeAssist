@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.11 - add grow tool command, works like the protection tool but it grows a tree.
+- v7.2.12 - support azalea trees, this build will still work on MC 16 and lower, just show some warnings about unknown blocks
 - [read more](doc/changelog.md)
 
 ***
