@@ -3,6 +3,8 @@ package net.slipcor.treeassist.commands;
 import net.slipcor.core.CoreCommand;
 import net.slipcor.core.CorePlugin;
 import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.discovery.TreeStructure;
+import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import net.slipcor.treeassist.yml.Language;
 import net.slipcor.treeassist.yml.MainConfig;
@@ -59,20 +61,21 @@ public class CommandForceGrow extends CoreCommand {
         }
 
         World world = Bukkit.getWorld(worldName);
-        Location center = new Location(world, loc_x, loc_y, loc_z);
+        Block center = world.getBlockAt(loc_x, loc_y, loc_z);
         radius = Math.max(1, radius);
         int configValue = TreeAssist.instance.config().getInt(MainConfig.CFG.COMMANDS_FORCE_GROW_MAX_RADIUS, 30);
         if (radius > configValue) {
             TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_OUT_OF_RANGE.parse(String.valueOf(configValue)));
             return;
         }
+        TreeStructure.debug.i("force grow attempt around: " + center);
 
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
                 nextBlock:
                 for (int z = -radius; z <= radius; z++) {
-                    if (MaterialUtils.isSapling(center.add(x, y, z).getBlock().getType())) {
-                        Block block = center.add(x, y, z).getBlock();
+                    Block block = center.getRelative(x, y, z);
+                    if (MaterialUtils.isSapling(block.getType())) {
                         BlockState state = block.getState();
                         Sapling sap = (Sapling) state.getData();
 
@@ -92,13 +95,16 @@ public class CommandForceGrow extends CoreCommand {
                         }
 
                         Material oldSapling = block.getType();
+                        TreeStructure.debug.i("force growing " + BlockUtils.printBlock(block));
                         block.setType(Material.AIR, true);
                         for (int i = 0; i < 20; i++) {
                             if (block.getWorld().generateTree(block.getLocation(), type)) {
+                                TreeStructure.debug.i("force grow successful ");
                                 continue nextBlock;
                             }
                         }
                         block.setType(oldSapling);
+                        TreeStructure.debug.i("force grow failed");
                     }
                 }
             }

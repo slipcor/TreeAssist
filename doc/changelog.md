@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.10 - repair forcegrow
 - v7.2.9 - support using forcegrow from console
 - v7.2.8 - support using hands to break trees
 - v7.2.7 - Improve updater comment to include proper disable example
