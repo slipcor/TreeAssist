@@ -80,7 +80,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Phoning home
 
-By default, the server contacts www.bstats.org to notify that you are using my plugin.
+By default, the server contacts [bstats.org](https://bstats.org) to notify that you are using my plugin.
 
 Please refer to their website to learn about what they collect and how they handle the data.
 
