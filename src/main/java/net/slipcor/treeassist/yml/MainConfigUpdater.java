@@ -30,17 +30,29 @@ public class MainConfigUpdater {
         }
     }
 
-    enum WholeRemoving {
-        JUNGLE_BUSH(7.0142f, "default", "overworld", "bush_jungle.yml");
+    enum TreeAddition {
+        AZALEA(7.2012f, "overworld", "azalea.yml");
 
         private final float version;
-        private final String config;
         private final String path;
         private final String file;
 
-        WholeRemoving(float v, String c, String p, String f) {
+        TreeAddition(float v, String p, String f) {
             version = v;
-            config = c;
+            path = p;
+            file = f;
+        }
+    }
+
+    enum TreeRemoval {
+        JUNGLE_BUSH(7.0142f, "overworld", "bush_jungle.yml");
+
+        private final float version;
+        private final String path;
+        private final String file;
+
+        TreeRemoval(float v, String p, String f) {
+            version = v;
             path = p;
             file = f;
         }
@@ -103,7 +115,7 @@ public class MainConfigUpdater {
                 changed = true;
             }
         }
-        for (WholeRemoving m : WholeRemoving.values()) {
+        for (TreeRemoval m : TreeRemoval.values()) {
             if (m.version > version) {
                 newVersion = Math.max(newVersion, m.version);
 
@@ -115,6 +127,26 @@ public class MainConfigUpdater {
 
                     configFile.delete();
                     TreeAssist.instance.getLogger().info("Config deleted: " + m.toString());
+
+                }
+
+                changed = true;
+            }
+        }
+        for (TreeAddition m : TreeAddition.values()) {
+            if (m.version > version) {
+                newVersion = Math.max(newVersion, m.version);
+
+                File trees = new File(TreeAssist.instance.getDataFolder(), "trees");
+                File subTree = new File(trees, m.path);
+                File configFile = new File(subTree, m.file);
+
+                if (!configFile.exists()) {
+
+                    TreeAssist.instance.saveResource("trees/" + m.path + "/" + m.file, false);
+
+                    configFile.delete();
+                    TreeAssist.instance.getLogger().info("Config created: " + m.toString());
 
                 }
 

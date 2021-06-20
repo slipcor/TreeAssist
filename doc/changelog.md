@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.13 - add azalea tree definition automatically. I think we can deal with some warnings until people update, right? This will not break 1.16, it will merely support 1.17 :)
 - v7.2.12 - support azalea trees, this build will still work on MC 16 and lower, just show some warnings about unknown blocks
 - v7.2.11 - add grow tool command, works like the protection tool but it grows a tree.
 - v7.2.10 - repair forcegrow

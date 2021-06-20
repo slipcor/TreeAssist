@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.12 - support azalea trees, this build will still work on MC 16 and lower, just show some warnings about unknown blocks
+- v7.2.13 - add azalea tree definition automatically. I think we can deal with some warnings until people update, right? This will not break 1.16, it will merely support 1.17 :)
 - [read more](doc/changelog.md)
 
 ***
