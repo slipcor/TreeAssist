@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.16 - [core update] do not log prefixed messages unless sent to console
 - v7.2.15 - add a config setting to restrict tree breaking to only valid tools, with info message. Adds #73
 - v7.2.14 - add a config setting to make config loading less spammy, adds #72
 - v7.2.13 - add azalea tree definition automatically. I think we can deal with some warnings until people update, right? This will not break 1.16, it will merely support 1.17 :)

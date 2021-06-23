@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.15 - add a config setting to restrict tree breaking to only valid tools, with info message. Adds #73 
+- v7.2.16 - [core update] do not log prefixed messages unless sent to console 
 - [read more](doc/changelog.md)
 
 ***
