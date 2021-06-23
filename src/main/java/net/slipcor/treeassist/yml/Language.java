@@ -65,6 +65,7 @@ public final class Language extends CoreLanguage {
         INFO_CUSTOM_REMOVED("info.custom.removed", "&aCustom block group definition removed!"),
 
         INFO_NEVER_BREAK_SAPLINGS("info.never_break_saplings", "&aYou cannot break saplings on this server!"),
+        INFO_NEVER_BREAK_LOG_WITHOUT_TOOL("info.never_break_log_without_tool", "&aYou cannot break trees on this server without a tool!"),
         INFO_SAPLING_PROTECTED("info.sapling_protected", "&aThis sapling is protected!"),
         INFO_PLUGIN_PREFIX("info.plugin_prefix", "&8[&2TreeAssist&8]&r "),
 

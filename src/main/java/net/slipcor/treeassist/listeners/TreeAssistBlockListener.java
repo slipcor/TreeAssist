@@ -276,6 +276,15 @@ public class TreeAssistBlockListener implements Listener {
                 if (checkTreeStructure.isValid()) {
                     debug.i("Tree matches " + mat);
 
+                    if (TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_PREVENT_WITHOUT_TOOL)) {
+                        if (!ToolUtils.isMatchingTool(player.getInventory().getItemInMainHand(), config)) {
+                            debug.i("Player has not the right tool and we want to prevent now!");
+                            TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_NEVER_BREAK_LOG_WITHOUT_TOOL.parse());
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+
                     if (plugin.config().getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&
                             !player.hasPermission(config.getString(TreeConfig.CFG.PERMISSION))) {
                         debug.i("Player does not have permission " + config.getString(TreeConfig.CFG.PERMISSION));

@@ -1,6 +1,8 @@
 General:
   # Language file to load. Does not need YML extension!
   Language: lang_en
+  # Prevent breaking of logs without the right tool
+  Prevent Log Breaking Without Tool: false
   # For the toggling command, should players start with TreeAssist active?
   Toggle Default: true
   # Should we check if players have permissions? If false, all features are available to everyone.
@@ -72,4 +74,4 @@ Update:
   # which type of branch to get updates? Valid values: dev, alpha, beta, release
   Type: beta
 # The config version for update checks
-Version: 7.2014
+Version: 7.2015
