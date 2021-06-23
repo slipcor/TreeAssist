@@ -18,6 +18,7 @@ public class MainConfig extends CoreConfig {
         GENERAL_LANGUAGE("General.Language", "lang_en", "Language file to load. Does not need YML extension!"),
         GENERAL_TOGGLE_DEFAULT("General.Toggle Default", true, "For the toggling command, should players start with TreeAssist active?"),
         GENERAL_USE_PERMISSIONS("General.Use Permissions", false, "Should we check if players have permissions? If false, all features are available to everyone."),
+        GENERAL_VERBOSE_CONFIG_LOADING("General.Verbose Config Loading", true, "Should we announce information about every tree config we load?"),
 
         COMMANDS("Commands", "=== [ Command Settings ] ==="),
         COMMANDS_FORCE_BREAK_DEFAULT_RADIUS("Commands.Force Break.Default Radius", 10, ""),

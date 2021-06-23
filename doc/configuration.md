@@ -9,6 +9,8 @@ This is the default main configuration file.
       Toggle Default: true
       # Should we check if players have permissions? If false, all features are available to everyone.
       Use Permissions: false
+      # Should we announce information about every tree config we load?
+      Verbose Config Loading: true
     # === [ Command Settings ] ===
     Commands:
       Force Break:
@@ -74,4 +76,4 @@ This is the default main configuration file.
       # which type of branch to get updates? Valid values: dev, alpha, beta, release
       Type: beta
     # The config version for update checks
-    Version: 7.1012
+    Version: 7.2014

@@ -180,7 +180,13 @@ public class TreeConfig extends CoreConfig {
      */
     public TreeConfig (final TreeAssist plugin, final File configFile) {
         super(plugin, "TreeAssist Tree Config", configFile);
-        TreeAssist.instance.getLogger().info("Loading tree config file: " + configFile.getAbsolutePath().replace(TreeAssist.instance.getDataFolder().getAbsolutePath(), ""));
+
+        if (plugin.config().getBoolean(MainConfig.CFG.GENERAL_VERBOSE_CONFIG_LOADING)) {
+            plugin.getLogger().info(
+                    "Loading tree config file: " +
+                            configFile.getAbsolutePath().replace(
+                                    TreeAssist.instance.getDataFolder().getAbsolutePath(), ""));
+        }
 
         materials = new HashMap<>();
         maps = new HashMap<>();

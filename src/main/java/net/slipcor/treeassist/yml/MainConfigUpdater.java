@@ -66,7 +66,8 @@ public class MainConfigUpdater {
         UPDATE_MODE(7.1010f, MainConfig.CFG.UPDATE_MODE, "both"),
         UPDATE_TYPE(7.1010f, MainConfig.CFG.UPDATE_TYPE, "beta"),
         FULL_MCMMO_TREE(7.1011f, MainConfig.CFG.PLUGINS_USE_TREEMCMMO, true),
-        FULL_JOBS_TREE(7.1011f, MainConfig.CFG.PLUGINS_USE_TREEJOBS, true)
+        FULL_JOBS_TREE(7.1011f, MainConfig.CFG.PLUGINS_USE_TREEJOBS, true),
+        VERBOSE_CONFIG_LOADING(7.2013f, MainConfig.CFG.GENERAL_VERBOSE_CONFIG_LOADING, true)
         ;
 
         private final float version;

@@ -224,6 +224,7 @@ public class TreeConfigUpdater {
         double version = config.getYamlConfiguration().getDouble(TreeConfig.CFG.VERSION.getNode(), 7.0);
         double newVersion = version;
         boolean changed = false;
+        boolean verbose = TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_VERBOSE_CONFIG_LOADING);
 
         for (Adding m : Adding.values()) {
             if (m.version > version && m.config.equals(configPath)) {
@@ -232,7 +233,9 @@ public class TreeConfigUpdater {
                 if (!newList.contains(m.addition)) {
                     newList.add(m.addition);
                     config.getYamlConfiguration().set(m.node.getNode(), newList);
-                    TreeAssist.instance.getLogger().info("Config String list value added: " + m.toString());
+                    if (verbose) {
+                        TreeAssist.instance.getLogger().info("Config String list value added: " + m.toString());
+                    }
                 }
                 changed = true;
             }
@@ -248,7 +251,9 @@ public class TreeConfigUpdater {
                         config.getYamlConfiguration().set(m.source, null);
                     }
 
-                    TreeAssist.instance.getLogger().info("Config value moved: " + m.toString());
+                    if (verbose) {
+                        TreeAssist.instance.getLogger().info("Config value moved: " + m.toString());
+                    }
                 }
                 changed = true;
             }
@@ -265,7 +270,7 @@ public class TreeConfigUpdater {
                         config.getYamlConfiguration().set(m.destination.getNode() + "." + node, config.getYamlConfiguration().get(m.source + "." + node));
                     }
 
-                    if (!set.isEmpty()) {
+                    if (!set.isEmpty() && verbose) {
                         TreeAssist.instance.getLogger().info("Config value moved: " + m.toString());
                     }
 
@@ -280,7 +285,10 @@ public class TreeConfigUpdater {
                 newVersion = Math.max(newVersion, m.version);
                 if (config.getYamlConfiguration().get(m.node, null) == null) {
                     config.getYamlConfiguration().set(m.node, m.value);
-                    TreeAssist.instance.getLogger().info("Config value added: " + m.toString());
+
+                    if (verbose) {
+                        TreeAssist.instance.getLogger().info("Config value added: " + m.toString());
+                    }
                 }
                 changed = true;
             }
@@ -290,7 +298,10 @@ public class TreeConfigUpdater {
                 if (m.removal == null) {
                     newVersion = Math.max(newVersion, m.version);
                     config.getYamlConfiguration().set(m.node, null);
-                    TreeAssist.instance.getLogger().info("Config String value removed: " + m.toString());
+
+                    if (verbose) {
+                        TreeAssist.instance.getLogger().info("Config String value removed: " + m.toString());
+                    }
                     changed = true;
                 } else {
                     newVersion = Math.max(newVersion, m.version);
@@ -306,7 +317,10 @@ public class TreeConfigUpdater {
                 newVersion = Math.max(newVersion, m.version);
                 if (m.oldValue.equals(config.getYamlConfiguration().get(m.node.getNode(), m.oldValue))) {
                     config.getYamlConfiguration().set(m.node.getNode(), m.newValue);
-                    TreeAssist.instance.getLogger().info("Config value updated: " + m.toString());
+
+                    if (verbose) {
+                        TreeAssist.instance.getLogger().info("Config value updated: " + m.toString());
+                    }
                     changed = true;
                 } else {
                     TreeAssist.instance.getLogger().warning("Config value not updated: " + m.toString());

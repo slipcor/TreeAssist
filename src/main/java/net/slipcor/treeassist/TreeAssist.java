@@ -308,8 +308,8 @@ public class TreeAssist extends CorePlugin {
             e.printStackTrace();
         }
         this.config = new MainConfig(this, configFile);
-        reloadLists();
         this.config.load();
+        reloadLists();
 
         this.listener = new TreeAssistBlockListener(this);
 
