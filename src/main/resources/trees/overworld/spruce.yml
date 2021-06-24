@@ -15,4 +15,5 @@ Replanting:
 Trunk:
   Materials:
   - 'minecraft:spruce_log'
-Version: 7.1013
+  - 'minecraft:stripped_spruce_log'
+Version: 7.2017

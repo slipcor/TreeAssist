@@ -19,5 +19,6 @@ Replanting:
 Trunk:
   Materials:
   - 'minecraft:crimson_stem'
+  - 'minecraft:stripped_crimson_stem'
   - 'minecraft:shroomlight'
-Version: 7.1013
+Version: 7.2017

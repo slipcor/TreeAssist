@@ -17,6 +17,7 @@ Trunk:
   Thickness: 2
   Materials:
   - 'minecraft:dark_oak_log'
+  - 'minecraft:stripped_dark_oak_log'
   Uneven Bottom: true
   Branch: true
-Version: 7.1013
+Version: 7.2017

@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.17 - allow OPs and creative players to break logs - fixes #73 
+- v7.2.18 - properly update tree configs with stripped logs and some more things 
 - [read more](doc/changelog.md)
 
 ***

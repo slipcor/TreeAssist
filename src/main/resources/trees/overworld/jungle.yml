@@ -15,4 +15,5 @@ Replanting:
 Trunk:
   Materials:
   - 'minecraft:jungle_log'
-Version: 7.1013
+  - 'minecraft:stripped_jungle_log'
+Version: 7.2017

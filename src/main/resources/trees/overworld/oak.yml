@@ -13,4 +13,5 @@ Replanting:
 Trunk:
   Materials:
   - 'minecraft:oak_log'
-Version: 7.1013
+  - 'minecraft:stripped_oak_log'
+Version: 7.2017

@@ -15,6 +15,7 @@ Replanting:
 Trunk:
   Materials:
   - 'minecraft:acacia_log'
+  - 'minecraft:stripped_acacia_log'
   Diagonal: true
   Branch: true
-Version: 7.1013
+Version: 7.2017

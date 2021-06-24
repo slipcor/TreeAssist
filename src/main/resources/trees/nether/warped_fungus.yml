@@ -19,5 +19,6 @@ Replanting:
 Trunk:
   Materials:
   - 'minecraft:warped_stem'
+  - 'minecraft:stripped_warped_stem'
   - 'minecraft:shroomlight'
-Version: 7.1013
+Version: 7.2017

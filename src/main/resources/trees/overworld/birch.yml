@@ -14,4 +14,5 @@ Replanting:
 Trunk:
   Materials:
   - 'minecraft:birch_log'
-Version: 7.1013
+  - 'minecraft:stripped_birch_log'
+Version: 7.2017
