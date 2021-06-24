@@ -15,10 +15,7 @@ import net.slipcor.treeassist.utils.ToolUtils;
 import net.slipcor.treeassist.yml.Language;
 import net.slipcor.treeassist.yml.MainConfig;
 import net.slipcor.treeassist.yml.TreeConfig;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.TreeType;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.FallingBlock;
@@ -279,9 +276,13 @@ public class TreeAssistBlockListener implements Listener {
                     if (TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_PREVENT_WITHOUT_TOOL)) {
                         if (!ToolUtils.isMatchingTool(player.getInventory().getItemInMainHand(), config)) {
                             debug.i("Player has not the right tool and we want to prevent now!");
-                            TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_NEVER_BREAK_LOG_WITHOUT_TOOL.parse());
-                            event.setCancelled(true);
-                            return;
+                            if ((player.isOp() || (player.getGameMode() == GameMode.CREATIVE))) {
+                                debug.i("Player is OP or creative, let them be!");
+                            } else {
+                                TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_NEVER_BREAK_LOG_WITHOUT_TOOL.parse());
+                                event.setCancelled(true);
+                                return;
+                            }
                         }
                     }
 

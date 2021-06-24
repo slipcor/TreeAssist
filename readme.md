@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.16 - [core update] do not log prefixed messages unless sent to console 
+- v7.2.17 - allow OPs and creative players to break logs - fixes #73 
 - [read more](doc/changelog.md)
 
 ***
