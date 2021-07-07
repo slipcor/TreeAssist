@@ -54,6 +54,12 @@ public class TreeAssistBlockListener implements Listener {
         antiGrow = new TreeAssistAntiGrow();
     }
 
+    private final static List<BlockBreakEvent> ignoring = new ArrayList<>();
+
+    public static void ignore(BlockBreakEvent event) {
+        ignoring.add(event);
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onLeavesDecay(LeavesDecayEvent event) {
         debug.i("leaf is decaying: " + BlockUtils.printBlock(event.getBlock()));
@@ -198,6 +204,12 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+        if (ignoring.contains(event)) {
+            ignoring.remove(event);
+            debug.i("skip this one!");
+            return;
+        }
+
         if (!plugin.Enabled) {
             return;
         }

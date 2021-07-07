@@ -35,6 +35,7 @@ public class MainConfig extends CoreConfig {
         DESTRUCTION_ONLY_ABOVE("Destruction.Only Above", false, "Only break blocks that are above the block the player broke"),
 
         PLUGINS("Plugins", "=== [ Plugin Integration Settings ] ==="),
+        PLUGINS_USE_CUSTOM_EVENTS("Plugins.CustomEvents", false, "Create a custom block break event for every automatic block broken"),
         PLUGINS_USE_MCMMO("Plugins.mcMMO", true, "Count broken blocks towards the TreeFeller ability"),
         PLUGINS_USE_TREEMCMMO("Plugins.TreeMcMMO", false, "Count broken trees towards the TreeFeller ability"),
         PLUGINS_USE_JOBS("Plugins.Jobs", true, "Count broken blocks towards Jobs jobs that fit"),

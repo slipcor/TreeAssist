@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.19 - allow to create block break events for other plugins to react to
 - v7.2.18 - properly update tree configs with stripped logs and some more things
 - v7.2.17 - allow OPs and creative players to break logs - fixes #73
 - v7.2.16 - [core update] do not log prefixed messages unless sent to console

@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.18 - properly update tree configs with stripped logs and some more things 
+- v7.2.19 - allow to create block break events for other plugins to react to  
 - [read more](doc/changelog.md)
 
 ***

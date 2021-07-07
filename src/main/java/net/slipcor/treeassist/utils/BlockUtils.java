@@ -7,6 +7,7 @@ import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TALeafDecay;
 import net.slipcor.treeassist.externals.JobsHook;
 import net.slipcor.treeassist.externals.mcMMOHook;
+import net.slipcor.treeassist.listeners.TreeAssistBlockListener;
 import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.yml.MainConfig;
 import net.slipcor.treeassist.yml.TreeConfig;
@@ -17,6 +18,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -305,6 +307,14 @@ public class BlockUtils {
                     (fullTree == TreeAssist.instance.config().getBoolean(MainConfig.CFG.PLUGINS_USE_TREEJOBS))) {
                 TreeStructure.debug.i("Adding Jobs EXP!");
                 JobsHook.addJobsExp(player, block);
+            }
+
+            if (TreeAssist.instance.makeEvents && !fullTree) {
+                TreeStructure.debug.i("Making custom event!");
+
+                BlockBreakEvent event = new BlockBreakEvent(block, player);
+                TreeAssistBlockListener.ignore(event);
+                TreeAssist.instance.getServer().getPluginManager().callEvent(event);
             }
         } else {
             TreeStructure.debug.i("mcMMO: " + TreeAssist.instance.mcMMO);

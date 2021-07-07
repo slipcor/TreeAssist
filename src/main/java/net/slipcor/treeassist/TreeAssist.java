@@ -47,6 +47,7 @@ public class TreeAssist extends CorePlugin {
     public boolean Enabled = true;  // Whether the plugin as a whole is enabled
     public boolean mcMMO = false;   // Whether mcMMO has been found and hooked into
     public boolean jobs = false;    // Whether Jobs has been found and hooked into
+    public boolean makeEvents = false;
 
     private File configFile;
     private MainConfig config;
@@ -237,6 +238,7 @@ public class TreeAssist extends CorePlugin {
 
         checkMcMMO();
         checkJobs();
+        this.makeEvents = config().getBoolean(MainConfig.CFG.PLUGINS_USE_CUSTOM_EVENTS);
 
         if (worldGuard != null) {
             getServer().getPluginManager().registerEvents(worldGuard, this);
