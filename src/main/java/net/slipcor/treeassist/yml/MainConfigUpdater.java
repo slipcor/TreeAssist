@@ -68,7 +68,8 @@ public class MainConfigUpdater {
         FULL_MCMMO_TREE(7.1011f, MainConfig.CFG.PLUGINS_USE_TREEMCMMO, true),
         FULL_JOBS_TREE(7.1011f, MainConfig.CFG.PLUGINS_USE_TREEJOBS, true),
         VERBOSE_CONFIG_LOADING(7.2013f, MainConfig.CFG.GENERAL_VERBOSE_CONFIG_LOADING, true),
-        PREVENT_WITHOUT_TOOL(7.2014f, MainConfig.CFG.GENERAL_PREVENT_WITHOUT_TOOL, false)
+        PREVENT_WITHOUT_TOOL(7.2014f, MainConfig.CFG.GENERAL_PREVENT_WITHOUT_TOOL, false),
+        PLUGINS_USE_CUSTOM_EVENTS(7.2019f, MainConfig.CFG.PLUGINS_USE_CUSTOM_EVENTS, false)
         ;
 
         private final float version;

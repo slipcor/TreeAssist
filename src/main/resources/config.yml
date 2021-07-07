@@ -39,6 +39,8 @@ Placed Blocks:
   Lookup Time: 86400
 # === [ Plugin Integration Settings ] ===
 Plugins:
+  # Create a custom block break event for every automatic block broken
+  CustomEvents: false
   # Count broken blocks towards the TreeFeller ability
   mcMMO: true
   # Count broken trees towards the TreeFeller ability
@@ -74,4 +76,4 @@ Update:
   # which type of branch to get updates? Valid values: dev, alpha, beta, release
   Type: beta
 # The config version for update checks
-Version: 7.2015
+Version: 7.2020

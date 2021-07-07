@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.19 - allow to create block break events for other plugins to react to  
+- v7.2.20 - create custom events config node  
 - [read more](doc/changelog.md)
 
 ***
