@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.20 - create custom events config node  
+- v7.2.21 - allow mushrooms near trees  
 - [read more](doc/changelog.md)
 
 ***

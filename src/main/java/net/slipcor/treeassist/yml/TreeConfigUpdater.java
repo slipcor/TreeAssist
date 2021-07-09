@@ -23,6 +23,8 @@ public class TreeConfigUpdater {
         TRUNK_STRIPPED_OAK(7.2018f, "oak", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_oak_log"),
         TRUNK_STRIPPED_SPRUCE(7.2018f, "spruce", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:stripped_spruce_log"),
         NETHER_NATURAL_BLOCK(7.2018f, "nether", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:netherrack"),
+        NATURAL_RED_SHROOM(7.2020f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:brown_mushroom"),
+        NATURAL_BROWN_SHROOM(7.2020f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:red_mushroom"),
         ;
 
         private final float version;

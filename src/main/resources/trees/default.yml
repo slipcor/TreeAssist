@@ -145,6 +145,8 @@ Natural Blocks:
 - 'minecraft:void_air'
 - 'minecraft:large_fern'
 - 'minecraft:peony'
+- 'red_mushroom'
+- 'brown_mushroom'
 # The permission required for this tree type
 Permission: treeassist.destroy.*
 # Sapling replant settings
@@ -217,4 +219,4 @@ Trunk:
   # Saplings can be at different height
   Uneven Bottom: false
 # Version number for automagical config updates
-Version: 7.2017
+Version: 7.2021
