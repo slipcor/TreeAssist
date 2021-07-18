@@ -70,6 +70,7 @@ public final class Language extends CoreLanguage {
         INFO_PLUGIN_PREFIX("info.plugin_prefix", "&8[&2TreeAssist&8]&r "),
 
         WARNING_ADDTOOL_ONLYONE("warning.sapling_protected", "&6You can only use one enchantment. Using: %1%"),
+        WARNING_DESTRUCTION_FAILED("warning.destruction_invalidblock", "&6We found a player placed block nearby: &r%1%"),
 
         SUCCESSFUL_ADDTOOL("successful.addtool", "&aRequired tool added: %1%"),
         SUCCESSFUL_DEBUG_ALL("successful.debug_all", "debugging EVERYTHING"),

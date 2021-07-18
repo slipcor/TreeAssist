@@ -32,6 +32,7 @@ public class MainConfig extends CoreConfig {
         DESTRUCTION_FALLING_BLOCKS("Destruction.Falling Blocks", false, "Spawn a FallingBlock when breaking a block"),
         DESTRUCTION_FALLING_BLOCKS_FANCY("Destruction.Falling Blocks Fancy", false, "Make the FallingBlocks look almost like an actual tree falling over"),
         DESTRUCTION_FAST_LEAF_DECAY("Destruction.Fast Leaf Decay", true, "Increase leaf decay by looking for nearby lonely leaves"),
+        DESTRUCTION_MESSAGE("Destruction.Message Invalid Blocks", true, "Message when a tree determination fails based on invalid nearby blocks"),
         DESTRUCTION_ONLY_ABOVE("Destruction.Only Above", false, "Only break blocks that are above the block the player broke"),
 
         PLUGINS("Plugins", "=== [ Plugin Integration Settings ] ==="),

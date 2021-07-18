@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.22 - fix thick trees considering themselves neighbors, fix invalid blocks unnecessarily cancelling the break event, and show messages when this happens in the future, can be enabled/disabled via permission and globally by config setting
 - v7.2.21 - allow mushrooms near trees
 - v7.2.20 - create custom events config node
 - v7.2.19 - allow to create block break events for other plugins to react to

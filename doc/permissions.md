@@ -6,7 +6,8 @@ The following nodes can be used:
 
 Node |  Definition | Default
 ------------- | ------------- | -------------
-treeassist.replant | allows to replant trees | op |
+treeassist.message | receive messages when a tree determination fails | op
+treeassist.replant | allows to replant trees | op
 treeassist.destroy.* | **allows all trees** | false
 treeassist.destroy.birch | allows birch trees | false
 treeassist.destroy.jungle | allows jungle trees | false

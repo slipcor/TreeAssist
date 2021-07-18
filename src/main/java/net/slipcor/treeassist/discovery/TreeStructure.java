@@ -55,6 +55,7 @@ public class TreeStructure {
     private final boolean trunkDiagonally;
     private boolean valid = true;
     public FailReason failReason = null;
+    public Material failMaterial = null;
 
     private final TreeConfig config;
     private Block northWestBlock;
@@ -146,6 +147,10 @@ public class TreeStructure {
 
             if (branches) {
                 getAllBranches();
+                if (failReason != null) {
+                    valid = false;
+                    return;
+                }
 
                 debug.i("branch blocks: " + countBranches());
             }
@@ -272,6 +277,11 @@ public class TreeStructure {
 
         if (branches) {
             getDirectionalBranches();
+
+            if (failReason != null) {
+                valid = false;
+                return;
+            }
 
             debug.i("branch blocks: " + countBranches());
         }
@@ -703,7 +713,7 @@ public class TreeStructure {
 
                     if (trunkBlocks.contains(checkBlock.getType())) {
                         Block block = findBottomBlock(checkBlock, config);
-                        if (block != null && !block.equals(bottom)) {
+                        if (block != null && isNotOurBottom(block)) {
                             TreeStructure otherTree = new TreeStructure(config, block, true);
                             if (otherTree.isValid()) {
                                 neighborTrunks.addAll(otherTree.trunk);
@@ -719,6 +729,16 @@ public class TreeStructure {
             }
         }
         debug.i("total checks: " + totalChecks);
+    }
+
+    private boolean isNotOurBottom(Block block) {
+        if (block.equals(bottom)) {
+            return false;
+        }
+        if (block.equals(northEastBlock) || block.equals(northWestBlock) || block.equals(southEastBlock) || block.equals(southWestBlock)) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -747,6 +767,7 @@ public class TreeStructure {
                         if (isInvalidBranch(checkBlock, branch, innerface)) {
                             trunk.clear();
                             branchMap.clear();
+                            failReason = FailReason.INVALID_BLOCK;
                             return;
                         }
                     }
@@ -754,9 +775,11 @@ public class TreeStructure {
                 } else if (!allExtras.contains(checkBlock.getType())
                         && !allTrunks.contains(checkBlock.getType())
                         && !naturalBlocks.contains(checkBlock.getType())) {
-                    debug.i("invalid block 2: " + checkBlock.getType());
+                    debug.i("invalid block 2a: " + checkBlock.getType());
                     trunk.clear();
                     branchMap.clear();
+                    failReason = FailReason.INVALID_BLOCK;
+                    failMaterial = checkBlock.getType();
                     return;
                 }
             }
@@ -826,6 +849,7 @@ public class TreeStructure {
                                 !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
                     valid = false;
                     failReason = FailReason.INVALID_BLOCK;
+                    failMaterial = checkMaterial;
                     debug.i("invalid block at " + BlockUtils.printBlock(checkBlock));
                     return;
                 }
@@ -876,15 +900,18 @@ public class TreeStructure {
                     if (isInvalidBranch(checkBlock, branch, face)) {
                         trunk.clear();
                         branchMap.clear();
+                        failReason = FailReason.INVALID_BLOCK;
                         return;
                     }
                     branchMap.put(checkBlock, branch);
                 } else if (!allExtras.contains(checkBlock.getType())
                         && !allTrunks.contains(checkBlock.getType())
                         && !naturalBlocks.contains(checkBlock.getType())) {
-                    debug.i("invalid block 2: " + checkBlock.getType());
+                    debug.i("invalid block 2b: " + checkBlock.getType());
                     trunk.clear();
                     branchMap.clear();
+                    failReason = FailReason.INVALID_BLOCK;
+                    failMaterial = checkBlock.getType();
                     return;
                 } else {
                     // This branch ends here
@@ -954,6 +981,7 @@ public class TreeStructure {
                                     !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
                         valid = false;
                         failReason = FailReason.INVALID_BLOCK;
+                        failMaterial = checkMaterial;
                         debug.i("invalid block at " + BlockUtils.printBlock(checkBlock));
                         return;
                     }
@@ -1050,6 +1078,7 @@ public class TreeStructure {
                 !naturalBlocks.contains(mat) &&
                         !(allTrunks.contains(mat) || allExtras.contains(mat))) {
             debug.i("invalid block 3: " + mat);
+            failMaterial = mat;
             return true;
         }
         return false;
@@ -1119,6 +1148,7 @@ public class TreeStructure {
                             !trunkBlocks.contains(checkMaterial) &&
                             !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
                 debug.i("Invalid block found 1: " + checkMaterial);
+                failMaterial = checkMaterial;
                 return true;
             }
         }
@@ -1459,9 +1489,13 @@ public class TreeStructure {
 
         final Set<Block> removeBlocks = new LinkedHashSet<>(trunk);
 
+        debug.i("trunk blocks: " + removeBlocks.size());
+        debug.i("this trunk is: " + trunk.hashCode());
+
         for (List<Block> blocks : branchMap.values()) {
             if (blocks != null) {
                 removeBlocks.addAll(blocks);
+                debug.i("branch blocks: " + blocks.size());
             }
         }
 
@@ -1474,6 +1508,7 @@ public class TreeStructure {
 
         if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REMOVE_LEAVES)) {
             removeBlocks.addAll(extras);
+            debug.i("extra blocks: " + extras.size());
         }
 
         class InstantRunner extends BukkitRunnable {

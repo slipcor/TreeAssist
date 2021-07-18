@@ -27,6 +27,8 @@ Destruction:
   Falling Blocks Fancy: false
   # Increase leaf decay by looking for nearby lonely leaves
   Fast Leaf Decay: true
+  # Message when a tree determination fails based on invalid nearby blocks
+  Message Invalid Blocks: true
   # Only break blocks that are above the block the player broke
   Only Above: false
 # === [ Placed Blocks Settings ] ===
@@ -76,4 +78,4 @@ Update:
   # which type of branch to get updates? Valid values: dev, alpha, beta, release
   Type: beta
 # The config version for update checks
-Version: 7.2020
+Version: 7.2022

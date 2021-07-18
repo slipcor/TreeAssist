@@ -76,6 +76,9 @@ permissions:
   treeassist.forcegrow:
     description: allows to force grow saplings
     default: op
+  treeassist.message:
+    description:
+    default: op
   treeassist.noreplant:
     description: allows to stop replacing saplings for some time
     default: true

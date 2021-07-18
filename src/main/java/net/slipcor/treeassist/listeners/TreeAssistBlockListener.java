@@ -410,6 +410,11 @@ public class TreeAssistBlockListener implements Listener {
                 }
                 debug.i("Shape does not match " + mat + " (" + checkTreeStructure.failReason + ")" );
                 if (checkTreeStructure.failReason == FailReason.INVALID_BLOCK) {
+                    if (event.getPlayer().hasPermission("treeassist.message") &&
+                            TreeAssist.instance.config().getBoolean(MainConfig.CFG.DESTRUCTION_MESSAGE) &&
+                            checkTreeStructure.failMaterial != null) {
+                        plugin.sendPrefixed(event.getPlayer(), Language.MSG.WARNING_DESTRUCTION_FAILED.parse(checkTreeStructure.failMaterial.name()));
+                    }
                     break configs;
                 }
             }
