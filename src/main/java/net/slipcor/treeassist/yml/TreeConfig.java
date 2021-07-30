@@ -146,6 +146,14 @@ public class TreeConfig extends CoreConfig {
             this.comment = comment;
         }
 
+        public static TreeConfig.CFG getByNode(String node) {
+            for (final TreeConfig.CFG e : TreeConfig.CFG.values()) {
+                if (e.node.equals(node)) {
+                    return e;
+                }
+            }
+            return null;
+        }
 
         @Override
         public String getComment() {
@@ -200,7 +208,8 @@ public class TreeConfig extends CoreConfig {
 
     public CFG getByNode(final String node) {
         for (final CFG m : CFG.values()) {
-            if (m.node.equals(node)) {
+            if (m.node.equals(node) ||
+                    m.node.replaceAll("\\s+", "").equals(node)) {
                 return m;
             }
         }

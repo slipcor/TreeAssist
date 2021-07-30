@@ -195,6 +195,7 @@ public class TreeAssist extends CorePlugin {
         commandMap.clear();
         completer = null;
         new CommandAddTool(this).load(commandList, commandMap);
+        new CommandConfig(this).load(commandList, commandMap);
         new CommandDebug(this).load(commandList, commandMap);
         new CommandFindForest(this).load(commandList, commandMap);
         new CommandForceBreak(this).load(commandList, commandMap);
@@ -206,6 +207,7 @@ public class TreeAssist extends CorePlugin {
         new CommandRemoveTool(this).load(commandList, commandMap);
         new CommandToggle(this).load(commandList, commandMap);
         new CommandTool(this).load(commandList, commandMap);
+        new CommandTreeConfig(this).load(commandList, commandMap);
         new CommandGrowTool(this).load(commandList, commandMap);
     }
 
@@ -215,6 +217,12 @@ public class TreeAssist extends CorePlugin {
         if (acc != null) {
             acc.commit(sender, args);
             return true;
+        }
+        for (CoreCommand cc : commandMap.values()) {
+            if (cc.getShort().contains(args[0].toLowerCase())) {
+                cc.commit(sender, args);
+                return true;
+            }
         }
         boolean found = false;
         for (CoreCommand command : commandList) {

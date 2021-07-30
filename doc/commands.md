@@ -34,6 +34,28 @@ Command | Shorthand | Definition
 
 ***
 
+## Config management commands
+_use with caution_
+
+### Main Configuration
+
+Command | Shorthand | Definition
+------------- | ------------- | -------------
+[/treeassist config](commands/config.md) get [node] | /ta !c get bStats.Active | get the value of a config node
+[/treeassist config](commands/config.md) set [node] [value] | /ta !c set bStats.Active false | set the value of a config node
+[/treeassist config](commands/config.md) add [node] [value] | /ta !c add wor Spawn | add an entry to a config list
+[/treeassist config](commands/config.md) remove [node] [value] | /ta !c remove ignoreworlds pvparena | remove an entry from a config list
+
+### Tree Configuration
+
+TreeConfig | ------------ | -------------
+[/treeassist treeconfigconfig](commands/treeconfig.md) get [config] [node] | /ta !tc get default AutomaticDestruction.Active | get the value of a config node
+[/treeassist treeconfigconfig](commands/treeconfig.md) set [config] [node] [value] | /ta !tc set default AutomaticDestruction.Active false | set the value of a config node
+[/treeassist treeconfigconfig](commands/treeconfig.md) add [config] [node] [value] | /ta !tc add default GroundBlocks bedrock | add an entry to a config list
+[/treeassist treeconfigconfig](commands/treeconfig.md) remove [config] [node] [value] | /ta !tc remove default GroundBlocks bedrock | remove an entry from a config list
+
+***
+
 ## Miscellaneous commands
 
 Command | Shorthand | Definition

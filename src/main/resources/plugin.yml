@@ -64,6 +64,12 @@ permissions:
   treeassist.bypass.cooldown:
     description: allows to bypass the cooldown
     default: op
+  treeassist.config:
+    description: allows to set config settings
+    default: op
+  treeassist.treeconfig:
+    description: allows to set tree config settings
+    default: op
   treeassist.debug:
     description: allows to debug
     default: op

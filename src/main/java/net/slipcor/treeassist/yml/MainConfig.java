@@ -19,7 +19,7 @@ public class MainConfig extends CoreConfig {
         GENERAL_PREVENT_WITHOUT_TOOL("General.Prevent Log Breaking Without Tool", false, "Prevent breaking of logs without the right tool"),
         GENERAL_TOGGLE_DEFAULT("General.Toggle Default", true, "For the toggling command, should players start with TreeAssist active?"),
         GENERAL_USE_PERMISSIONS("General.Use Permissions", false, "Should we check if players have permissions? If false, all features are available to everyone."),
-        GENERAL_VERBOSE_CONFIG_LOADING("General.Verbose Config Loading", true, "Should we announce information about every tree config we load?"),
+        GENERAL_VERBOSE_CONFIG_LOADING("General.Verbose Config Loading", false, "Should we announce information about every tree config we load?"),
 
         COMMANDS("Commands", "=== [ Command Settings ] ==="),
         COMMANDS_FORCE_BREAK_DEFAULT_RADIUS("Commands.Force Break.Default Radius", 10, ""),
@@ -111,6 +111,15 @@ public class MainConfig extends CoreConfig {
             this.comment = comment;
         }
 
+        public static CFG getByNode(String node) {
+            for (final CFG e : CFG.values()) {
+                if (e.node.equals(node)) {
+                    return e;
+                }
+            }
+            return null;
+        }
+
 
         @Override
         public String getComment() {
@@ -159,7 +168,8 @@ public class MainConfig extends CoreConfig {
 
     public CFG getByNode(final String node) {
         for (final CFG m : CFG.values()) {
-            if (m.node.equals(node)) {
+            if (m.node.equals(node) ||
+                    m.node.replaceAll("\\s+", "").equals(node)) {
                 return m;
             }
         }

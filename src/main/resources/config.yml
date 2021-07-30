@@ -8,7 +8,7 @@ General:
   # Should we check if players have permissions? If false, all features are available to everyone.
   Use Permissions: false
   # Should we announce information about every tree config we load?
-  Verbose Config Loading: true
+  Verbose Config Loading: false
 # === [ Command Settings ] ===
 Commands:
   Force Break:

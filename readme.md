@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.22 - fix thick trees considering themselves neighbors, fix invalid blocks unnecessarily cancelling the break event, and show messages when this happens in the future, can be enabled/disabled via permission and globally by config setting 
+- v7.2.23 - add '/ta config' and '/ta treeconfig', allowing to set config nodes ingame - also fix advertized  command shorthands  
 - [read more](doc/changelog.md)
 
 ***
