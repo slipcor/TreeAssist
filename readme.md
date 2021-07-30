@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.23 - add '/ta config' and '/ta treeconfig', allowing to set config nodes ingame - also fix advertized  command shorthands  
+- v7.2.24 - support increasing scoreboard values (picked_up, mined) for automatically broken trees - this is hooked into the statistics setting, so disabled by default!  
 - [read more](doc/changelog.md)
 
 ***

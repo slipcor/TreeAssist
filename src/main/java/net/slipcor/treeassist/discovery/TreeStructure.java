@@ -1506,6 +1506,14 @@ public class TreeStructure {
             BlockUtils.sortInsideOut(extras, bottom);
         }
 
+        if (statPickup) {
+            BlockUtils.updatePickup(player, trunk.get(1).getType(), removeBlocks.size());
+        }
+
+        if (statMineBlock) {
+            BlockUtils.updateMining(player, trunk.get(1).getType(), removeBlocks.size());
+        }
+
         if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REMOVE_LEAVES)) {
             removeBlocks.addAll(extras);
             debug.i("extra blocks: " + extras.size());

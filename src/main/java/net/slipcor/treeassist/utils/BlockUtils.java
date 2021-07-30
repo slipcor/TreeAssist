@@ -20,6 +20,8 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -253,6 +255,24 @@ public class BlockUtils {
 
                 CleanRunner cleaner = (new CleanRunner(leaves, delay, new LinkedHashSet<>(breakables), Material.AIR));
                 cleaner.runTaskTimer(TreeAssist.instance, delay, delay);
+            }
+        }
+    }
+
+    public static void updateMining(Player player, Material blockMaterial, int amount) {
+        for (Objective o : player.getScoreboard().getObjectives()) {
+            if (o.getCriteria().contains("mined") && o.getCriteria().contains(blockMaterial.name().toLowerCase())) {
+                Score score = o.getScore(player.getName());
+                score.setScore(score.getScore() + amount);
+            }
+        }
+    }
+
+    public static void updatePickup(Player player, Material blockMaterial, int amount) {
+        for (Objective o : player.getScoreboard().getObjectives()) {
+            if (o.getCriteria().contains("picked_up") && o.getCriteria().contains(blockMaterial.name().toLowerCase())) {
+                Score score = o.getScore(player.getName());
+                score.setScore(score.getScore() + amount);
             }
         }
     }
