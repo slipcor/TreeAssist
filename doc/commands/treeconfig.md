@@ -9,6 +9,7 @@ This command allows to manipulate a tree config file
 Command |  Definition
 ------------- | -------------
 /ta config get [config] [node] | Tells you the value of a node
+/ta config info [config] [node] | Tells you information about the node
 /ta config set [config] [node] [value] | Tries to set the node to a value
 /ta config add [config] [node] [value] | Add a string value to a string list node
 /ta config remove [config] [node] [value] | Remove a string value from a string list node

@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.26 - initialize PlayerListener debugger - oups! - also maybe pull in Core change about config commenting separation  
+- v7.2.27 - add [info] argument for config commands to display node information  
 - [read more](doc/changelog.md)
 
 ***

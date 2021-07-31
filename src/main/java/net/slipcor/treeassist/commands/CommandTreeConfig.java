@@ -53,6 +53,17 @@ public class CommandTreeConfig extends CoreCommand {
             return;
         }
 
+        if (args.length >= 3 && args[1].toLowerCase().equals("info")) {
+            if (!argCountValid(sender, args, new Integer[]{4})) {
+                return;
+            }
+
+            //           0         1      2       3
+            // /ta       config    info   [type]  [node]
+            info(sender, args[2], args[3]);
+            return;
+        }
+
         if (args.length >= 3 && args[1].toLowerCase().equals("add")) {
             if (!argCountValid(sender, args, new Integer[]{5})) {
                 return;
@@ -193,6 +204,32 @@ public class CommandTreeConfig extends CoreCommand {
         } else {
             treeAssist.sendPrefixed(sender,
                     Language.MSG.ERROR_CONFIG_UNKNOWN_TYPE.parse(entryType.name()));
+        }
+    }
+
+    private void info(final CommandSender sender, final String configName, final String node) {
+
+        TreeConfig.CFG completedEntry = getFullNode(node);
+
+        if (completedEntry != null) {
+            // get the actual full proper node
+            get(sender, configName, completedEntry.getNode());
+            return;
+        }
+
+        final TreeConfig.CFG entry = TreeConfig.CFG.getByNode(node);
+
+        TreeAssist treeAssist = TreeAssist.instance;
+
+        if (entry == null) {
+            treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_UNKNOWN_NODE.parse(node));
+            return;
+        }
+
+        if (entry.getComment() == null || entry.getComment().isEmpty()) {
+            treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_INFO_EMPTY.parse(node));
+        } else {
+            treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_INFO_SUCCESS.parse(node, entry.getComment()));
         }
     }
 

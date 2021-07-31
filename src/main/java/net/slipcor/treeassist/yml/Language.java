@@ -35,6 +35,8 @@ public final class Language extends CoreLanguage {
         ERROR_CONFIG_ADD_SUCCESS("error.config.add_success", "Added &e%2%&r to &a%1%&r!"),
         ERROR_CONFIG_GET_GROUP_IMPOSSIBLE("error.config.get_group_impossible", "Cannot get value of group node: &e%1%&r!"),
         ERROR_CONFIG_GET_SUCCESS("error.config.get_success", "Value of node &a%1%&r is: &e%2%&r"),
+        ERROR_CONFIG_INFO_EMPTY("error.config.info_empty", "Node &e%1%&r does not have information!"),
+        ERROR_CONFIG_INFO_SUCCESS("error.config.info_success", "Information for &e%1%&r: &e%2%&r"),
         ERROR_CONFIG_REMOVE_SKIPPED("error.config.remove_skipped", "List &e%1%&r does not contain &e%2%&r!"),
         ERROR_CONFIG_REMOVE_SUCCESS("error.config.remove_success", "Removed &e%2%&r from &a%1%&r!"),
         ERROR_CONFIG_SET_GROUP_IMPOSSIBLE("error.config.set_group_impossible", "Cannot set value to group node: &e%1%&r!"),

@@ -42,6 +42,7 @@ _use with caution_
 Command | Shorthand | Definition
 ------------- | ------------- | -------------
 [/treeassist config](commands/config.md) get [node] | /ta !c get bStats.Active | get the value of a config node
+[/treeassist config](commands/config.md) info [node] | /ta !c info bStats.Active | get information about a config node
 [/treeassist config](commands/config.md) set [node] [value] | /ta !c set bStats.Active false | set the value of a config node
 [/treeassist config](commands/config.md) add [node] [value] | /ta !c add wor Spawn | add an entry to a config list
 [/treeassist config](commands/config.md) remove [node] [value] | /ta !c remove ignoreworlds pvparena | remove an entry from a config list
@@ -49,10 +50,11 @@ Command | Shorthand | Definition
 ### Tree Configuration
 
 TreeConfig | ------------ | -------------
-[/treeassist treeconfigconfig](commands/treeconfig.md) get [config] [node] | /ta !tc get default AutomaticDestruction.Active | get the value of a config node
-[/treeassist treeconfigconfig](commands/treeconfig.md) set [config] [node] [value] | /ta !tc set default AutomaticDestruction.Active false | set the value of a config node
-[/treeassist treeconfigconfig](commands/treeconfig.md) add [config] [node] [value] | /ta !tc add default GroundBlocks bedrock | add an entry to a config list
-[/treeassist treeconfigconfig](commands/treeconfig.md) remove [config] [node] [value] | /ta !tc remove default GroundBlocks bedrock | remove an entry from a config list
+[/treeassist treeconfig](commands/treeconfig.md) get [config] [node] | /ta !tc get default AutomaticDestruction.Active | get the value of a config node
+[/treeassist treeconfig](commands/treeconfig.md) info [config] [node] | /ta !tc info default AutomaticDestructions.Active | get information about a config node
+[/treeassist treeconfig](commands/treeconfig.md) set [config] [node] [value] | /ta !tc set default AutomaticDestruction.Active false | set the value of a config node
+[/treeassist treeconfig](commands/treeconfig.md) add [config] [node] [value] | /ta !tc add default GroundBlocks bedrock | add an entry to a config list
+[/treeassist treeconfig](commands/treeconfig.md) remove [config] [node] [value] | /ta !tc remove default GroundBlocks bedrock | remove an entry from a config list
 
 ***
 

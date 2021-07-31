@@ -48,6 +48,17 @@ public class CommandConfig extends CoreCommand {
             return;
         }
 
+        if (args.length >= 2 && args[1].toLowerCase().equals("info")) {
+            if (!argCountValid(sender, args, new Integer[]{3})) {
+                return;
+            }
+
+            //           0         1      2
+            // /pvpstats config    get    [node]
+            info(sender, args[2]);
+            return;
+        }
+
         if (args.length >= 2 && args[1].toLowerCase().equals("add")) {
             if (!argCountValid(sender, args, new Integer[]{4})) {
                 return;
@@ -180,6 +191,32 @@ public class CommandConfig extends CoreCommand {
         } else {
             treeAssist.sendPrefixed(sender,
                     Language.MSG.ERROR_CONFIG_UNKNOWN_TYPE.parse(entryType.name()));
+        }
+    }
+
+    private void info(final CommandSender sender, final String node) {
+
+        MainConfig.CFG completedEntry = getFullNode(node);
+
+        if (completedEntry != null) {
+            // get the actual full proper node
+            get(sender, completedEntry.getNode());
+            return;
+        }
+
+        final MainConfig.CFG entry = MainConfig.CFG.getByNode(node);
+
+        TreeAssist treeAssist = TreeAssist.instance;
+
+        if (entry == null) {
+            treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_UNKNOWN_NODE.parse(node));
+            return;
+        }
+
+        if (entry.getComment() == null || entry.getComment().isEmpty()) {
+            treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_INFO_EMPTY.parse(node));
+        } else {
+            treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_INFO_SUCCESS.parse(node, entry.getComment()));
         }
     }
 
