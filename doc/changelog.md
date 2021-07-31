@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.28 - update internal YMLs to be spaced, too - Core update
 - v7.2.27 - add [info] argument for config commands to display node information
 - v7.2.26 - initialize PlayerListener debugger - oups! - also maybe pull in Core change about config commenting separation
 - v7.2.25 - try to prevent messing with the tool while automatic destruction is happening

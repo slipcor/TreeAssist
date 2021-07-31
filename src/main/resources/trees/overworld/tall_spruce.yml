@@ -1,9 +1,19 @@
 Blocks:
   Top:
+
+    # Radius around the trunk to check for leaves
     Radius: 3
   Middle:
+
+    # Radius around the trunk to check for leaves
     Radius: 4
+
+# The parent tree config to inherit from, recursively
 Parent: spruce
 Trunk:
+
+  # How thick is the trunk
   Thickness: 2
+
+# Version number for automagical config updates
 Version: 7.1013

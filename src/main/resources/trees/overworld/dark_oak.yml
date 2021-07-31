@@ -1,23 +1,49 @@
 Blocks:
+
+  # Here you can add extra blocks that can be expected inside or around tree leaves
   Materials:
-  - 'minecraft:dark_oak_leaves'
+  - minecraft:dark_oak_leaves
   Top:
+
+    # Height above the trunk to check for leaves
     Height: 2
   Middle:
+
+    # Radius around the trunk to check for leaves
     Radius: 3
   Custom Drops:
+
+    # Drop chances for extra drops. 1.0 would be 100% chance!
     Items:
-      'minecraft:dark_oak_leaves': 0.01
+      minecraft:dark_oak_leaves: 0.01
+
+# The parent tree config to inherit from, recursively
 Parent: default
+
+# The permission required for this tree type
 Permission: treeassist.destroy.darkoak
 Replanting:
-  Material: 'minecraft:dark_oak_sapling'
+
+  # The material to place
+  Material: minecraft:dark_oak_sapling
 Trunk:
+
+  # How high does it need to be to qualify as a tree
   Minimum Height: 3
+
+  # How thick is the trunk
   Thickness: 2
+
+  # One of these materials needs to be part of the trunk for it to count as a trunk
   Materials:
-  - 'minecraft:dark_oak_log'
-  - 'minecraft:stripped_dark_oak_log'
+  - minecraft:dark_oak_log
+  - minecraft:stripped_dark_oak_log
+
+  # Saplings can be at different height
   Uneven Bottom: true
+
+  # Look for branches
   Branch: true
-Version: 7.2017
+
+# Version number for automagical config updates
+Version: 7.2017998695373535

@@ -1,16 +1,34 @@
 Blocks:
   Cap:
+
+    # Max height of a branch cap
     Height: 4
   Top:
+
+    # Height above the trunk to check for leaves
     Height: 3
+
+    # Radius around the trunk to check for leaves
     Radius: 3
   Middle:
+
+    # Radius around the trunk to check for leaves
     Radius: 2
+
+    # Allow air pockets in leaves
     Air: true
   Custom Drops:
+
+    # Drop chances for extra drops. 1.0 would be 100% chance!
     Items:
       'minecraft:oak_leaves': 0.01
+
+# The parent tree config to inherit from, recursively
 Parent: oak
 Trunk:
+
+  # Look for branches
   Branch: true
+
+# Version number for automagical config updates
 Version: 7.1013

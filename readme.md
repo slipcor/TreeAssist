@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.27 - add [info] argument for config commands to display node information  
+- v7.2.28 - update internal YMLs to be spaced, too - Core update  
 - [read more](doc/changelog.md)
 
 ***

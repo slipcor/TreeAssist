@@ -1,19 +1,37 @@
 Blocks:
+
+  # Here you can add extra blocks that can be expected inside or around tree leaves
   Materials:
-  - 'minecraft:spruce_leaves'
+  - minecraft:spruce_leaves
   Top:
+
+    # Radius around the trunk to check for leaves
     Radius: 2
   Middle:
+
+    # Radius around the trunk to check for leaves
     Radius: 4
   Custom Drops:
+
+    # Drop chances for extra drops. 1.0 would be 100% chance!
     Items:
-      'minecraft:spruce_leaves': 0.01
+      minecraft:spruce_leaves: 0.01
+
+# The parent tree config to inherit from, recursively
 Parent: default
+
+# The permission required for this tree type
 Permission: treeassist.destroy.spruce
 Replanting:
-  Material: 'minecraft:spruce_sapling'
+
+  # The material to place
+  Material: minecraft:spruce_sapling
 Trunk:
+
+  # One of these materials needs to be part of the trunk for it to count as a trunk
   Materials:
-  - 'minecraft:spruce_log'
-  - 'minecraft:stripped_spruce_log'
-Version: 7.2017
+  - minecraft:spruce_log
+  - minecraft:stripped_spruce_log
+
+# Version number for automagical config updates
+Version: 7.2017998695373535
