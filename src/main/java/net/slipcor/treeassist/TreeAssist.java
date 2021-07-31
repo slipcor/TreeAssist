@@ -282,6 +282,7 @@ public class TreeAssist extends CorePlugin {
         TreeAssistBlockListener.debug = new CoreDebugger(this, 6);
         TreeAssistSpawnListener.debug = new CoreDebugger(this, 7);
         BlockUtils.debug = new CoreDebugger(this, 8);
+        TreeAssistPlayerListener.debug = new CoreDebugger(this, 9);
         loadDebugger("Debug", Bukkit.getConsoleSender());
 
         if (config.getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE)) {
