@@ -1,15 +1,34 @@
 Blocks:
+  # Here you can add extra blocks that can be expected inside or around tree leaves
   Materials:
   - 'minecraft:brown_mushroom_block'
+
   Top:
+    # Radius around the trunk to check for leaves
     Radius: 3
+
   Middle:
+    # Radius around the trunk to check for leaves
     Radius: 0
+
   Custom Drops:
+    # Drop chances for extra drops. 1.0 would be 100% chance!
     Items:
       'minecraft:brown_mushroom_block': 0.01
+
+
+# The parent tree config to inherit from, recursively
 Parent: mushroom
+
+
+# The permission required for this tree type
 Permission: treeassist.destroy.brownshroom
+
+
 Replanting:
+  # The material to place
   Material: 'minecraft:brown_mushroom'
+
+
+# Version number for automagical config updates
 Version: 7.1020

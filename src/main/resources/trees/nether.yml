@@ -1,19 +1,26 @@
+# Valid blocks that are below and around the saplings
 Ground Blocks:
-- 'minecraft:netherrack'
+- minecraft:netherrack
+
+
+# Blocks that you can expect to be around the tree - these are the exceptions from player building safeguards
 Natural Blocks:
-- 'minecraft:crimson_nylium'
-- 'minecraft:warped_nylium'
-- 'minecraft:shroomlight'
-- 'minecraft:crimson_fungus'
-- 'minecraft:warped_fungus'
-- 'minecraft:twisting_vines'
-- 'minecraft:weeping_vines'
-- 'minecraft:crimson_roots'
-- 'minecraft:warped_roots'
-- 'minecraft:air'
-- 'minecraft:cave_air'
-- 'minecraft:void_air'
-- 'minecraft:netherrack'
+- minecraft:crimson_nylium
+- minecraft:warped_nylium
+- minecraft:shroomlight
+- minecraft:crimson_fungus
+- minecraft:warped_fungus
+- minecraft:twisting_vines
+- minecraft:weeping_vines
+- minecraft:crimson_roots
+- minecraft:warped_roots
+- minecraft:air
+- minecraft:cave_air
+- minecraft:void_air
+- minecraft:netherrack
+
+
+# The parent tree config to inherit from, recursively
 Parent: default
 Blocks:
   Custom Drops:
@@ -22,11 +29,17 @@ Blocks:
       minecraft:netherrack: 0.01
       minecraft:apple: 0
       minecraft:golden_apple: 0
+
+
 Trunk:
   # Look for branches
   Branch: false
+
   Custom Drops:
     # Drop chances for extra drops. 1.0 would be 100% chance!
     Items:
       minecraft:golden_apple: 0
-Version: 7.2017
+
+
+# Version number for automagical config updates
+Version: 7.2017998695373535

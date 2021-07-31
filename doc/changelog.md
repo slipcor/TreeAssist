@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.26 - add extra spacing to the config files for readability (thanks RandomGgames!)
 - v7.2.25 - try to prevent messing with the tool while automatic destruction is happening
 - v7.2.24 - support increasing scoreboard values (picked_up, mined) for automatically broken trees - this is hooked into the statistics setting, so disabled by default!
 - v7.2.23 - add '/ta config' and '/ta treeconfig', allowing to set config nodes ingame - also fix advertized  command shorthands

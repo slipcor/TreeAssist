@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.25 - try to prevent messing with the tool while automatic destruction is happening  
+- v7.2.26 - add extra spacing to the config files for readability (thanks RandomGgames!)
 - [read more](doc/changelog.md)
 
 ***

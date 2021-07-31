@@ -1,11 +1,27 @@
 Blocks:
   Top:
+    # Radius around the trunk to check for leaves
     Radius: 6
+
   Middle:
+    # Radius around the trunk to check for leaves
     Radius: 6
+
+    # Allow air pockets in leaves
     Air: true
+
+
+# The parent tree config to inherit from, recursively
 Parent: jungle
+
+
 Trunk:
+  # How thick is the trunk
   Thickness: 2
+
+  # Look for branches
   Branch: true
+
+
+# Version number for automagical config updates
 Version: 7.1013

@@ -1,18 +1,40 @@
 Blocks:
+  # Here you can add extra blocks that can be expected inside or around tree leaves
   Materials:
-  - 'minecraft:birch_leaves'
+  - minecraft:birch_leaves
+
   Top:
+    # Height above the trunk to check for leaves
     Height: 2
+
+    # Radius around the trunk to check for leaves
     Radius: 2
+
   Custom Drops:
+    # Drop chances for extra drops. 1.0 would be 100% chance!
     Items:
-      'minecraft:birch_leaves': 0.01
+      minecraft:birch_leaves: 0.01
+
+
+# The parent tree config to inherit from, recursively
 Parent: default
+
+
+# The permission required for this tree type
 Permission: treeassist.destroy.birch
+
+
 Replanting:
-  Material: 'minecraft:birch_sapling'
+  # The material to place
+  Material: minecraft:birch_sapling
+
+
 Trunk:
+  # One of these materials needs to be part of the trunk for it to count as a trunk
   Materials:
-  - 'minecraft:birch_log'
-  - 'minecraft:stripped_birch_log'
-Version: 7.2017
+  - minecraft:birch_log
+  - minecraft:stripped_birch_log
+
+
+# Version number for automagical config updates
+Version: 7.2017998695373535
