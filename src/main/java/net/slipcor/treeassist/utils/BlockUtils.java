@@ -7,7 +7,7 @@ import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TALeafDecay;
 import net.slipcor.treeassist.externals.JobsHook;
 import net.slipcor.treeassist.externals.mcMMOHook;
-import net.slipcor.treeassist.listeners.TreeAssistBlockListener;
+import net.slipcor.treeassist.listeners.TreeAssistPlayerListener;
 import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.yml.MainConfig;
 import net.slipcor.treeassist.yml.TreeConfig;
@@ -333,7 +333,7 @@ public class BlockUtils {
                 TreeStructure.debug.i("Making custom event!");
 
                 BlockBreakEvent event = new BlockBreakEvent(block, player);
-                TreeAssistBlockListener.ignore(event);
+                TreeAssistPlayerListener.ignore(event);
                 TreeAssist.instance.getServer().getPluginManager().callEvent(event);
             }
         } else {

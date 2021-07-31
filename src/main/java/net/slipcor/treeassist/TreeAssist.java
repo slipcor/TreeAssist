@@ -7,6 +7,7 @@ import net.slipcor.treeassist.discovery.TreeBlock;
 import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.externals.WorldGuardListener;
 import net.slipcor.treeassist.listeners.TreeAssistBlockListener;
+import net.slipcor.treeassist.listeners.TreeAssistPlayerListener;
 import net.slipcor.treeassist.listeners.TreeAssistSpawnListener;
 import net.slipcor.treeassist.metrics.MetricsLite;
 import net.slipcor.treeassist.metrics.MetricsMain;
@@ -56,6 +57,7 @@ public class TreeAssist extends CorePlugin {
 
     private WorldGuardListener worldGuard = null;   // WorldGuard Listener instance
     private TreeAssistBlockListener listener;       // Block Listener instance
+    private TreeAssistPlayerListener playerListener; // Player Listener instance
     private TreeAssistSpawnListener spawnListener;  // Item Spawn Listener instance
 
     private CoreUpdater updater = null;
@@ -116,6 +118,13 @@ public class TreeAssist extends CorePlugin {
      */
     public TreeAssistBlockListener getBlockListener() {
         return listener;
+    }
+
+    /**
+     * @return the PlayerListener instance
+     */
+    public TreeAssistPlayerListener getPlayerListener() {
+        return playerListener;
     }
 
     /**
@@ -253,6 +262,9 @@ public class TreeAssist extends CorePlugin {
         }
 
         getServer().getPluginManager().registerEvents(listener, this);
+
+        this.playerListener = new TreeAssistPlayerListener(this);
+        getServer().getPluginManager().registerEvents(playerListener, this);
 
         this.spawnListener = new TreeAssistSpawnListener(this);
         getServer().getPluginManager().registerEvents(spawnListener, this);

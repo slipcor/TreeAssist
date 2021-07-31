@@ -35,7 +35,7 @@ public class CommandGrowTool extends CoreCommand {
                 for (ItemStack item : player.getInventory().getContents()) {
                     if (item != null) {
                         if (item.hasItemMeta()) {
-                            if (TreeAssist.instance.getBlockListener().isGrowTool(item)) {
+                            if (TreeAssist.instance.getPlayerListener().isGrowTool(item)) {
                                 player.getInventory().removeItem(item);
                                 TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_GROWTOOL_OFF.parse());
                                 found = true;
@@ -45,7 +45,7 @@ public class CommandGrowTool extends CoreCommand {
                     }
                 }
                 if (!found) {
-                    player.getInventory().addItem(TreeAssist.instance.getBlockListener().getGrowTool(species));
+                    player.getInventory().addItem(TreeAssist.instance.getPlayerListener().getGrowTool(species));
                     TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_GROWTOOL_ON.parse(species.name()));
                 }
 

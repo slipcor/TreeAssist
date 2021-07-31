@@ -4,6 +4,7 @@ import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.events.TATreeBrokenEvent;
+import net.slipcor.treeassist.listeners.TreeAssistPlayerListener;
 import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.runnables.TreeAssistReplant;
 import net.slipcor.treeassist.runnables.TreeAssistReplantDelay;
@@ -1480,6 +1481,7 @@ public class TreeStructure {
 
         if (player != null) {
             TreeAssist.instance.setCoolDown(player, config, trunk);
+            TreeAssistPlayerListener.addDestroyer(player, this);
         }
 
         final boolean statPickup = config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_PICKUP);
@@ -1532,6 +1534,7 @@ public class TreeStructure {
                         maybeBreakBlock(block, tool, player, statPickup, statMineBlock, damage, creative);
                         if (damage && ToolUtils.willBreak(tool, player)) {
                             this.cancel();
+                            TreeAssistPlayerListener.removeDestroyer(player, TreeStructure.this);
                             // we skip clearing the block list because there was an issue that requires cleanup
                             return;
                         }
@@ -1551,6 +1554,7 @@ public class TreeStructure {
                             maybeBreakBlock(block, tool, player, statPickup, statMineBlock, damage, creative);
                             if (damage && ToolUtils.willBreak(tool, player)) {
                                 this.cancel();
+                                TreeAssistPlayerListener.removeDestroyer(player, TreeStructure.this);
                                 // we skip clearing the block list because there was an issue that requires cleanup
                                 return;
                             }
@@ -1560,6 +1564,7 @@ public class TreeStructure {
                     }
                 }
                 try {
+                    TreeAssistPlayerListener.removeDestroyer(player, TreeStructure.this);
                     this.cancel();
                 } catch (Exception e) {
                     e.printStackTrace();

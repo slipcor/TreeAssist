@@ -30,7 +30,7 @@ public class CommandTool extends CoreCommand {
             for (ItemStack item : player.getInventory().getContents()) {
                 if (item != null) {
                     if (item.hasItemMeta()) {
-                        if (TreeAssist.instance.getBlockListener().isProtectTool(item)) {
+                        if (TreeAssist.instance.getPlayerListener().isProtectTool(item)) {
                             player.getInventory().removeItem(item);
                             TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOOL_OFF.parse());
                             found = true;
@@ -40,7 +40,7 @@ public class CommandTool extends CoreCommand {
                 }
             }
             if (!found) {
-                player.getInventory().addItem(TreeAssist.instance.getBlockListener().getProtectionTool());
+                player.getInventory().addItem(TreeAssist.instance.getPlayerListener().getProtectionTool());
                 TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOOL_ON.parse());
             }
             return;
