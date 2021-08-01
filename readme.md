@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.28 - update internal YMLs to be spaced, too - Core update  
+- v7.2.29 - respect the setting to disable per world for all the things that happen  
 - [read more](doc/changelog.md)
 
 ***

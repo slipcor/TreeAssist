@@ -59,6 +59,11 @@ public class TreeAssistPlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent event) {
+        if (!plugin.isActive(event.getPlayer().getWorld())) {
+            debug.i("not in this world: " + event.getPlayer().getWorld().getName());
+            return;
+        }
+
         if (event.hasItem() && event.hasBlock()) {
             if (this.isProtectTool(event.getPlayer().getInventory().getItemInMainHand())) {
                 Block clicked = event.getClickedBlock();
@@ -94,15 +99,15 @@ public class TreeAssistPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
+        if (!plugin.isActive(event.getPlayer().getWorld())) {
+            debug.i("not in this world: " + event.getPlayer().getWorld().getName());
+            return;
+        }
         if (plugin.config().getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE) &&
                 (TreeStructure.allTrunks.contains(event.getBlock().getType()))) {
-            if (plugin.isActive(event.getBlock().getWorld())) {
-                Block block = event.getBlock();
-                plugin.blockList.addBlock(block);
-                plugin.blockList.save();
-            } else {
-                debug.i("not in this world: " + event.getBlock().getWorld().getName());
-            }
+            Block block = event.getBlock();
+            plugin.blockList.addBlock(block);
+            plugin.blockList.save();
         }
     }
 
@@ -346,6 +351,11 @@ public class TreeAssistPlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPickUpEvent(EntityPickupItemEvent event) {
+        if (!plugin.isActive(event.getItem().getWorld())) {
+            debug.i("not in this world: " + event.getItem().getWorld().getName());
+            return;
+        }
+
         debug.i("Picking up : " + event.getItem().getType() + " >> " + event.getItem().getClass());
         if (event.getItem() instanceof FallingBlock) {
             debug.i("Falling block picked up!");
@@ -385,6 +395,11 @@ public class TreeAssistPlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onToolClick(InventoryClickEvent event) {
+        if (!plugin.isActive(event.getWhoClicked().getWorld())) {
+            debug.i("not in this world: " + event.getWhoClicked().getWorld().getName());
+            return;
+        }
+
         if (destroyers.containsKey((Player) event.getWhoClicked())) {
             event.setCancelled(true);
         }
@@ -392,6 +407,11 @@ public class TreeAssistPlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onToolSwitch(PlayerSwapHandItemsEvent event) {
+        if (!plugin.isActive(event.getPlayer().getWorld())) {
+            debug.i("not in this world: " + event.getPlayer().getWorld().getName());
+            return;
+        }
+
         if (destroyers.containsKey(event.getPlayer())) {
             event.setCancelled(true);
         }

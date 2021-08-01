@@ -44,10 +44,14 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onLeavesDecay(LeavesDecayEvent event) {
+        Block block = event.getBlock();
+        if (!plugin.isActive(block.getWorld())) {
+            debug.i("not in this world: " + block.getWorld().getName());
+            return;
+        }
         debug.i("leaf is decaying: " + BlockUtils.printBlock(event.getBlock()));
         if (plugin.config().getBoolean(MainConfig.CFG.DESTRUCTION_FAST_LEAF_DECAY) && plugin.Enabled) {
             debug.i("we want fast decay!");
-            Block block = event.getBlock();
             World world = block.getWorld();
             if (plugin.isActive(world)) {
                 debug.i("we are active here!");
@@ -137,6 +141,10 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onItemDespawn(ItemDespawnEvent event) {
+        if (!plugin.isActive(event.getEntity().getWorld())) {
+            debug.i("not in this world: " + event.getEntity().getWorld().getName());
+            return;
+        }
         if (event.getEntity() instanceof FallingBlock) {
             debug.i("Falling block despawning!");
             BlockUtils.removeIfFallen((FallingBlock) event.getEntity());
@@ -145,6 +153,10 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
+        if (!plugin.isActive(event.getWorld())) {
+            debug.i("not in this world: " + event.getWorld().getName());
+            return;
+        }
         if (antiGrow.contains(event.getLocation())) {
             event.setCancelled(true);
         }
@@ -153,6 +165,10 @@ public class TreeAssistBlockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onChangeBlock(EntityChangeBlockEvent event) {
+        if (!plugin.isActive(event.getBlock().getWorld())) {
+            debug.i("not in this world: " + event.getBlock().getWorld().getName());
+            return;
+        }
         debug.i("onEntityChangeBlock : " + event.getEntityType());
         if (event.getEntity() instanceof FallingBlock) {
             if (BlockUtils.removeIfFallen((FallingBlock) event.getEntity())) {

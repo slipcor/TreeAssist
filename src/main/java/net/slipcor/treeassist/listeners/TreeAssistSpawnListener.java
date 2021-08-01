@@ -39,6 +39,10 @@ public class TreeAssistSpawnListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void itemDropEvent(PlayerDropItemEvent event) {
+		if (!plugin.isActive(event.getPlayer().getWorld())) {
+			debug.i("not in this world: " + event.getPlayer().getWorld().getName());
+			return;
+		}
 		Item drop = event.getItemDrop();
 		for (String name : TreeAssist.treeConfigs.keySet()) {
 			TreeConfig config = TreeAssist.treeConfigs.get(name);
@@ -56,6 +60,10 @@ public class TreeAssistSpawnListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void itemSpawnEvent(ItemSpawnEvent event) {
+		if (!plugin.isActive(event.getEntity().getWorld())) {
+			debug.i("not in this world: " + event.getEntity().getWorld().getName());
+			return;
+		}
 		Item drop = event.getEntity();
 		for (String name : TreeAssist.treeConfigs.keySet()) {
 			TreeConfig config = TreeAssist.treeConfigs.get(name);
@@ -109,6 +117,11 @@ public class TreeAssistSpawnListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void playerPickupItemEvent(EntityPickupItemEvent event) {
+		if (!plugin.isActive(event.getItem().getWorld())) {
+			debug.i("not in this world: " + event.getItem().getWorld().getName());
+			return;
+		}
+
 		Item item = event.getItem();
 		if (MaterialUtils.isSapling(item.getItemStack().getType())) {
 			TreeAssistSaplingSelfPlant.remove(item);
