@@ -264,10 +264,6 @@ Trunk:
   # How high does it need to be to qualify as a tree
   Minimum Height: 4
 
-  # One of these materials needs to be part of the trunk for it to count as a trunk
-  Materials:
-  - minecraft:bedrock
-
   # How thick is the trunk
   Thickness: 1
 
@@ -275,4 +271,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.2021
+Version: 7.2029

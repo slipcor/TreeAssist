@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.29 - respect the setting to disable per world for all the things that happen  
+- v7.2.30 - remove bedrock from the default tree trunk material list. This is unnecessary and buggy
 - [read more](doc/changelog.md)
 
 ***
