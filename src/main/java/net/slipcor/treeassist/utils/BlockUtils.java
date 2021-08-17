@@ -154,6 +154,7 @@ public class BlockUtils {
             return;
         }
         TreeAssist.instance.blockList.logBreak(block, null);
+        debug.i("breaking block in the middle of radius leaves: " + BlockUtils.printBlock(block));
         breakBlock(null, block, new ItemStack(Material.AIR, 1), 0);
         World world = block.getWorld();
         int x = block.getX();
@@ -244,7 +245,7 @@ public class BlockUtils {
         if (delay < 0) {
             for (Block bye : breakables) {
                 TreeAssist.instance.blockList.logBreak(bye, null);
-                debug.i("instantly breaking leaf: " + printBlock(bye));
+                debug.i("breaking block instantly because of instant leaf decay: " + printBlock(bye));
                 breakBlock(null, bye, new ItemStack(Material.AIR, 1), 0);
             }
         } else {

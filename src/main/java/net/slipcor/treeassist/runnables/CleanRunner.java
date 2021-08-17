@@ -37,7 +37,7 @@ public class CleanRunner extends BukkitRunnable {
                     debug.i("CleanRunner: skipping air");
                     continue;
                 }
-                debug.i("CleanRunner: 1");
+                debug.i("CleanRunner - breaking block A: " + BlockUtils.printBlock(block));
                 BlockUtils.breakBlock(block);
             }
         } else {
@@ -50,7 +50,7 @@ public class CleanRunner extends BukkitRunnable {
                     debug.i("CleanRunner: skipping air");
                     continue;
                 }
-                debug.i("CleanRunner: 2");
+                debug.i("CleanRunner - breaking block B: " + BlockUtils.printBlock(block));
                 BlockUtils.breakBlock(block);
                 TreeAssist.instance.blockList.logBreak(block, null);
                 removeBlocks.remove(block);

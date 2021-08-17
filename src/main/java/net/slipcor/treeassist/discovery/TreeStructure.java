@@ -696,6 +696,8 @@ public class TreeStructure {
 
         int totalChecks = 0;
 
+        //TODO look outwards from the inside out, not in the x/z way
+
         for (int x=-radius; x<=radius; x++) {
             blocks: for (int z=-radius; z<= radius; z++) {
                 if (x == 0 && z == 0) {
@@ -1248,7 +1250,7 @@ public class TreeStructure {
         }
         TreeAssist.instance.blockList.logBreak(block, player);
         if (player == null) {
-            debug.i("no player, out!");
+            debug.i("breaking block [maybeBreakBlock] without player: " + BlockUtils.printBlock(block));
             BlockUtils.breakBlock(null, block, tool, bottom.getY());
             return;
         }
@@ -1259,7 +1261,7 @@ public class TreeStructure {
 
         if (MaterialUtils.isLog(blockMaterial)
                 && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
-            debug.i("auto adding!");
+            debug.i("breaking block [maybeBreakBlock] because of auto adding: " + BlockUtils.printBlock(block));
             if (statPickup) {
                 player.incrementStatistic(Statistic.PICKUP, blockMaterial);
             }
@@ -1270,7 +1272,7 @@ public class TreeStructure {
             debug.i("not auto adding!");
             if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_USE_SILK_TOUCH) && tool != null && tool.hasItemMeta() && tool.getItemMeta().getEnchants().containsKey(Enchantment.SILK_TOUCH)
                     && MaterialUtils.isMushroom(blockMaterial)) {
-                debug.i("silk touching mushroom!");
+                debug.i("breaking block because of silk touching mushroom: " + BlockUtils.printBlock(block));
 
                 block.setType(Material.AIR, true);
                 block.getWorld().dropItemNaturally(
@@ -1295,6 +1297,7 @@ public class TreeStructure {
 
                     debug.i("tool used: " + ToolUtils.printTool(anotherTool));
                 }
+                debug.i("breaking with player: " + BlockUtils.printBlock(block));
                 BlockUtils.breakBlock(player, block, anotherTool, bottom.getY());
             }
         }

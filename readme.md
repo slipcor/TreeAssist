@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.30 - remove bedrock from the default tree trunk material list. This is unnecessary and buggy
+- v7.2.31 - add more specific debug every time a block is being broken by TreeAssist
 - [read more](doc/changelog.md)
 
 ***
