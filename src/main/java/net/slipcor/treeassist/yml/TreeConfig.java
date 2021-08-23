@@ -14,6 +14,7 @@ import java.util.*;
 
 public class TreeConfig extends CoreConfig {
     private final Map<String, List<Material>> materials;
+    private final Map<String, List<String>> stringLists;
     private final Map<String, Map<String, Double>> maps;
 
     public enum CFG implements ConfigEntry {
@@ -60,6 +61,9 @@ public class TreeConfig extends CoreConfig {
         BLOCKS_TOP_HEIGHT("Blocks.Top.Height", 3, "Height above the trunk to check for leaves"),
 
         BLOCKS_VINES("Blocks.Vines", false, "Do follow vines"), // do we need to look for vines?
+
+        COMMANDS_PER_BLOCK("Commands.Per Block", new ArrayList<>(), "These commands will be issued when a tree is felled by a player"),
+        COMMANDS_PER_TREE("Commands.Per Tree", new ArrayList<>(), "These commands will be issued when a block is broken for a player"),
 
         GROUND_BLOCKS("Ground Blocks", new ArrayList<>(), "Valid blocks that are below and around the saplings"),
 
@@ -197,10 +201,11 @@ public class TreeConfig extends CoreConfig {
         }
 
         materials = new HashMap<>();
+        stringLists = new HashMap<>();
         maps = new HashMap<>();
 
         emptyNodes = new String[]{
-                "Automatic Destruction",  "Block Statistics",
+                "Automatic Destruction",  "Block Statistics", "Commands",
                 "Blocks", "Blocks.Custom Drops", "Blocks.Cap", "Blocks.Top", "Blocks.Middle",
                 "Replanting", "Replanting.Dropped", "Trunk", "Trunk.Custom Drops"
         };
@@ -231,6 +236,7 @@ public class TreeConfig extends CoreConfig {
         doubles.clear();
         strings.clear();
         materials.clear();
+        stringLists.clear();
         maps.clear();
     }
 
@@ -250,11 +256,20 @@ public class TreeConfig extends CoreConfig {
             } else if (c.type == ConfigEntry.Type.DOUBLE) {
                 doubles.put(c.node, parent.getDouble(c));
             } else if (c.type == ConfigEntry.Type.LIST) {
-                List<Material> mats = parent.getMaterials(c);
-                if (materials.containsKey(c.node)) {
-                    materials.get(c.node).addAll(mats);
+                if (c == CFG.COMMANDS_PER_BLOCK || c == CFG.COMMANDS_PER_TREE) {
+                    List<String> strings = parent.getStringList(c);
+                    if (stringLists.containsKey(c.node)) {
+                        stringLists.get(c.node).addAll(strings);
+                    } else {
+                        stringLists.put(c.node, new ArrayList<>(strings));
+                    }
                 } else {
-                    materials.put(c.node, new ArrayList<>(mats));
+                    List<Material> mats = parent.getMaterials(c);
+                    if (materials.containsKey(c.node)) {
+                        materials.get(c.node).addAll(mats);
+                    } else {
+                        materials.put(c.node, new ArrayList<>(mats));
+                    }
                 }
             } else if (c.type == ConfigEntry.Type.MAP) {
                 if (parent.maps.containsKey(c.node)) {
@@ -292,13 +307,24 @@ public class TreeConfig extends CoreConfig {
     protected void loadMaterials() {
         for (CFG cfg : CFG.values()) {
             if (cfg.type == ConfigEntry.Type.LIST) {
-                Set<Material> newMaterials = new LinkedHashSet<>();
-                if (materials.containsKey(cfg.getNode())) {
-                    // we already have entries from the parent(s)
-                    newMaterials.addAll(materials.get(cfg.getNode()));
+
+                if (cfg == CFG.COMMANDS_PER_TREE || cfg == CFG.COMMANDS_PER_BLOCK) {
+                    List<String> newCommands = new ArrayList<>();
+                    if (stringLists.containsKey(cfg.getNode())) {
+                        // we already have entries from the parent(s)
+                        newCommands.addAll(stringLists.get(cfg.getNode()));
+                    }
+                    newCommands.addAll(this.getStringList(cfg, null));
+                    stringLists.put(cfg.getNode(), newCommands);
+                } else {
+                    Set<Material> newMaterials = new LinkedHashSet<>();
+                    if (materials.containsKey(cfg.getNode())) {
+                        // we already have entries from the parent(s)
+                        newMaterials.addAll(materials.get(cfg.getNode()));
+                    }
+                    newMaterials.addAll(this.readRawMaterials(cfg));
+                    materials.put(cfg.getNode(), new ArrayList<>(newMaterials));
                 }
-                newMaterials.addAll(this.readRawMaterials(cfg));
-                materials.put(cfg.getNode(), new ArrayList<>(newMaterials));
             }
         }
     }
@@ -311,6 +337,14 @@ public class TreeConfig extends CoreConfig {
      * @return whether the material is valid or legacy
      */
     protected boolean checkMaterials(String node) {
+
+        String[] stringPaths = {"Commands.Per Tree", "Commands.Per Block"};
+
+        for (String test : stringPaths) {
+            if (node.startsWith(test)) {
+                return true;
+            }
+        }
 
         String[] materialPaths = {"Blocks.Custom Drops.Items.", "Blocks.Custom Drops.Factors.", "Trunk.Custom Drops.Items.", "Trunk.Custom Drops.Factors."};
 
@@ -422,6 +456,24 @@ public class TreeConfig extends CoreConfig {
         materials.put(cfg.node, matList);
 
         return matList;
+    }
+
+    /**
+     * Retrieve a list of materials from the value maps
+     *
+     * @param cfg the node of the value
+     * @return a list of materials (can contain null)
+     */
+    public List<String> getStringList(ConfigEntry cfg) {
+        if (stringLists.containsKey(cfg.getNode())) {
+            return stringLists.get(cfg.getNode());
+        }
+
+        List<String> list = getStringList(cfg, null);
+
+        stringLists.put(cfg.getNode(), list);
+
+        return list;
     }
 
     public Material getMaterial(CFG node) {

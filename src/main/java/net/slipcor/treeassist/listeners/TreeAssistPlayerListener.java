@@ -7,6 +7,7 @@ import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TASaplingBreakEvent;
 import net.slipcor.treeassist.externals.mcMMOHook;
 import net.slipcor.treeassist.utils.BlockUtils;
+import net.slipcor.treeassist.utils.CommandUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import net.slipcor.treeassist.utils.ToolUtils;
 import net.slipcor.treeassist.yml.Language;
@@ -305,6 +306,7 @@ public class TreeAssistPlayerListener implements Listener {
                         }
                         TreeAssist.instance.treeAdd(checkTreeStructure);
                         BlockUtils.callExternals(event.getBlock(), player, true);
+                        CommandUtils.commitTree(player, config);
                         checkTreeStructure.removeTreeLater(player, item);
                         return;
 
@@ -341,6 +343,7 @@ public class TreeAssistPlayerListener implements Listener {
                     matchingTreeStructure.removeBlocksBelow(event.getBlock());
                 }
                 BlockUtils.callExternals(event.getBlock(), player, true);
+                CommandUtils.commitTree(player, matchingTreeConfig);
                 matchingTreeStructure.removeTreeLater(null, null);
             } else {
                 // do we maybe need to place saplings still?

@@ -9,6 +9,7 @@ import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.runnables.TreeAssistReplant;
 import net.slipcor.treeassist.runnables.TreeAssistReplantDelay;
 import net.slipcor.treeassist.utils.BlockUtils;
+import net.slipcor.treeassist.utils.CommandUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import net.slipcor.treeassist.utils.ToolUtils;
 import net.slipcor.treeassist.yml.MainConfig;
@@ -1197,6 +1198,7 @@ public class TreeStructure {
         debug.i("breaking " + blockMaterial +". custom drops: " + calculateCustomDrops + " - roll: " + chanceValue);
 
         BlockUtils.callExternals(block, player, false);
+        CommandUtils.commitBlock(player, config);
 
         boolean isTrunk = this.trunkBlocks.contains(blockMaterial);
 

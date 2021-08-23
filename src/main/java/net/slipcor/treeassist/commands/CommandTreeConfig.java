@@ -22,6 +22,8 @@ public class CommandTreeConfig extends CoreCommand {
         accessibleLists.add(TreeConfig.CFG.GROUND_BLOCKS);
         accessibleLists.add(TreeConfig.CFG.NATURAL_BLOCKS);
         accessibleLists.add(TreeConfig.CFG.TOOL_LIST);
+        accessibleLists.add(TreeConfig.CFG.COMMANDS_PER_BLOCK);
+        accessibleLists.add(TreeConfig.CFG.COMMANDS_PER_TREE);
     }
 
     @Override

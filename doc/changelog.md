@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.32 - add commands per block / per tree, documentation will follow soon!
 - v7.2.31 - add more specific debug every time a block is being broken by TreeAssist
 - v7.2.30 - remove bedrock from the default tree trunk material list. This is unnecessary and buggy
 - v7.2.29 - respect the setting to disable per world for all the things that happen

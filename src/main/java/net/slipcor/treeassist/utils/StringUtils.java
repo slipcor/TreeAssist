@@ -1,5 +1,6 @@
 package net.slipcor.treeassist.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class StringUtils {
@@ -36,4 +37,33 @@ public final class StringUtils {
     }
 
 
+    public static String[] compress(String[] args) {
+        String fullCommand = org.apache.commons.lang.StringUtils.join(args, ' ');
+        if (!fullCommand.contains("\"")) {
+            return args;
+        }
+        List<String> arguments = new ArrayList<>();
+        String[] quoteString = fullCommand.split("\"");
+        int pos = 0;
+        for (String entry : quoteString) {
+            pos++;
+            if (pos%2 == 1) {
+                // not inside quotation marks, let us split it by spaces!
+                String[] spaced = entry.split(" ");
+                for (String space : spaced) {
+                    if (space.isEmpty()) {
+                        continue;
+                    }
+                    arguments.add(space);
+                }
+                continue;
+            }
+            // inside quotation marks, we add what we find
+            if (entry.isEmpty()) {
+                continue;
+            }
+            arguments.add(entry);
+        }
+        return arguments.toArray(new String[0]);
+    }
 }

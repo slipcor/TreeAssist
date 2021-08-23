@@ -14,6 +14,8 @@ import net.slipcor.treeassist.metrics.MetricsMain;
 import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.runnables.CoolDownCounter;
 import net.slipcor.treeassist.utils.BlockUtils;
+import net.slipcor.treeassist.utils.CommandUtils;
+import net.slipcor.treeassist.utils.StringUtils;
 import net.slipcor.treeassist.utils.ToolUtils;
 import net.slipcor.treeassist.yml.Language;
 import net.slipcor.treeassist.yml.MainConfig;
@@ -223,13 +225,16 @@ public class TreeAssist extends CorePlugin {
     @EventHandler
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         final CoreCommand acc = (args.length > 0) ? commandMap.get(args[0].toLowerCase()) : null;
+
+        String[] newArgs = StringUtils.compress(args);
+
         if (acc != null) {
-            acc.commit(sender, args);
+            acc.commit(sender, newArgs);
             return true;
         }
         for (CoreCommand cc : commandMap.values()) {
-            if (cc.getShort().contains(args[0].toLowerCase())) {
-                cc.commit(sender, args);
+            if (cc.getShort().contains(newArgs[0].toLowerCase())) {
+                cc.commit(sender, newArgs);
                 return true;
             }
         }
@@ -283,6 +288,7 @@ public class TreeAssist extends CorePlugin {
         TreeAssistSpawnListener.debug = new CoreDebugger(this, 7);
         BlockUtils.debug = new CoreDebugger(this, 8);
         TreeAssistPlayerListener.debug = new CoreDebugger(this, 9);
+        CommandUtils.debug = new CoreDebugger(this, 10);
         loadDebugger("Debug", Bukkit.getConsoleSender());
 
         if (config.getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE)) {
