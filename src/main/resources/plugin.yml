@@ -23,6 +23,7 @@ permissions:
       treeassist.destroy.darkoak: true
       treeassist.destroy.brownshroom: true
       treeassist.destroy.redshroom: true
+      treeassist.destroy.azalea: true
     default: false
   treeassist.destroy.birch:
     description: allows to use tree-assist for birch trees

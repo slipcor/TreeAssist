@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.32 - add commands per block / per tree, documentation will follow soon!
+- v7.2.33 - include azalea in the .* permission
 - [read more](doc/changelog.md)
 
 ***
