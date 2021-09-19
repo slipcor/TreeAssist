@@ -1450,14 +1450,14 @@ public class TreeStructure {
     public void removeBlocksBelow(Block block) {
         List<Block> removals = new ArrayList<>();
         for (Block b : trunk) {
-            if (b.getY() <= block.getY()) {
+            if (b.getY() < block.getY()) {
                 removals.add(b);
             }
         }
         trunk.removeAll(removals);
         removals.clear();
         for (Block b : extras) {
-            if (b.getY() <= block.getY()) {
+            if (b.getY() < block.getY()) {
                 removals.add(b);
             }
         }

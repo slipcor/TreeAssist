@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.33 - include azalea in the .* permission
+- v7.2.34 - properly implement "Only Above" logic. That "above" should be inclusive so that it does not leave the base level unbroken. Addresses #80
 - [read more](doc/changelog.md)
 
 ***
