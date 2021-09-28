@@ -4,7 +4,6 @@ import net.slipcor.core.CoreLanguage;
 import net.slipcor.core.CorePlugin;
 import net.slipcor.core.LanguageEntry;
 import net.slipcor.treeassist.TreeAssist;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -151,7 +150,7 @@ public final class Language extends CoreLanguage {
             for (final String word : args) {
                 result = result.replace("%" + ++i + '%', word);
             }
-            return ChatColor.translateAlternateColorCodes('&', result);
+            return Language.colorize(result);
         }
 
         /**
@@ -160,7 +159,7 @@ public final class Language extends CoreLanguage {
          * @return the node string
          */
         public String parse() {
-            return ChatColor.translateAlternateColorCodes('&', toString());
+            return Language.colorize(toString());
         }
 
         public String getNode() {
