@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.36 - prevent NPE when running the command with no arguments
 - v7.2.35 - support hex color codes (Core Update)
 - v7.2.34 - properly implement "Only Above" logic. That "above" should be inclusive so that it does not leave the base level unbroken. Addresses #80
 - v7.2.33 - include azalea in the .* permission

@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.35 - support hex color codes (Core Update)
+- v7.2.36 - prevent NPE when running the command with no arguments
 - [read more](doc/changelog.md)
 
 ***

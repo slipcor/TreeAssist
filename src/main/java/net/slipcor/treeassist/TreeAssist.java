@@ -228,10 +228,15 @@ public class TreeAssist extends CorePlugin {
 
         String[] newArgs = StringUtils.compress(args);
 
+        if (newArgs == null || newArgs.length == 0) {
+            return false;
+        }
+
         if (acc != null) {
             acc.commit(sender, newArgs);
             return true;
         }
+
         for (CoreCommand cc : commandMap.values()) {
             if (cc.getShort().contains(newArgs[0].toLowerCase())) {
                 cc.commit(sender, newArgs);
