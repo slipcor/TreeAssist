@@ -104,6 +104,12 @@ public class TreeAssistPlayerListener implements Listener {
             debug.i("not in this world: " + event.getPlayer().getWorld().getName());
             return;
         }
+
+        if (TreeStructure.allSaplings.contains(event.getBlockReplacedState().getType())) {
+            debug.i("onBlockPlace: this block was a sapling (" + event.getBlockReplacedState().getType());
+            return;
+        }
+
         if (plugin.config().getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE) &&
                 (TreeStructure.allTrunks.contains(event.getBlock().getType()))) {
             Block block = event.getBlock();

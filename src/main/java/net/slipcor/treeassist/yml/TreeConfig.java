@@ -291,6 +291,10 @@ public class TreeConfig extends CoreConfig {
             reloadMaps();
 
             TreeStructure.allTrunks.addAll(getMaterials(TreeConfig.CFG.TRUNK_MATERIALS));
+            Material replantMat = getMaterial(CFG.REPLANTING_MATERIAL);
+            if (!replantMat.equals(Material.AIR)) {
+                TreeStructure.allSaplings.add(replantMat);
+            }
             TreeStructure.allExtras.addAll(getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS));
             TreeStructure.allNaturals.addAll(getMaterials(CFG.NATURAL_BLOCKS));
             return true;

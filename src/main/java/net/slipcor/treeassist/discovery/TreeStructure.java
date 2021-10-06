@@ -32,6 +32,7 @@ import java.util.*;
 
 public class TreeStructure {
     public static Set<Material> allTrunks = new HashSet<>();     // Valid trunk materials of all configs
+    public static Set<Material> allSaplings = new HashSet<>();     // Valid sapling materials of all configs
     public static Set<Material> allExtras = new HashSet<>();     // Valid tree block materials of all configs
     public static Set<Material> allNaturals = new HashSet<>();      // Valid naturally occurring materials of all configs
     static Map<BlockFace, BlockFace[]> continuations = new EnumMap<>(BlockFace.class); // Followup directions based on a given direction
@@ -414,6 +415,7 @@ public class TreeStructure {
      */
     public static void reloadTreeDefinitions() {
         allTrunks.clear();
+        allSaplings.clear();
         allExtras.clear();
         TreeAssist.treeConfigs.clear();
 
@@ -1513,11 +1515,11 @@ public class TreeStructure {
             BlockUtils.sortInsideOut(extras, bottom);
         }
 
-        if (statPickup) {
+        if (statPickup && player != null) {
             BlockUtils.updatePickup(player, trunk.get(1).getType(), removeBlocks.size());
         }
 
-        if (statMineBlock) {
+        if (statMineBlock && player != null) {
             BlockUtils.updateMining(player, trunk.get(1).getType(), removeBlocks.size());
         }
 

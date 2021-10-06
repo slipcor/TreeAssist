@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.36 - prevent NPE when running the command with no arguments
+- v7.2.37 - fix an issue with tree growing triggering the block protection
 - [read more](doc/changelog.md)
 
 ***
