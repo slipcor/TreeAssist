@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.39 - do the legacy loading in the correct order to populate nonexisting tree ymls
 - v7.2.38 - try to repair the legacy 7.0 config fix
 - v7.2.37 - fix an issue with tree growing triggering the block protection
 - v7.2.36 - prevent NPE when running the command with no arguments

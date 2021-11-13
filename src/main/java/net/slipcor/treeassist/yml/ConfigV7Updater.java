@@ -2,7 +2,6 @@ package net.slipcor.treeassist.yml;
 
 import net.slipcor.core.ConfigEntry;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.discovery.TreeStructure;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -135,7 +134,7 @@ public class ConfigV7Updater {
         FileConfiguration config = TreeAssist.instance.config().getYamlConfiguration();
 
         if (TreeAssist.treeConfigs.get("default") == null) {
-            TreeStructure.reloadTreeDefinitions();
+            TreeAssist.instance.reloadLists();
         }
 
         FileConfiguration treeConfig = TreeAssist.treeConfigs.get("default").getYamlConfiguration();

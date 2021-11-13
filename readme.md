@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.38 - try to repair the legacy 7.0 config fix
+- v7.2.39 - do the legacy loading in the correct order to populate nonexisting tree ymls
 - [read more](doc/changelog.md)
 
 ***
