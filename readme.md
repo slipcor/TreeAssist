@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.37 - fix an issue with tree growing triggering the block protection
+- v7.2.38 - try to repair the legacy 7.0 config fix
 - [read more](doc/changelog.md)
 
 ***
