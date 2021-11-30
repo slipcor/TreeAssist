@@ -29,7 +29,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 
 import java.io.File;
 import java.util.*;
@@ -222,7 +221,7 @@ public class TreeAssist extends CorePlugin {
         new CommandGrowTool(this).load(commandList, commandMap);
     }
 
-    @EventHandler
+    @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         final CoreCommand acc = (args.length > 0) ? commandMap.get(args[0].toLowerCase()) : null;
 

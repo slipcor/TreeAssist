@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.41 - Bye bye, biomes [1.18] 
+- v7.2.42 - use proper Override annotation for onCommand
 - [read more](doc/changelog.md)
 
 ***
