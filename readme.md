@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.40 - prevent houses built out of logs to count as farming rows
+- v7.2.41 - Bye bye, biomes [1.18] 
 - [read more](doc/changelog.md)
 
 ***

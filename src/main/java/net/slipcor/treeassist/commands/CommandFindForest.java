@@ -4,6 +4,7 @@ import net.slipcor.core.CoreCommand;
 import net.slipcor.core.CorePlugin;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.yml.Language;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -18,6 +19,29 @@ public class CommandFindForest extends CoreCommand {
     public CommandFindForest(CorePlugin plugin) {
         super(plugin, "treeassist.findforest", Language.MSG.ERROR_INVALID_ARGUMENT_COUNT);
 
+        String version = Bukkit.getServer().getBukkitVersion();
+
+        String[] chunks;
+        try {
+            chunks = version.split("-")[0].split("\\.");
+        } catch (Exception e) {
+            chunks = new String[]{"1", "11"};
+        }
+        int a, b;
+        try {
+            a = Integer.parseInt(chunks[0]);
+        } catch (Exception e) {
+            a = 1;
+        }
+        try {
+            b = Integer.parseInt(chunks[1]);
+        } catch (Exception e) {
+            b = 9;
+        }
+        if (a > 1 || b > 17 ) {
+            return;
+        }
+
         biomeMap.put("ACACIA", Arrays.asList(Biome.SAVANNA));
         biomeMap.put("BIRCH", Arrays.asList(Biome.BIRCH_FOREST, Biome.BIRCH_FOREST_HILLS));
         biomeMap.put("DARK_OAK", Arrays.asList(Biome.DARK_FOREST));
@@ -31,6 +55,11 @@ public class CommandFindForest extends CoreCommand {
     public void commit(CommandSender sender, String[] args) {
         if (!hasPerms(sender)) {
             TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_PERMISSION_FINDFOREST.parse());
+            return;
+        }
+
+        if (biomeMap.isEmpty()) {
+            TreeAssist.instance.sendPrefixed(sender, "Please use /locatebiome");
             return;
         }
 
