@@ -168,12 +168,16 @@ public class TreeStructure {
 
             getAllExtras();
 
-            if (extras == null || (extras.size() < config.getInt(TreeConfig.CFG.BLOCKS_REQUIRED, 10) && hasDistanceTo(neighborTrunks))) {
-                if (extras != null) {
-                    debug.i("Not enough extra blocks found: " + extras.size());
-                }
-                failReason = FailReason.NOT_ENOUGH_LEAVES;
+            if (extras == null || extras.size() == 0) {
+                debug.i("No leaves found!");
                 valid = false;
+                failReason = FailReason.NO_LEAVES;
+            } else if (!hasDistanceTo(neighborTrunks)) {
+                debug.i("Farming row?");
+            } else if (extras.size() < config.getInt(TreeConfig.CFG.BLOCKS_REQUIRED, 10)) {
+                debug.i("Not enough extra blocks found: " + extras.size());
+                valid = false;
+                failReason = FailReason.NOT_ENOUGH_LEAVES;
             }
             return;
         }
@@ -299,10 +303,14 @@ public class TreeStructure {
 
         getDirectionalExtras();
 
-        if (extras == null || (extras.size() < 10 && hasDistanceTo(neighborTrunks))) {
-            if (extras != null) {
-                debug.i("Not enough extra blocks found: " + extras.size());
-            }
+        if (extras == null || extras.size() == 0) {
+            debug.i("No leaves found!");
+            valid = false;
+            failReason = FailReason.NO_LEAVES;
+        } else if (!hasDistanceTo(neighborTrunks)) {
+            debug.i("Farming row?");
+        } else if (extras.size() < config.getInt(TreeConfig.CFG.BLOCKS_REQUIRED, 10)) {
+            debug.i("Not enough extra blocks found: " + extras.size());
             valid = false;
             failReason = FailReason.NOT_ENOUGH_LEAVES;
         }
