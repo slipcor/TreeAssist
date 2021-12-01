@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.43 - fast decaying leaves will drop items now - can be disabled in the main config
 - v7.2.42 - use proper Override annotation for onCommand
 - v7.2.41 - Bye bye, biomes [1.18]
 - v7.2.40 - prevent houses built out of logs to count as farming rows

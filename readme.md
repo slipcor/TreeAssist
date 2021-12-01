@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.42 - use proper Override annotation for onCommand
+- v7.2.43 - fast decaying leaves will drop items now - can be disabled in the main config
 - [read more](doc/changelog.md)
 
 ***

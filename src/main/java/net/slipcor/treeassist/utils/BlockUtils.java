@@ -39,7 +39,10 @@ public class BlockUtils {
      * Finally actually break a block
      *
      * @param block the block to break
+     *
+     * @deprecated use breakBlock(null, block, null, block.getY()-1)
      */
+    @Deprecated
     public static void breakBlock(Block block) {
         breakBlock(null, block, null, 0);
     }
@@ -50,6 +53,7 @@ public class BlockUtils {
      * @param player the player initiating the breaking
      * @param block the block to break
      * @param tool the item the player is holding
+     * @param baseHeight the y position the trunk started at, for falling calculation
      */
     public static void breakBlock(Player player, Block block, ItemStack tool, int baseHeight) {
         if (useFallingBlock == null) {

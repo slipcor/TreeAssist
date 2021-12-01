@@ -3,10 +3,13 @@ package net.slipcor.treeassist.runnables;
 import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.discovery.FailReason;
+import net.slipcor.treeassist.discovery.LeavesStructure;
 import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.utils.BlockUtils;
+import net.slipcor.treeassist.yml.MainConfig;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Set;
@@ -27,6 +30,9 @@ public class CleanRunner extends BukkitRunnable {
 
     @Override
     public void run() {
+        boolean generateDrops = (me instanceof LeavesStructure) && TreeAssist.instance.config().getBoolean(MainConfig.CFG.DESTRUCTION_FAST_LEAF_DECAY_REGULAR_DROPS);
+        debug.i("CleanRunner: will generate drops: " + generateDrops);
+        ItemStack breakTool = generateDrops ? new ItemStack(Material.AIR, 1) : null;
         if (offset < 0) {
             for (Block block : removeBlocks) {
                 if (sapling.equals(block.getType())) {
@@ -38,7 +44,7 @@ public class CleanRunner extends BukkitRunnable {
                     continue;
                 }
                 debug.i("CleanRunner - breaking block A: " + BlockUtils.printBlock(block));
-                BlockUtils.breakBlock(block);
+                BlockUtils.breakBlock(null, block, breakTool, block.getY()-1);
             }
         } else {
             for (Block block : removeBlocks) {
@@ -51,7 +57,8 @@ public class CleanRunner extends BukkitRunnable {
                     continue;
                 }
                 debug.i("CleanRunner - breaking block B: " + BlockUtils.printBlock(block));
-                BlockUtils.breakBlock(block);
+                BlockUtils.breakBlock(null, block, breakTool, block.getY()-1);
+
                 TreeAssist.instance.blockList.logBreak(block, null);
                 removeBlocks.remove(block);
                 return;
