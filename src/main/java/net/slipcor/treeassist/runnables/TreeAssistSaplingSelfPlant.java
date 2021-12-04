@@ -56,10 +56,11 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 
 	private Block findBlock(Item item) {
 		Block result = item.getLocation().getBlock();
-		while (result.getY() > 1 && !config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS).contains(result.getType()) || !result.getType().isSolid()) {
+		int checks = 255;
+		while (checks-- > 0 && !config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS).contains(result.getType()) || !result.getType().isSolid()) {
 			result = result.getRelative(BlockFace.DOWN);
 		}
-		if (result.getY() <= 1) {
+		if (checks <= 0 || result.getType().equals(Material.BEDROCK)) {
 			TreeStructure.debug.i("we did not find a valid block");
 			return item.getLocation().getBlock();
 		}

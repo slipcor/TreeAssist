@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.43 - fast decaying leaves will drop items now - can be disabled in the main config
+- v7.2.44 - support tree farms below 0 [y position]
 - [read more](doc/changelog.md)
 
 ***

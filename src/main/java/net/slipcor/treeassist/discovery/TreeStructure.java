@@ -717,11 +717,12 @@ public class TreeStructure {
 
                 Block checkBlock = bottom.getRelative(x, 4, z);
                 int y = checkBlock.getY();
-                while (y > 1) {
+                int checks = 255;
+                while (checks-- > 0) {
                     totalChecks++;
                     checkBlock = checkBlock.getRelative(BlockFace.DOWN);
 
-                    if (trunk.contains(checkBlock)) {
+                    if (trunk.contains(checkBlock) || checkBlock.getType().equals(Material.BEDROCK)) {
                         break;
                     }
 
