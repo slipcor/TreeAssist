@@ -98,6 +98,7 @@ public final class Language extends CoreLanguage {
         SUCCESSFUL_FINDFOREST("successful.findforest", "&aForest found at &r%1%"),
 
         SUCCESSFUL_NOREPLANT("successful.noreplant", "&aYou now stop replanting trees for %1% seconds."),
+        SUCCESSFUL_REPLANT("successful.replant", "&aYou now will replant trees for %1% seconds."),
 
         SUCCESSFUL_PROTECT_OFF("successful.protect_off", "&aSapling is no longer protected!"),
         SUCCESSFUL_PROTECT_ON("successful.protect_on", "&aSapling now is protected!"),

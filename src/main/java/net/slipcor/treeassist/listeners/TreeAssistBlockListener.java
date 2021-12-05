@@ -36,6 +36,7 @@ public class TreeAssistBlockListener implements Listener {
 
     private final TreeAssistAntiGrow antiGrow;
     private final Map<String, Long> noreplant = new HashMap<>();
+    private final Map<String, Long> replant = new HashMap<>();
 
     public TreeAssistBlockListener(TreeAssist instance) {
         plugin = instance;
@@ -198,4 +199,21 @@ public class TreeAssistBlockListener implements Listener {
         }
         return false;
     }
+
+    public void replant(String name, int seconds) {
+        replant.put(name, (System.currentTimeMillis() / 1000) + seconds);
+    }
+
+    public boolean isReplant(String name) {
+        if (replant.containsKey(name)) {
+            if (replant.get(name) < System.currentTimeMillis() / 1000) {
+                replant.remove(name);
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

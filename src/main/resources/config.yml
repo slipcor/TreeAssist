@@ -27,6 +27,8 @@ Commands:
     Max Radius: 30
   No Replant:
     Cooldown Time: 30
+  Replant:
+    Cooldown Time: 30
 
 # === [ Automatic Destruction Settings ] ===
 Destruction:
@@ -112,4 +114,4 @@ Update:
   Type: beta
 
 # The config version for update checks
-Version: 7.2043
+Version: 7.2045

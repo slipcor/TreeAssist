@@ -215,6 +215,7 @@ public class TreeAssist extends CorePlugin {
         new CommandPurge(this).load(commandList, commandMap);
         new CommandReload(this).load(commandList, commandMap);
         new CommandRemoveTool(this).load(commandList, commandMap);
+        new CommandReplant(this).load(commandList, commandMap);
         new CommandToggle(this).load(commandList, commandMap);
         new CommandTool(this).load(commandList, commandMap);
         new CommandTreeConfig(this).load(commandList, commandMap);

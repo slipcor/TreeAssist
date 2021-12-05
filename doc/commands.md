@@ -70,4 +70,5 @@ Command | Shorthand | Definition
 [/treeassist purge](commands/purge.md) [world] | /ta !p [world] | purge block placement entries of [world]
 [/treeassist purge](commands/purge.md) [days] | /ta !p [days] | purge block placement entries older than [days]
 [/treeassist reload](commands/reload.md) | /ta !r | reload the plugin
+[/treeassist replant](commands/replant.md) | /ta !rp | force replanting saplings for some time
 [/treeassist tool](commands/tool.md) | /ta !pt | toggle the sapling protection tool

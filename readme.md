@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.44 - support tree farms below 0 [y position]
+- v7.2.45 - add github issue #71 - /treeassist replant - to enforce sapling planting for yourself for a limited time
 - [read more](doc/changelog.md)
 
 ***

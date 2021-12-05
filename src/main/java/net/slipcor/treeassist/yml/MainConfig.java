@@ -27,6 +27,7 @@ public class MainConfig extends CoreConfig {
         COMMANDS_FORCE_GROW_DEFAULT_RADIUS("Commands.Force Grow.Default Radius", 10, ""),
         COMMANDS_FORCE_GROW_MAX_RADIUS("Commands.Force Grow.Max Radius", 30, ""),
         COMMANDS_NOREPLANT_COMMAND_TIME_COOLDOWN("Commands.No Replant.Cooldown Time", 30, ""),
+        COMMANDS_REPLANT_COMMAND_TIME_COOLDOWN("Commands.Replant.Cooldown Time", 30, ""),
 
         DESTRUCTION("Destruction", "=== [ Automatic Destruction Settings ] ==="),
         DESTRUCTION_FALLING_BLOCKS("Destruction.Falling Blocks", false, "Spawn a FallingBlock when breaking a block"),
@@ -163,7 +164,7 @@ public class MainConfig extends CoreConfig {
             save();
         }
         emptyNodes = new String[]{
-                "General", "Commands", "Commands.Force Break", "Commands.Force Grow", "Commands.No Replant",
+                "General", "Commands", "Commands.Force Break", "Commands.Force Grow", "Commands.No Replant", "Commands.Replant",
                 "Destruction", "Placed Blocks", "Plugins", "Worlds", "Modding", "Update"
         };
     }

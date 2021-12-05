@@ -317,7 +317,8 @@ public class TreeAssistPlayerListener implements Listener {
                         return;
 
                     } else if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL) ||
-                            config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE)) {
+                            config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE) ||
+                            TreeAssist.instance.getBlockListener().isReplant(player.getName())) {
                         matchingTreeConfig = config;
                         matchingTreeStructure = checkTreeStructure;
                         continue configs;
@@ -339,8 +340,9 @@ public class TreeAssistPlayerListener implements Listener {
 
         if (matchingTreeConfig != null) {
             debug.i("Fallback to enforcing something!");
-            if (matchingTreeConfig.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE)) {
-                matchingTreeStructure.maybeReplant(null, event.getBlock());
+            if (matchingTreeConfig.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE) ||
+                    TreeAssist.instance.getBlockListener().isReplant(player.getName())) {
+                matchingTreeStructure.maybeReplant(player, event.getBlock());
             }
 
             if (matchingTreeConfig.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL)) {

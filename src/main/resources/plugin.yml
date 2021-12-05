@@ -56,6 +56,7 @@ permissions:
       treeassist.reload: true
       treeassist.removetool: true
       treeassist.replant: true
+      treeassist.replantcommand: true
       treeassist.toggle: true
       treeassist.tool: true
     default: op
@@ -100,6 +101,9 @@ permissions:
     default: op
   treeassist.replant:
     description: allows to replant trees
+    default: op
+  treeassist.replantcommand:
+    description: allows to force replacing saplings for some time
     default: op
   treeassist.toggle:
     description: allows to toggle TreeAssist usage
