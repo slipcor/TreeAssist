@@ -8,6 +8,9 @@ General:
   # Prevent breaking of logs without the right tool
   Prevent Log Breaking Without Tool: false
 
+  # Prevent breaking of logs if the tool would break in the process
+  Prevent Log Breaking With Breaking Tool: false
+
   # For the toggling command, should players start with TreeAssist active?
   Toggle Default: true
 
@@ -114,4 +117,4 @@ Update:
   Type: beta
 
 # The config version for update checks
-Version: 7.2045
+Version: 7.2046

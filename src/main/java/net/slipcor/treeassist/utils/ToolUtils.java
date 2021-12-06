@@ -9,9 +9,12 @@ import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ToolUtils {
     private ToolUtils() {}
@@ -356,5 +359,74 @@ public class ToolUtils {
             return true;
         }
         return false;
+    }
+
+    public static int calculateDamage(TreeConfig config, ItemStack tool) {
+        if (tool == null) {
+            return 0;
+        }
+        if (tool.containsEnchantment(Enchantment.DURABILITY)) {
+            int damageChance = (int) (100d / ((double) tool
+                    .getEnchantmentLevel(Enchantment.DURABILITY) + 1d));
+
+            int random = new Random().nextInt(100);
+
+            if (random >= damageChance) {
+                return 0;
+            }
+        }
+
+        int ench = 100;
+
+        if (tool.getEnchantments().containsKey(Enchantment.DURABILITY)) {
+            ench = 100 / (tool.getEnchantmentLevel(Enchantment.DURABILITY) + 1);
+        }
+
+        if ((new Random()).nextInt(100) > ench) {
+            return 0;
+        }
+
+        if (config.getMaterials(TreeConfig.CFG.TOOL_LIST).contains(tool.getType())) {
+            return 1;
+        }
+
+        if (isVanillaTool(tool)) {
+            return 2;
+        }
+
+        return 0;
+    }
+
+    public static void commitDamage(ItemStack tool, int damagePredicted) {
+        if (tool == null) {
+            return;
+        }
+        ItemMeta meta = tool.getItemMeta();
+        if (meta != null) {
+            ((Damageable)meta).setDamage(((Damageable)meta).getDamage() + damagePredicted);
+            tool.setItemMeta(meta);
+        }
+    }
+
+    public static int calculateDamage(TreeConfig config, ItemStack tool, TreeStructure tree) {
+        if (tree == null || !tree.isValid()) {
+            return 0;
+        }
+
+        int result = 0;
+
+        for (int count = tree.trunk.size(); count>0; count --) {
+            result += calculateDamage(config, tool);
+        }
+
+        return result;
+    }
+
+    public static boolean wouldBreak(ItemStack tool, int damage) {
+        if (tool == null || tool.getItemMeta() == null) {
+            return false;
+        }
+        return tool.getType().getMaxDurability() <=
+                ((Damageable) tool.getItemMeta()).getDamage() + damage;
     }
 }

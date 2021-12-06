@@ -1326,40 +1326,13 @@ public class TreeStructure {
             return;
         }
 
-        if (!calculateCustomDrops && tool != null) {
-            if (tool.containsEnchantment(Enchantment.DURABILITY)) {
-                int damageChance = (int) (100d / ((double) tool
-                        .getEnchantmentLevel(Enchantment.DURABILITY) + 1d));
+        int damage = ToolUtils.calculateDamage(config, tool);
 
-                int random = new Random().nextInt(100);
-
-                if (random >= damageChance) {
-                    return; // nodamage -> out!
-                }
-            }
-
-            int ench = 100;
-
-            if (tool.getEnchantments().containsKey(Enchantment.DURABILITY)) {
-                ench = 100 / (tool.getEnchantmentLevel(Enchantment.DURABILITY) + 1);
-            }
-
-            if ((new Random()).nextInt(100) > ench) {
-                return; // no damage
-            }
-
-            if (config.getMaterials(TreeConfig.CFG.TOOL_LIST).contains(tool.getType())) {
-                ItemMeta meta = tool.getItemMeta();
-                if (meta != null) {
-                    ((Damageable)meta).setDamage(((Damageable)meta).getDamage() + 1);
-                    tool.setItemMeta(meta);
-                }
-            } else if (ToolUtils.isVanillaTool(tool)) {
-                ItemMeta meta = tool.getItemMeta();
-                if (meta != null) {
-                    ((Damageable)meta).setDamage(((Damageable)meta).getDamage() + 2);
-                    tool.setItemMeta(meta);
-                }
+        if (damage > 0 && !calculateCustomDrops && tool != null) {
+            ItemMeta meta = tool.getItemMeta();
+            if (meta != null) {
+                ((Damageable)meta).setDamage(((Damageable)meta).getDamage() + damage);
+                tool.setItemMeta(meta);
             }
         }
     }
@@ -1481,10 +1454,15 @@ public class TreeStructure {
      *
      * @param player the player initiating the breaking
      * @param tool an optional tool the player is holding
+     * @param damagePredicted the damage we pre-calculated
      */
-    public void removeTreeLater(Player player, ItemStack tool) {
+    public void removeTreeLater(Player player, ItemStack tool, int damagePredicted) {
         boolean creative = player != null && player.getGameMode() == GameMode.CREATIVE;
-        boolean damage = !creative && ToolUtils.receivesDamage(config, tool);
+        boolean damage = damagePredicted < 0 && !creative && ToolUtils.receivesDamage(config, tool);
+
+        if (damagePredicted > 0) {
+            ToolUtils.commitDamage(tool, damagePredicted);
+        }
 
         debug.i("Removing The Tree!");
 

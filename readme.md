@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.45 - add github issue #71 - /treeassist replant - to enforce sapling planting for yourself for a limited time
+- v7.2.46 - add github issue #77 - "Prevent Log Breaking Without Tool" - it will check before trashing your tool when auto destructing
 - [read more](doc/changelog.md)
 
 ***

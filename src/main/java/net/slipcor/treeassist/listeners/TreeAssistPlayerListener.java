@@ -214,6 +214,19 @@ public class TreeAssistPlayerListener implements Listener {
                         }
                     }
 
+                    int damagePredicted = -1;
+
+                    if (TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_PREVENT_WITH_BREAKING_TOOL)) {
+                        damagePredicted = ToolUtils.calculateDamage(config, player.getInventory().getItemInMainHand(), checkTreeStructure);
+                        debug.i("We predict damage: " + damagePredicted);
+                        if (ToolUtils.wouldBreak(player.getInventory().getItemInMainHand(), damagePredicted)) {
+                            debug.i("Player's tool would break and we do not want that!");
+                            TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_NEVER_BREAK_LOG_WITH_BREAKING_TOOL.parse());
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+
                     if (plugin.config().getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&
                             !player.hasPermission(config.getString(TreeConfig.CFG.PERMISSION))) {
                         debug.i("Player does not have permission " + config.getString(TreeConfig.CFG.PERMISSION));
@@ -313,7 +326,7 @@ public class TreeAssistPlayerListener implements Listener {
                         TreeAssist.instance.treeAdd(checkTreeStructure);
                         BlockUtils.callExternals(event.getBlock(), player, true);
                         CommandUtils.commitTree(player, config);
-                        checkTreeStructure.removeTreeLater(player, item);
+                        checkTreeStructure.removeTreeLater(player, item, damagePredicted);
                         return;
 
                     } else if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL) ||
@@ -352,7 +365,7 @@ public class TreeAssistPlayerListener implements Listener {
                 }
                 BlockUtils.callExternals(event.getBlock(), player, true);
                 CommandUtils.commitTree(player, matchingTreeConfig);
-                matchingTreeStructure.removeTreeLater(null, null);
+                matchingTreeStructure.removeTreeLater(null, null, 0);
             } else {
                 // do we maybe need to place saplings still?
                 matchingTreeStructure.plantSaplings();
