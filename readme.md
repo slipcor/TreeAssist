@@ -101,9 +101,11 @@ Joining the Discord Server gets you early access to latest builds, and maybe it 
 ## Todos
 
 * Cooldown for forcebreak and forcegrow
-* Refactor configuration nodes to not include spaces to allow for config command logic
 * Add more custom WorldGuard flags to deny functionality by region
 * Improve debug functionality [Core?] by implementing String filter logic
+* Debug Tool to show the extent of a tree "what would be broken"
+* Add debug clarifier to more precisely debug why desired outcomes are not happening
+* Modularize external plugin features for easier modular functionality 
 
 ***
 
