@@ -63,6 +63,7 @@ TreeConfig | ------------ | -------------
 Command | Shorthand | Definition
 ------------- | ------------- | -------------
 [/treeassist debug](commands/debug.md) | /ta !d | start/stop debug
+[/treeassist debugtool](commands/debugtool.md) | /ta !dt | toggle the debug tool
 [/treeassist findforest](commands/findforest.md) [treetype] | /ta !ff  | find biome based on tree type
 [/treeassist growtool](commands/growtool.md) | /ta !gt [treetype] | toggle the grow tool for [treetype]
 [/treeassist noreplant](commands/noreplant.md) | /ta !nr | stop replanting saplings for some time

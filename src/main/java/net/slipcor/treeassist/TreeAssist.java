@@ -3,6 +3,7 @@ package net.slipcor.treeassist;
 import net.slipcor.core.*;
 import net.slipcor.treeassist.blocklists.*;
 import net.slipcor.treeassist.commands.*;
+import net.slipcor.treeassist.discovery.DiscoveryResult;
 import net.slipcor.treeassist.discovery.TreeBlock;
 import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.externals.WorldGuardListener;
@@ -207,6 +208,7 @@ public class TreeAssist extends CorePlugin {
         new CommandAddTool(this).load(commandList, commandMap);
         new CommandConfig(this).load(commandList, commandMap);
         new CommandDebug(this).load(commandList, commandMap);
+        new CommandDebugTool(this).load(commandList, commandMap);
         new CommandFindForest(this).load(commandList, commandMap);
         new CommandForceBreak(this).load(commandList, commandMap);
         new CommandForceGrow(this).load(commandList, commandMap);
@@ -294,6 +296,7 @@ public class TreeAssist extends CorePlugin {
         BlockUtils.debug = new CoreDebugger(this, 8);
         TreeAssistPlayerListener.debug = new CoreDebugger(this, 9);
         CommandUtils.debug = new CoreDebugger(this, 10);
+        DiscoveryResult.debug = new CoreDebugger(this, 11);
         loadDebugger("Debug", Bukkit.getConsoleSender());
 
         if (config.getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE)) {

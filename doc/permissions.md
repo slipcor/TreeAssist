@@ -25,9 +25,11 @@ Node |  Definition | Default | Function
 treeassist.commands | **allows all commands** | op | ALL THE COMMANDS
 treeassist.addtool | allows the addtool command | op | add a required tool
 treeassist.debug | allows the debug command | op | debug log information
+treeassist.debugtool | allows the debug tool command | op | gain the debug tool
 treeassist.findforest | allows the findforest command | op | find forest by tree type
 treeassist.forcebreak | allows the forcebreak command | op | force break trees
 treeassist.forcegrow | allows the forcegrow command | op | force grow saplings
+treeassist.growtool | allows the grow command | op | gain the grow tool
 treeassist.noreplant | allows the noreplant command | **true** | stop replanting saplings for some time
 treeassist.purge | allows the purge command | op | purge the database or data.yml
 treeassist.reload | allows the reload command | op | reload the TreeAssist config

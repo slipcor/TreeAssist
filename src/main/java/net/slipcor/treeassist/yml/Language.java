@@ -67,6 +67,7 @@ public final class Language extends CoreLanguage {
         ERROR_PERMISSION_TOGGLE_OTHER("error.permission.toggle_other", "&cYou don't have 'treeassist.toggle.other'"),
         ERROR_PERMISSION_TOGGLE_GLOBAL("error.permission.toggle_global", "&cYou don't have 'treeassist.toggle.global'"),
         ERROR_PERMISSION_TOGGLE_TOOL("error.permission.toggle_tool", "&cYou don't have 'treeassist.tool'"),
+        ERROR_PERMISSION_TOGGLE_DEBUGTOOL("error.permission.toggle_debugtool", "&cYou don't have 'treeassist.debugtool'"),
         ERROR_PERMISSION_TOGGLE_GROWTOOL("error.permission.toggle_growtool", "&cYou don't have 'treeassist.growtool'"),
         ERROR_REMOVETOOL_NOTDONE("error.removetool.not_done", "&cTool is no required tool!"),
 
@@ -124,6 +125,9 @@ public final class Language extends CoreLanguage {
         SUCCESSFUL_TOGGLE_YOU_ON("successful.toggle.you_global_on", "&aTreeAssist functions are now turned on for you!"),
         SUCCESSFUL_TOGGLE_YOU_WORLD_OFF("successful.toggle.you_world_off", "&aTreeAssist functions are turned off for you in world %1%!"),
         SUCCESSFUL_TOGGLE_YOU_WORLD_ON("successful.toggle.you_world_on", "&aTreeAssist functions are now turned on for you in world %1%!"),
+
+        SUCCESSFUL_DEBUGTOOL_OFF("successful.debug_tool_off", "&aDebug Tool removed!"),
+        SUCCESSFUL_DEBUGTOOL_ON("successful.debug_tool_on", "&aYou have been given the Debug Tool!"),
 
         SUCCESSFUL_GROWTOOL_OFF("successful.grow_tool_off", "&aGrow Tool removed!"),
         SUCCESSFUL_GROWTOOL_ON("successful.grow_tool_on", "&aYou have been given the Grow Tool! It will try to grow a tree of type &e%1%&a!"),

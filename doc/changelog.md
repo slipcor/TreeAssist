@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.47 - add a debugtool command to show the extent of trees, fix thick jungle trees stealing leaves from other jungle trees
 - v7.2.46 - add github issue #77 - "Prevent Log Breaking Without Tool" - it will check before trashing your tool when auto destructing
 - v7.2.45 - add github issue #71 - /treeassist replant - to enforce sapling planting for yourself for a limited time
 - v7.2.44 - support tree farms below 0 [y position]

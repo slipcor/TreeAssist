@@ -426,6 +426,9 @@ public class ToolUtils {
         if (tool == null || tool.getItemMeta() == null) {
             return false;
         }
+        if (TreeAssist.instance.getPlayerListener().isDebugTool(tool)) {
+            return false;
+        }
         return tool.getType().getMaxDurability() <=
                 ((Damageable) tool.getItemMeta()).getDamage() + damage;
     }

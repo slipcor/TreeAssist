@@ -16,6 +16,7 @@ public class TreeConfig extends CoreConfig {
     private final Map<String, List<Material>> materials;
     private final Map<String, List<String>> stringLists;
     private final Map<String, Map<String, Double>> maps;
+    private TreeConfig parent;
 
     public enum CFG implements ConfigEntry {
         AUTOMATIC_DESTRUCTION_ACTIVE("Automatic Destruction.Active", true, "Main switch to deactivate automatic destruction"),
@@ -246,6 +247,9 @@ public class TreeConfig extends CoreConfig {
      * @param parent the parent config
      */
     public void loadDefaults(TreeConfig parent) {
+        if (!parent.getConfigName().equals("default.yml")) {
+            this.parent = parent;
+        }
         for (CFG c : CFG.values()) {
             if (c.type == ConfigEntry.Type.STRING) {
                 strings.put(c.node, parent.getString(c));
@@ -460,6 +464,10 @@ public class TreeConfig extends CoreConfig {
         materials.put(cfg.node, matList);
 
         return matList;
+    }
+
+    public TreeConfig getParent() {
+        return parent;
     }
 
     /**

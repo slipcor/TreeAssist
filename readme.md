@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.46 - add github issue #77 - "Prevent Log Breaking Without Tool" - it will check before trashing your tool when auto destructing
+- v7.2.47 - add a debugtool command to show the extent of trees, fix thick jungle trees stealing leaves from other jungle trees
 - [read more](doc/changelog.md)
 
 ***
@@ -103,7 +103,6 @@ Joining the Discord Server gets you early access to latest builds, and maybe it 
 * Cooldown for forcebreak and forcegrow
 * Add more custom WorldGuard flags to deny functionality by region
 * Improve debug functionality [Core?] by implementing String filter logic
-* Debug Tool to show the extent of a tree "what would be broken"
 * Add debug clarifier to more precisely debug why desired outcomes are not happening
 * Modularize external plugin features for easier modular functionality 
 

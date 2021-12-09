@@ -4,6 +4,7 @@ import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.events.TATreeBrokenEvent;
+import net.slipcor.treeassist.externals.mcMMOHook;
 import net.slipcor.treeassist.listeners.TreeAssistPlayerListener;
 import net.slipcor.treeassist.runnables.CleanRunner;
 import net.slipcor.treeassist.runnables.TreeAssistReplant;
@@ -12,6 +13,7 @@ import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.CommandUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import net.slipcor.treeassist.utils.ToolUtils;
+import net.slipcor.treeassist.yml.Language;
 import net.slipcor.treeassist.yml.MainConfig;
 import net.slipcor.treeassist.yml.TreeConfig;
 import net.slipcor.treeassist.yml.TreeConfigUpdater;
@@ -49,7 +51,7 @@ public class TreeStructure {
     private final Set<Material> groundBlocks;
     private List<Block> neighborTrunks = new ArrayList<>();
     public final List<TreeAssistReplantDelay> saplings = new ArrayList<>();
-    private Map<Block, List<Block>> branchMap;
+    public Map<Block, List<Block>> branchMap;
     protected Set<Block> extras;
     private final List<Block> roofs = new ArrayList<>();
 
@@ -335,9 +337,17 @@ public class TreeStructure {
      *
      * @param block the block being checked
      * @param config the tree config to take to check against
+     * @param checkParent whether we want to check a parent configuration, too
      * @return the lowest trunk block if valid tree, null otherwise
      */
-    public static Block findBottomBlock(final Block block, final TreeConfig config) {
+    public static Block findBottomBlock(final Block block, final TreeConfig config, final boolean checkParent) {
+        if (config.getParent() != null && checkParent) {
+            Block parentBlock = findBottomBlock(block, config.getParent(), true);
+            if (parentBlock != null) {
+                return parentBlock;
+            }
+        }
+
         final List<Material> trunkBlocks = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
         final List<Material> extraBlocks = config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS);
         final List<Material> naturalBlocks = config.getMaterials(TreeConfig.CFG.NATURAL_BLOCKS);
@@ -352,7 +362,6 @@ public class TreeStructure {
         while (trunkBlocks.contains(checkBlock.getType())) {
             if (++overflowCheck > 256) {
                 debug.i("Overflow! Not a valid tree!");
-                System.out.println("overflow block: " + BlockUtils.printBlock(block));
                 return null;
             }
             // As long as find more logs, keep going!
@@ -409,6 +418,167 @@ public class TreeStructure {
         debug.i("We did not find a ground block ("+ checkBlock.getType() + ") not a valid tree.");
         return null;
 
+    }
+
+    public static DiscoveryResult discover(Player player, Block checkBlock) {
+        TreeConfig matchingTreeConfig = null;
+        TreeStructure matchingTreeStructure = null;
+
+        configs: for (TreeConfig config : TreeAssist.treeConfigs.values()) {
+            List<Material> list = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
+            debug.i("--- checking config " + config.getConfigName());
+            for (Material mat : list) {
+                debug.i("checking for material " + mat);
+                if (!checkBlock.getType().equals(mat)) {
+                    continue;
+                }
+                Block block = TreeStructure.findBottomBlock(checkBlock, config, false);
+                if (block == null) {
+                    continue;
+                }
+                debug.i("Tree found for Material " + mat);
+
+                TreeStructure checkTreeStructure = new TreeStructure(config, block, false);
+
+                if (checkTreeStructure.isValid()) {
+                    debug.i("Tree matches " + mat);
+
+                    if (TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_PREVENT_WITHOUT_TOOL)) {
+                        if (!ToolUtils.isMatchingTool(player.getInventory().getItemInMainHand(), config) &&
+                            !TreeAssist.instance.getPlayerListener().isDebugTool(player.getInventory().getItemInMainHand())) {
+                            debug.i("Player has not the right tool and we want to prevent now!");
+                            if ((player.isOp() || (player.getGameMode() == GameMode.CREATIVE))) {
+                                debug.i("Player is OP or creative, let them be!");
+                            } else {
+                                TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_NEVER_BREAK_LOG_WITHOUT_TOOL.parse());
+                                return new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, true);
+                            }
+                        }
+                    }
+
+                    int damagePredicted = -1;
+
+                    if (TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_PREVENT_WITH_BREAKING_TOOL)) {
+                        damagePredicted = ToolUtils.calculateDamage(config, player.getInventory().getItemInMainHand(), checkTreeStructure);
+                        debug.i("We predict damage: " + damagePredicted);
+                        if (ToolUtils.wouldBreak(player.getInventory().getItemInMainHand(), damagePredicted)) {
+                            debug.i("Player's tool would break and we do not want that!");
+                            TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_NEVER_BREAK_LOG_WITH_BREAKING_TOOL.parse());
+                            return new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, true);
+                        }
+                    }
+
+                    if (TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&
+                            !player.hasPermission(config.getString(TreeConfig.CFG.PERMISSION))) {
+                        debug.i("Player does not have permission " + config.getString(TreeConfig.CFG.PERMISSION));
+                        matchingTreeConfig = config; // for maybe forcing something later
+                        matchingTreeStructure = checkTreeStructure;
+                        continue configs;
+                    }
+
+                    if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_ACTIVE)) {
+                        if (TreeAssist.instance.hasCoolDown(player)) {
+                            debug.i("Cooldown!");
+                            TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_COOLDOWN_STILL.parse());
+                            TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_COOLDOWN_VALUE.parse(String.valueOf(TreeAssist.instance.getCoolDown(player))));
+                            return new DiscoveryResult(config, checkTreeStructure, false);
+                        }
+
+                        if (TreeAssist.instance.isDisabled(player.getWorld().getName(), player.getName())) {
+                            debug.i("Disabled for this player in this world!");
+                            return new DiscoveryResult(config, checkTreeStructure, false);
+                        }
+
+                        String lore = config.getString(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REQUIRED_LORE);
+                        if (!"".equals(lore)) {
+                            ItemStack item = player.getInventory().getItemInMainHand();
+                            if (!item.hasItemMeta() || !item.getItemMeta().hasLore() || !item.getItemMeta().getLore().contains(lore)) {
+                                debug.i("Lore not found: " + lore);
+                                matchingTreeConfig = config; // for maybe forcing something later
+                                matchingTreeStructure = checkTreeStructure;
+                                continue configs;
+                            }
+                        }
+
+                        if (player.isSneaking()) {
+                            if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_WHEN_SNEAKING)) {
+                                debug.i("Sneaking is bad!");
+                                matchingTreeConfig = config; // for maybe forcing something later
+                                matchingTreeStructure = checkTreeStructure;
+                                continue configs;
+                            }
+                        } else {
+                            if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_WHEN_NOT_SNEAKING)) {
+                                debug.i("Not sneaking is bad!");
+                                matchingTreeConfig = config; // for maybe forcing something later
+                                matchingTreeStructure = checkTreeStructure;
+                                continue configs;
+                            }
+                        }
+
+                        if (TreeAssist.instance.mcMMO && mcMMOHook.mcMMOTreeFeller(player)) {
+                            debug.i("mcMMO Tree Feller!");
+                            matchingTreeConfig = config; // for maybe forcing something later
+                            matchingTreeStructure = checkTreeStructure;
+                            continue configs;
+                        }
+
+                        if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REQUIRES_TOOLS)) {
+                            if (!ToolUtils.isMatchingTool(player.getInventory().getItemInMainHand(), config) &&
+                                !TreeAssist.instance.getPlayerListener().isDebugTool(player.getInventory().getItemInMainHand())) {
+                                debug.i("Player has not the right tool!");
+                                matchingTreeConfig = config; // for maybe forcing something later
+                                matchingTreeStructure = checkTreeStructure;
+                                continue configs;
+                            }
+                        }
+
+                        debug.i("success!");
+                        ItemStack item = player.getInventory().getItemInMainHand();
+
+                        if (!TreeAssist.instance.config().getBoolean(MainConfig.CFG.MODDING_DISABLE_DURABILITY_FIX)) {
+                            if (item.hasItemMeta() && item.getItemMeta() != null) {
+                                if (!item.getItemMeta().isUnbreakable()) {
+                                    short durability = (short) ((Damageable) item.getItemMeta()).getDamage();
+                                    short maxDurability = item.getType().getMaxDurability();
+
+                                    if (((durability > maxDurability) || durability < 0)
+                                            && ToolUtils.isVanillaTool(item)) {
+                                        debug.i("removing item: " + item.getType().name() +
+                                                " (durability " + durability + ">" + maxDurability);
+                                        player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                                        player.updateInventory();
+                                    }
+                                }
+                            }
+                        }
+
+                        return new DiscoveryResult(config, checkTreeStructure,
+                                !checkTreeStructure.getConfig().getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY) ||
+                                checkTreeStructure.getConfig().getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME) <= 0, item, damagePredicted);
+
+                    } else if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL) ||
+                            config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE) ||
+                            TreeAssist.instance.getBlockListener().isReplant(player.getName())) {
+                        matchingTreeConfig = config;
+                        matchingTreeStructure = checkTreeStructure;
+                        continue configs;
+                    }
+
+                    // we did not find a match or we do not want to force remove it - let's try another!
+                }
+                debug.i("Shape does not match " + mat + " (" + checkTreeStructure.failReason + ")" );
+                if (checkTreeStructure.failReason == FailReason.INVALID_BLOCK) {
+                    if (player.hasPermission("treeassist.message") &&
+                            TreeAssist.instance.config().getBoolean(MainConfig.CFG.DESTRUCTION_MESSAGE) &&
+                            checkTreeStructure.failMaterial != null) {
+                        TreeAssist.instance.sendPrefixed(player, Language.MSG.WARNING_DESTRUCTION_FAILED.parse(checkTreeStructure.failMaterial.name()));
+                    }
+                    return new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, false);
+                }
+            }
+        }
+        return new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, false);
     }
 
     /**
@@ -727,13 +897,20 @@ public class TreeStructure {
                     }
 
                     if (trunkBlocks.contains(checkBlock.getType())) {
-                        Block block = findBottomBlock(checkBlock, config);
+                        Block block = findBottomBlock(checkBlock, config, true);
                         if (block != null && isNotOurBottom(block)) {
                             TreeStructure otherTree = new TreeStructure(config, block, true);
                             if (otherTree.isValid()) {
                                 neighborTrunks.addAll(otherTree.trunk);
-                                debug.i("Found another tree at " + block.getLocation());
+                                debug.i("Found another tree at " + block.getLocation() + " - " +  otherTree.trunk.size());
                                 continue blocks;
+                            } else if (config.getParent() != null) {
+                                otherTree = new TreeStructure(config.getParent(), block, true);
+                                if (otherTree.isValid()) {
+                                    neighborTrunks.addAll(otherTree.trunk);
+                                    debug.i("Found another tree at " + block.getLocation() + " - " +  otherTree.trunk.size());
+                                    continue blocks;
+                                }
                             }
                         }
                     } else if (groundBlocks.contains(checkBlock.getType())) {
@@ -1058,7 +1235,7 @@ public class TreeStructure {
         Material mat = checkBlock.getType();
         if (trunkBlocks.contains(mat)) {
             // Check for other trunks
-            Block otherBlock = findBottomBlock(checkBlock, config);
+            Block otherBlock = findBottomBlock(checkBlock, config, true);
 
             if (otherBlock != null) {
                 TreeStructure anotherTree = new TreeStructure(config, otherBlock, true);
@@ -1067,9 +1244,18 @@ public class TreeStructure {
                     neighborTrunks.addAll(anotherTree.trunk);
                     debug.i("We hit a neighbor tree! Our bottom block " + bottom.getLocation() + " is not the same as " + anotherTree.bottom.getLocation());
                     return false;
+                } else if (config.getParent() != null) {
+                    anotherTree = new TreeStructure(config.getParent(), otherBlock, true);
+                    if (anotherTree.isValid() && !anotherTree.bottom.equals(bottom)) {
+                        // This is another trunk! check somewhere else!
+                        neighborTrunks.addAll(anotherTree.trunk);
+                        debug.i("We hit a neighbor tree! Our bottom block " + bottom.getLocation() + " is not the same as " + anotherTree.bottom.getLocation());
+                        return false;
+                    }
                 }
             }
             result.add(checkBlock);
+            debug.i("Adding " + BlockUtils.printBlock(checkBlock));
             for (BlockFace face : diagonals) {
                 debug.i("Continuing branch " + direction + " to " + face);
                 if (
@@ -1114,8 +1300,10 @@ public class TreeStructure {
      */
     private boolean isInvalidExtraBlock(Block checkBlock, BlockFace direction,
                                         int expansion, int progress, boolean first, boolean edges, boolean air, int radius) {
+        int squaredRadius = radius*radius;
+
         for (Block otherBlock : neighborTrunks) {
-            if (otherBlock.getLocation().distance(checkBlock.getLocation()) <= radius) {
+            if (otherBlock.getLocation().distanceSquared(checkBlock.getLocation()) <= squaredRadius) {
                 // We are not invalid but we want to NOT add this block and not continue searching for extras
                 return false;
             }
