@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.49 - prevent players dropping their axes to avoid tool damage
 - v7.2.48 - allow acacia and potentially other trees to actually remove cap leaves, improve thick tree determination for even less infringement
 - v7.2.47 - add a debugtool command to show the extent of trees, fix thick jungle trees stealing leaves from other jungle trees
 - v7.2.46 - add github issue #77 - "Prevent Log Breaking Without Tool" - it will check before trashing your tool when auto destructing

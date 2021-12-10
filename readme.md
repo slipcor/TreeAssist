@@ -38,7 +38,7 @@ It also will take down an entire tree when it is enabled in the config.
 ## Dependencies
 
 - Spigot 1.13
-- My [Core](https://github.com/slipcor/Core) library (automatically added to the plugin before release)
+- My [Core library](https://github.com/slipcor/Core) (automatically added to the plugin before release)
 
 ***
 
@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.48 - allow acacia and potentially other trees to actually remove cap leaves, improve thick tree determination for even less infringement
+- v7.2.49 - prevent players dropping their axes to avoid tool damage
 - [read more](doc/changelog.md)
 
 ***

@@ -23,6 +23,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
@@ -261,6 +262,18 @@ public class TreeAssistPlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onToolSwitch(PlayerSwapHandItemsEvent event) {
+        if (!plugin.isActive(event.getPlayer().getWorld())) {
+            debug.i("not in this world: " + event.getPlayer().getWorld().getName());
+            return;
+        }
+
+        if (destroyers.containsKey(event.getPlayer())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onToolDrop(PlayerDropItemEvent event) {
         if (!plugin.isActive(event.getPlayer().getWorld())) {
             debug.i("not in this world: " + event.getPlayer().getWorld().getName());
             return;
