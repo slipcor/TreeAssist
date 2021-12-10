@@ -3,6 +3,10 @@ Blocks:
   # Here you can add extra blocks that can be expected inside or around tree leaves
   Materials:
   - minecraft:acacia_leaves
+  Middle:
+
+    # Radius around the trunk to check for leaves
+    Radius: 3
   Top:
 
     # Radius around the trunk to check for leaves
@@ -40,4 +44,4 @@ Trunk:
   Branch: true
 
 # Version number for automagical config updates
-Version: 7.2017998695373535
+Version: 7.2048

@@ -19,11 +19,30 @@ public class DiscoveryResult {
 
     final TreeConfig config;
     final TreeStructure tree;
-    final boolean cancel;
     final boolean actions;
+    private FailReason reason = null;
+    private String failExtra = null;
+
+    private boolean cancel = false;
+    private boolean valid = true;
 
     ItemStack item;
     int damagePredicted;
+
+    public DiscoveryResult(TreeConfig config, TreeStructure tree, FailReason reason) {
+        this.config = config;
+        this.tree = tree;
+        this.reason = reason;
+        this.valid = false;
+
+        this.actions = false;
+    }
+
+    public DiscoveryResult(TreeConfig config, TreeStructure tree, FailReason reason, String failInformation) {
+        this(config, tree, reason);
+
+        failExtra = failInformation;
+    }
 
     public DiscoveryResult(TreeConfig config, TreeStructure tree, boolean cancel) {
         this.config = config;
@@ -93,10 +112,18 @@ public class DiscoveryResult {
     }
 
     public void debugShow(final Player player) {
-        if (config == null || tree == null ) {
-            player.sendMessage("Invalid tree!");
+        if (config == null || tree == null || !tree.isValid() ) {
+            TreeAssist.instance.sendPrefixed(player, "Invalid tree!");
+            if (tree != null && tree.discoveryResult != null) {
+                TreeAssist.instance.sendPrefixed(player, "Reason: " +  tree.discoveryResult.reason);
+                if (tree.discoveryResult.getInformation() != null) {
+                    TreeAssist.instance.sendPrefixed(player, "More Info: " + tree.discoveryResult.getInformation());
+                }
+            }
             return;
         }
+
+        TreeAssist.instance.sendPrefixed(player, "Showing valid tree #" + System.identityHashCode(tree));
 
         for (Block block : tree.trunk) {
             player.sendBlockChange(block.getLocation(), Material.BROWN_STAINED_GLASS.createBlockData());
@@ -115,6 +142,8 @@ public class DiscoveryResult {
         Bukkit.getScheduler().runTaskLater(TreeAssist.instance, new Runnable() {
             @Override
             public void run() {
+                TreeAssist.instance.sendPrefixed(player, "Removing valid tree #" + System.identityHashCode(tree));
+
                 for (Block block : tree.trunk) {
                     player.sendBlockChange(block.getLocation(), block.getType().createBlockData());
                 }
@@ -132,5 +161,25 @@ public class DiscoveryResult {
                 }
             }
         }, 200L);
+    }
+
+    public FailReason getReason() {
+        return reason;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    public boolean isValid() {
+        return this.valid;
+    }
+
+    public String getInformation() {
+        return failExtra;
+    }
+
+    public void setReason(FailReason reason) {
+        this.reason = reason;
     }
 }

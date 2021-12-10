@@ -68,7 +68,7 @@ public class CleanRunner extends BukkitRunnable {
         removeBlocks.clear();
 
         me.setValid(false);
-        me.failReason = FailReason.INVALID_BLOCK;
+        me.setFailReason(FailReason.INVALID_BLOCK);
         try {
             TreeAssist.instance.treeRemove(me);
             this.cancel();

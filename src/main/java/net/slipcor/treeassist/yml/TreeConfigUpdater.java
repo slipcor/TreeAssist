@@ -98,6 +98,7 @@ public class TreeConfigUpdater {
         WARPED_MIDDLE_RADIUS(7.0101f, "warped_fungus", TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS, 2, 3),
         TALL_JUNGLE_TOP_LEAVES(7.0118f, "tall_jungle", TreeConfig.CFG.BLOCKS_TOP_RADIUS, 3, 6),
         TALL_JUNGLE_MIDDLE_LEAVES(7.0118f, "tall_jungle", TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS, 2, 6),
+        ACACIA_MIDDLE_LEAVES(7.2047f, "acacia", TreeConfig.CFG.BLOCKS_MIDDLE_RADIUS, 2, 3),
         ;
         private final float version;
         private final String config;

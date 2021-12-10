@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.47 - add a debugtool command to show the extent of trees, fix thick jungle trees stealing leaves from other jungle trees
+- v7.2.48 - allow acacia and potentially other trees to actually remove cap leaves, improve thick tree determination for even less infringement
 - [read more](doc/changelog.md)
 
 ***
@@ -105,6 +105,7 @@ Joining the Discord Server gets you early access to latest builds, and maybe it 
 * Improve debug functionality [Core?] by implementing String filter logic
 * Add debug clarifier to more precisely debug why desired outcomes are not happening
 * Modularize external plugin features for easier modular functionality 
+* Nether trees have a ton of logs left out, a lot of trees hit netherrack on top
 
 ***
 

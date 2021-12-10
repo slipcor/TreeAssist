@@ -45,22 +45,23 @@ public class TreeStructure {
 
     public Block bottom;
     public List<Block> trunk;
+
     private final Set<Material> trunkBlocks;
     private final Set<Material> extraBlocks;
     private final Set<Material> naturalBlocks;
     private final Set<Material> groundBlocks;
+
     private List<Block> neighborTrunks = new ArrayList<>();
     public final List<TreeAssistReplantDelay> saplings = new ArrayList<>();
     public Map<Block, List<Block>> branchMap;
     protected Set<Block> extras;
-    private final List<Block> roofs = new ArrayList<>();
 
+    private final List<Block> roofs = new ArrayList<>();
     private final List<Block> checkedBlocks = new ArrayList<>();
 
     private final boolean trunkDiagonally;
-    private boolean valid = true;
-    public FailReason failReason = null;
-    public Material failMaterial = null;
+
+    public DiscoveryResult discoveryResult = null;
 
     private final TreeConfig config;
     private Block northWestBlock;
@@ -100,6 +101,8 @@ public class TreeStructure {
                 new BlockFace[] {BlockFace.SOUTH, BlockFace.WEST, BlockFace.SOUTH_WEST});
     }
 
+    private List<Block> caps = new ArrayList<>();
+
     /**
      * Try to discover a tree structure
      *
@@ -124,16 +127,20 @@ public class TreeStructure {
             // Single trunk, that should be easy, right?
             trunk = findTrunk();
 
+            if (hasDiscoveryFailed()) {
+                return;
+            }
+
             if (trunk == null) {
                 // No tree found, nothing to remove!
-                valid = false;
-                failReason = FailReason.NO_TRUNK;
+                discoveryResult = new DiscoveryResult(config, this, FailReason.NO_TRUNK);
                 return;
             }
             debug.i("Tree of size " + trunk.size() + " found!");
 
             if (onlyTrunk) {
                 // This will be used by other trees being broken checking OUR trunk for leaf distance and alike
+                discoveryResult = new DiscoveryResult(config, this, false);
                 return;
             }
 
@@ -142,8 +149,7 @@ public class TreeStructure {
 
             if (height < min) {
                 debug.i("Lower than minimum: " + height + " < " + min + " for " + trunk.get(0).getType());
-                valid = false;
-                failReason = FailReason.TOO_SMALL;
+                discoveryResult = new DiscoveryResult(config, this, FailReason.TOO_SMALL);
                 return;
             }
 
@@ -152,8 +158,7 @@ public class TreeStructure {
 
             if (branches) {
                 getAllBranches();
-                if (failReason != null) {
-                    valid = false;
+                if (hasDiscoveryFailed()) {
                     return;
                 }
 
@@ -172,14 +177,15 @@ public class TreeStructure {
 
             if (extras == null || extras.size() == 0) {
                 debug.i("No leaves found!");
-                valid = false;
-                failReason = FailReason.NO_LEAVES;
+                discoveryResult = new DiscoveryResult(config, this, FailReason.NO_LEAVES);
             } else if (!hasDistanceTo(neighborTrunks)) {
                 debug.i("Farming row?");
             } else if (extras.size() < config.getInt(TreeConfig.CFG.BLOCKS_REQUIRED, 10)) {
                 debug.i("Not enough extra blocks found: " + extras.size());
-                valid = false;
-                failReason = FailReason.NOT_ENOUGH_LEAVES;
+                discoveryResult = new DiscoveryResult(config, this, FailReason.NOT_ENOUGH_LEAVES);
+            }
+            if (!hasDiscoveryFailed()) {
+                discoveryResult = new DiscoveryResult(config, this, false);
             }
             return;
         }
@@ -192,22 +198,25 @@ public class TreeStructure {
             List<Block> bottoms = findThickBottoms();
             if (bottoms.size() < 3) {
                 debug.i("Not enough trunks found: " + bottoms.size());
-                valid = false;
-                failReason = FailReason.NOT_ENOUGH_TRUNKS;
+                discoveryResult = new DiscoveryResult(config, this, FailReason.NOT_ENOUGH_TRUNKS);
                 return;
             }
             debug.i("Trunks: " + bottoms.size());
             trunk = findTrunks(bottoms);
 
+            if (hasDiscoveryFailed()) {
+                return;
+            }
+
             if (trunk == null) {
                 // No tree found, nothing to remove!
-                valid = false;
-                failReason = FailReason.NO_TRUNK;
+                discoveryResult = new DiscoveryResult(config, this, FailReason.NO_TRUNK);
                 return;
             }
 
             if (onlyTrunk) {
                 // This will be used by other trees being broken checking OUR trunk for leaf distance and alike
+                discoveryResult = new DiscoveryResult(config, this, false);
                 return;
             }
 
@@ -219,6 +228,9 @@ public class TreeStructure {
                 if (!neighborTrunks.isEmpty()) {
                     debug.i("Found other trunks: " + neighborTrunks.size());
                 }
+            }
+            if (!hasDiscoveryFailed()) {
+                discoveryResult = new DiscoveryResult(config, this, false);
             }
             return;
         }
@@ -248,23 +260,26 @@ public class TreeStructure {
 
         if (trunks.size() != 4) {
             debug.i("We do not have 4 trunks, we found " + trunks.size() + "!");
-            valid = false;
-            failReason = FailReason.NOT_ENOUGH_TRUNKS;
+            discoveryResult = new DiscoveryResult(config, this, FailReason.NOT_ENOUGH_TRUNKS);
             return;
         }
 
         trunk = findTrunks(trunks);
 
+        if (hasDiscoveryFailed()) {
+            return;
+        }
+
         if (trunk == null) {
             // No tree found, nothing to remove!
-            valid = false;
-            failReason = FailReason.NO_TRUNK;
+            discoveryResult = new DiscoveryResult(config, this, FailReason.NO_TRUNK);
             return;
         }
         debug.i("Tree of size " + trunk.size() + " found!");
 
         if (onlyTrunk) {
             // This will be used by other trees being broken checking OUR trunk for leaf distance and alike
+            discoveryResult = new DiscoveryResult(config, this, false);
             return;
         }
 
@@ -273,8 +288,7 @@ public class TreeStructure {
 
         if (height < min) {
             debug.i("Lower than thick minimum: " + height + " < " + min + " for " + trunk.get(0).getType());
-            valid = false;
-            failReason = FailReason.TOO_SMALL;
+            discoveryResult = new DiscoveryResult(config, this, FailReason.TOO_SMALL);
             return;
         }
 
@@ -287,8 +301,7 @@ public class TreeStructure {
         if (branches) {
             getDirectionalBranches();
 
-            if (failReason != null) {
-                valid = false;
+            if (hasDiscoveryFailed()) {
                 return;
             }
 
@@ -307,14 +320,15 @@ public class TreeStructure {
 
         if (extras == null || extras.size() == 0) {
             debug.i("No leaves found!");
-            valid = false;
-            failReason = FailReason.NO_LEAVES;
+            discoveryResult = new DiscoveryResult(config, this, FailReason.NO_LEAVES);
         } else if (!hasDistanceTo(neighborTrunks)) {
             debug.i("Farming row?");
         } else if (extras.size() < config.getInt(TreeConfig.CFG.BLOCKS_REQUIRED, 10)) {
             debug.i("Not enough extra blocks found: " + extras.size());
-            valid = false;
-            failReason = FailReason.NOT_ENOUGH_LEAVES;
+            discoveryResult = new DiscoveryResult(config, this, FailReason.NOT_ENOUGH_LEAVES);
+        }
+        if (!hasDiscoveryFailed()) {
+            discoveryResult = new DiscoveryResult(config, this, false);
         }
     }
 
@@ -335,14 +349,15 @@ public class TreeStructure {
      * Try to find a tree's bottom block based on a given block and a given tree config, traversing down
      * trying to find a valid ground block and NOT finding unexpected blocks nearby.
      *
+     * @param player the player attempting to kill a tree
      * @param block the block being checked
      * @param config the tree config to take to check against
      * @param checkParent whether we want to check a parent configuration, too
      * @return the lowest trunk block if valid tree, null otherwise
      */
-    public static Block findBottomBlock(final Block block, final TreeConfig config, final boolean checkParent) {
+    public static Block findBottomBlock(final Player player, final Block block, final TreeConfig config, final boolean checkParent) {
         if (config.getParent() != null && checkParent) {
-            Block parentBlock = findBottomBlock(block, config.getParent(), true);
+            Block parentBlock = findBottomBlock(player, block, config.getParent(), true);
             if (parentBlock != null) {
                 return parentBlock;
             }
@@ -362,6 +377,9 @@ public class TreeStructure {
         while (trunkBlocks.contains(checkBlock.getType())) {
             if (++overflowCheck > 256) {
                 debug.i("Overflow! Not a valid tree!");
+                if (player != null && TreeAssist.instance.getPlayerListener().isDebugTool(player.getInventory().getItemInMainHand())) {
+                    TreeAssist.instance.sendPrefixed(player, "invalid tree: trunk overflow");
+                }
                 return null;
             }
             // As long as find more logs, keep going!
@@ -382,6 +400,9 @@ public class TreeStructure {
                                     !allTrunks.contains(checkMaterial) &&
                                     !allExtras.contains(checkMaterial)) {
                         debug.i("Unexpected block! Not a valid tree!");
+                        if (player != null && TreeAssist.instance.getPlayerListener().isDebugTool(player.getInventory().getItemInMainHand())) {
+                            TreeAssist.instance.sendPrefixed(player, "invalid tree: " + BlockUtils.printBlock(checkBlock));
+                        }
                         return null;
                     }
                 }
@@ -401,6 +422,9 @@ public class TreeStructure {
                                     !allTrunks.contains(checkMaterial) &&
                                     !allExtras.contains(checkMaterial)) {
                                 debug.i("Unexpected block! Not a valid tree!");
+                                if (player != null && TreeAssist.instance.getPlayerListener().isDebugTool(player.getInventory().getItemInMainHand())) {
+                                    TreeAssist.instance.sendPrefixed(player, "invalid tree: " + BlockUtils.printBlock(checkBlock.getRelative(x, 0, z)));
+                                }
                                 return null;
                             }
                         }
@@ -416,11 +440,15 @@ public class TreeStructure {
             return checkBlock.getRelative(BlockFace.UP);
         }
         debug.i("We did not find a ground block ("+ checkBlock.getType() + ") not a valid tree.");
+        if (player != null && TreeAssist.instance.getPlayerListener().isDebugTool(player.getInventory().getItemInMainHand())) {
+            TreeAssist.instance.sendPrefixed(player, "invalid tree: " + BlockUtils.printBlock(checkBlock));
+        }
+
         return null;
 
     }
 
-    public static DiscoveryResult discover(Player player, Block checkBlock) {
+    public static TreeStructure discover(Player player, Block checkBlock) {
         TreeConfig matchingTreeConfig = null;
         TreeStructure matchingTreeStructure = null;
 
@@ -432,13 +460,17 @@ public class TreeStructure {
                 if (!checkBlock.getType().equals(mat)) {
                     continue;
                 }
-                Block block = TreeStructure.findBottomBlock(checkBlock, config, false);
+                Block block = TreeStructure.findBottomBlock(player, checkBlock, config, false);
                 if (block == null) {
                     continue;
                 }
                 debug.i("Tree found for Material " + mat);
 
                 TreeStructure checkTreeStructure = new TreeStructure(config, block, false);
+
+                if (!checkTreeStructure.hasDiscoveryFailed()) {
+                    checkTreeStructure.discoveryResult = new DiscoveryResult(config, checkTreeStructure, false);
+                }
 
                 if (checkTreeStructure.isValid()) {
                     debug.i("Tree matches " + mat);
@@ -451,7 +483,8 @@ public class TreeStructure {
                                 debug.i("Player is OP or creative, let them be!");
                             } else {
                                 TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_NEVER_BREAK_LOG_WITHOUT_TOOL.parse());
-                                return new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, true);
+                                matchingTreeStructure.discoveryResult = new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, true);
+                                return matchingTreeStructure;
                             }
                         }
                     }
@@ -464,7 +497,8 @@ public class TreeStructure {
                         if (ToolUtils.wouldBreak(player.getInventory().getItemInMainHand(), damagePredicted)) {
                             debug.i("Player's tool would break and we do not want that!");
                             TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_NEVER_BREAK_LOG_WITH_BREAKING_TOOL.parse());
-                            return new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, true);
+                            matchingTreeStructure.discoveryResult =  new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, true);
+                            return matchingTreeStructure;
                         }
                     }
 
@@ -481,12 +515,14 @@ public class TreeStructure {
                             debug.i("Cooldown!");
                             TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_COOLDOWN_STILL.parse());
                             TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_COOLDOWN_VALUE.parse(String.valueOf(TreeAssist.instance.getCoolDown(player))));
-                            return new DiscoveryResult(config, checkTreeStructure, false);
+                            checkTreeStructure.discoveryResult = new DiscoveryResult(config, checkTreeStructure, false);
+                            return checkTreeStructure;
                         }
 
                         if (TreeAssist.instance.isDisabled(player.getWorld().getName(), player.getName())) {
                             debug.i("Disabled for this player in this world!");
-                            return new DiscoveryResult(config, checkTreeStructure, false);
+                            checkTreeStructure.discoveryResult = new DiscoveryResult(config, checkTreeStructure, false);
+                            return checkTreeStructure;
                         }
 
                         String lore = config.getString(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REQUIRED_LORE);
@@ -553,9 +589,10 @@ public class TreeStructure {
                             }
                         }
 
-                        return new DiscoveryResult(config, checkTreeStructure,
+                        checkTreeStructure.discoveryResult = new DiscoveryResult(config, checkTreeStructure,
                                 !checkTreeStructure.getConfig().getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY) ||
                                 checkTreeStructure.getConfig().getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME) <= 0, item, damagePredicted);
+                        return checkTreeStructure;
 
                     } else if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL) ||
                             config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE) ||
@@ -567,18 +604,36 @@ public class TreeStructure {
 
                     // we did not find a match or we do not want to force remove it - let's try another!
                 }
-                debug.i("Shape does not match " + mat + " (" + checkTreeStructure.failReason + ")" );
-                if (checkTreeStructure.failReason == FailReason.INVALID_BLOCK) {
-                    if (player.hasPermission("treeassist.message") &&
+                debug.i("Shape does not match " + mat + " (" + checkTreeStructure.getFailReason() + ")" );
+                if (checkTreeStructure.getFailReason() == FailReason.INVALID_BLOCK ||
+                        checkTreeStructure.getFailReason() == FailReason.INVALID_TRUNK_BLOCK ||
+                        checkTreeStructure.getFailReason() == FailReason.INVALID_ROOF_BLOCK) {
+                    if (!TreeAssist.instance.getPlayerListener().isDebugTool(player.getInventory().getItemInMainHand()) &&
+                            player.hasPermission("treeassist.message") &&
                             TreeAssist.instance.config().getBoolean(MainConfig.CFG.DESTRUCTION_MESSAGE) &&
-                            checkTreeStructure.failMaterial != null) {
-                        TreeAssist.instance.sendPrefixed(player, Language.MSG.WARNING_DESTRUCTION_FAILED.parse(checkTreeStructure.failMaterial.name()));
+                            checkTreeStructure.hasFailInformation()) {
+                        TreeAssist.instance.sendPrefixed(player, Language.MSG.WARNING_DESTRUCTION_FAILED.parse(checkTreeStructure.discoveryResult.getInformation()));
                     }
-                    return new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, false);
+                    //checkTreeStructure.discoveryResult = new DiscoveryResult(matchingTreeConfig, checkTreeStructure, false);
+                    return checkTreeStructure;
                 }
             }
         }
-        return new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, false);
+        if (matchingTreeStructure != null) {
+            matchingTreeStructure.discoveryResult = new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, false);
+        }
+        return matchingTreeStructure;
+    }
+
+    private boolean hasFailInformation() {
+        return discoveryResult != null && discoveryResult.getInformation() != null;
+    }
+
+    private FailReason getFailReason() {
+        if (discoveryResult == null) {
+            return null;
+        }
+        return discoveryResult.getReason();
     }
 
     /**
@@ -586,6 +641,10 @@ public class TreeStructure {
      */
     public TreeConfig getConfig() {
         return config;
+    }
+
+    private boolean hasDiscoveryFailed() {
+        return discoveryResult != null && discoveryResult.getReason() != null;
     }
 
     /**
@@ -702,7 +761,7 @@ public class TreeStructure {
      * @return whether the tree determination has returned a completely valid tree
      */
     public boolean isValid() {
-        return valid;
+        return discoveryResult != null && discoveryResult.isValid();
     }
 
     ///////////////////
@@ -800,6 +859,9 @@ public class TreeStructure {
                         debug.i("It's a natural block!");
                     } else if (!allTrunks.contains(checkMaterial) && !allExtras.contains(checkMaterial)) {
                         debug.i("Unexpected block! Not a valid tree!");
+
+                        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, BlockUtils.printBlock(checkBlock));
+
                         return null;
                     }
                 }
@@ -819,6 +881,9 @@ public class TreeStructure {
                                 debug.i("It's a natural block!");
                             } else if (!allTrunks.contains(checkMaterial) && !allExtras.contains(checkMaterial)) {
                                 debug.i("Unexpected block! Not a valid tree!");
+
+                                discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, BlockUtils.printBlock(checkBlock));
+
                                 return null;
                             }
                         }
@@ -835,6 +900,9 @@ public class TreeStructure {
         }
 
         debug.i("We did not find a roof block (" + checkBlock.getType() + ") not a valid tree!");
+
+        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_ROOF_BLOCK, BlockUtils.printBlock(checkBlock));
+
         return null;
     }
 
@@ -863,6 +931,9 @@ public class TreeStructure {
                 continue;
             }
             debug.i("We did not find a roof block (" + checkBlock.getType() + ") not a valid tree!");
+
+            discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_ROOF_BLOCK, BlockUtils.printBlock(checkBlock));
+
             return null;
         }
 
@@ -897,7 +968,7 @@ public class TreeStructure {
                     }
 
                     if (trunkBlocks.contains(checkBlock.getType())) {
-                        Block block = findBottomBlock(checkBlock, config, true);
+                        Block block = findBottomBlock(null, checkBlock, config, true);
                         if (block != null && isNotOurBottom(block)) {
                             TreeStructure otherTree = new TreeStructure(config, block, true);
                             if (otherTree.isValid()) {
@@ -959,7 +1030,6 @@ public class TreeStructure {
                         if (isInvalidBranch(checkBlock, branch, innerface)) {
                             trunk.clear();
                             branchMap.clear();
-                            failReason = FailReason.INVALID_BLOCK;
                             return;
                         }
                     }
@@ -970,8 +1040,7 @@ public class TreeStructure {
                     debug.i("invalid block 2a: " + checkBlock.getType());
                     trunk.clear();
                     branchMap.clear();
-                    failReason = FailReason.INVALID_BLOCK;
-                    failMaterial = checkBlock.getType();
+                    discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
                     return;
                 }
             }
@@ -997,10 +1066,7 @@ public class TreeStructure {
             roof = block;
 
             for (BlockFace face : neighbors) {
-                if (isInvalidExtraBlock(block.getRelative(face), face, radiusM, 1, true, edgesM, airM, radiusM)) {
-                    valid = false;
-                    failReason = FailReason.INVALID_BLOCK;
-                    debug.i("invalid block at " + BlockUtils.printBlock(block.getRelative(face)));
+                if (hasInvalidExtraBlock(block.getRelative(face), face, radiusM, 1, true, edgesM, airM, radiusM)) {
                     return;
                 }
             }
@@ -1008,8 +1074,7 @@ public class TreeStructure {
 
         if (roof == null) {
             debug.i("No more blocks found!");
-            valid = false;
-            failReason = FailReason.NO_TRUNK;
+            discoveryResult = new DiscoveryResult(config, this, FailReason.NO_TRUNK);
             return;
         }
 
@@ -1028,10 +1093,7 @@ public class TreeStructure {
                     extras.add(checkBlock);
 
                     for (BlockFace face : neighbors) {
-                        if (isInvalidExtraBlock(checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, radiusT)) {
-                            valid = false;
-                            failReason = FailReason.INVALID_BLOCK;
-                            debug.i("invalid block at " + BlockUtils.printBlock(checkBlock.getRelative(face)));
+                        if (hasInvalidExtraBlock(checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, radiusT)) {
                             return;
                         }
                     }
@@ -1039,14 +1101,14 @@ public class TreeStructure {
                         !naturalBlocks.contains(checkMaterial) &&
                                 !trunkBlocks.contains(checkMaterial) &&
                                 !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                    valid = false;
-                    failReason = FailReason.INVALID_BLOCK;
-                    failMaterial = checkMaterial;
+                    discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
                     debug.i("invalid block at " + BlockUtils.printBlock(checkBlock));
                     return;
                 }
             }
         }
+
+        addCapLeaves();
     }
 
     /**
@@ -1092,7 +1154,6 @@ public class TreeStructure {
                     if (isInvalidBranch(checkBlock, branch, face)) {
                         trunk.clear();
                         branchMap.clear();
-                        failReason = FailReason.INVALID_BLOCK;
                         return;
                     }
                     branchMap.put(checkBlock, branch);
@@ -1102,12 +1163,57 @@ public class TreeStructure {
                     debug.i("invalid block 2b: " + checkBlock.getType());
                     trunk.clear();
                     branchMap.clear();
-                    failReason = FailReason.INVALID_BLOCK;
-                    failMaterial = checkBlock.getType();
+                    discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
                     return;
                 } else {
                     // This branch ends here
-                    roofs.add(checkBlock);
+                    if (!trunk.contains(block)) {
+                        caps.add(block);
+                    }
+                }
+            }
+        }
+    }
+
+    private void addCapLeaves() {
+
+        debug.i("adding leaves around caps");
+
+        int radiusC = config.getInt(TreeConfig.CFG.BLOCKS_CAP_RADIUS);
+        int heightC = config.getInt(TreeConfig.CFG.BLOCKS_CAP_HEIGHT);
+
+        BlockFace[] neighbors = new BlockFace[]{BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
+
+        for (Block block : caps) {
+            for (int y = 0; y <= heightC; y++) {
+                Block checkBlock = block.getRelative(0, y, 0);
+                Material checkMaterial = checkBlock.getType();
+
+                debug.i("checking cap: " + BlockUtils.printBlock(checkBlock));
+
+                if (!MaterialUtils.isAir(checkMaterial)) {
+                    if (extraBlocks.contains(checkMaterial)) {
+                        extras.add(checkBlock);
+
+                        for (BlockFace face : neighbors) {
+                            if (hasInvalidExtraBlock(checkBlock.getRelative(face), face, radiusC, 1, true, false, false, radiusC)) {
+                                return;
+                            }
+                        }
+                    } else if (
+                            !naturalBlocks.contains(checkMaterial) &&
+                                    !trunkBlocks.contains(checkMaterial) &&
+                                    !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
+                        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
+                        debug.i("invalid block at " + BlockUtils.printBlock(checkBlock));
+                        return;
+                    } else if (trunkBlocks.contains(checkMaterial)) {
+                        for (BlockFace face : neighbors) {
+                            if (hasInvalidExtraBlock(checkBlock.getRelative(face), face, radiusC, 1, true, false, false, radiusC)) {
+                                return;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1126,10 +1232,7 @@ public class TreeStructure {
 
         for (Block checkBlock : trunk) {
             for (BlockFace face : getTrunkContinuations(checkBlock)) {
-                if (isInvalidExtraBlock(checkBlock.getRelative(face), face, radiusM, 1, true, edgesM, airM, radiusM)) {
-                    valid = false;
-                    failReason = FailReason.INVALID_BLOCK;
-                    debug.i("invalid block at " + BlockUtils.printBlock(checkBlock.getRelative(face)));
+                if (hasInvalidExtraBlock(checkBlock.getRelative(face), face, radiusM, 1, true, edgesM, airM, radiusM)) {
                     return;
                 }
             }
@@ -1139,8 +1242,7 @@ public class TreeStructure {
 
         if (roofs.size() <= 0) {
             debug.i("No more blocks found!");
-            valid = false;
-            failReason = FailReason.NO_TRUNK;
+            discoveryResult = new DiscoveryResult(config, this, FailReason.NO_TRUNK);
             return;
         }
 
@@ -1150,9 +1252,14 @@ public class TreeStructure {
 
         boolean edgesT = config.getBoolean(TreeConfig.CFG.BLOCKS_TOP_EDGES);
 
+        debug.i("checking roof!");
+
         for (Block roof : roofs) {
+
             for (int y = 0; y <= heightT; y++) {
                 Block checkBlock = roof.getRelative(0, y, 0);
+                debug.i("checking: " + BlockUtils.printBlock(checkBlock));
+
                 Material checkMaterial = checkBlock.getType();
 
                 if (!MaterialUtils.isAir(checkMaterial)) {
@@ -1160,10 +1267,7 @@ public class TreeStructure {
                         extras.add(checkBlock);
 
                         for (BlockFace face : neighbors) {
-                            if (isInvalidExtraBlock(checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, radiusT)) {
-                                valid = false;
-                                failReason = FailReason.INVALID_BLOCK;
-                                debug.i("invalid block at " + BlockUtils.printBlock(checkBlock.getRelative(face)));
+                            if (hasInvalidExtraBlock(checkBlock.getRelative(face), face, radiusT, 1, true, edgesT, airT, radiusT)) {
                                 return;
                             }
                         }
@@ -1171,15 +1275,15 @@ public class TreeStructure {
                             !naturalBlocks.contains(checkMaterial) &&
                                     !trunkBlocks.contains(checkMaterial) &&
                                     !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                        valid = false;
-                        failReason = FailReason.INVALID_BLOCK;
-                        failMaterial = checkMaterial;
+                        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
                         debug.i("invalid block at " + BlockUtils.printBlock(checkBlock));
                         return;
                     }
                 }
             }
         }
+
+        addCapLeaves();
     }
 
     /**
@@ -1235,7 +1339,7 @@ public class TreeStructure {
         Material mat = checkBlock.getType();
         if (trunkBlocks.contains(mat)) {
             // Check for other trunks
-            Block otherBlock = findBottomBlock(checkBlock, config, true);
+            Block otherBlock = findBottomBlock(null, checkBlock, config, true);
 
             if (otherBlock != null) {
                 TreeStructure anotherTree = new TreeStructure(config, otherBlock, true);
@@ -1272,14 +1376,14 @@ public class TreeStructure {
             }
         } else if (extraBlocks.contains(mat)) {
             debug.i("This branch ends now.");
-            roofs.add(checkBlock);
+            caps.add(checkBlock.getRelative(direction, -1));
             // We found our end!
             return false;
         } else if (
                 !naturalBlocks.contains(mat) &&
                         !(allTrunks.contains(mat) || allExtras.contains(mat))) {
             debug.i("invalid block 3: " + mat);
-            failMaterial = mat;
+            discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
             return true;
         }
         return false;
@@ -1298,7 +1402,7 @@ public class TreeStructure {
      * @param radius what is the radius of similar trees to check for?
      * @return whether something went wrong and we should abandon ship because of that
      */
-    private boolean isInvalidExtraBlock(Block checkBlock, BlockFace direction,
+    private boolean hasInvalidExtraBlock(Block checkBlock, BlockFace direction,
                                         int expansion, int progress, boolean first, boolean edges, boolean air, int radius) {
         int squaredRadius = radius*radius;
 
@@ -1310,50 +1414,52 @@ public class TreeStructure {
         }
         Material checkMaterial = checkBlock.getType();
 
-        if (air || !MaterialUtils.isAir(checkMaterial)) {
-            boolean found = air;
-            if (config.getBoolean(TreeConfig.CFG.BLOCKS_VINES) && checkBlock.getType() == Material.VINE) {
-                followVines(checkBlock);
-            }
-            if (extraBlocks.contains(checkMaterial)) {
-                extras.add(checkBlock);
-                found = true;
-            }
+        if (!air && MaterialUtils.isAir(checkMaterial)) {
+            debug.i("hit air!");
+            return false;
+        }
 
-            if (found) {
-                if (first) {
-                    boolean shorter = !edges && (progress == expansion);
-                    if (direction == BlockFace.EAST || direction == BlockFace.WEST) {
-                        // Expand to north/south direction
-                        if (isInvalidExtraBlock(checkBlock.getRelative(BlockFace.SOUTH), BlockFace.SOUTH, shorter ? progress - 1 : progress, 1, false, edges, air, radius
-                        ) ||
-                                isInvalidExtraBlock(checkBlock.getRelative(BlockFace.NORTH), BlockFace.NORTH, progress, 1, false, edges, air, radius
-                                )){
-                            return true;
-                        }
-                    } else {
-                        // Expand to east/west direction
-                        if (isInvalidExtraBlock(checkBlock.getRelative(BlockFace.EAST), BlockFace.EAST, progress, 1, false, edges, air, radius
-                        ) ||
-                                isInvalidExtraBlock(checkBlock.getRelative(BlockFace.WEST), BlockFace.WEST, progress, 1, false, edges, air, radius
-                                )){
-                            return true;
-                        }
+        boolean found = air;
+        if (config.getBoolean(TreeConfig.CFG.BLOCKS_VINES) && checkBlock.getType() == Material.VINE) {
+            followVines(checkBlock);
+        }
+        if (extraBlocks.contains(checkMaterial)) {
+            extras.add(checkBlock);
+            found = true;
+        }
+
+        if (found) {
+            if (first) {
+                boolean shorter = !edges && (progress == expansion);
+                if (direction == BlockFace.EAST || direction == BlockFace.WEST) {
+                    // Expand to north/south direction
+                    if (hasInvalidExtraBlock(checkBlock.getRelative(BlockFace.SOUTH), BlockFace.SOUTH, shorter ? progress - 1 : progress, 1, false, edges, air, radius
+                    ) ||
+                            hasInvalidExtraBlock(checkBlock.getRelative(BlockFace.NORTH), BlockFace.NORTH, progress, 1, false, edges, air, radius
+                            )){
+                        return true;
+                    }
+                } else {
+                    // Expand to east/west direction
+                    if (hasInvalidExtraBlock(checkBlock.getRelative(BlockFace.EAST), BlockFace.EAST, progress, 1, false, edges, air, radius
+                    ) ||
+                            hasInvalidExtraBlock(checkBlock.getRelative(BlockFace.WEST), BlockFace.WEST, progress, 1, false, edges, air, radius
+                            )){
+                        return true;
                     }
                 }
-                // Expand, if we can
-                if (progress < expansion) {
-                    return isInvalidExtraBlock(checkBlock.getRelative(direction), direction, expansion, progress + 1, first, edges, air, radius
-                    );
-                }
-            } else if (
-                    !naturalBlocks.contains(checkMaterial) &&
-                            !trunkBlocks.contains(checkMaterial) &&
-                            !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                debug.i("Invalid block found 1: " + checkMaterial);
-                failMaterial = checkMaterial;
-                return true;
             }
+            // Expand, if we can
+            if (progress < expansion) {
+                return hasInvalidExtraBlock(checkBlock.getRelative(direction), direction, expansion, progress + 1, first, edges, air, radius);
+            }
+        } else if (
+                !naturalBlocks.contains(checkMaterial) &&
+                        !trunkBlocks.contains(checkMaterial) &&
+                        !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
+            debug.i("Invalid block found 1: " + BlockUtils.printBlock(checkBlock));
+            discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
+            return true;
         }
         return false;
     }
@@ -1807,7 +1913,10 @@ public class TreeStructure {
     }
 
     public void setValid(boolean value) {
-        this.valid = value;
+        if (discoveryResult == null) {
+            return;
+        }
+        this.discoveryResult.setValid(value);
     }
 
     public void plantSaplings() {
@@ -1822,5 +1931,13 @@ public class TreeStructure {
     public void addReplantDelay(TreeAssistReplantDelay delay) {
         delay.setTree(this);
         this.saplings.add(delay);
+    }
+
+    public void setFailReason(FailReason reason) {
+        if (discoveryResult == null) {
+            discoveryResult = new DiscoveryResult(config, this, reason);
+            return;
+        }
+        discoveryResult.setReason(reason);
     }
 }

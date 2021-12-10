@@ -2,7 +2,6 @@ package net.slipcor.treeassist.listeners;
 
 import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
-import net.slipcor.treeassist.discovery.DiscoveryResult;
 import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TASaplingBreakEvent;
 import net.slipcor.treeassist.utils.BlockUtils;
@@ -94,12 +93,17 @@ public class TreeAssistPlayerListener implements Listener {
                 Block clicked = event.getClickedBlock();
 
                 if (clicked != null && MaterialUtils.isLog(clicked.getType())) {
-                    DiscoveryResult discovery = TreeStructure.discover(event.getPlayer(), clicked);
-                    if (discovery.getTree() != null && discovery.getTree().trunk != null) {
-                        discovery.getTree().trunk.add(clicked);
+                    TreeStructure tree = TreeStructure.discover(event.getPlayer(), clicked);
+                    if (tree == null) {
+                        return;
+                    }
+                    if (tree.trunk != null) {
+                        tree.trunk.add(clicked);
                     }
                     event.setCancelled(true);
-                    discovery.debugShow(event.getPlayer());
+                    if (tree.discoveryResult != null) {
+                        tree.discoveryResult.debugShow(event.getPlayer());
+                    }
                 }
             }
         }
@@ -186,13 +190,17 @@ public class TreeAssistPlayerListener implements Listener {
 
         Player player = event.getPlayer();
 
-        DiscoveryResult discovery = TreeStructure.discover(player, event.getBlock());
+        TreeStructure tree = TreeStructure.discover(player, event.getBlock());
 
-        if (discovery.isCancel()) {
+        if (tree == null) {
+            return;
+        }
+
+        if (tree.discoveryResult.isCancel()) {
             event.setCancelled(true);
         }
 
-        discovery.commitActions(event.getBlock(), player);
+        tree.discoveryResult.commitActions(event.getBlock(), player);
     }
 
     @EventHandler(ignoreCancelled = true)
