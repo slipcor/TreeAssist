@@ -1,7 +1,7 @@
 package net.slipcor.treeassist.utils;
 
-import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.discovery.LeavesStructure;
 import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TALeafDecay;
@@ -31,7 +31,7 @@ import java.util.*;
  */
 public class BlockUtils {
     private BlockUtils() {}
-    public static CoreDebugger debug;
+    public static TreeAssistDebugger debug;
     public static Boolean useFallingBlock = null;
     private static final List<FallingBlock> fallingBlocks = new ArrayList<>();
 

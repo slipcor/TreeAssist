@@ -1,7 +1,7 @@
 package net.slipcor.treeassist.discovery;
 
-import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.events.TATreeBrokenEvent;
 import net.slipcor.treeassist.externals.mcMMOHook;
@@ -17,6 +17,7 @@ import net.slipcor.treeassist.yml.Language;
 import net.slipcor.treeassist.yml.MainConfig;
 import net.slipcor.treeassist.yml.TreeConfig;
 import net.slipcor.treeassist.yml.TreeConfigUpdater;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
@@ -41,7 +42,7 @@ public class TreeStructure {
 
     private final static Map<BlockFace, BlockFace[]> diagonalContinuations              // Followup diagonal directions based on a given direction
             = new EnumMap<>(BlockFace.class);
-    public static CoreDebugger debug;
+    public static TreeAssistDebugger debug;
 
     public Block bottom;
     public List<Block> trunk;
@@ -468,7 +469,9 @@ public class TreeStructure {
 
                 TreeStructure checkTreeStructure = new TreeStructure(config, block, false);
 
-                if (!checkTreeStructure.hasDiscoveryFailed()) {
+                if (checkTreeStructure.hasDiscoveryFailed()) {
+                    debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, "Not a valid tree (" + checkTreeStructure.getFailReason() + ") " + checkTreeStructure.discoveryResult.getInformation());
+                } else {
                     checkTreeStructure.discoveryResult = new DiscoveryResult(config, checkTreeStructure, false);
                 }
 
@@ -505,6 +508,7 @@ public class TreeStructure {
                     if (TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&
                             !player.hasPermission(config.getString(TreeConfig.CFG.PERMISSION))) {
                         debug.i("Player does not have permission " + config.getString(TreeConfig.CFG.PERMISSION));
+                        debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, "Player does not have permission " + config.getString(TreeConfig.CFG.PERMISSION));
                         matchingTreeConfig = config; // for maybe forcing something later
                         matchingTreeStructure = checkTreeStructure;
                         continue configs;
@@ -522,6 +526,7 @@ public class TreeStructure {
                         if (TreeAssist.instance.isDisabled(player.getWorld().getName(), player.getName())) {
                             debug.i("Disabled for this player in this world!");
                             checkTreeStructure.discoveryResult = new DiscoveryResult(config, checkTreeStructure, false);
+                            debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, "Disabled for player " + player.getName() + " in this world!");
                             return checkTreeStructure;
                         }
 
@@ -530,6 +535,7 @@ public class TreeStructure {
                             ItemStack item = player.getInventory().getItemInMainHand();
                             if (!item.hasItemMeta() || !item.getItemMeta().hasLore() || !item.getItemMeta().getLore().contains(lore)) {
                                 debug.i("Lore not found: " + lore);
+                                debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, "Player tool does not have the required lore!");
                                 matchingTreeConfig = config; // for maybe forcing something later
                                 matchingTreeStructure = checkTreeStructure;
                                 continue configs;
@@ -539,6 +545,7 @@ public class TreeStructure {
                         if (player.isSneaking()) {
                             if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_WHEN_SNEAKING)) {
                                 debug.i("Sneaking is bad!");
+                                debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, "Player is sneaking!");
                                 matchingTreeConfig = config; // for maybe forcing something later
                                 matchingTreeStructure = checkTreeStructure;
                                 continue configs;
@@ -546,6 +553,7 @@ public class TreeStructure {
                         } else {
                             if (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_WHEN_NOT_SNEAKING)) {
                                 debug.i("Not sneaking is bad!");
+                                debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, "Player is not sneaking!");
                                 matchingTreeConfig = config; // for maybe forcing something later
                                 matchingTreeStructure = checkTreeStructure;
                                 continue configs;
@@ -554,6 +562,7 @@ public class TreeStructure {
 
                         if (TreeAssist.instance.mcMMO && mcMMOHook.mcMMOTreeFeller(player)) {
                             debug.i("mcMMO Tree Feller!");
+                            debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, "Skipping for mcMMO!");
                             matchingTreeConfig = config; // for maybe forcing something later
                             matchingTreeStructure = checkTreeStructure;
                             continue configs;
@@ -563,6 +572,7 @@ public class TreeStructure {
                             if (!ToolUtils.isMatchingTool(player.getInventory().getItemInMainHand(), config) &&
                                 !TreeAssist.instance.getPlayerListener().isDebugTool(player.getInventory().getItemInMainHand())) {
                                 debug.i("Player has not the right tool!");
+                                debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, "Player does not have the right tool!");
                                 matchingTreeConfig = config; // for maybe forcing something later
                                 matchingTreeStructure = checkTreeStructure;
                                 continue configs;
@@ -588,6 +598,7 @@ public class TreeStructure {
                                 }
                             }
                         }
+                        debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, ChatColor.GREEN + "Autochop should work!");
 
                         checkTreeStructure.discoveryResult = new DiscoveryResult(config, checkTreeStructure,
                                 !checkTreeStructure.getConfig().getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY) ||
@@ -597,6 +608,8 @@ public class TreeStructure {
                     } else if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL) ||
                             config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE) ||
                             TreeAssist.instance.getBlockListener().isReplant(player.getName())) {
+                        debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, "We might enforce chopping or replanting later!");
+                        debug.explain(TreeAssistDebugger.ErrorType.SAPLING, checkBlock, "We might enforce chopping or replanting later!");
                         matchingTreeConfig = config;
                         matchingTreeStructure = checkTreeStructure;
                         continue configs;
@@ -613,13 +626,15 @@ public class TreeStructure {
                             TreeAssist.instance.config().getBoolean(MainConfig.CFG.DESTRUCTION_MESSAGE) &&
                             checkTreeStructure.hasFailInformation()) {
                         TreeAssist.instance.sendPrefixed(player, Language.MSG.WARNING_DESTRUCTION_FAILED.parse(checkTreeStructure.discoveryResult.getInformation()));
+                    } else {
+                        debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, "Not a valid tree (" + checkTreeStructure.getFailReason() + ") " + checkTreeStructure.discoveryResult.getInformation());
                     }
-                    //checkTreeStructure.discoveryResult = new DiscoveryResult(matchingTreeConfig, checkTreeStructure, false);
                     return checkTreeStructure;
                 }
             }
         }
         if (matchingTreeStructure != null) {
+            debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, checkBlock, "Not an exact match found for chopping!");
             matchingTreeStructure.discoveryResult = new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, false);
         }
         return matchingTreeStructure;
@@ -1640,6 +1655,7 @@ public class TreeStructure {
     public void maybeReplant(Player player, Block block) {
         if (!config.getBoolean(TreeConfig.CFG.REPLANTING_ACTIVE)) {
             debug.i("replanting is disabled!");
+            debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Config " + config.getConfigName() + " does not want replanting.");
             return;
         }
 
@@ -1650,18 +1666,21 @@ public class TreeStructure {
 
             if (TreeAssist.instance.getBlockListener().isNoReplant(player.getName())) {
                 debug.i("Player is NoReplant!");
+                debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Player is temporarily not replanting.");
                 return;
             }
 
             if (globalConfig.getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&
                     !player.hasPermission("treeassist.replant")) {
                 debug.i("Player has no replant perms!");
+                debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Player does not have replant perms.");
                 return;
             }
 
             if (config.getBoolean(TreeConfig.CFG.REPLANTING_REQUIRES_TOOLS)) {
                 if (!ToolUtils.isMatchingTool(player.getInventory().getItemInMainHand(), config)) {
                     debug.i("Player does not have the tool!!");
+                    debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Player does not have the tool required by config " + config.getConfigName() + ", no replanting.");
                     return;
                 }
             }
@@ -1674,6 +1693,7 @@ public class TreeStructure {
             )) {
                 if (config.getBoolean(TreeConfig.CFG.REPLANTING_ONLY_WHEN_BOTTOM_BLOCK_BROKEN_FIRST)) {
                     debug.i("We did not break the bottom!");
+                    debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Config " + config.getConfigName() + " requires bottom block being broken for replanting.");
                     return;
                 }
             }
@@ -1711,8 +1731,12 @@ public class TreeStructure {
 
             if (placeEvent.isCancelled()) {
                 debug.i("Sapling placement was cancelled by a plugin!");
+
+                debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Another config cancelled replanting.");
                 continue;
             }
+
+            debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, ChatColor.GREEN + "We should be replanting.");
 
             Runnable b = new TreeAssistReplant(saplingBlock, placeEvent.getType(), config);
 
@@ -1924,6 +1948,11 @@ public class TreeStructure {
         List<TreeAssistReplantDelay> mySaplings = new ArrayList<>(saplings);
         for (TreeAssistReplantDelay replanting : mySaplings) {
             replanting.commit();
+        }
+        if (saplings.size() > 0) {
+            debug.explain(TreeAssistDebugger.ErrorType.SAPLING, bottom, ChatColor.GREEN + "Found saplings for replanting.");
+        } else {
+            debug.explain(TreeAssistDebugger.ErrorType.SAPLING, bottom, "No sapling places found for replanting.");
         }
         saplings.clear();
     }

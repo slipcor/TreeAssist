@@ -1,7 +1,7 @@
 package net.slipcor.treeassist.listeners;
 
-import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TASaplingBreakEvent;
 import net.slipcor.treeassist.utils.BlockUtils;
@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TreeAssistPlayerListener implements Listener {
-    public static CoreDebugger debug;
+    public static TreeAssistDebugger debug;
 
     public TreeAssist plugin;
 
@@ -185,6 +185,9 @@ public class TreeAssistPlayerListener implements Listener {
                 debug.i("User placed block. Removing!");
                 plugin.blockList.removeBlock(event.getBlock());
                 plugin.blockList.save();
+                debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, event.getBlock(), "This is a player placed block! Not a tree to autochop!");
+                debug.explain(TreeAssistDebugger.ErrorType.CLEANUP, event.getBlock(), "This is a player placed block! Not a tree to cleanup!");
+                debug.explain(TreeAssistDebugger.ErrorType.SAPLING, event.getBlock(), "This is a player placed block! Not a valid tree to replant!");
                 return;
             }
         }
@@ -194,6 +197,9 @@ public class TreeAssistPlayerListener implements Listener {
         TreeStructure tree = TreeStructure.discover(player, event.getBlock());
 
         if (tree == null) {
+            debug.explain(TreeAssistDebugger.ErrorType.AUTOCHOP, event.getBlock(), "This is not a valid tree to autochop!");
+            debug.explain(TreeAssistDebugger.ErrorType.CLEANUP, event.getBlock(), "This is not a valid tree to cleanup!");
+            debug.explain(TreeAssistDebugger.ErrorType.SAPLING, event.getBlock(), "This is not a valid tree to replant!");
             return;
         }
 

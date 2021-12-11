@@ -1,7 +1,7 @@
 package net.slipcor.treeassist.utils;
 
 import net.slipcor.core.ConfigEntry;
-import net.slipcor.core.CoreDebugger;
+import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class CommandUtils {
-    public static CoreDebugger debug;
+    public static TreeAssistDebugger debug;
 
     public static void commitBlock(Player player, TreeConfig config) {
         commit(player, config, TreeConfig.CFG.COMMANDS_PER_BLOCK);

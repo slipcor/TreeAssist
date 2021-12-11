@@ -3,6 +3,7 @@ package net.slipcor.treeassist;
 import net.slipcor.core.*;
 import net.slipcor.treeassist.blocklists.*;
 import net.slipcor.treeassist.commands.*;
+import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.discovery.DiscoveryResult;
 import net.slipcor.treeassist.discovery.TreeBlock;
 import net.slipcor.treeassist.discovery.TreeStructure;
@@ -289,14 +290,14 @@ public class TreeAssist extends CorePlugin {
             }
         }
 
-        TreeStructure.debug = new CoreDebugger(this, 1);
-        CleanRunner.debug = new CoreDebugger(this, 2);
-        TreeAssistBlockListener.debug = new CoreDebugger(this, 6);
-        TreeAssistSpawnListener.debug = new CoreDebugger(this, 7);
-        BlockUtils.debug = new CoreDebugger(this, 8);
-        TreeAssistPlayerListener.debug = new CoreDebugger(this, 9);
-        CommandUtils.debug = new CoreDebugger(this, 10);
-        DiscoveryResult.debug = new CoreDebugger(this, 11);
+        TreeStructure.debug = new TreeAssistDebugger(this, 1);
+        CleanRunner.debug = new TreeAssistDebugger(this, 2);
+        TreeAssistBlockListener.debug = new TreeAssistDebugger(this, 6);
+        TreeAssistSpawnListener.debug = new TreeAssistDebugger(this, 7);
+        BlockUtils.debug = new TreeAssistDebugger(this, 8);
+        TreeAssistPlayerListener.debug = new TreeAssistDebugger(this, 9);
+        CommandUtils.debug = new TreeAssistDebugger(this, 10);
+        DiscoveryResult.debug = new TreeAssistDebugger(this, 11);
         loadDebugger("Debug", Bukkit.getConsoleSender());
 
         if (config.getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE)) {

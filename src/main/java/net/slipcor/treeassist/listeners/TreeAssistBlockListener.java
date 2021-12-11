@@ -1,7 +1,7 @@
 package net.slipcor.treeassist.listeners;
 
-import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.runnables.TreeAssistAntiGrow;
@@ -10,8 +10,8 @@ import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import net.slipcor.treeassist.yml.MainConfig;
 import net.slipcor.treeassist.yml.TreeConfig;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.FallingBlock;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TreeAssistBlockListener implements Listener {
-    public static CoreDebugger debug;
+    public static TreeAssistDebugger debug;
 
     public TreeAssist plugin;
 
@@ -48,23 +48,30 @@ public class TreeAssistBlockListener implements Listener {
         Block block = event.getBlock();
         if (!plugin.isActive(block.getWorld())) {
             debug.i("not in this world: " + block.getWorld().getName());
+            debug.explain(TreeAssistDebugger.ErrorType.DECAY, block, "Block is not decaying because it is disabled in this world!");
             return;
         }
+        int decaying = 0;
         debug.i("leaf is decaying: " + BlockUtils.printBlock(event.getBlock()));
         if (plugin.config().getBoolean(MainConfig.CFG.DESTRUCTION_FAST_LEAF_DECAY) && plugin.Enabled) {
+            decaying++;
             debug.i("we want fast decay!");
-            World world = block.getWorld();
-            if (plugin.isActive(world)) {
-                debug.i("we are active here!");
-                for (TreeConfig config : TreeAssist.treeConfigs.values()) {
-                    if (config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS).contains(block.getType())) {
-                        debug.i("let's go!");
-                        BlockUtils.breakRadiusLeaves(block, config);
-                    }
+            for (TreeConfig config : TreeAssist.treeConfigs.values()) {
+                if (config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS).contains(block.getType())) {
+                    debug.i("let's go!");
+                    debug.explain(TreeAssistDebugger.ErrorType.DECAY, block, ChatColor.GREEN + "We should be decaying!");
+                    BlockUtils.breakRadiusLeaves(block, config);
+                    return;
                 }
-            } else {
-                debug.i("not in this world: " + event.getBlock().getWorld().getName());
             }
+        } else {
+            debug.explain(TreeAssistDebugger.ErrorType.DECAY, block, "Block is not decaying the main config setting is not enabled!");
+            return;
+        }
+        if (decaying > 0) {
+            debug.explain(TreeAssistDebugger.ErrorType.DECAY, block, "Block is not decaying because of the " + decaying + " decaying configs, none matches!");
+        } else {
+            debug.explain(TreeAssistDebugger.ErrorType.DECAY, block, "Block is not decaying because no matching tree was found!");
         }
     }
 
@@ -85,22 +92,27 @@ public class TreeAssistBlockListener implements Listener {
 
         if (!plugin.isActive(block.getWorld())) {
             debug.i("not in this world: " + block.getWorld().getName());
+            debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Burning block is not handled in this world!");
             return;
         }
 
         if (!TreeStructure.allTrunks.contains(block.getType())) {
             debug.i("Not a burning tree block: " + block.getType());
+            debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Burning block is not a recognized log block!");
             return;
         }
 
         if (plugin.config().getBoolean(MainConfig.CFG.PLACED_BLOCKS_ACTIVE)) {
             if (plugin.blockList.isPlayerPlaced(block)) {
                 debug.i("User placed block. Removing!");
+                debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Burning block is placed by player!");
                 plugin.blockList.removeBlock(block);
                 plugin.blockList.save();
                 return;
             }
         }
+
+        int burning = 0;
 
         for (TreeConfig config : TreeAssist.treeConfigs.values()) {
             List<Material> list = config.getMaterials(TreeConfig.CFG.TRUNK_MATERIALS);
@@ -109,9 +121,11 @@ public class TreeAssistBlockListener implements Listener {
                 if (!block.getType().equals(mat)) {
                     continue;
                 }
+                burning++;
 
                 if (!config.getBoolean(TreeConfig.CFG.REPLANTING_WHEN_TREE_BURNS_DOWN)) {
                     debug.i("burn replanting disabled in config");
+                    debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Burning block does not replant config " + config.getConfigName() + "!");
                     continue;
                 }
 
@@ -119,11 +133,13 @@ public class TreeAssistBlockListener implements Listener {
                 List<Material> grounds = config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS);
                 if (!grounds.contains(oneBelow.getType())) {
                     debug.i("not a valid ground: " + BlockUtils.printBlock(oneBelow));
+                    debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Burning block does not have valid ground for config " + config.getConfigName() + "!");
                     continue;
                 }
                 Block oneAbove = block.getRelative(BlockFace.UP, 1);
                 if (!MaterialUtils.isAir(oneAbove.getType()) && !list.contains(oneAbove.getType())) {
                     debug.i("not a valid block above: " + BlockUtils.printBlock(oneAbove));
+                    debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Burning block does not have valid log block config " + config.getConfigName() + "!");
                     continue;
                 }
                 Material replantMat = config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL);
@@ -131,12 +147,19 @@ public class TreeAssistBlockListener implements Listener {
                 TreeAssist.instance.getServer().getPluginManager().callEvent(event);
                 if (event.isCancelled()) {
                     debug.i("TreeAssistBlockListener.checkFire() Sapling Replant was cancelled!");
+                    debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Burning block sapling replacement was cancelled by other plugin!");
                     return;
                 }
                 Runnable b = new TreeAssistReplant(block, event.getType(), config);
                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, b, 20);
+                debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, ChatColor.GREEN + "Burning block sapling replacement should have worked!");
                 return;
             }
+        }
+        if (burning > 0) {
+            debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Burning block sapling replacement did not trigger because of the " + burning + " matching configs, none has the setting activated!");
+        } else {
+            debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Burning block sapling replacement did not trigger because no config is set to decay!");
         }
     }
 
@@ -159,6 +182,7 @@ public class TreeAssistBlockListener implements Listener {
             return;
         }
         if (antiGrow.contains(event.getLocation())) {
+            debug.explain(TreeAssistDebugger.ErrorType.GROW, event.getLocation().getBlock(), "We are preventing growth for a limited time!");
             event.setCancelled(true);
         }
     }

@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.49 - prevent players dropping their axes to avoid tool damage
+- v7.2.50 - add debug command parameter to get spammed about why things are not working, more in the docs!
 - [read more](doc/changelog.md)
 
 ***

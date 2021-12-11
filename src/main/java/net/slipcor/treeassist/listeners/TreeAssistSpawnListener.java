@@ -1,7 +1,7 @@
 package net.slipcor.treeassist.listeners;
 
-import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
 import net.slipcor.treeassist.runnables.TreeAssistSaplingSelfPlant;
 import net.slipcor.treeassist.utils.MaterialUtils;
@@ -30,7 +30,7 @@ import java.util.Random;
 public class TreeAssistSpawnListener implements Listener {
 
 	public TreeAssist plugin;
-	public static CoreDebugger debug;
+	public static TreeAssistDebugger debug;
 	
 	public TreeAssistSpawnListener(TreeAssist instance)
 	{

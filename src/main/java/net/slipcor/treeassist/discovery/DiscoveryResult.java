@@ -1,7 +1,7 @@
 package net.slipcor.treeassist.discovery;
 
-import net.slipcor.core.CoreDebugger;
 import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.CommandUtils;
 import net.slipcor.treeassist.yml.MainConfig;
@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class DiscoveryResult {
-    public static CoreDebugger debug;
+    public static TreeAssistDebugger debug;
 
     final TreeConfig config;
     final TreeStructure tree;
