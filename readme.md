@@ -102,8 +102,6 @@ Joining the Discord Server gets you early access to latest builds, and maybe it 
 
 * Cooldown for forcebreak and forcegrow
 * Add more custom WorldGuard flags to deny functionality by region
-* Improve debug functionality [Core?] by implementing String filter logic
-* Add debug clarifier to more precisely debug why desired outcomes are not happening
 * Modularize external plugin features for easier modular functionality 
 * Nether trees have a ton of logs left out, a lot of trees hit netherrack on top
 
