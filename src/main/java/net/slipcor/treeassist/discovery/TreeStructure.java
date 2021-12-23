@@ -1659,16 +1659,16 @@ public class TreeStructure {
             return;
         }
 
+        if (TreeAssist.instance.getBlockListener().isNoReplant(player.getName())) {
+            debug.i("Player is NoReplant!");
+            debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Player is temporarily not replanting.");
+            return;
+        }
+
         MainConfig globalConfig = TreeAssist.instance.config();
 
         if (TreeAssist.instance.getBlockListener().isReplant(player.getName()) &&
                 !config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE)) {
-
-            if (TreeAssist.instance.getBlockListener().isNoReplant(player.getName())) {
-                debug.i("Player is NoReplant!");
-                debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Player is temporarily not replanting.");
-                return;
-            }
 
             if (globalConfig.getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&
                     !player.hasPermission("treeassist.replant")) {

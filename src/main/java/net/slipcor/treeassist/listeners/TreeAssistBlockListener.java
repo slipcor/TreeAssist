@@ -210,6 +210,7 @@ public class TreeAssistBlockListener implements Listener {
 
     public void noReplant(String name, int seconds) {
         noreplant.put(name, (System.currentTimeMillis() / 1000) + seconds);
+        replant.remove(name);
     }
 
     public boolean isNoReplant(String name) {
@@ -226,6 +227,7 @@ public class TreeAssistBlockListener implements Listener {
 
     public void replant(String name, int seconds) {
         replant.put(name, (System.currentTimeMillis() / 1000) + seconds);
+        noreplant.remove(name);
     }
 
     public boolean isReplant(String name) {

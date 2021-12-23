@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.50 - add debug command parameter to get spammed about why things are not working, more in the docs!
+- v7.2.51 - address github ticket 0061 - noreplant did not take proper priority. Also, now noreplant and replant will trump each other on command
 - [read more](doc/changelog.md)
 
 ***
