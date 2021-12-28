@@ -2,7 +2,8 @@
 
 ## v7.2 - Library
 
-- v7.2.51 - address github ticket 0061 - noreplant did not take proper priority. Also, now noreplant and replant will trump each other on command
+- v7.2.52 - address ticket 0063 - tweak check for self-replant, add config for different tree types
+- v7.2.51 - address ticket 0061 - noreplant did not take proper priority. Also, now noreplant and replant will trump each other on command
 - v7.2.50 - add debug command parameter to get spammed about why things are not working, more in the docs!
 - v7.2.49 - prevent players dropping their axes to avoid tool damage
 - v7.2.48 - allow acacia and potentially other trees to actually remove cap leaves, improve thick tree determination for even less infringement

@@ -11,6 +11,11 @@ Blocks:
     # Allow air pockets in leaves
     Air: true
 
+Replanting:
+
+  # How far down do we look for saplings to place them
+  Check Depth: 40
+
 # The parent tree config to inherit from, recursively
 Parent: jungle
 Trunk:
@@ -22,4 +27,4 @@ Trunk:
   Branch: true
 
 # Version number for automagical config updates
-Version: 7.1013
+Version: 7.2052

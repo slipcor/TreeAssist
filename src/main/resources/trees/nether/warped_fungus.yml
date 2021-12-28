@@ -34,6 +34,9 @@ Parent: nether
 Permission: treeassist.destroy.warpedfungus
 Replanting:
 
+  # How far down do we look for saplings to place them
+  Check Depth: 26
+
   # The material to place
   Material: minecraft:warped_fungus
 Trunk:
@@ -45,4 +48,4 @@ Trunk:
   - minecraft:shroomlight
 
 # Version number for automagical config updates
-Version: 7.2017998695373535
+Version: 7.2052

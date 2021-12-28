@@ -76,6 +76,7 @@ public class TreeConfig extends CoreConfig {
         REPLANTING_ACTIVE("Replanting.Active", true, "Main switch to deactivate sapling replanting"),
         REPLANTING_DELAY("Replanting.Delay", 1, "How long to wait before placing a sapling. Should stay above 0 because of bukkit event handling"),
         REPLANTING_DELAY_GROWTH_SECONDS("Replanting.Delay Growth Seconds", 0, "How long should saplings stay there before they can grow"),
+        REPLANTING_CHECK_DEPTH("Replanting.Check Depth", 12, "How far down do we look for saplings to place them"),
         REPLANTING_DROPPED_SAPLINGS("Replanting.Dropped.Active", false, "Attempt to plant a dropped sapling item"),
         REPLANTING_DROPPED_SAPLINGS_PROBABILITY("Replanting.Dropped.Probability", 0.1, "What is the chance for us doing this, 1.0 means 100%"),
         REPLANTING_DROPPED_SAPLINGS_DELAY("Replanting.Dropped.Delay Ticks", 5, "How many ticks should we wait until attempting to plant it"),

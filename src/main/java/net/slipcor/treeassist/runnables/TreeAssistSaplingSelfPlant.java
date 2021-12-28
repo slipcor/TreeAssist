@@ -56,7 +56,7 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 
 	private Block findBlock(Item item) {
 		Block result = item.getLocation().getBlock();
-		int checks = 255;
+		int checks = config.getInt(TreeConfig.CFG.REPLANTING_CHECK_DEPTH);
 		while (checks-- > 0 && !config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS).contains(result.getType()) || !result.getType().isSolid()) {
 			result = result.getRelative(BlockFace.DOWN);
 		}

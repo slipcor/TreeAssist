@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.51 - address github ticket 0061 - noreplant did not take proper priority. Also, now noreplant and replant will trump each other on command
+- v7.2.52 - address ticket 0063 - tweak check for self-replant, add config for different tree types
 - [read more](doc/changelog.md)
 
 ***

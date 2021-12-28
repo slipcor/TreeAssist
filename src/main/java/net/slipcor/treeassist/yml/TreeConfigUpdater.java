@@ -70,6 +70,13 @@ public class TreeConfigUpdater {
         NETHER_LEAF_GAPPLE(7.1019f, "nether", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:golden_apple", 0f),
         NETHER_LEAF_APPLE(7.1019f, "nether", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:apple", 0f),
         NETHER_TRUNK_GAPPLE(7.1019f, "nether", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:golden_apple", 0f),
+
+        REPLANTING_CHECK_DEPTH(7.2051f, "default", TreeConfig.CFG.REPLANTING_CHECK_DEPTH.getNode(), 12),
+        REPLANTING_CHECK_DEPTH_OAK(7.2051f, "oak", TreeConfig.CFG.REPLANTING_CHECK_DEPTH.getNode(), 14),
+        REPLANTING_CHECK_DEPTH_SPRUCE(7.2051f, "tall_spruce", TreeConfig.CFG.REPLANTING_CHECK_DEPTH.getNode(), 24),
+        REPLANTING_CHECK_DEPTH_JUNGLE(7.2051f, "tall_jungle", TreeConfig.CFG.REPLANTING_CHECK_DEPTH.getNode(), 40),
+        REPLANTING_CHECK_DEPTH_C_FUNGUS(7.2051f, "crimson_fungus", TreeConfig.CFG.REPLANTING_CHECK_DEPTH.getNode(), 26),
+        REPLANTING_CHECK_DEPTH_W_FUNGUS(7.2051f, "warped_fungus", TreeConfig.CFG.REPLANTING_CHECK_DEPTH.getNode(), 26),
         ;
 
         private final float version;

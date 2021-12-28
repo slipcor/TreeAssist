@@ -188,6 +188,9 @@ Replanting:
   # Main switch to deactivate sapling replanting
   Active: true
 
+  # How far down do we look for saplings to place them
+  Check Depth: 12
+
   # How long to wait before placing a sapling. Should stay above 0 because of bukkit event handling
   Delay: 1
 
@@ -271,4 +274,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.2029
+Version: 7.2052

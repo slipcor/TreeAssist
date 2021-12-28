@@ -7,6 +7,10 @@ Blocks:
 
     # Radius around the trunk to check for leaves
     Radius: 4
+Replanting:
+
+  # How far down do we look for saplings to place them
+  Check Depth: 24
 
 # The parent tree config to inherit from, recursively
 Parent: spruce
@@ -16,4 +20,4 @@ Trunk:
   Thickness: 2
 
 # Version number for automagical config updates
-Version: 7.1013
+Version: 7.2052
