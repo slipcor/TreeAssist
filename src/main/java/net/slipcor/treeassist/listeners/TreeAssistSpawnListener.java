@@ -65,6 +65,11 @@ public class TreeAssistSpawnListener implements Listener {
 			return;
 		}
 		Item drop = event.getEntity();
+		Material type = drop.getItemStack().getType();
+		if (type.name().contains("BAMBOO") || type.name().equals("LEAVES") || type.name().equals("VINE")) {
+			// let's ignore the spammy bits that are known and no saplings anyway
+			return;
+		}
 		for (String name : TreeAssist.treeConfigs.keySet()) {
 			TreeConfig config = TreeAssist.treeConfigs.get(name);
 			if (config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL) == drop.getItemStack().getType() ) {

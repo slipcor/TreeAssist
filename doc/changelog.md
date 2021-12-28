@@ -2,6 +2,7 @@
 
 ## v7.2 - Library
 
+- v7.2.53 - address ticket 0062 - skip item spawn events of spammy items that are no saplings
 - v7.2.52 - address ticket 0063 - tweak check for self-replant, add config for different tree types
 - v7.2.51 - address ticket 0061 - noreplant did not take proper priority. Also, now noreplant and replant will trump each other on command
 - v7.2.50 - add debug command parameter to get spammed about why things are not working, more in the docs!

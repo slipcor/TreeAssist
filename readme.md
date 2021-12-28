@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.52 - address ticket 0063 - tweak check for self-replant, add config for different tree types
+- v7.2.53 - address ticket 0062 - skip item spawn events of spammy items that are no saplings
 - [read more](doc/changelog.md)
 
 ***
