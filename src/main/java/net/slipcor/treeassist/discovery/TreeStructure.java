@@ -3,7 +3,7 @@ package net.slipcor.treeassist.discovery;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
-import net.slipcor.treeassist.events.TATreeBrokenEvent;
+import net.slipcor.treeassist.events.TATreeBlockBrokenEvent;
 import net.slipcor.treeassist.externals.mcMMOHook;
 import net.slipcor.treeassist.listeners.TreeAssistPlayerListener;
 import net.slipcor.treeassist.runnables.CleanRunner;
@@ -1502,7 +1502,7 @@ public class TreeStructure {
     private void maybeBreakBlock(Block block, ItemStack tool, Player player,
                                  boolean statPickup, boolean statMineBlock, boolean toolDamage, boolean creative) {
 
-        TATreeBrokenEvent event = new TATreeBrokenEvent(block, player, tool);
+        TATreeBlockBrokenEvent event = new TATreeBlockBrokenEvent(this, block, player, tool);
         TreeAssist.instance.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             debug.i(">>> Cancelled by plugin! <<< Aborting breaking!");

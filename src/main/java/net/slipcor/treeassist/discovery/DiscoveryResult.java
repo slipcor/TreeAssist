@@ -179,6 +179,10 @@ public class DiscoveryResult {
         return failExtra;
     }
 
+    public ItemStack getTool() {
+        return item;
+    }
+
     public void setReason(FailReason reason) {
         this.reason = reason;
     }

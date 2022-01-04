@@ -1,5 +1,9 @@
 # v7.X Changelog
 
+## v7.3 - API Expansion
+
+- v7.3.1 - expand TreeBrokenEvent, add TreeBlockBrokenEvent and call both in the appropriate places
+
 ## v7.2 - Library
 
 - v7.2.53 - address ticket 0062 - skip item spawn events of spammy items that are no saplings

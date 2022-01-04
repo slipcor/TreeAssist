@@ -11,7 +11,7 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.events.TASaplingBreakEvent;
 import net.slipcor.treeassist.events.TASaplingPlaceEvent;
-import net.slipcor.treeassist.events.TATreeBrokenEvent;
+import net.slipcor.treeassist.events.TATreeBlockBrokenEvent;
 import org.bukkit.block.Block;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -49,7 +49,7 @@ public class WorldGuardListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onTreeBreak(TATreeBrokenEvent event) {
+    public void onTreeBreak(TATreeBlockBrokenEvent event) {
         cancelIfProtected(event, event.getBlock(), autoChopFlag);
     }
 

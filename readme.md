@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.2.53 - address ticket 0062 - skip item spawn events of spammy items that are no saplings
+- v7.3.1 - expand TreeBrokenEvent, add TreeBlockBrokenEvent and call both in the appropriate places
 - [read more](doc/changelog.md)
 
 ***

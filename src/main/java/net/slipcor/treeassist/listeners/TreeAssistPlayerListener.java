@@ -4,6 +4,7 @@ import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TASaplingBreakEvent;
+import net.slipcor.treeassist.events.TATreeBrokenEvent;
 import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.utils.MaterialUtils;
 import net.slipcor.treeassist.yml.Language;
@@ -205,6 +206,14 @@ public class TreeAssistPlayerListener implements Listener {
 
         if (tree.discoveryResult.isCancel()) {
             event.setCancelled(true);
+        } else {
+            TATreeBrokenEvent treeEvent = new TATreeBrokenEvent(tree, player, tree.discoveryResult.getTool());
+            TreeAssist.instance.getServer().getPluginManager().callEvent(treeEvent);
+            if (treeEvent.isCancelled()) {
+                debug.i(">>> Cancelled by plugin! <<< Aborting breaking!");
+                event.setCancelled(true);
+                return;
+            }
         }
 
         tree.discoveryResult.commitActions(event.getBlock(), player);
