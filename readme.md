@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.1 - expand TreeBrokenEvent, add TreeBlockBrokenEvent and call both in the appropriate places
+- v7.3.6 - synchronize version numbers
 - [read more](doc/changelog.md)
 
 ***
