@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.2 - try to repair dependencies
+- v7.3.3 - try one more time to repair dependencies
 - [read more](doc/changelog.md)
 
 ***
