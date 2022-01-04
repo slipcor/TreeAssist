@@ -2,9 +2,6 @@
 
 ## v7.3 - API Expansion
 
-- v7.3.4 - if this does not work I will nuke worldedit and worldguard
-- v7.3.3 - try one more time to repair dependencies
-- v7.3.2 - try to repair dependencies
 - v7.3.1 - expand TreeBrokenEvent, add TreeBlockBrokenEvent and call both in the appropriate places
 
 ## v7.2 - Library

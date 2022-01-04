@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.4 - if this does not work I will nuke worldedit and worldguard
+- v7.3.1 - expand TreeBrokenEvent, add TreeBlockBrokenEvent and call both in the appropriate places
 - [read more](doc/changelog.md)
 
 ***
