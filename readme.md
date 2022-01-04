@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.3 - try one more time to repair dependencies
+- v7.3.4 - if this does not work I will nuke worldedit and worldguard
 - [read more](doc/changelog.md)
 
 ***
