@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.7 - call the TreeBrokenEvent with higher priority, extend TreeStructure API
 - v7.3.6 - synchronize version numbers
 - v7.3.1 - expand TreeBrokenEvent, add TreeBlockBrokenEvent and call both in the appropriate places
 

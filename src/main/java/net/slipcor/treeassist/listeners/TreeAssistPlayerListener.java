@@ -204,16 +204,16 @@ public class TreeAssistPlayerListener implements Listener {
             return;
         }
 
+        TATreeBrokenEvent treeEvent = new TATreeBrokenEvent(tree, player, tree.discoveryResult.getTool());
+        TreeAssist.instance.getServer().getPluginManager().callEvent(treeEvent);
+        if (treeEvent.isCancelled()) {
+            debug.i(">>> Cancelled by plugin! <<< Aborting breaking!");
+            event.setCancelled(true);
+            return;
+        }
+
         if (tree.discoveryResult.isCancel()) {
             event.setCancelled(true);
-        } else {
-            TATreeBrokenEvent treeEvent = new TATreeBrokenEvent(tree, player, tree.discoveryResult.getTool());
-            TreeAssist.instance.getServer().getPluginManager().callEvent(treeEvent);
-            if (treeEvent.isCancelled()) {
-                debug.i(">>> Cancelled by plugin! <<< Aborting breaking!");
-                event.setCancelled(true);
-                return;
-            }
         }
 
         tree.discoveryResult.commitActions(event.getBlock(), player);

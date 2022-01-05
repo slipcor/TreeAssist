@@ -1190,6 +1190,41 @@ public class TreeStructure {
         }
     }
 
+    /**
+     * @return all main tree blocks (logs, stem)
+     */
+    public List<Block> getBlocks() {
+        List<Block> result = new ArrayList<>(trunk);
+        if (branchMap == null || branchMap.isEmpty()) {
+            return result;
+        }
+        for (List<Block> list : branchMap.values()) {
+            if (list != null && !list.isEmpty()) {
+                result.addAll(list);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @return all blocks that belong to the tree but are not wooden blocks (leaves, shroomlight, ...)
+     */
+    public List<Block> getExtraBlocks() {
+        List<Block> result = new ArrayList<>();
+        if (extras == null || extras.isEmpty()) {
+            return result;
+        }
+        result.addAll(extras);
+        return result;
+    }
+
+    /**
+     * @return all tree trunk blocks (logs, stem)
+     */
+    public List<Block> getTrunk() {
+        return trunk;
+    }
+
     private void addCapLeaves() {
 
         debug.i("adding leaves around caps");

@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.6 - synchronize version numbers
+- v7.3.7 - call the TreeBrokenEvent with higher priority, extend TreeStructure API
 - [read more](doc/changelog.md)
 
 ***
