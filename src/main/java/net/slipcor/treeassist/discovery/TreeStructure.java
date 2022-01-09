@@ -1819,6 +1819,11 @@ public class TreeStructure {
 
         debug.i("Removing The Tree!");
 
+        if (trunk == null) {
+            debug.i("trunk is null!");
+            return;
+        }
+
         final int delay = config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY) ? config.getInt(
                 TreeConfig.CFG.AUTOMATIC_DESTRUCTION_INITIAL_DELAY_TIME) * 20 : 0;
         final int offset = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_DELAY);
