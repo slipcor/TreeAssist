@@ -1847,18 +1847,26 @@ public class TreeStructure {
         debug.i("trunk blocks: " + removeBlocks.size());
         debug.i("this trunk is: " + trunk.hashCode());
 
-        for (List<Block> blocks : branchMap.values()) {
-            if (blocks != null) {
-                removeBlocks.addAll(blocks);
-                debug.i("branch blocks: " + blocks.size());
+        if (branchMap != null && branchMap.size() > 0) {
+            for (List<Block> blocks : branchMap.values()) {
+                if (blocks != null) {
+                    removeBlocks.addAll(blocks);
+                    debug.i("branch blocks: " + blocks.size());
+                }
             }
+        }
+
+        if (extras == null) {
+            extras = new HashSet<>();
         }
 
         if (offset >= 0) {
             // If there is an offset, we break the logs from the bottom up
             BlockUtils.sortBottomUp(removeBlocks);
-            // And the leaves from inside out
-            BlockUtils.sortInsideOut(extras, bottom);
+            if (extras.size() > 0) {
+                // And the leaves from inside out
+                BlockUtils.sortInsideOut(extras, bottom);
+            }
         }
 
         if (statPickup && player != null) {

@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.8 - skip null trunk tree removal (why is this even happening?)
+- v7.3.9 - properly handle trees without leaves
 - [read more](doc/changelog.md)
 
 ***
