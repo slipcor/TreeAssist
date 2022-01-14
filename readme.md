@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.9 - properly handle trees without leaves
+- v7.3.10 - fix NPE in the "prevent without tool"  logic
 - [read more](doc/changelog.md)
 
 ***

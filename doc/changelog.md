@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.10 - fix NPE in the "prevent without tool"  logic
 - v7.3.9 - properly handle trees without leaves
 - v7.3.8 - skip null trunk tree removal (why is this even happening?)
 - v7.3.7 - call the TreeBrokenEvent with higher priority, extend TreeStructure API

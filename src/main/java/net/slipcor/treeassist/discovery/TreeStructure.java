@@ -486,8 +486,8 @@ public class TreeStructure {
                                 debug.i("Player is OP or creative, let them be!");
                             } else {
                                 TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_NEVER_BREAK_LOG_WITHOUT_TOOL.parse());
-                                matchingTreeStructure.discoveryResult = new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, true);
-                                return matchingTreeStructure;
+                                checkTreeStructure.discoveryResult = new DiscoveryResult(matchingTreeConfig, checkTreeStructure, true);
+                                return checkTreeStructure;
                             }
                         }
                     }
@@ -500,8 +500,8 @@ public class TreeStructure {
                         if (ToolUtils.wouldBreak(player.getInventory().getItemInMainHand(), damagePredicted)) {
                             debug.i("Player's tool would break and we do not want that!");
                             TreeAssist.instance.sendPrefixed(player, Language.MSG.INFO_NEVER_BREAK_LOG_WITH_BREAKING_TOOL.parse());
-                            matchingTreeStructure.discoveryResult =  new DiscoveryResult(matchingTreeConfig, matchingTreeStructure, true);
-                            return matchingTreeStructure;
+                            checkTreeStructure.discoveryResult =  new DiscoveryResult(matchingTreeConfig, checkTreeStructure, true);
+                            return checkTreeStructure;
                         }
                     }
 
