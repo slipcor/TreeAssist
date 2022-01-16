@@ -1834,7 +1834,9 @@ public class TreeStructure {
 
         if (player != null) {
             TreeAssist.instance.setCoolDown(player, config, trunk);
-            TreeAssistPlayerListener.addDestroyer(player, this);
+            if (damage && damagePredicted < 1) {
+                TreeAssistPlayerListener.addDestroyer(player, this);
+            }
         }
 
         final boolean statPickup = config.getBoolean(TreeConfig.CFG.BLOCK_STATISTICS_PICKUP);

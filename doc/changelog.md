@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.11 - only lock player's tool when we want to do damage later
 - v7.3.10 - fix NPE in the "prevent without tool"  logic
 - v7.3.9 - properly handle trees without leaves
 - v7.3.8 - skip null trunk tree removal (why is this even happening?)
