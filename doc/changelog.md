@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.12 - do not drop blocks from falling blocks when we are cleaning up
 - v7.3.11 - only lock player's tool when we want to do damage later
 - v7.3.10 - fix NPE in the "prevent without tool"  logic
 - v7.3.9 - properly handle trees without leaves

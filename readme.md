@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.11 - only lock player's tool when we want to do damage later
+- v7.3.12 - do not drop blocks from falling blocks when we are cleaning up
 - [read more](doc/changelog.md)
 
 ***

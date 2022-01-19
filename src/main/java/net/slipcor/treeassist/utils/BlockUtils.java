@@ -62,6 +62,9 @@ public class BlockUtils {
 
         if (useFallingBlock) {
             Collection<ItemStack> drops = tool == null ? block.getDrops() : block.getDrops(tool);
+            if (player == null) {
+                drops.clear();
+            }
 
             BlockData data = block.getBlockData();
 
