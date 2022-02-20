@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.12 - do not drop blocks from falling blocks when we are cleaning up
+- v7.3.13 - add URL verification to prevent tampering with it [core update]
 - [read more](doc/changelog.md)
 
 ***
