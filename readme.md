@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.13 - add URL verification to prevent tampering with it [core update]
+- v7.3.14 - move to HTTPS for Updater [core update], show external plugin stats more realistically
 - [read more](doc/changelog.md)
 
 ***

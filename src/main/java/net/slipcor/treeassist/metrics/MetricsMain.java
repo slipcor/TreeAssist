@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import net.slipcor.core.CoreMetrics;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.yml.MainConfig;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.util.concurrent.Callable;
@@ -48,6 +49,28 @@ public class MetricsMain extends CoreMetrics {
         this.addCustomChart(new SimplePie(id, new Callable<String>() {
             @Override
             public String call() throws Exception {
+                if (cfg == MainConfig.CFG.PLUGINS_USE_MCMMO) {
+                    return String.valueOf(
+                            Bukkit.getServer().getPluginManager().isPluginEnabled("mcMMO") &&
+                                    (
+                                            TreeAssist.instance.config().getBoolean(MainConfig.CFG.PLUGINS_USE_MCMMO) ||
+                                            TreeAssist.instance.config().getBoolean(MainConfig.CFG.PLUGINS_USE_TREEMCMMO)
+                                    )
+                    );
+                } else if (cfg == MainConfig.CFG.PLUGINS_USE_JOBS) {
+                    return String.valueOf(
+                            Bukkit.getServer().getPluginManager().isPluginEnabled("Jobs") &&
+                                    (
+                                        TreeAssist.instance.config().getBoolean(MainConfig.CFG.PLUGINS_USE_JOBS) ||
+                                                TreeAssist.instance.config().getBoolean(MainConfig.CFG.PLUGINS_USE_TREEJOBS)
+                                    )
+                    );
+                } else if (cfg == MainConfig.CFG.PLUGINS_USE_WORLDGUARD) {
+                    return String.valueOf(
+                            Bukkit.getServer().getPluginManager().isPluginEnabled("WorldGuard") &&
+                                    TreeAssist.instance.config().getBoolean(MainConfig.CFG.PLUGINS_USE_WORLDGUARD)
+                    );
+                }
                 return String.valueOf(TreeAssist.instance.config().getBoolean(cfg));
             }
         }));

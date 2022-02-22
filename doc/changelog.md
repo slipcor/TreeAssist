@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.14 - move to HTTPS for Updater [core update], show external plugin stats more realistically
 - v7.3.13 - add URL verification to prevent tampering with it [core update]
 - v7.3.12 - do not drop blocks from falling blocks when we are cleaning up
 - v7.3.11 - only lock player's tool when we want to do damage later
