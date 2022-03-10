@@ -20,6 +20,8 @@ Ground Blocks:
 - 'minecraft:grass_block'
 - 'minecraft:dirt'
 - 'minecraft:coarse_dirt'
+- 'minecraft:crimson_nylium'
+- 'minecraft:warped_nylium'
 
 # The parent tree config to inherit from, recursively
 Parent: default
@@ -33,4 +35,4 @@ Trunk:
   - 'minecraft:mushroom_stem'
 
 # Version number for automagical config updates
-Version: 7.1013
+Version: 7.3015

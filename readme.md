@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.14 - move to HTTPS for Updater [core update], show external plugin stats more realistically
+- v7.3.15 - add nyliums to the valid mushroom ground blocks
 - [read more](doc/changelog.md)
 
 ***

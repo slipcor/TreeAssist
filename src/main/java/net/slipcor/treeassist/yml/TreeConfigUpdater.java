@@ -25,6 +25,8 @@ public class TreeConfigUpdater {
         NETHER_NATURAL_BLOCK(7.2018f, "nether", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:netherrack"),
         NATURAL_RED_SHROOM(7.2020f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:brown_mushroom"),
         NATURAL_BROWN_SHROOM(7.2020f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:red_mushroom"),
+        GROUND_MUSHROOM_CRIMSON_NYLIUM(7.3014f, "mushroom", TreeConfig.CFG.GROUND_BLOCKS, "minecraft:crimson_nylium"),
+        GROUND_MUSHROOM_WARPED_NYLIUM(7.3014f, "mushroom", TreeConfig.CFG.GROUND_BLOCKS, "minecraft:warped_nylium"),
         ;
 
         private final float version;
