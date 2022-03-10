@@ -27,9 +27,18 @@
 		<dependency>
 			<groupId>com.sk89q.worldguard</groupId>
 			<artifactId>worldguard-bukkit</artifactId>
-			<version>7.0.5-20210606.233540-37</version>
+			<version>7.0.5</version>
 			<type>jar</type>
-			<scope>provided</scope>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/worldguard-7.0.5.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.sk89q.worldedit</groupId>
+			<artifactId>worldedit-bukkit</artifactId>
+			<version>7.2.5</version>
+			<type>jar</type>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/worldedit-7.2.5.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.gmail.nossr50.mcMMO</groupId>
