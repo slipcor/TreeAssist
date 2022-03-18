@@ -104,6 +104,8 @@ public class TreeStructure {
 
     private List<Block> caps = new ArrayList<>();
 
+    private boolean onlyReplant;
+
     /**
      * Try to discover a tree structure
      *
@@ -613,6 +615,10 @@ public class TreeStructure {
                         matchingTreeConfig = config;
                         matchingTreeStructure = checkTreeStructure;
                         continue configs;
+                    } else if (checkBlock.equals(block) && config.getBoolean(TreeConfig.CFG.REPLANTING_ACTIVE)) {
+                        debug.explain(TreeAssistDebugger.ErrorType.SAPLING, checkBlock, ChatColor.GREEN + "Is Bottom Block!");
+                        checkTreeStructure.discoveryResult.setOnlyReplant();
+                        return checkTreeStructure;
                     }
 
                     // we did not find a match or we do not want to force remove it - let's try another!
@@ -1465,7 +1471,7 @@ public class TreeStructure {
         Material checkMaterial = checkBlock.getType();
 
         if (!air && MaterialUtils.isAir(checkMaterial)) {
-            debug.i("hit air!");
+            //debug.i("hit air!");
             return false;
         }
 
@@ -1688,6 +1694,7 @@ public class TreeStructure {
      * @param block the bottom block
      */
     public void maybeReplant(Player player, Block block) {
+        debug.i("Maybe replanting?");
         if (!config.getBoolean(TreeConfig.CFG.REPLANTING_ACTIVE)) {
             debug.i("replanting is disabled!");
             debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, "Config " + config.getConfigName() + " does not want replanting.");

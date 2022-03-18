@@ -19,7 +19,8 @@ public class DiscoveryResult {
 
     final TreeConfig config;
     final TreeStructure tree;
-    final boolean actions;
+    private boolean actions;
+    private boolean replant;
     private FailReason reason = null;
     private String failExtra = null;
 
@@ -91,7 +92,7 @@ public class DiscoveryResult {
 
         if (matchingTreeConfig != null) {
             debug.i("Fallback to enforcing something!");
-            if (matchingTreeConfig.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE) ||
+            if (replant || matchingTreeConfig.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE) ||
                     TreeAssist.instance.getBlockListener().isReplant(player.getName())) {
                 matchingTreeStructure.maybeReplant(player, block);
             }
@@ -185,5 +186,10 @@ public class DiscoveryResult {
 
     public void setReason(FailReason reason) {
         this.reason = reason;
+    }
+
+    public void setOnlyReplant() {
+        this.actions = false;
+        this.replant = true;
     }
 }

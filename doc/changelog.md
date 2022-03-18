@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.16 - plot twist! We can actually replace a sapling without auto destruct IF the first broken block is the bottom block!
 - v7.3.15 - add nyliums to the valid mushroom ground blocks
 - v7.3.14 - move to HTTPS for Updater [core update], show external plugin stats more realistically
 - v7.3.13 - add URL verification to prevent tampering with it [core update]

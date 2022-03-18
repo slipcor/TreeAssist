@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.15 - add nyliums to the valid mushroom ground blocks
+- v7.3.16 - plot twist! We can actually replace a sapling without auto destruct IF the first broken block is the bottom block!
 - [read more](doc/changelog.md)
 
 ***
