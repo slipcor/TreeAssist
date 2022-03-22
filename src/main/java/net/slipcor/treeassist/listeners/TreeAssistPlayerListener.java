@@ -140,6 +140,7 @@ public class TreeAssistPlayerListener implements Listener {
         }
 
         if (!plugin.Enabled) {
+            debug.i("globally disabled!");
             return;
         }
 

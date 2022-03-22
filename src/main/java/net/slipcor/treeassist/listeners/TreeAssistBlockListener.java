@@ -64,8 +64,11 @@ public class TreeAssistBlockListener implements Listener {
                     return;
                 }
             }
+        } else if (!plugin.config().getBoolean(MainConfig.CFG.DESTRUCTION_FAST_LEAF_DECAY)) {
+            debug.explain(TreeAssistDebugger.ErrorType.DECAY, block, "Block is not decaying because the main config setting is not enabled!");
+            return;
         } else {
-            debug.explain(TreeAssistDebugger.ErrorType.DECAY, block, "Block is not decaying the main config setting is not enabled!");
+            debug.explain(TreeAssistDebugger.ErrorType.DECAY, block, "Block is not decaying the plugin is toggled off globally!");
             return;
         }
         if (decaying > 0) {

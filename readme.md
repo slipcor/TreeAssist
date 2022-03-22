@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.19 - improve cleanup by allowing to not clean up leaves, set "AutomaticDestruction.CleanupLeaves" to "false" to allow leaves to drop items even with cleanup
+- v7.3.20 - improve debugging when the plugin is toggled off globally. It happens ^^
 - [read more](doc/changelog.md)
 
 ***
