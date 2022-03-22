@@ -261,7 +261,7 @@ public class BlockUtils {
                 LeavesStructure leaves = new LeavesStructure(config, breakables);
                 TreeAssist.instance.treeAdd(leaves);
 
-                CleanRunner cleaner = (new CleanRunner(leaves, delay, new LinkedHashSet<>(breakables), Material.AIR));
+                CleanRunner cleaner = (new CleanRunner(leaves, delay, new LinkedHashSet<>(breakables), Material.AIR, true, new ArrayList<>()));
                 cleaner.runTaskTimer(TreeAssist.instance, delay, delay);
             }
         }

@@ -15,6 +15,9 @@ Automatic Destruction:
   # Seconds to wait before (force) removing remnants of the tree
   Cleanup Delay Seconds: 20
 
+  # If we clean up remnants, we also will remove leaves without drops
+  Cleanup Leaves: true
+
   # Time to wait before allowing the player to automatically destroy again
   Cooldown Seconds: 0
 
@@ -274,4 +277,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.3016
+Version: 7.3019

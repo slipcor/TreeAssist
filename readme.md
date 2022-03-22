@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.18 - improve "info" parameter for config commands, it now works properly and is readable, treeconfig no longer requires tree type for node info
+- v7.3.19 - improve cleanup by allowing to not clean up leaves, set "AutomaticDestruction.CleanupLeaves" to "false" to allow leaves to drop items even with cleanup
 - [read more](doc/changelog.md)
 
 ***

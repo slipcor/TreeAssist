@@ -79,6 +79,8 @@ public class TreeConfigUpdater {
         REPLANTING_CHECK_DEPTH_JUNGLE(7.2051f, "tall_jungle", TreeConfig.CFG.REPLANTING_CHECK_DEPTH.getNode(), 40),
         REPLANTING_CHECK_DEPTH_C_FUNGUS(7.2051f, "crimson_fungus", TreeConfig.CFG.REPLANTING_CHECK_DEPTH.getNode(), 26),
         REPLANTING_CHECK_DEPTH_W_FUNGUS(7.2051f, "warped_fungus", TreeConfig.CFG.REPLANTING_CHECK_DEPTH.getNode(), 26),
+
+        AUTOMATIC_DESTRUCTION_CLEANUP_LEAVES(7.3018f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CLEANUP_LEAVES.getNode(), true)
         ;
 
         private final float version;

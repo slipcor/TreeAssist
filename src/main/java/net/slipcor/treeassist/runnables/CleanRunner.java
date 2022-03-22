@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.List;
 import java.util.Set;
 
 public class CleanRunner extends BukkitRunnable {
@@ -20,12 +21,16 @@ public class CleanRunner extends BukkitRunnable {
     private final Set<Block> removeBlocks;
     public static TreeAssistDebugger debug;
     private final Material sapling;
+    private final boolean cleanUpLeaves;
+    private final List<Material> leafMaterials;
 
-    public CleanRunner(TreeStructure tree, int offset, Set<Block> removeBlocks, Material sapling) {
+    public CleanRunner(TreeStructure tree, int offset, Set<Block> removeBlocks, Material sapling, boolean cleanUpLeaves, List<Material> leafMaterials) {
         me = tree;
         this.offset = offset;
         this.removeBlocks = removeBlocks;
         this.sapling = sapling;
+        this.cleanUpLeaves = cleanUpLeaves;
+        this.leafMaterials = leafMaterials;
     }
 
     @Override
@@ -36,11 +41,15 @@ public class CleanRunner extends BukkitRunnable {
         if (offset < 0) {
             for (Block block : removeBlocks) {
                 if (sapling.equals(block.getType())) {
-                    debug.i("CleanRunner: skipping breaking a sapling");
+                    debug.i("CleanRunner 1: skipping breaking a sapling");
                     continue;
                 }
                 if (block.getType().isAir()) {
-                    debug.i("CleanRunner: skipping air");
+                    debug.i("CleanRunner 1: skipping air");
+                    continue;
+                }
+                if (!cleanUpLeaves && leafMaterials.contains(block.getType())) {
+                    debug.i("CleanRunner 1: skipping leaf");
                     continue;
                 }
                 debug.i("CleanRunner - breaking block A: " + BlockUtils.printBlock(block));
@@ -49,11 +58,15 @@ public class CleanRunner extends BukkitRunnable {
         } else {
             for (Block block : removeBlocks) {
                 if (sapling.equals(block.getType())) {
-                    debug.i("CleanRunner: skipping breaking a sapling");
+                    debug.i("CleanRunner 2: skipping breaking a sapling");
                     continue;
                 }
                 if (block.getType().isAir()) {
-                    debug.i("CleanRunner: skipping air");
+                    debug.i("CleanRunner 2: skipping air");
+                    continue;
+                }
+                if (!cleanUpLeaves && leafMaterials.contains(block.getType())) {
+                    debug.i("CleanRunner 2: skipping leaf");
                     continue;
                 }
                 debug.i("CleanRunner - breaking block B: " + BlockUtils.printBlock(block));

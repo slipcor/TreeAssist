@@ -1891,6 +1891,9 @@ public class TreeStructure {
             debug.i("extra blocks: " + extras.size());
         }
 
+        final boolean cleanUpLeaves = config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CLEANUP_LEAVES);
+        final List<Material> leaves = config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS);
+
         class InstantRunner extends BukkitRunnable {
             @Override
             public void run() {
@@ -1943,7 +1946,7 @@ public class TreeStructure {
 
         }
 
-        CleanRunner cleaner = (new CleanRunner(this, offset, removeBlocks, sapling));
+        CleanRunner cleaner = (new CleanRunner(this, offset, removeBlocks, sapling, cleanUpLeaves, leaves));
         if (player != null) {
             (new InstantRunner()).runTaskTimer(TreeAssist.instance, delay, offset);
         }

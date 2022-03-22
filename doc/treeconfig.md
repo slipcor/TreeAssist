@@ -3,88 +3,129 @@
 This is the default tree configuration file.
 
     Automatic Destruction:
-      # Main switch to deactivate automatic destruction
-      Active: true
-      # Damage the player's tool for every block of the tree, not just the first they broke
-      Apply Full Tool Damage: true
-      # Damage the player's tool for leaves broken automatically
-      Apply Tool Damage For Leaves: true
-      # Add the logs the player's inventory
-      Auto Add To Inventory: false
-      # Seconds to wait before (force) removing remnants of the tree
-      Cleanup Delay Seconds: 20
-      # Time to wait before allowing the player to automatically destroy again
-      Cooldown Seconds: 0
-      # Custom Drops below completely replace the leaf drops
-      Custom Drops Override: false
-      # Ticks to wait before breaking the next block, set to -1 for instant breaking
-      Delay Ticks: 0
-      # Always remove remnants of the tree, as soon as a tree has been verified and is being broken
-      Forced Removal: false
-      # Main switch for the Block Statistic nodes
-      Increases Statistics: false
-      # Initial Delay before actually starting to break the tree
-      Initial Delay: false
-      # Seconds to delay automatic destruction
-      Initial Delay Seconds: 10
-      # Remove not only logs, but also leaves
-      Remove Leaves: true
-      # Required lore on tool in order to automatically remove a tree. Empty means no requirement
-      Required Lore: ''
-      # Only automatically destroy with the right tools, they are set in the tree definitions or via command
-      Requires Tools: true
-      # Automatically destroy when sneaking
-      When Sneaking: true
-      # Automatically destroy when not sneaking
-      When Not Sneaking: true
-      # Support silk touch affect when a player has it
-      Use Silk Touch: true
+
+    Automatic Destruction:
+
+    # Main switch to deactivate automatic destruction
+    Active: true
+
+    # Damage the player's tool for every block of the tree, not just the first they broke
+    Apply Full Tool Damage: true
+
+    # Damage the player's tool for leaves broken automatically
+    Apply Tool Damage For Leaves: true
+
+    # Add the logs the player's inventory
+    Auto Add To Inventory: false
+
+    # Seconds to wait before (force) removing remnants of the tree
+    Cleanup Delay Seconds: 20
+
+    # If we clean up remnants, we also will remove leaves without drops
+    Cleanup Leaves: true
+
+    # Time to wait before allowing the player to automatically destroy again
+    Cooldown Seconds: 0
+
+    # Ticks to wait before breaking the next block, set to -1 for instant breaking
+    Delay Ticks: 0
+
+    # Always remove remnants of the tree, as soon as a tree has been verified and is being broken
+    Forced Removal: false
+
+    # Main switch for the Block Statistic nodes
+    Increases Statistics: false
+
+    # Initial Delay before actually starting to break the tree
+    Initial Delay: false
+
+    # Seconds to delay automatic destruction
+    Initial Delay Seconds: 10
+
+    # Remove not only logs, but also leaves
+    Remove Leaves: true
+
+    # Required lore on tool in order to automatically remove a tree. Empty means no requirement
+    Required Lore: ''
+
+    # Only automatically destroy with the right tools, they are set in the tree definitions or via command
+    Requires Tools: true
+
+    # Automatically destroy when sneaking
+    When Sneaking: true
+
+    # Automatically destroy when not sneaking
+    When Not Sneaking: true
+
+    # Support silk touch affect when a player has it
+    Use Silk Touch: true
     Block Statistics:
-      # Count minecraft block breaking statistics when automatically breaking
-      Mine Block: false
-      # Count minecraft pickup statistics when automaticall adding blocks to inventory
-      Pickup: false
+
+    # Count minecraft block breaking statistics when automatically breaking
+    Mine Block: false
+
+    # Count minecraft pickup statistics when automaticall adding blocks to inventory
+    Pickup: false
     Blocks:
-      Cap:
+    Cap:
+
         # Max height of a branch cap
         Height: 2
+
         # Max radius of a branch cap
         Radius: 3
-      # Generate custom drops according to the list
-      Custom Drops: true
-      # Here you can add extra blocks that can be expected inside or around tree leaves
-      Materials:
-      - 'minecraft:bee_nest'
+    Custom Drops:
+
+        # Generate custom drops according to the list
+        Active: true
+
+        # Drop chances for extra drops. 1.0 would be 100% chance!
+        Items:
+          minecraft:apple: 0.01
+          minecraft:golden_apple: 0.001
+
+        # These are additional factors, for example, by default, iron has half the chance to get custom drops
+        Factors:
+          minecraft:netherite_axe: 1.0
+          minecraft:diamond_axe: 1.0
+          minecraft:golden_axe: 0.75
+          minecraft:iron_axe: 0.5
+          minecraft:stone_axe: 0.25
+          minecraft:wooden_axe: 0.1
+
+        # Custom Drops below completely replace the leaf drops
+        Override: false
+
+    # Here you can add extra blocks that can be expected inside or around tree leaves
+    Materials:
+    - 'minecraft:bee_nest'
       Middle:
+
+      # Allow air pockets in leaves
+      Air: false
+
+      # Check cubic edges
+      Edges: false
+
+      # Radius around the trunk to check for leaves
+      Radius: 2
+
+    # How many leaves do we require for it to be a valid tree
+    Required: 10
+    Top:
+
         # Allow air pockets in leaves
         Air: false
+
         # Check cubic edges
         Edges: false
-        # Radius around the trunk to check for leaves
-        Radius: 2
-      # How many leaves do we require for it to be a valid tree
-      Required: 10
-      Top:
-        # Allow air pockets in leaves
-        Air: false
-        # Check cubic edges
-        Edges: false
+
         # Radius around the trunk to check for leaves
         Radius: 3
+
         # Height above the trunk to check for leaves
         Height: 3
-    # Drop chances for extra drops. 1.0 would be 100% chance!
-    Custom Drops:
-      minecraft:apple: 0.01
-      minecraft:golden_apple: 0.001
-    # These are additional factors, for example, by default, iron has half the chance to get custom drops
-    Custom Drop Factor:
-      minecraft:netherite_axe: 1.0
-      minecraft:diamond_axe: 1.0
-      minecraft:golden_axe: 0.75
-      minecraft:iron_axe: 0.5
-      minecraft:stone_axe: 0.25
-      minecraft:wooden_axe: 0.1
+
     # Valid blocks that are below and around the saplings
     Ground Blocks:
     - 'minecraft:podzol'
@@ -93,6 +134,7 @@ This is the default tree configuration file.
     - 'minecraft:dirt'
     - 'minecraft:coarse_dirt'
     - 'minecraft:sand'
+
     # Blocks that you can expect to be around the tree - these are the exceptions from player building safeguards
     Natural Blocks:
     - 'minecraft:air'
@@ -144,37 +186,57 @@ This is the default tree configuration file.
     - 'minecraft:cave_air'
     - 'minecraft:void_air'
     - 'minecraft:large_fern'
-    - 'minecraft:tall_flowers'
+    - 'minecraft:peony'
+    - 'red_mushroom'
+    - 'brown_mushroom'
+
     # The permission required for this tree type
     Permission: treeassist.destroy.*
     Replanting:
-      # Main switch to deactivate sapling replanting
-      Active: true
-      # How long to wait before placing a sapling. Should stay above 0 because of bukkit event handling
-      Delay: 1
-      Dropped:
+
+    # Main switch to deactivate sapling replanting
+    Active: true
+
+    # How far down do we look for saplings to place them
+    Check Depth: 12
+
+    # How long to wait before placing a sapling. Should stay above 0 because of bukkit event handling
+    Delay: 1
+    Dropped:
+
         # Attempt to plant a dropped sapling item
         Active: false
+
         # What is the chance for us doing this, 1.0 means 100%
         Probability: 0.1
+
         # How many ticks should we wait until attempting to plant it
         Delay Ticks: 5
-      # Even if something would prevent sapling replacement or auto destruction, we will place a sapling
-      Enforce: false
-      # Prevent from breaking this type of sapling at all costs
-      Force Protect: false
-      # The material to place
-      # How long should saplings stay there before they can grow
-      Growth Delay Seconds: 0
-      Material: minecraft:air
-      # Only place saplings when the bottom block was broken
-      Only When Bottom Block Broken First: false
-      # How long to protect saplings
-      Protect For Seconds: 0
-      # Only replant with the right tools, they are set in the tree definitions or via command
-      Requires Tools: true
-      # Replant when a tree block burns
-      When Tree Burns Down: true
+
+    # Even if something would prevent sapling replacement or auto destruction, we will place a sapling
+    Enforce: false
+
+    # Prevent from breaking this type of sapling at all costs
+    Force Protect: false
+
+    # How long should saplings stay there before they can grow
+    Growth Delay Seconds: 0
+
+    # The material to place
+    Material: minecraft:air
+
+    # Only place saplings when the bottom block was broken
+    Only When Bottom Block Broken First: false
+
+    # How long to protect saplings
+    Protect For Seconds: 0
+
+    # Only replant with the right tools, they are set in the tree definitions or via command
+    Requires Tools: true
+
+    # Replant when a tree block burns
+    When Tree Burns Down: true
+
     # This is the list that can be required to use when auto destructing or sapling replanting
     Tool List:
     - 'minecraft:netherite_axe'
@@ -183,21 +245,42 @@ This is the default tree configuration file.
     - 'minecraft:golden_axe'
     - 'minecraft:iron_axe'
     - 'minecraft:stone_axe'
-    Trunk:
+      Trunk:
+
       # Look for branches
       Branch: false
+      Custom Drops:
+
       # Generate custom drops
-      Custom Drops: false
+      Active: false
+
+      # Drop chances for extra drops. 1.0 would be 100% chance!
+      Items:
+      minecraft:golden_apple: 0.0001
+
+      # These are additional factors, for example, by default, iron has half the chance to get custom drops
+      Factors:
+      minecraft:netherite_axe: 1.0
+      minecraft:diamond_axe: 1.0
+      minecraft:golden_axe: 0.75
+      minecraft:iron_axe: 0.5
+      minecraft:stone_axe: 0.25
+      minecraft:wooden_axe: 0.1
+
+      # The configured drops override regular drops, including logs!
+      Override: false
+
       # The trunk can go diagonally
       Diagonal: false
+
       # How high does it need to be to qualify as a tree
       Minimum Height: 4
-      # One of these materials needs to be part of the trunk for it to count as a trunk
-      Materials:
-      - minecraft:bedrock
+
       # How thick is the trunk
       Thickness: 1
+
       # Saplings can be at different height
       Uneven Bottom: false
+
     # Version number for automagical config updates
-    Version: 7.1011
+    Version: 7.3019
