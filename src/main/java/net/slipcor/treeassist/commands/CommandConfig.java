@@ -54,7 +54,7 @@ public class CommandConfig extends CoreCommand {
             }
 
             //           0         1      2
-            // /pvpstats config    get    [node]
+            // /pvpstats config    info    [node]
             info(sender, args[2]);
             return;
         }
@@ -200,7 +200,7 @@ public class CommandConfig extends CoreCommand {
 
         if (completedEntry != null) {
             // get the actual full proper node
-            get(sender, completedEntry.getNode());
+            info(sender, completedEntry.getNode());
             return;
         }
 
@@ -216,7 +216,7 @@ public class CommandConfig extends CoreCommand {
         if (entry.getComment() == null || entry.getComment().isEmpty()) {
             treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_INFO_EMPTY.parse(node));
         } else {
-            treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_INFO_SUCCESS.parse(node, entry.getComment()));
+            treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_INFO_SUCCESS.parse(node, "\n" + entry.getComment()));
         }
     }
 
@@ -348,12 +348,14 @@ public class CommandConfig extends CoreCommand {
             results.add("get");
             results.add("set");
             results.add("add");
+            results.add("info");
             results.add("remove");
         } else if (args.length == 2) {
             // second argument!
             addIfMatches(results, "get", args[1]);
             addIfMatches(results, "set", args[1]);
             addIfMatches(results, "add", args[1]);
+            addIfMatches(results, "info", args[1]);
             addIfMatches(results, "remove", args[1]);
         } else {
             // args is >= 3
@@ -362,6 +364,7 @@ public class CommandConfig extends CoreCommand {
                     !args[1].equalsIgnoreCase("get") &&
                             !args[1].equalsIgnoreCase("set") &&
                             !args[1].equalsIgnoreCase("add") &&
+                            !args[1].equalsIgnoreCase("info") &&
                             !args[1].equalsIgnoreCase("remove")
             ) {
                 return results;
@@ -370,8 +373,11 @@ public class CommandConfig extends CoreCommand {
             if (args[2].equals("")) {
                 // list actual argument possibilities
                 for (MainConfig.CFG entry : MainConfig.CFG.values()) {
-
-                    if (args[1].equalsIgnoreCase("get")) {
+                    if (args[1].equalsIgnoreCase("info")) {
+                        if (entry.getComment() == null || entry.getComment().isEmpty()) {
+                            continue;
+                        }
+                    } else if (args[1].equalsIgnoreCase("get")) {
                         if (entry.getType() == ConfigEntry.Type.COMMENT) {
                             continue;
                         }
@@ -394,7 +400,11 @@ public class CommandConfig extends CoreCommand {
             }
 
             for (MainConfig.CFG entry : MainConfig.CFG.values()) {
-                if (args[1].equalsIgnoreCase("get")) {
+                if (args[1].equalsIgnoreCase("info")) {
+                    if (entry.getComment() == null || entry.getComment().isEmpty()) {
+                        continue;
+                    }
+                } else if (args[1].equalsIgnoreCase("get")) {
                     if (entry.getType() == ConfigEntry.Type.COMMENT) {
                         continue;
                     }
@@ -428,6 +438,7 @@ public class CommandConfig extends CoreCommand {
     @Override
     public String getShortInfo() {
         return "/treeassist config get [node] - get a config value\n" +
+                "/treeassist config info [node] - get information about a config node\n" +
                 "/treeassist config set [node] [value] - set a config value\n" +
                 "/treeassist config add [node] [value] - add a value to a config list\n" +
                 "/treeassist config remove [node] [value] - remove a value from a config list";

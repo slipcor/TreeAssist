@@ -55,14 +55,18 @@ public class CommandTreeConfig extends CoreCommand {
             return;
         }
 
-        if (args.length >= 3 && args[1].toLowerCase().equals("info")) {
-            if (!argCountValid(sender, args, new Integer[]{4})) {
+        if (args.length >= 2 && args[1].toLowerCase().equals("info")) {
+            if (!argCountValid(sender, args, new Integer[]{3, 4})) {
                 return;
             }
 
             //           0         1      2       3
             // /ta       config    info   [type]  [node]
-            info(sender, args[2], args[3]);
+            if (args.length >= 3) {
+                info(sender, args[2]);
+            } else {
+                info(sender, args[3]);
+            }
             return;
         }
 
@@ -209,13 +213,13 @@ public class CommandTreeConfig extends CoreCommand {
         }
     }
 
-    private void info(final CommandSender sender, final String configName, final String node) {
+    private void info(final CommandSender sender, final String node) {
 
         TreeConfig.CFG completedEntry = getFullNode(node);
 
         if (completedEntry != null) {
             // get the actual full proper node
-            get(sender, configName, completedEntry.getNode());
+            info(sender, completedEntry.getNode());
             return;
         }
 
@@ -231,7 +235,7 @@ public class CommandTreeConfig extends CoreCommand {
         if (entry.getComment() == null || entry.getComment().isEmpty()) {
             treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_INFO_EMPTY.parse(node));
         } else {
-            treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_INFO_SUCCESS.parse(node, entry.getComment()));
+            treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_INFO_SUCCESS.parse(node, "\n" + entry.getComment()));
         }
     }
 
@@ -371,14 +375,17 @@ public class CommandTreeConfig extends CoreCommand {
             results.add("get");
             results.add("set");
             results.add("add");
+            results.add("info");
             results.add("remove");
         } else if (args.length == 2) {
             // second argument!
             addIfMatches(results, "get", args[1]);
             addIfMatches(results, "set", args[1]);
             addIfMatches(results, "add", args[1]);
+            addIfMatches(results, "info", args[1]);
             addIfMatches(results, "remove", args[1]);
-        } else if (args.length == 3) {
+        } else if (args.length == 3 && !args[1].equals("info")) {
+
             for (String configName : TreeAssist.treeConfigs.keySet()) {
                 addIfMatches(results, configName, args[2]);
             }
@@ -389,16 +396,23 @@ public class CommandTreeConfig extends CoreCommand {
                     !args[1].equalsIgnoreCase("get") &&
                             !args[1].equalsIgnoreCase("set") &&
                             !args[1].equalsIgnoreCase("add") &&
+                            !args[1].equalsIgnoreCase("info") &&
                             !args[1].equalsIgnoreCase("remove")
             ) {
                 return results;
             }
 
-            if (args[3].equals("")) {
+            int checkPos = args[1].equals("info") ? 2 : 3;
+
+            if (args[checkPos].equals("")) {
                 // list actual argument possibilities
                 for (TreeConfig.CFG entry : TreeConfig.CFG.values()) {
 
-                    if (args[1].equalsIgnoreCase("get")) {
+                    if (args[1].equalsIgnoreCase("info")) {
+                        if (entry.getComment() == null || entry.getComment().isEmpty()) {
+                            continue;
+                        }
+                    } else if (args[1].equalsIgnoreCase("get")) {
                         if (entry.getType() == ConfigEntry.Type.COMMENT) {
                             continue;
                         }
@@ -416,12 +430,16 @@ public class CommandTreeConfig extends CoreCommand {
                 return results;
             }
 
-            if (args.length > 4) {
+            if (args.length > checkPos+1) {
                 return results; // don't go too far!
             }
 
             for (TreeConfig.CFG entry : TreeConfig.CFG.values()) {
-                if (args[1].equalsIgnoreCase("get")) {
+                if (args[1].equalsIgnoreCase("info")) {
+                    if (entry.getComment() == null || entry.getComment().isEmpty()) {
+                        continue;
+                    }
+                } else if (args[1].equalsIgnoreCase("get")) {
                     if (entry.getType() == ConfigEntry.Type.COMMENT) {
                         continue;
                     }
@@ -435,7 +453,7 @@ public class CommandTreeConfig extends CoreCommand {
                     }
                 }
 
-                addIfMatches(results, entry.getNode().replaceAll("\\s+", ""), args[3]);
+                addIfMatches(results, entry.getNode().replaceAll("\\s+", ""), args[checkPos]);
             }
         }
 
@@ -454,9 +472,10 @@ public class CommandTreeConfig extends CoreCommand {
 
     @Override
     public String getShortInfo() {
-        return "/treeassist config get [type] [node] - get a config value\n" +
-               "/treeassist config set [type] [node] [value] - set a config value\n" +
-               "/treeassist config add [type] [node] [value] - add a value to a config list\n" +
-               "/treeassist config remove [type] [node] [value] - remove a value from a config list";
+        return "/treeassist treeconfig get [type] [node] - get a config value\n" +
+               "/treeassist treeconfig info [node] - get information about a config node\n" +
+               "/treeassist treeconfig set [type] [node] [value] - set a config value\n" +
+               "/treeassist treeconfig add [type] [node] [value] - add a value to a config list\n" +
+               "/treeassist treeconfig remove [type] [node] [value] - remove a value from a config list";
     }
 }

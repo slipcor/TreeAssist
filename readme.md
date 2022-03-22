@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.17 - move Replanting config entry "Delay Growth Seconds" to "Growth Delay Seconds" to allow for config command arguments to be unambiguous
+- v7.3.18 - improve "info" parameter for config commands, it now works properly and is readable, treeconfig no longer requires tree type for node info
 - [read more](doc/changelog.md)
 
 ***
