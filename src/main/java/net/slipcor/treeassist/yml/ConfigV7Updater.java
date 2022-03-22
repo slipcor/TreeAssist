@@ -45,7 +45,7 @@ public class ConfigV7Updater {
 
         SAPLING_REPLANT_BOTTOM_BLOCK_HAS_TO_BE_BROKEN_FIRST("Sapling Replant.Bottom Block has to be Broken First", TreeConfig.CFG.REPLANTING_ONLY_WHEN_BOTTOM_BLOCK_BROKEN_FIRST),
         SAPLING_REPLANT_TIME_TO_PROTECT_SAPLING("Sapling Replant.Time to Protect Sapling (Seconds)", TreeConfig.CFG.REPLANTING_PROTECT_FOR_SECONDS),
-        SAPLING_REPLANT_TIME_TO_BLOCK_SAPLING_GROWTH("Sapling Replant.Time to Block Sapling Growth (Seconds)", TreeConfig.CFG.REPLANTING_DELAY_GROWTH_SECONDS),
+        SAPLING_REPLANT_TIME_TO_BLOCK_SAPLING_GROWTH("Sapling Replant.Time to Block Sapling Growth (Seconds)", TreeConfig.CFG.REPLANTING_GROWTH_DELAY_SECONDS),
         SAPLING_REPLANT_REPLANT_WHEN_TREE_BURNS_DOWN("Sapling Replant.Replant When Tree Burns Down", TreeConfig.CFG.REPLANTING_WHEN_TREE_BURNS_DOWN),
         SAPLING_REPLANT_BLOCK_ALL_BREAKING_OF_SAPLINGS("Sapling Replant.Block all breaking of Saplings", TreeConfig.CFG.REPLANTING_FORCE_PROTECT),
         SAPLING_REPLANT_DELAY_UNTIL_SAPLING_IS_REPLANTED("Sapling Replant.Delay until Sapling is replanted (seconds) (minimum 1 second)", TreeConfig.CFG.REPLANTING_DELAY),

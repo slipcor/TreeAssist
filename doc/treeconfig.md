@@ -152,8 +152,6 @@ This is the default tree configuration file.
       Active: true
       # How long to wait before placing a sapling. Should stay above 0 because of bukkit event handling
       Delay: 1
-      # How long should saplings stay there before they can grow
-      Delay Growth Seconds: 0
       Dropped:
         # Attempt to plant a dropped sapling item
         Active: false
@@ -166,6 +164,8 @@ This is the default tree configuration file.
       # Prevent from breaking this type of sapling at all costs
       Force Protect: false
       # The material to place
+      # How long should saplings stay there before they can grow
+      Growth Delay Seconds: 0
       Material: minecraft:air
       # Only place saplings when the bottom block was broken
       Only When Bottom Block Broken First: false

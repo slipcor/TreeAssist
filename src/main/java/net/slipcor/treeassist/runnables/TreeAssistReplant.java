@@ -39,8 +39,8 @@ public class TreeAssistReplant implements Runnable {
                 }
             }
             this.block.setType(mat);
-            if (config.getInt(TreeConfig.CFG.REPLANTING_DELAY_GROWTH_SECONDS) > 0) {
-                TreeAssist.instance.getBlockListener().getAntiGrow().add(this.block, config.getInt(TreeConfig.CFG.REPLANTING_DELAY_GROWTH_SECONDS));
+            if (config.getInt(TreeConfig.CFG.REPLANTING_GROWTH_DELAY_SECONDS) > 0) {
+                TreeAssist.instance.getBlockListener().getAntiGrow().add(this.block, config.getInt(TreeConfig.CFG.REPLANTING_GROWTH_DELAY_SECONDS));
             }
         } else {
             TreeStructure.debug.i("Not a ground block: " + below.name());

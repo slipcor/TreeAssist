@@ -23,12 +23,12 @@ public class MainConfig extends CoreConfig {
         GENERAL_VERBOSE_CONFIG_LOADING("General.Verbose Config Loading", false, "Should we announce information about every tree config we load?"),
 
         COMMANDS("Commands", "=== [ Command Settings ] ==="),
-        COMMANDS_FORCE_BREAK_DEFAULT_RADIUS("Commands.Force Break.Default Radius", 10, ""),
-        COMMANDS_FORCE_BREAK_MAX_RADIUS("Commands.Force Break.Max Radius", 30, ""),
-        COMMANDS_FORCE_GROW_DEFAULT_RADIUS("Commands.Force Grow.Default Radius", 10, ""),
-        COMMANDS_FORCE_GROW_MAX_RADIUS("Commands.Force Grow.Max Radius", 30, ""),
-        COMMANDS_NOREPLANT_COMMAND_TIME_COOLDOWN("Commands.No Replant.Cooldown Time", 30, ""),
-        COMMANDS_REPLANT_COMMAND_TIME_COOLDOWN("Commands.Replant.Cooldown Time", 30, ""),
+        COMMANDS_FORCE_BREAK_DEFAULT_RADIUS("Commands.Force Break.Default Radius", 10, "Default Radius for the ForceBreak Command in blocks"),
+        COMMANDS_FORCE_BREAK_MAX_RADIUS("Commands.Force Break.Max Radius", 30, "Max Radius for the ForceBreak Command in blocks"),
+        COMMANDS_FORCE_GROW_DEFAULT_RADIUS("Commands.Force Grow.Default Radius", 10, "Default Radius for the ForceGrow Command in blocks"),
+        COMMANDS_FORCE_GROW_MAX_RADIUS("Commands.Force Grow.Max Radius", 30, "Max Radius for the ForceGrow Command in blocks"),
+        COMMANDS_NOREPLANT_COMMAND_TIME_COOLDOWN("Commands.No Replant.Cooldown Time", 30, "Cooldown Time (in Seconds) for the NoReplant Command"),
+        COMMANDS_REPLANT_COMMAND_TIME_COOLDOWN("Commands.Replant.Cooldown Time", 30, "Cooldown Time (in Seconds) for the Replant Command"),
 
         DESTRUCTION("Destruction", "=== [ Automatic Destruction Settings ] ==="),
         DESTRUCTION_FALLING_BLOCKS("Destruction.Falling Blocks", false, "Spawn a FallingBlock when breaking a block"),

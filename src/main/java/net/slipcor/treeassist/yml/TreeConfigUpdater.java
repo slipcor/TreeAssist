@@ -153,6 +153,8 @@ public class TreeConfigUpdater {
         CUSTOM_DROPS_ACTIVE(7.1012f, null, "Blocks.Custom Drops", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ACTIVE.getNode()),
         CUSTOM_DROPS_OVERRIDE(7.1012f, null, "Automatic Destruction.Custom Drops Override", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_OVERRIDE.getNode()),
 
+        REPLANTING_GROWTH_DELAY_SECONDS(7.3016f, null, "Replanting.Delay Growth Seconds", TreeConfig.CFG.REPLANTING_GROWTH_DELAY_SECONDS.getNode()),
+
         NETHER_LEAF_GAPPLE(7.1020f, "nether", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + "minecraft:golden_apple", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:golden_apple"),
         NETHER_LEAF_APPLE(7.1020f, "nether", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + "minecraft:apple", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:apple"),
         NETHER_TRUNK_GAPPLE(7.1020f, "nether", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ITEMS.getNode() + "minecraft:golden_apple", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_ITEMS.getNode() + ".minecraft:golden_apple"),

@@ -193,9 +193,6 @@ Replanting:
 
   # How long to wait before placing a sapling. Should stay above 0 because of bukkit event handling
   Delay: 1
-
-  # How long should saplings stay there before they can grow
-  Delay Growth Seconds: 0
   Dropped:
 
     # Attempt to plant a dropped sapling item
@@ -212,6 +209,9 @@ Replanting:
 
   # Prevent from breaking this type of sapling at all costs
   Force Protect: false
+
+  # How long should saplings stay there before they can grow
+  Growth Delay Seconds: 0
 
   # The material to place
   Material: minecraft:air
@@ -274,4 +274,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.2052
+Version: 7.3016
