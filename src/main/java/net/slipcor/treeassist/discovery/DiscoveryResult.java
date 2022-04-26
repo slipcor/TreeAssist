@@ -12,6 +12,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class DiscoveryResult {
@@ -98,6 +99,9 @@ public class DiscoveryResult {
             }
 
             if (matchingTreeConfig.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_FORCED_REMOVAL)) {
+                if (matchingTreeStructure.extras == null) {
+                    matchingTreeStructure.extras = new HashSet<>();
+                }
                 TreeAssist.instance.treeAdd(matchingTreeStructure);
                 if (TreeAssist.instance.config().getBoolean(MainConfig.CFG.DESTRUCTION_ONLY_ABOVE)) {
                     matchingTreeStructure.removeBlocksBelow(block);

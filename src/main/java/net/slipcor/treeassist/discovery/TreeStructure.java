@@ -1879,11 +1879,11 @@ public class TreeStructure {
         }
 
         if (statPickup && player != null) {
-            BlockUtils.updatePickup(player, trunk.get(1).getType(), removeBlocks.size());
+            BlockUtils.updatePickup(player, trunk.get(0).getType(), removeBlocks.size());
         }
 
         if (statMineBlock && player != null) {
-            BlockUtils.updateMining(player, trunk.get(1).getType(), removeBlocks.size());
+            BlockUtils.updateMining(player, trunk.get(0).getType(), removeBlocks.size());
         }
 
         if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_REMOVE_LEAVES)) {

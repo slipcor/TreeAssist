@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.20 - improve debugging when the plugin is toggled off globally. It happens ^^
+- v7.3.21 - fix a few issues resulting in enforcing of removal, and fix someone probably being drunk while implementing the statistic check
 - [read more](doc/changelog.md)
 
 ***
