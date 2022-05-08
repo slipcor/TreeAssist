@@ -1,0 +1,103 @@
+error:
+  addtool:
+    already: '&cYou have already added this as required tool!'
+    other: '&cSomething went wrong trying to add the required tool: %1%'
+  config:
+    no_list: 'Not a list node: &e%1%&r!'
+    no_treeconfig: 'Not a valid tree config: &e%1%&r!'
+    unknown_node: 'Unknown node: &e%1%&r!'
+    unknown_type: 'Unknown node type: &e%1%&r!'
+    add_skipped: List &e%1%&r already contains &e%2%&r!
+    add_success: Added &e%2%&r to &a%1%&r!
+    get_group_impossible: 'Cannot get value of group node: &e%1%&r!'
+    get_success: 'Value of node &a%1%&r is: &e%2%&r'
+    info_empty: Node &e%1%&r does not have information!
+    info_success: 'Information for &e%1%&r: &e%2%&r'
+    remove_skipped: List &e%1%&r does not contain &e%2%&r!
+    remove_success: Removed &e%2%&r from &a%1%&r!
+    set_group_impossible: 'Cannot set value to group node: &e%1%&r!'
+    set_list_impossible: 'Cannot set value to list node: &e%1%&r! Use add / remove!'
+    set_success: '&a%1%&r set to &e%2%&r!'
+  data_yml: '&cYou have a messed up data.yml - fix or remove it!'
+  emptyhand: '&cYou don''t have an item in your hand'
+  findforest: '&cForest not found in 500 block radius: &r%1%'
+  grow: '&cCould not grow a tree here. Is there enough space?'
+  invalid_argumentcount: '&cInvalid number of arguments&r (%1% instead of %2%)!'
+  invalid_argumentlist: '&cInvalid arguments! Valid:&r %1%'
+  invalid_argument_type: '&cInvalid argument ''%1%'', expected %2%'
+  invalid_number: '&cNot a valid number: &r%1%'
+  invalid_treetype: '&cInvalid TreeType! Valid:&r %1%'
+  nottool: '&cYou don''t have the required tool to do that!'
+  outofrange: '&cThe max range for this command is: %1%'
+  permission:
+    addtool: '&cYou don''t have ''treeassist.addtool'''
+    config: '&cYou don''t have ''treeassist.config'''
+    debug: '&cYou don''t have ''treeassist.debug'''
+    findforest: '&cYou don''t have ''treeassist.findforest'''
+    forcebreak: '&cYou don''t have ''treeassist.forcebreak'''
+    forcegrow: '&cYou don''t have ''treeassist.forcegrow'''
+    noreplant: '&cYou don''t have ''treeassist.noreplant'''
+    purge: '&cYou don''t have ''treeassist.purge'''
+    reload: '&cYou don''t have ''treeassist.reload'''
+    removetool: '&cYou don''t have ''treeassist.removetool'''
+    toggle: '&cYou don''t have ''treeassist.toggle'''
+    toggle_other: '&cYou don''t have ''treeassist.toggle.other'''
+    toggle_global: '&cYou don''t have ''treeassist.toggle.global'''
+    toggle_tool: '&cYou don''t have ''treeassist.tool'''
+    toggle_debugtool: '&cYou don''t have ''treeassist.debugtool'''
+    toggle_growtool: '&cYou don''t have ''treeassist.growtool'''
+  removetool:
+    not_done: '&cTool is no required tool!'
+  notfound:
+    world: '&cWorld not found: %1%'''
+  only:
+    players: Only for players!
+    treeassist_blocklist: '&cThis command only is available for the TreeAssist BlockList!'
+info:
+  cooldown:
+    done: '&aCooldown reset!'
+    still: '&aYou are still cooling down!'
+    value: '&a%1% seconds remaining!'
+    wait: '&aWait for the %1% second cooldown!'
+  never_break_saplings: '&aYou cannot break saplings on this server!'
+  never_break_log_without_tool: '&aYou cannot break trees on this server without a
+    tool!'
+  never_break_log_with_breaking_tool: '&aYour tool would break! Be careful!'
+  sapling_protected: '&aThis sapling is protected!'
+  plugin_prefix: '&8[&2TreeAssist&8]&r '
+warning:
+  addtool_onlyone: '&6You can only use one enchantment. Using: %1%'
+  destruction_invalidblock: '&6We found a player placed block nearby: &r%1%'
+successful:
+  addtool: '&aRequired tool added: %1%'
+  debug_all: debugging EVERYTHING
+  debug: debugging %1%
+  findforest: '&aForest found at &r%1%'
+  noreplant: '&aYou now stop replanting trees for %1% seconds.'
+  replant: '&aYou now will replant trees for %1% seconds.'
+  protect_off: '&aSapling is no longer protected!'
+  protect_on: '&aSapling now is protected!'
+  purge:
+    days: '&a%1% entries have been purged for the last %2% days!'
+    global: '&a%1% global entries have been purged!'
+    world: '&a%1% entries have been purged for the world %2%!'
+  reload: '&aTreeAssist has been reloaded.'
+  removetool: '&aRequired tool removed: %1%'
+  toggle:
+    global_off: '&aTreeAssist functions are turned off globally!'
+    global_on: '&aTreeAssist functions are now turned on globally!'
+    other_global_off: '&aTreeAssist functions are turned off for %1%!'
+    other_global_on: '&aTreeAssist functions are now turned on for %1%!'
+    other_world_off: '&aTreeAssist functions are turned off for %1% in world %2%!'
+    other_world_on: '&aTreeAssist functions are now turned on for %1% in world %2%!'
+    you_global_off: '&aTreeAssist functions are turned off for you!'
+    you_global_on: '&aTreeAssist functions are now turned on for you!'
+    you_world_off: '&aTreeAssist functions are turned off for you in world %1%!'
+    you_world_on: '&aTreeAssist functions are now turned on for you in world %1%!'
+  debug_tool_off: '&aDebug Tool removed!'
+  debug_tool_on: '&aYou have been given the Debug Tool!'
+  grow_tool_off: '&aGrow Tool removed!'
+  grow_tool_on: '&aYou have been given the Grow Tool! It will try to grow a tree of
+    type &e%1%&a!'
+  tool_off: '&aProtection Tool removed!'
+  tool_on: '&aYou have been given the Protection Tool!'

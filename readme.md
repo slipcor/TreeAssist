@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.21 - fix a few issues resulting in enforcing of removal, and fix someone probably being drunk while implementing the statistic check
+- v7.3.22 - purge language values no longer in use, add english and german language file 
 - [read more](doc/changelog.md)
 
 ***

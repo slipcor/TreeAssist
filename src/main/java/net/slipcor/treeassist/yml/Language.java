@@ -21,10 +21,6 @@ public final class Language extends CoreLanguage {
     public enum MSG implements LanguageEntry {
         ERROR_ADDTOOL_ALREADY("error.addtool.already", "&cYou have already added this as required tool!"),
         ERROR_ADDTOOL_OTHER("error.addtool.other", "&cSomething went wrong trying to add the required tool: %1%"),
-        ERROR_CUSTOM_LISTS("error.custom.lists", "&cSomething is wrong with your custom lists. Please fix them! They need have to same item count!"),
-        ERROR_CUSTOM_EXISTS("error.custom.exists", "&cThis custom block group definition already exists!"),
-        ERROR_CUSTOM_NOT_FOUND("error.custom.notfound", "&cThis custom block group definition does not exists"),
-        ERROR_CUSTOM_EXPLANATION("error.custom.explanation", "&cYou need to have three items in you first hotbar slots. &e1) SAPLING - 2) LOG - 3) LEAVES"),
 
         ERROR_CONFIG_NO_LIST("error.config.no_list", "Not a list node: &e%1%&r!"),
         ERROR_CONFIG_NO_TREECONFIG("error.config.no_treeconfig", "Not a valid tree config: &e%1%&r!"),
@@ -81,16 +77,13 @@ public final class Language extends CoreLanguage {
         INFO_COOLDOWN_VALUE("info.cooldown.value", "&a%1% seconds remaining!"),
         INFO_COOLDOWN_WAIT("info.cooldown.wait", "&aWait for the %1% second cooldown!"),
 
-        INFO_CUSTOM_ADDED("info.custom.added", "&aCustom block group definition added!"),
-        INFO_CUSTOM_REMOVED("info.custom.removed", "&aCustom block group definition removed!"),
-
         INFO_NEVER_BREAK_SAPLINGS("info.never_break_saplings", "&aYou cannot break saplings on this server!"),
         INFO_NEVER_BREAK_LOG_WITHOUT_TOOL("info.never_break_log_without_tool", "&aYou cannot break trees on this server without a tool!"),
         INFO_NEVER_BREAK_LOG_WITH_BREAKING_TOOL("info.never_break_log_with_breaking_tool", "&aYour tool would break! Be careful!"),
         INFO_SAPLING_PROTECTED("info.sapling_protected", "&aThis sapling is protected!"),
         INFO_PLUGIN_PREFIX("info.plugin_prefix", "&8[&2TreeAssist&8]&r "),
 
-        WARNING_ADDTOOL_ONLYONE("warning.sapling_protected", "&6You can only use one enchantment. Using: %1%"),
+        WARNING_ADDTOOL_ONLYONE("warning.addtool_onlyone", "&6You can only use one enchantment. Using: %1%"),
         WARNING_DESTRUCTION_FAILED("warning.destruction_invalidblock", "&6We found a player placed block nearby: &r%1%"),
 
         SUCCESSFUL_ADDTOOL("successful.addtool", "&aRequired tool added: %1%"),
