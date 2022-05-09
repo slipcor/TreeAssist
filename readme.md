@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.24 - actually respect language setting! This has been broken for a long time :(
+- v7.3.25 - add french language file. Thanks to TBG-FR!
 - [read more](doc/changelog.md)
 
 ***

@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.25 - add french language file. Thanks to TBG-FR!
 - v7.3.24 - actually respect language setting! This has been broken for a long time :(
 - v7.3.23 - add AureliumSkills support
 - v7.3.22 - purge language values no longer in use, add english and german language file
