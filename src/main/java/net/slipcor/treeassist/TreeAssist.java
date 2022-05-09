@@ -342,7 +342,7 @@ public class TreeAssist extends CorePlugin {
     }
 
     public String loadLanguage() {
-        return language.load("lang_en");
+        return language.load(config.getString(MainConfig.CFG.GENERAL_LANGUAGE, "lang_en"));
     }
 
     @Override

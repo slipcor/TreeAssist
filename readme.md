@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.23 - add AureliumSkills support 
+- v7.3.24 - actually respect language setting! This has been broken for a long time :(
 - [read more](doc/changelog.md)
 
 ***
