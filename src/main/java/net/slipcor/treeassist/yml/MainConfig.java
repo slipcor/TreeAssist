@@ -40,6 +40,9 @@ public class MainConfig extends CoreConfig {
 
         PLUGINS("Plugins", "=== [ Plugin Integration Settings ] ==="),
         PLUGINS_USE_CUSTOM_EVENTS("Plugins.CustomEvents", false, "Create a custom block break event for every automatic block broken"),
+        PLUGINS_USE_AURELIUMSKILLS("Plugins.AureliumSkills", false, "Give AureliumSkills Foraging EXP"),
+        PLUGINS_USE_AURELIUMSKILLS_BLOCK("Plugins.AureliumPerBlock", 0, "AureliumSkills Foraging EXP to give per Block AutoChopped"),
+        PLUGINS_USE_AURELIUMSKILLS_TREE("Plugins.AureliumPerTree", 0, "AureliumSkills Foraging EXP to give per Tree AutoChopped"),
         PLUGINS_USE_MCMMO("Plugins.mcMMO", true, "Count broken blocks towards the TreeFeller ability"),
         PLUGINS_USE_TREEMCMMO("Plugins.TreeMcMMO", false, "Count broken trees towards the TreeFeller ability"),
         PLUGINS_USE_JOBS("Plugins.Jobs", true, "Count broken blocks towards Jobs jobs that fit"),

@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.22 - purge language values no longer in use, add english and german language file 
+- v7.3.23 - add AureliumSkills support 
 - [read more](doc/changelog.md)
 
 ***

@@ -5,6 +5,7 @@ import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.discovery.LeavesStructure;
 import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TALeafDecay;
+import net.slipcor.treeassist.externals.AureliumSkillsHook;
 import net.slipcor.treeassist.externals.JobsHook;
 import net.slipcor.treeassist.externals.mcMMOHook;
 import net.slipcor.treeassist.listeners.TreeAssistPlayerListener;
@@ -325,6 +326,28 @@ public class BlockUtils {
         boolean leaf = TreeStructure.allExtras.contains(block.getType());
 
         if (!leaf && player != null) {
+            if (TreeAssist.instance.aurelium) {
+
+                if (fullTree) {
+                    int value = TreeAssist.instance.config().getInt(MainConfig.CFG.PLUGINS_USE_AURELIUMSKILLS_TREE);
+
+                    if (value > 0) {
+                        TreeStructure.debug.i("Adding AureliumSkills Tree EXP!");
+                        AureliumSkillsHook.addAureliumExp(player, value);
+                    } else {
+                        TreeStructure.debug.i("AureliumSkills selected but no exp amount given?!");
+                    }
+                } else {
+                    int value = TreeAssist.instance.config().getInt(MainConfig.CFG.PLUGINS_USE_AURELIUMSKILLS_BLOCK);
+
+                    if (value > 0) {
+                        TreeStructure.debug.i("Adding AureliumSkills Block EXP!");
+                        AureliumSkillsHook.addAureliumExp(player, value);
+                    } else {
+                        TreeStructure.debug.i("AureliumSkills selected but no exp amount given?!");
+                    }
+                }
+            }
             if (TreeAssist.instance.mcMMO &&
                     (fullTree == TreeAssist.instance.config().getBoolean(MainConfig.CFG.PLUGINS_USE_TREEMCMMO))) {
                 TreeStructure.debug.i("Adding mcMMO EXP!");

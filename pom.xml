@@ -89,6 +89,14 @@
 			<systemPath>${project.basedir}/lib/Jobs4.14.3.jar</systemPath>
 		</dependency>
 		<dependency>
+			<groupId>com.github.Archy-X</groupId>
+			<artifactId>AureliumSkills</artifactId>
+			<version>1.2.11</version>
+			<type>jar</type>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/AureliumSkills-Beta1.2.11.jar</systemPath>
+		</dependency>
+		<dependency>
 			<groupId>net.slipcor</groupId>
 			<artifactId>core</artifactId>
 			<version>0.3.6</version>

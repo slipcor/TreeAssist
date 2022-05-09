@@ -36,6 +36,7 @@ public class MetricsMain extends CoreMetrics {
         this.addChart(MainConfig.CFG.MODDING_DISABLE_DURABILITY_FIX, "durability_fix");
         this.addChart(MainConfig.CFG.PLACED_BLOCKS_ACTIVE, "placed_blocks");
 
+        this.addChart(MainConfig.CFG.PLUGINS_USE_AURELIUMSKILLS, "use_aureliumskills");
         this.addChart(MainConfig.CFG.PLUGINS_USE_MCMMO, "use_mcmmo");
         this.addChart(MainConfig.CFG.PLUGINS_USE_JOBS, "use_jobs");
         this.addChart(MainConfig.CFG.GENERAL_USE_PERMISSIONS, "use_permissions");
