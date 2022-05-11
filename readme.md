@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.25 - add french language file. Thanks to TBG-FR!
+- v7.3.26 - add a whole new world of trunk discovery. greedy. use with caution!
 - [read more](doc/changelog.md)
 
 ***

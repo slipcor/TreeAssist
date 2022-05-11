@@ -122,6 +122,11 @@ public class TreeStructure {
         groundBlocks = new LinkedHashSet<>(config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS));
         trunkDiagonally = config.getBoolean(TreeConfig.CFG.TRUNK_DIAGONAL);
 
+        if (config.getBoolean(TreeConfig.CFG.TRUNK_GREEDY) && !onlyTrunk) {
+            findGreedy(config);
+            return;
+        }
+
         int thickness = config.getInt(TreeConfig.CFG.TRUNK_THICKNESS);
         boolean branches = config.getBoolean(TreeConfig.CFG.TRUNK_BRANCH);
         debug.i("Thickness: " + thickness);
@@ -448,6 +453,49 @@ public class TreeStructure {
         }
 
         return null;
+
+    }
+
+    public void findGreedy(TreeConfig config) {
+        int thickness = config.getInt(TreeConfig.CFG.TRUNK_THICKNESS);
+        debug.i("Thickness: " + thickness);
+
+        trunk = findTrunkGreedy();
+
+        if (hasDiscoveryFailed()) {
+            return;
+        }
+
+        if (trunk == null) {
+            // No tree found, nothing to remove!
+            discoveryResult = new DiscoveryResult(config, this, FailReason.NO_TRUNK);
+            return;
+        }
+        debug.i("Tree of size " + trunk.size() + " found!");
+
+        int min = config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT);
+        int height = trunk.size();
+
+        if (height < min) {
+            debug.i("Lower than minimum: " + height + " < " + min + " for " + trunk.get(0).getType());
+            discoveryResult = new DiscoveryResult(config, this, FailReason.TOO_SMALL);
+            return;
+        }
+
+        getAllExtras();
+
+        if (extras == null || extras.size() == 0) {
+            debug.i("No leaves found!");
+            discoveryResult = new DiscoveryResult(config, this, FailReason.NO_LEAVES);
+        } else if (!hasDistanceTo(neighborTrunks)) {
+            debug.i("Farming row?");
+        } else if (extras.size() < config.getInt(TreeConfig.CFG.BLOCKS_REQUIRED, 10)) {
+            debug.i("Not enough extra blocks found: " + extras.size());
+            discoveryResult = new DiscoveryResult(config, this, FailReason.NOT_ENOUGH_LEAVES);
+        }
+        if (!hasDiscoveryFailed()) {
+            discoveryResult = new DiscoveryResult(config, this, false);
+        }
 
     }
 
@@ -925,6 +973,100 @@ public class TreeStructure {
         discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_ROOF_BLOCK, BlockUtils.printBlock(checkBlock));
 
         return null;
+    }
+
+    /**
+     * Determine our trunk blocks by going up from the bottom, finding a roof block at the top
+     *
+     * @return all log blocks, null if we found an unexpected block and we should abandon ship
+     */
+    private List<Block> findTrunkGreedy() {
+        List<Block> result = new ArrayList<>();
+
+        Block checkBlock = bottom;
+
+        if (trunkBlocks.contains(checkBlock.getType())) {
+            if (greedyBranches(result, checkBlock) == null) {
+                return null;
+            }
+        } else {
+            return result;
+        }
+
+        checkBlock = findTopBlock(result);
+        debug.i("highest block: " + BlockUtils.printBlock(checkBlock));
+        checkBlock = checkBlock.getRelative(BlockFace.UP);
+        debug.i("roof block: " + BlockUtils.printBlock(checkBlock));
+
+        if (allExtras.contains(checkBlock.getType()) || MaterialUtils.isAir(checkBlock.getType())) {
+            debug.i("We hit the roof!");
+
+            // we hit the roof and no problems
+            return result;
+        }
+
+        debug.i("We did not find a roof block (" + checkBlock.getType() + ") not a valid tree!");
+
+        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_ROOF_BLOCK, BlockUtils.printBlock(checkBlock));
+
+        return null;
+    }
+
+    private Block findTopBlock(List<Block> blocks) {
+        int max = -100;
+        Block result = null;
+        for (Block b : blocks) {
+            if (b.getY() > max) {
+                max = b.getY();
+                result = b;
+            }
+        }
+        return result;
+    }
+
+    private List<Block> greedyBranches(List<Block> blocks, Block block) {
+        if (blocks == null) {
+            // error, out!
+            return null;
+        }
+        if (blocks.contains(block)) {
+            // we already checked, forward
+            return blocks;
+        }
+        if (trunkBlocks.contains(block.getType())) {
+            blocks.add(block);
+            if (greedyBranches(blocks, block.getRelative(BlockFace.EAST)) == null) {
+                return null;
+            }
+            if (greedyBranches(blocks, block.getRelative(BlockFace.WEST)) == null) {
+                return null;
+            }
+            if (greedyBranches(blocks, block.getRelative(BlockFace.SOUTH)) == null) {
+                return null;
+            }
+            if (greedyBranches(blocks, block.getRelative(BlockFace.NORTH)) == null) {
+                return null;
+            }
+            if (greedyBranches(blocks, block.getRelative(BlockFace.UP)) == null) {
+                return null;
+            }
+            return blocks;
+        }
+
+        if (!MaterialUtils.isAir(block.getType())) {
+            if (extraBlocks.contains(block.getType())) {
+                debug.i("It's an extra block!");
+            } else if (naturalBlocks.contains(block.getType())){
+                debug.i("It's a natural block!");
+            } else if (!allTrunks.contains(block.getType()) && !allExtras.contains(block.getType())) {
+                debug.i("Unexpected block! Not a valid tree!");
+
+                discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, BlockUtils.printBlock(block));
+
+                return null;
+            }
+        }
+        return blocks;
     }
 
     /**

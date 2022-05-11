@@ -80,7 +80,8 @@ public class TreeConfigUpdater {
         REPLANTING_CHECK_DEPTH_C_FUNGUS(7.2051f, "crimson_fungus", TreeConfig.CFG.REPLANTING_CHECK_DEPTH.getNode(), 26),
         REPLANTING_CHECK_DEPTH_W_FUNGUS(7.2051f, "warped_fungus", TreeConfig.CFG.REPLANTING_CHECK_DEPTH.getNode(), 26),
 
-        AUTOMATIC_DESTRUCTION_CLEANUP_LEAVES(7.3018f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CLEANUP_LEAVES.getNode(), true)
+        AUTOMATIC_DESTRUCTION_CLEANUP_LEAVES(7.3018f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CLEANUP_LEAVES.getNode(), true),
+        TRUNK_GREEDY(7.3025f, "default", TreeConfig.CFG.TRUNK_GREEDY.getNode(), false)
         ;
 
         private final float version;

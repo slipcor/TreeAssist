@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.26 - add a whole new world of trunk discovery. greedy. use with caution!
 - v7.3.25 - add french language file. Thanks to TBG-FR!
 - v7.3.24 - actually respect language setting! This has been broken for a long time :(
 - v7.3.23 - add AureliumSkills support

@@ -267,6 +267,9 @@ Trunk:
   # The trunk can go diagonally
   Diagonal: false
 
+  # Try to recognize as many blocks as possible as trunk blocks
+  Greedy: false
+
   # How high does it need to be to qualify as a tree
   Minimum Height: 4
 
@@ -277,4 +280,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.3019
+Version: 7.3026
