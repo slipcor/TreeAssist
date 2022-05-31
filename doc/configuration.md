@@ -9,6 +9,8 @@ This is the default main configuration file.
       Prevent Log Breaking Without Tool: false
       # For the toggling command, should players start with TreeAssist active?
       Toggle Default: true
+      # Should the plugin remember the toggle states on restart?
+      Toggle Remember: false
       # Should we check if players have permissions? If false, all features are available to everyone.
       Use Permissions: false
       # Should we announce information about every tree config we load?
@@ -78,4 +80,4 @@ This is the default main configuration file.
       # which type of branch to get updates? Valid values: dev, alpha, beta, release
       Type: beta
     # The config version for update checks
-    Version: 7.2015
+    Version: 7.3027

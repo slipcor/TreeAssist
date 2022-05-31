@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.26 - add a whole new world of trunk discovery. greedy. use with caution!
+- v7.3.27 - add a config setting to allow to remember toggle settings -> General.ToggleRemember
 - [read more](doc/changelog.md)
 
 ***

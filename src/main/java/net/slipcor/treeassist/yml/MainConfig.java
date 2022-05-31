@@ -19,6 +19,7 @@ public class MainConfig extends CoreConfig {
         GENERAL_PREVENT_WITHOUT_TOOL("General.Prevent Log Breaking Without Tool", false, "Prevent breaking of logs without the right tool"),
         GENERAL_PREVENT_WITH_BREAKING_TOOL("General.Prevent Log Breaking With Breaking Tool", false, "Prevent breaking of logs if the tool would break in the process"),
         GENERAL_TOGGLE_DEFAULT("General.Toggle Default", true, "For the toggling command, should players start with TreeAssist active?"),
+        GENERAL_TOGGLE_REMEMBER("General.Toggle Remember", false, "Should the plugin remember the toggle states on restart?"),
         GENERAL_USE_PERMISSIONS("General.Use Permissions", false, "Should we check if players have permissions? If false, all features are available to everyone."),
         GENERAL_VERBOSE_CONFIG_LOADING("General.Verbose Config Loading", false, "Should we announce information about every tree config we load?"),
 

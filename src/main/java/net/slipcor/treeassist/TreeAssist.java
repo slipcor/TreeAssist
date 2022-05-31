@@ -29,6 +29,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Player;
 
@@ -345,6 +346,19 @@ public class TreeAssist extends CorePlugin {
         return language.load(config.getString(MainConfig.CFG.GENERAL_LANGUAGE, "lang_en"));
     }
 
+    public void loadToggles() {
+        if (!config.getBoolean(MainConfig.CFG.GENERAL_TOGGLE_REMEMBER)) {
+            return;
+        }
+        ConfigurationSection section = config.getYamlConfiguration().getConfigurationSection("Toggle");
+        if (section == null) {
+            return;
+        }
+        for (String world : section.getKeys(false)) {
+            this.disabledMap.put(world, new ArrayList<>(section.getStringList(world)));
+        }
+    }
+
     @Override
     public void onLoad() {
         instance = this;
@@ -360,6 +374,7 @@ public class TreeAssist extends CorePlugin {
         this.config = new MainConfig(this, configFile);
         this.config.load();
         reloadLists();
+        loadToggles();
 
         this.listener = new TreeAssistBlockListener(this);
 
@@ -493,6 +508,13 @@ public class TreeAssist extends CorePlugin {
         } else {
             disabledMap.put(world, new ArrayList<>());
             disabledMap.get(world).add(player);
+        }
+        if (config.getBoolean(MainConfig.CFG.GENERAL_TOGGLE_REMEMBER)) {
+            for (String iterWorld : disabledMap.keySet()) {
+                List<String> list = new ArrayList<>(disabledMap.get(iterWorld));
+                config.getYamlConfiguration().set("Toggle." + iterWorld, list);
+            }
+            config.save();
         }
         return false;
     }

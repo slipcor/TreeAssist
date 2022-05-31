@@ -33,6 +33,7 @@ public class CommandReload extends CoreCommand {
             TreeAssist.instance.sendPrefixed(sender, ChatColor.RED + error);
             return;
         }
+        TreeAssist.instance.loadToggles();
         TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_RELOAD.parse());
     }
 

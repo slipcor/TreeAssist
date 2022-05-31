@@ -14,6 +14,9 @@ General:
   # For the toggling command, should players start with TreeAssist active?
   Toggle Default: true
 
+  # Should the plugin remember the toggle states on restart?
+  Toggle Remember: false
+
   # Should we check if players have permissions? If false, all features are available to everyone.
   Use Permissions: false
 
@@ -117,4 +120,4 @@ Update:
   Type: beta
 
 # The config version for update checks
-Version: 7.2046
+Version: 7.3027
