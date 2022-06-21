@@ -1,0 +1,53 @@
+Blocks:
+
+  # Here you can add extra blocks that can be expected inside or around tree leaves
+  Materials:
+  - minecraft:mangrove_leaves
+  Top:
+
+    # Radius around the trunk to check for leaves
+    Radius: 3
+  Custom Drops:
+
+    # Drop chances for extra drops. 1.0 would be 100% chance!
+    Items:
+      minecraft:oak_leaves: 0.01
+
+# The parent tree config to inherit from, recursively
+Parent: default
+
+# The permission required for this tree type
+Permission: treeassist.destroy.mangrove
+Replanting:
+
+  # How far down do we look for saplings to place them
+  Check Depth: 14
+
+  # The material to place
+  Material: minecraft:mangrove_propagule
+Natural Blocks:
+- minecraft:moss_carpet
+- minecraft:mangrove_propagule
+- minecraft:seagrass
+- minecraft:mud
+- minecraft:moss_carpet
+- minecraft:lily_pad
+- minecraft:water
+- minecraft:tall_seagrass
+Ground Blocks:
+- minecraft:mud
+Trunk:
+  Greedy: true
+
+  Diagonal: true
+
+  # One of these materials needs to be part of the trunk for it to count as a trunk
+  Materials:
+  - minecraft:mangrove_roots
+  - minecraft:stripped_mangrove_log
+  - minecraft:mangrove_log
+  - minecraft:muddy_mangrove_roots
+  - minecraft:mangrove_roots
+
+# Version number for automagical config updates
+Version: 7.3027

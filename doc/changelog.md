@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+-v7.3.28 - try to implement mangroves - I am not completely happy with this. Config will not be automatically added yet!
 - v7.3.27 - add a config setting to allow to remember toggle settings -> General.ToggleRemember
 - v7.3.26 - add a whole new world of trunk discovery. greedy. use with caution!
 - v7.3.25 - add french language file. Thanks to TBG-FR!

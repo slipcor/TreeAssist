@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.27 - add a config setting to allow to remember toggle settings -> General.ToggleRemember
+- v7.3.28 - try to implement mangroves - I am not completely happy with this. Config will not be automatically added yet!
 - [read more](doc/changelog.md)
 
 ***

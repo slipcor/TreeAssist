@@ -17,10 +17,7 @@ import net.slipcor.treeassist.yml.Language;
 import net.slipcor.treeassist.yml.MainConfig;
 import net.slipcor.treeassist.yml.TreeConfig;
 import net.slipcor.treeassist.yml.TreeConfigUpdater;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Statistic;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -455,6 +452,29 @@ public class TreeStructure {
         return null;
 
     }
+    public Block calculateGreedyBottom() {
+        if (trunk == null || trunk.size() < 1) {
+            debug.i("No trunk found!");
+            return null;
+        }
+        int sums[] = new int[3];
+
+        World world = null;
+
+        for (Block block : trunk) {
+            if (world == null) {
+                world = block.getWorld();
+            }
+            sums[0] += block.getX();
+            sums[1] += block.getY();
+            sums[2] += block.getZ();
+        }
+        sums[0] /= trunk.size();
+        sums[1] /= trunk.size();
+        sums[2] /= trunk.size();
+
+        return world.getBlockAt(sums[0], sums[1], sums[2]);
+    }
 
     public void findGreedy(TreeConfig config) {
         int thickness = config.getInt(TreeConfig.CFG.TRUNK_THICKNESS);
@@ -497,6 +517,26 @@ public class TreeStructure {
             discoveryResult = new DiscoveryResult(config, this, false);
         }
 
+        bottom = calculateGreedyBottom();
+
+        int loopcheck = 100;
+
+        while (!groundBlocks.contains(bottom.getType()) &&
+                (naturalBlocks.contains(bottom.getType()) || trunkBlocks.contains(bottom.getType()) || extras.contains(bottom.getType()) || bottom.getType().isAir() || bottom.getType() == Material.WATER)) {
+            if (loopcheck-- < 1) {
+                break;
+            }
+
+            bottom = bottom.getRelative(BlockFace.DOWN);
+        }
+
+        if (groundBlocks.contains(bottom.getType())) {
+            bottom = bottom.getRelative(BlockFace.UP);
+            debug.i("We found the ground. Neat!");
+            return; // ALL GOOD
+        }
+
+        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(bottom));
     }
 
     public static TreeStructure discover(Player player, Block checkBlock) {
@@ -1046,6 +1086,20 @@ public class TreeStructure {
             }
             if (greedyBranches(blocks, block.getRelative(BlockFace.NORTH)) == null) {
                 return null;
+            }
+            if (config.getBoolean(TreeConfig.CFG.TRUNK_DIAGONAL)) {
+                if (greedyBranches(blocks, block.getRelative(BlockFace.EAST).getRelative(BlockFace.UP)) == null) {
+                    return null;
+                }
+                if (greedyBranches(blocks, block.getRelative(BlockFace.WEST).getRelative(BlockFace.UP)) == null) {
+                    return null;
+                }
+                if (greedyBranches(blocks, block.getRelative(BlockFace.SOUTH).getRelative(BlockFace.UP)) == null) {
+                    return null;
+                }
+                if (greedyBranches(blocks, block.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP)) == null) {
+                    return null;
+                }
             }
             if (greedyBranches(blocks, block.getRelative(BlockFace.UP)) == null) {
                 return null;
