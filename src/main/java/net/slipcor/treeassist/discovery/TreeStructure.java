@@ -1100,6 +1100,18 @@ public class TreeStructure {
                 if (greedyBranches(blocks, block.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP)) == null) {
                     return null;
                 }
+                if (greedyBranches(blocks, block.getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN)) == null) {
+                    return null;
+                }
+                if (greedyBranches(blocks, block.getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN)) == null) {
+                    return null;
+                }
+                if (greedyBranches(blocks, block.getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN)) == null) {
+                    return null;
+                }
+                if (greedyBranches(blocks, block.getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN)) == null) {
+                    return null;
+                }
             }
             if (greedyBranches(blocks, block.getRelative(BlockFace.UP)) == null) {
                 return null;
