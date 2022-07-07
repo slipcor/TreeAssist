@@ -31,7 +31,8 @@ public class MainConfigUpdater {
     }
 
     enum TreeAddition {
-        AZALEA(7.2012f, "overworld", "azalea.yml");
+        AZALEA(7.2012f, "overworld", "azalea.yml"),
+        MANGROVE(7.330f, "overworld", "mangrove.yml");
 
         private final float version;
         private final String path;
@@ -149,14 +150,13 @@ public class MainConfigUpdater {
                 File subTree = new File(trees, m.path);
                 File configFile = new File(subTree, m.file);
 
-                if (!configFile.exists()) {
-
-                    TreeAssist.instance.saveResource("trees/" + m.path + "/" + m.file, false);
-
+                if (configFile.exists()) {
                     configFile.delete();
-                    TreeAssist.instance.getLogger().info("Config created: " + m.toString());
-
                 }
+
+                TreeAssist.instance.saveResource("trees/" + m.path + "/" + m.file, false);
+
+                TreeAssist.instance.getLogger().info("Config created: " + m.toString());
 
                 changed = true;
             }

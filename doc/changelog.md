@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.30 - add the mangrove to the automatically added config files, repair the add-config-feature
 - v7.3.29 - follow greedy branches downwards, too
 - v7.3.28 - try to implement mangroves - I am not completely happy with this. Config will not be automatically added yet!
 - v7.3.27 - add a config setting to allow to remember toggle settings -> General.ToggleRemember
