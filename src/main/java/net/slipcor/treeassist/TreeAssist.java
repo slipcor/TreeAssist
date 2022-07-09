@@ -393,7 +393,13 @@ public class TreeAssist extends CorePlugin {
      * Reload all tree definitions
      */
     public void reloadLists() {
-        if (!new File(getDataFolder().getPath(), "trees").exists()) {
+        File treeFolder = new File(getDataFolder().getPath(), "trees");
+        boolean hasTrees = treeFolder.exists();
+        if (hasTrees) {
+            // lonely acacia? try pasting anyway!
+            hasTrees = treeFolder.listFiles().length > 1;
+        }
+        if (!hasTrees) {
             saveResource("trees/default.yml", false);
             saveResource("trees/overworld/acacia.yml", false);
             saveResource("trees/overworld/birch.yml", false);

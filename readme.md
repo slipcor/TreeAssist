@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.30 - add the mangrove to the automatically added config files, repair the add-config-feature
+- v7.3.31 - repair and improve the tree yml replacement
 - [read more](doc/changelog.md)
 
 ***
