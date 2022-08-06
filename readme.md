@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.31 - repair and improve the tree yml replacement
+- v7.3.32 - add config setting to ignore invalid blocks - use with caution :P - add aurelium skills auto-addition
 - [read more](doc/changelog.md)
 
 ***

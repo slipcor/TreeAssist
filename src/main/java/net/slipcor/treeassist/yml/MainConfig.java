@@ -15,6 +15,7 @@ public class MainConfig extends CoreConfig {
 
     public enum CFG implements ConfigEntry {
         GENERAL("General", "=== [ General Settings ] ==="),
+        GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS("General.Auto Destruct Ignores Unexpected Blocks", "Do not prevent auto destruct when encountering an unexpected block"),
         GENERAL_LANGUAGE("General.Language", "lang_en", "Language file to load. Does not need YML extension!"),
         GENERAL_PREVENT_WITHOUT_TOOL("General.Prevent Log Breaking Without Tool", false, "Prevent breaking of logs without the right tool"),
         GENERAL_PREVENT_WITH_BREAKING_TOOL("General.Prevent Log Breaking With Breaking Tool", false, "Prevent breaking of logs if the tool would break in the process"),
@@ -41,7 +42,7 @@ public class MainConfig extends CoreConfig {
 
         PLUGINS("Plugins", "=== [ Plugin Integration Settings ] ==="),
         PLUGINS_USE_CUSTOM_EVENTS("Plugins.CustomEvents", false, "Create a custom block break event for every automatic block broken"),
-        PLUGINS_USE_AURELIUMSKILLS("Plugins.AureliumSkills", false, "Give AureliumSkills Foraging EXP"),
+        PLUGINS_USE_AURELIUMSKILLS("Plugins.AureliumSkills", false, "Hook into AureliumSkills to add Foraging EXP [might require a restart to take effect]"),
         PLUGINS_USE_AURELIUMSKILLS_BLOCK("Plugins.AureliumPerBlock", 0, "AureliumSkills Foraging EXP to give per Block AutoChopped"),
         PLUGINS_USE_AURELIUMSKILLS_TREE("Plugins.AureliumPerTree", 0, "AureliumSkills Foraging EXP to give per Tree AutoChopped"),
         PLUGINS_USE_MCMMO("Plugins.mcMMO", true, "Count broken blocks towards the TreeFeller ability"),

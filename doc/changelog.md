@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.32 - add config setting to ignore invalid blocks - use with caution :P - add aurelium skills auto-addition
 - v7.3.31 - repair and improve the tree yml replacement
 - v7.3.30 - add the mangrove to the automatically added config files, repair the add-config-feature
 - v7.3.29 - follow greedy branches downwards, too

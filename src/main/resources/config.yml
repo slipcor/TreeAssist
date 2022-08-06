@@ -2,6 +2,9 @@
 # === [ General Settings ] ===
 General:
 
+  # Do not prevent auto destruct when encountering an unexpected block
+  Auto Destruct Ignores Unexpected Blocks: false
+
   # Language file to load. Does not need YML extension!
   Language: lang_en
 
@@ -87,6 +90,15 @@ Plugins:
   # Allow to set up regions with WorldGuard to prevent destruction with 'treeassist-autochop' and sapling replacement with 'treeassist-replant'
   WorldGuard: false
 
+  # Hook into AureliumSkills to add Foraging EXP [might require a restart to take effect]
+  AureliumSkills: false
+
+  # AureliumSkills Foraging EXP to give per Block AutoChopped
+  AureliumPerBlock: 0.0
+
+  # AureliumSkills Foraging EXP to give per Tree AutoChopped
+  AureliumPerTree: 0.0
+
 # === [ World Related Settings ] ===
 Worlds:
 
@@ -120,4 +132,4 @@ Update:
   Type: beta
 
 # The config version for update checks
-Version: 7.3300
+Version: 7.3310

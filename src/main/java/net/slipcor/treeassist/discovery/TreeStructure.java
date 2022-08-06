@@ -390,6 +390,33 @@ public class TreeStructure {
             // As long as find more logs, keep going!
             checkBlock = checkBlock.getRelative(BlockFace.DOWN);
 
+            int grounds = 0;
+
+            debug.i("checking ground at level " + checkBlock.getY());
+
+            if (groundBlocks.contains(checkBlock.getRelative(BlockFace.NORTH).getType())) {
+                grounds++;
+            }
+            if (groundBlocks.contains(checkBlock.getRelative(BlockFace.SOUTH).getType())) {
+                grounds++;
+            }
+            if (groundBlocks.contains(checkBlock.getRelative(BlockFace.WEST).getType())) {
+                grounds++;
+            }
+            if (groundBlocks.contains(checkBlock.getRelative(BlockFace.EAST).getType())) {
+                grounds++;
+            }
+
+            if (grounds > 2) {
+                if (grounds > 3) {
+                    // completely immersed, not exposed. Go up!
+                    debug.i("We found the ground around here. Good enough!");
+                    return checkBlock.getRelative(BlockFace.UP);
+                }
+                debug.i("We found the ground around here. Good enough!");
+                return checkBlock;
+            }
+
             if (diagonalTrunk && !trunkBlocks.contains(checkBlock.getType())) {
                 Material checkMaterial = checkBlock.getType();
 
@@ -525,6 +552,33 @@ public class TreeStructure {
                 (naturalBlocks.contains(bottom.getType()) || trunkBlocks.contains(bottom.getType()) || extras.contains(bottom.getType()) || bottom.getType().isAir() || bottom.getType() == Material.WATER)) {
             if (loopcheck-- < 1) {
                 break;
+            }
+
+            int grounds = 0;
+
+            if (groundBlocks.contains(bottom.getRelative(BlockFace.NORTH).getType())) {
+                grounds++;
+            }
+
+            if (groundBlocks.contains(bottom.getRelative(BlockFace.SOUTH).getType())) {
+                grounds++;
+            }
+
+            if (groundBlocks.contains(bottom.getRelative(BlockFace.WEST).getType())) {
+                grounds++;
+            }
+
+            if (groundBlocks.contains(bottom.getRelative(BlockFace.EAST).getType())) {
+                grounds++;
+            }
+
+            if (grounds > 2) {
+                if (grounds > 3) {
+                    // completely immersed, not exposed. Go up!
+                    bottom = bottom.getRelative(BlockFace.UP);
+                }
+                debug.i("We found the ground around here. Good enough!");
+                return; // ALL GOOD
             }
 
             bottom = bottom.getRelative(BlockFace.DOWN);
@@ -953,6 +1007,7 @@ public class TreeStructure {
 
         while (trunkBlocks.contains(checkBlock.getType())) {
             result.add(checkBlock);
+            debug.i("Good t block: " + BlockUtils.printBlock(checkBlock));
 
             checkBlock = checkBlock.getRelative(BlockFace.UP);
 
@@ -963,11 +1018,11 @@ public class TreeStructure {
 
                 if (!MaterialUtils.isAir(checkBlock.getType())) {
                     if (extraBlocks.contains(checkMaterial)) {
-                        debug.i("It's an extra block!");
+                        debug.i("It's an extra u block: " + BlockUtils.printBlock(checkBlock));
                     } else if (naturalBlocks.contains(checkMaterial)){
-                        debug.i("It's a natural block!");
+                        debug.i("It's a natural u block: " +  BlockUtils.printBlock(checkBlock));
                     } else if (!allTrunks.contains(checkMaterial) && !allExtras.contains(checkMaterial)) {
-                        debug.i("Unexpected block! Not a valid tree!");
+                        debug.i("Unexpected u block! Not a valid tree!");
 
                         discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, BlockUtils.printBlock(checkBlock));
 
@@ -985,11 +1040,11 @@ public class TreeStructure {
                         debug.i("Checking diagonal at " + checkBlock.getRelative(x, 0, z).getLocation() + " - type: " + innerCheck);
                         if (!MaterialUtils.isAir(innerCheck)) {
                             if (extraBlocks.contains(innerCheck)) {
-                                debug.i("It's an extra block!");
+                                debug.i("It's an extra l block: " + BlockUtils.printBlock(checkBlock));
                             } else if (naturalBlocks.contains(innerCheck)){
-                                debug.i("It's a natural block!");
+                                debug.i("It's a natural l block " + BlockUtils.printBlock(checkBlock));
                             } else if (!allTrunks.contains(checkMaterial) && !allExtras.contains(checkMaterial)) {
-                                debug.i("Unexpected block! Not a valid tree!");
+                                debug.i("Unexpected l block! Not a valid tree!");
 
                                 discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, BlockUtils.printBlock(checkBlock));
 
@@ -1073,7 +1128,29 @@ public class TreeStructure {
             // we already checked, forward
             return blocks;
         }
+        int grounds = 0;
+
+        debug.i("checking branch ground at level " + block.getY());
+
+        if (groundBlocks.contains(block.getRelative(BlockFace.NORTH).getType())) {
+            grounds++;
+        }
+        if (groundBlocks.contains(block.getRelative(BlockFace.SOUTH).getType())) {
+            grounds++;
+        }
+        if (groundBlocks.contains(block.getRelative(BlockFace.WEST).getType())) {
+            grounds++;
+        }
+        if (groundBlocks.contains(block.getRelative(BlockFace.EAST).getType())) {
+            grounds++;
+        }
+
+        if (grounds > 2) {
+            return blocks;
+        }
+
         if (trunkBlocks.contains(block.getType())) {
+            debug.i("Good g block: " + BlockUtils.printBlock(block));
             blocks.add(block);
             if (greedyBranches(blocks, block.getRelative(BlockFace.EAST)) == null) {
                 return null;
@@ -1100,18 +1177,11 @@ public class TreeStructure {
                 if (greedyBranches(blocks, block.getRelative(BlockFace.NORTH).getRelative(BlockFace.UP)) == null) {
                     return null;
                 }
-                if (greedyBranches(blocks, block.getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN)) == null) {
-                    return null;
-                }
-                if (greedyBranches(blocks, block.getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN)) == null) {
-                    return null;
-                }
-                if (greedyBranches(blocks, block.getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN)) == null) {
-                    return null;
-                }
-                if (greedyBranches(blocks, block.getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN)) == null) {
-                    return null;
-                }
+                // we are a bit more lenient going down
+                greedyBranches(blocks, block.getRelative(BlockFace.EAST).getRelative(BlockFace.DOWN));
+                greedyBranches(blocks, block.getRelative(BlockFace.WEST).getRelative(BlockFace.DOWN));
+                greedyBranches(blocks, block.getRelative(BlockFace.SOUTH).getRelative(BlockFace.DOWN));
+                greedyBranches(blocks, block.getRelative(BlockFace.NORTH).getRelative(BlockFace.DOWN));
             }
             if (greedyBranches(blocks, block.getRelative(BlockFace.UP)) == null) {
                 return null;
@@ -1121,11 +1191,11 @@ public class TreeStructure {
 
         if (!MaterialUtils.isAir(block.getType())) {
             if (extraBlocks.contains(block.getType())) {
-                debug.i("It's an extra block!");
+                debug.i("It's an extra g block: " + BlockUtils.printBlock(block));
             } else if (naturalBlocks.contains(block.getType())){
-                debug.i("It's a natural block!");
-            } else if (!allTrunks.contains(block.getType()) && !allExtras.contains(block.getType())) {
-                debug.i("Unexpected block! Not a valid tree!");
+                debug.i("It's a natural g block: " +  BlockUtils.printBlock(block));
+            } else if (!TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS) && !allTrunks.contains(block.getType()) && !allExtras.contains(block.getType())) {
+                debug.i("Unexpected g block! Not a valid tree!");
 
                 discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, BlockUtils.printBlock(block));
 
@@ -1263,7 +1333,8 @@ public class TreeStructure {
                         }
                     }
                     branchMap.put(checkBlock, branch);
-                } else if (!allExtras.contains(checkBlock.getType())
+                } else if (!TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS)
+                        && !allExtras.contains(checkBlock.getType())
                         && !allTrunks.contains(checkBlock.getType())
                         && !naturalBlocks.contains(checkBlock.getType())) {
                     debug.i("invalid block 2a: " + checkBlock.getType());
@@ -1327,7 +1398,8 @@ public class TreeStructure {
                         }
                     }
                 } else if (
-                        !naturalBlocks.contains(checkMaterial) &&
+                        !TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS) &&
+                                !naturalBlocks.contains(checkMaterial) &&
                                 !trunkBlocks.contains(checkMaterial) &&
                                 !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
                     discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
@@ -1386,7 +1458,9 @@ public class TreeStructure {
                         return;
                     }
                     branchMap.put(checkBlock, branch);
-                } else if (!allExtras.contains(checkBlock.getType())
+                } else if (
+                        !TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS)
+                        && !allExtras.contains(checkBlock.getType())
                         && !allTrunks.contains(checkBlock.getType())
                         && !naturalBlocks.contains(checkBlock.getType())) {
                     debug.i("invalid block 2b: " + checkBlock.getType());
@@ -1465,6 +1539,7 @@ public class TreeStructure {
                             }
                         }
                     } else if (
+                            !TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS) &&
                             !naturalBlocks.contains(checkMaterial) &&
                                     !trunkBlocks.contains(checkMaterial) &&
                                     !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
@@ -1536,7 +1611,8 @@ public class TreeStructure {
                             }
                         }
                     } else if (
-                            !naturalBlocks.contains(checkMaterial) &&
+                            !TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS) &&
+                                    !naturalBlocks.contains(checkMaterial) &&
                                     !trunkBlocks.contains(checkMaterial) &&
                                     !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
                         discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
@@ -1644,7 +1720,8 @@ public class TreeStructure {
             // We found our end!
             return false;
         } else if (
-                !naturalBlocks.contains(mat) &&
+                !TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS) &&
+                        !naturalBlocks.contains(mat) &&
                         !(allTrunks.contains(mat) || allExtras.contains(mat))) {
             debug.i("invalid block 3: " + mat);
             discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
@@ -1718,7 +1795,8 @@ public class TreeStructure {
                 return hasInvalidExtraBlock(checkBlock.getRelative(direction), direction, expansion, progress + 1, first, edges, air, radius);
             }
         } else if (
-                !naturalBlocks.contains(checkMaterial) &&
+                !TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS) &&
+                        !naturalBlocks.contains(checkMaterial) &&
                         !trunkBlocks.contains(checkMaterial) &&
                         !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
             debug.i("Invalid block found 1: " + BlockUtils.printBlock(checkBlock));
