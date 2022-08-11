@@ -15,7 +15,7 @@ public class MainConfig extends CoreConfig {
 
     public enum CFG implements ConfigEntry {
         GENERAL("General", "=== [ General Settings ] ==="),
-        GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS("General.Auto Destruct Ignores Unexpected Blocks", "Do not prevent auto destruct when encountering an unexpected block"),
+        GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS("General.Auto Destruct Ignores Unexpected Blocks", false, "Do not prevent auto destruct when encountering an unexpected block"),
         GENERAL_LANGUAGE("General.Language", "lang_en", "Language file to load. Does not need YML extension!"),
         GENERAL_PREVENT_WITHOUT_TOOL("General.Prevent Log Breaking Without Tool", false, "Prevent breaking of logs without the right tool"),
         GENERAL_PREVENT_WITH_BREAKING_TOOL("General.Prevent Log Breaking With Breaking Tool", false, "Prevent breaking of logs if the tool would break in the process"),

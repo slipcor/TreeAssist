@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.32 - add config setting to ignore invalid blocks - use with caution :P - add aurelium skills auto-addition
+- v7.3.33 - actually add the config setting, automatically. Oups
 - [read more](doc/changelog.md)
 
 ***
