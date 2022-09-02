@@ -410,11 +410,11 @@ public class TreeStructure {
             if (grounds > 2) {
                 if (grounds > 3) {
                     // completely immersed, not exposed. Go up!
-                    debug.i("We found the ground around here. Good enough!");
+                    debug.i("We found the ground A around here. Good enough!");
                     return checkBlock.getRelative(BlockFace.UP);
                 }
-                debug.i("We found the ground around here. Good enough!");
-                return checkBlock;
+                debug.i("We found the ground B around here. Good enough!");
+                return checkBlock.getRelative(BlockFace.UP);
             }
 
             if (diagonalTrunk && !trunkBlocks.contains(checkBlock.getType())) {
@@ -575,9 +575,11 @@ public class TreeStructure {
             if (grounds > 2) {
                 if (grounds > 3) {
                     // completely immersed, not exposed. Go up!
-                    bottom = bottom.getRelative(BlockFace.UP);
+                    bottom = bottom.getRelative(BlockFace.UP, 2);
+                    return; // ALL GOOD
                 }
-                debug.i("We found the ground around here. Good enough!");
+                debug.i("We found the ground C around here. Good enough!");
+                bottom = bottom.getRelative(BlockFace.UP);
                 return; // ALL GOOD
             }
 
@@ -590,7 +592,7 @@ public class TreeStructure {
             return; // ALL GOOD
         }
 
-        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(bottom));
+        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block A: " + BlockUtils.printBlock(bottom));
     }
 
     public static TreeStructure discover(Player player, Block checkBlock) {
@@ -1024,7 +1026,7 @@ public class TreeStructure {
                     } else if (!allTrunks.contains(checkMaterial) && !allExtras.contains(checkMaterial)) {
                         debug.i("Unexpected u block! Not a valid tree!");
 
-                        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, BlockUtils.printBlock(checkBlock));
+                        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, "block B: " + BlockUtils.printBlock(checkBlock));
 
                         return null;
                     }
@@ -1046,7 +1048,7 @@ public class TreeStructure {
                             } else if (!allTrunks.contains(checkMaterial) && !allExtras.contains(checkMaterial)) {
                                 debug.i("Unexpected l block! Not a valid tree!");
 
-                                discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, BlockUtils.printBlock(checkBlock));
+                                discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, "block C: " + BlockUtils.printBlock(checkBlock));
 
                                 return null;
                             }
@@ -1065,7 +1067,7 @@ public class TreeStructure {
 
         debug.i("We did not find a roof block (" + checkBlock.getType() + ") not a valid tree!");
 
-        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_ROOF_BLOCK, BlockUtils.printBlock(checkBlock));
+        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_ROOF_BLOCK, "block F: " + BlockUtils.printBlock(checkBlock));
 
         return null;
     }
@@ -1089,6 +1091,10 @@ public class TreeStructure {
         }
 
         checkBlock = findTopBlock(result);
+        if (checkBlock == null) {
+            discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_ROOF_BLOCK);
+            return null;
+        }
         debug.i("highest block: " + BlockUtils.printBlock(checkBlock));
         checkBlock = checkBlock.getRelative(BlockFace.UP);
         debug.i("roof block: " + BlockUtils.printBlock(checkBlock));
@@ -1102,7 +1108,7 @@ public class TreeStructure {
 
         debug.i("We did not find a roof block (" + checkBlock.getType() + ") not a valid tree!");
 
-        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_ROOF_BLOCK, BlockUtils.printBlock(checkBlock));
+        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_ROOF_BLOCK, "block E: " + BlockUtils.printBlock(checkBlock));
 
         return null;
     }
@@ -1197,7 +1203,7 @@ public class TreeStructure {
             } else if (!TreeAssist.instance.config().getBoolean(MainConfig.CFG.GENERAL_AUTODESTRUCT_IGNORES_UNEXPECTED_BLOCKS) && !allTrunks.contains(block.getType()) && !allExtras.contains(block.getType())) {
                 debug.i("Unexpected g block! Not a valid tree!");
 
-                discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, BlockUtils.printBlock(block));
+                discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, "block F: " + BlockUtils.printBlock(block));
 
                 return null;
             }
@@ -1231,7 +1237,7 @@ public class TreeStructure {
             }
             debug.i("We did not find a roof block (" + checkBlock.getType() + ") not a valid tree!");
 
-            discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_ROOF_BLOCK, BlockUtils.printBlock(checkBlock));
+            discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_ROOF_BLOCK, "block G: " + BlockUtils.printBlock(checkBlock));
 
             return null;
         }
@@ -1340,7 +1346,7 @@ public class TreeStructure {
                     debug.i("invalid block 2a: " + checkBlock.getType());
                     trunk.clear();
                     branchMap.clear();
-                    discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
+                    discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block H: " + BlockUtils.printBlock(checkBlock));
                     return;
                 }
             }
@@ -1402,7 +1408,7 @@ public class TreeStructure {
                                 !naturalBlocks.contains(checkMaterial) &&
                                 !trunkBlocks.contains(checkMaterial) &&
                                 !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                    discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
+                    discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block I: " + BlockUtils.printBlock(checkBlock));
                     debug.i("invalid block at " + BlockUtils.printBlock(checkBlock));
                     return;
                 }
@@ -1466,7 +1472,7 @@ public class TreeStructure {
                     debug.i("invalid block 2b: " + checkBlock.getType());
                     trunk.clear();
                     branchMap.clear();
-                    discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
+                    discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block J: " + BlockUtils.printBlock(checkBlock));
                     return;
                 } else {
                     // This branch ends here
@@ -1543,7 +1549,7 @@ public class TreeStructure {
                             !naturalBlocks.contains(checkMaterial) &&
                                     !trunkBlocks.contains(checkMaterial) &&
                                     !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
+                        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block K: " + BlockUtils.printBlock(checkBlock));
                         debug.i("invalid block at " + BlockUtils.printBlock(checkBlock));
                         return;
                     } else if (trunkBlocks.contains(checkMaterial)) {
@@ -1615,7 +1621,7 @@ public class TreeStructure {
                                     !naturalBlocks.contains(checkMaterial) &&
                                     !trunkBlocks.contains(checkMaterial) &&
                                     !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
-                        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
+                        discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block L: " + BlockUtils.printBlock(checkBlock));
                         debug.i("invalid block at " + BlockUtils.printBlock(checkBlock));
                         return;
                     }
@@ -1724,7 +1730,7 @@ public class TreeStructure {
                         !naturalBlocks.contains(mat) &&
                         !(allTrunks.contains(mat) || allExtras.contains(mat))) {
             debug.i("invalid block 3: " + mat);
-            discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
+            discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block M: " + BlockUtils.printBlock(checkBlock));
             return true;
         }
         return false;
@@ -1800,7 +1806,7 @@ public class TreeStructure {
                         !trunkBlocks.contains(checkMaterial) &&
                         !(allTrunks.contains(checkMaterial) || allExtras.contains(checkMaterial))) {
             debug.i("Invalid block found 1: " + BlockUtils.printBlock(checkBlock));
-            discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block: " + BlockUtils.printBlock(checkBlock));
+            discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_BLOCK, "block N: " + BlockUtils.printBlock(checkBlock));
             return true;
         }
         return false;
