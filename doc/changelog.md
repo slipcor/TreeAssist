@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.35 - stop the auto plant feature from duplicating saplings
 - v7.3.34 - repair several things we broke in the last few commits
 - v7.3.33 - actually add the config setting, automatically. Oups
 - v7.3.32 - add config setting to ignore invalid blocks - use with caution :P - add aurelium skills auto-addition

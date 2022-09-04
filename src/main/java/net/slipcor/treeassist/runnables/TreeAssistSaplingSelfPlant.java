@@ -11,16 +11,15 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Item;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TreeAssistSaplingSelfPlant implements Runnable {
 	private final TreeConfig config;
 	private final Material overrideMaterial;
 	private Item drop;
+	private UUID id;
 	private final static Set<Item> items = new HashSet<>();
+	private int delay;
 
 	/**
 	 * A Runnable to place a sapling item on the ground properly
@@ -32,10 +31,11 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 	public TreeAssistSaplingSelfPlant(TreeConfig config, Item item, Material material) {
 		this.config = config;
 		drop = item;
+		id = drop.getUniqueId();
 		items.add(drop);
 		overrideMaterial = (drop.getItemStack().getType() == material) ? null : material;
 		
-		int delay = config.getInt(TreeConfig.CFG.REPLANTING_DROPPED_SAPLINGS_DELAY, 5);
+		delay = config.getInt(TreeConfig.CFG.REPLANTING_DROPPED_SAPLINGS_DELAY, 5);
 		if (delay < 1) {
 			delay = 1;
 		}
@@ -46,7 +46,7 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 
 		for (TreeStructure tree : trees) {
 			if (tree.isValid()) {
-				tree.addReplantDelay(new TreeAssistReplantDelay(tree, findBlock(item), this, delay));
+				tree.addReplantDelay(new TreeAssistReplantDelay(tree, findBlock(item), this, delay, item, true));
 				return;
 			}
 		}
@@ -73,6 +73,10 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 		if (!items.contains(drop)) {
 			return;
 		}
+		if (drop.isDead() || !drop.isValid()) {
+			items.remove(drop);
+			return;
+		}
 		Block block = drop.getLocation().getBlock();
 
 		List<Material> grounds = config.getMaterials(TreeConfig.CFG.GROUND_BLOCKS);
@@ -81,6 +85,11 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 				(grounds.contains(block.getRelative(BlockFace.DOWN).getType()))) {
 
 			block.setType(overrideMaterial == null ? config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL) : overrideMaterial);
+			if (drop.getItemStack().getAmount() > 1) {
+				drop.getItemStack().setAmount(drop.getItemStack().getAmount()-1);
+				Bukkit.getScheduler().runTaskLater(TreeAssist.instance, this, delay);
+				return;
+			}
 			drop.remove();
 		}
 	}

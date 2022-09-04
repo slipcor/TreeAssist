@@ -2074,7 +2074,7 @@ public class TreeStructure {
 
             Runnable b = new TreeAssistReplant(saplingBlock, placeEvent.getType(), config);
 
-            this.saplings.add(new TreeAssistReplantDelay(this, saplingBlock, b, delay));
+            this.saplings.add(new TreeAssistReplantDelay(this, saplingBlock, b, delay, null, false));
         }
     }
 

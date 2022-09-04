@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.34 - repair several things we broke in the last few commits
+- v7.3.35 - stop the auto plant feature from duplicating saplings
 - [read more](doc/changelog.md)
 
 ***

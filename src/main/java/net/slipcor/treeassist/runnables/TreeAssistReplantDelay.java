@@ -5,23 +5,34 @@ import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.utils.BlockUtils;
 import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 
 import java.util.Set;
+import java.util.UUID;
 
 public class TreeAssistReplantDelay {
     Runnable runnable;
     int delayTicks;
     TreeStructure tree;
     Block saplingBlock;
+    UUID entityID;
+    Entity entity;
+    boolean expectsEntity;
 
-    public TreeAssistReplantDelay(TreeStructure tree, Block saplingBlock, Runnable runnable, int delayTicks) {
+    public TreeAssistReplantDelay(TreeStructure tree, Block saplingBlock, Runnable runnable, int delayTicks, Entity entity, boolean expectsEntity) {
         this.runnable = runnable;
         this.delayTicks = delayTicks;
         this.tree = tree;
         this.saplingBlock = saplingBlock;
+        this.entity = entity;
+        this.entityID = entity == null ? null : entity.getUniqueId();
+        this.expectsEntity = expectsEntity;
     }
 
     public void commit() {
+        if (entity == null && expectsEntity) {
+            return;
+        }
 
         // look for close trees that might grow into us
 
