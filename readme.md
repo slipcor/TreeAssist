@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.35 - stop the auto plant feature from duplicating saplings
+- v7.3.36 - help with AureliumSkills compatibility by waiting for it to load before hooking into it
 - [read more](doc/changelog.md)
 
 ***
