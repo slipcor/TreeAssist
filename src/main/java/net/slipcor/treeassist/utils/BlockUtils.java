@@ -329,7 +329,7 @@ public class BlockUtils {
             if (TreeAssist.instance.aurelium) {
 
                 if (fullTree) {
-                    int value = TreeAssist.instance.config().getInt(MainConfig.CFG.PLUGINS_USE_AURELIUMSKILLS_TREE);
+                    double value = TreeAssist.instance.config().getDouble(MainConfig.CFG.PLUGINS_USE_AURELIUMSKILLS_TREE);
 
                     if (value > 0) {
                         TreeStructure.debug.i("Adding AureliumSkills Tree EXP!");
@@ -338,7 +338,7 @@ public class BlockUtils {
                         TreeStructure.debug.i("AureliumSkills selected but no exp amount given?!");
                     }
                 } else {
-                    int value = TreeAssist.instance.config().getInt(MainConfig.CFG.PLUGINS_USE_AURELIUMSKILLS_BLOCK);
+                    double value = TreeAssist.instance.config().getDouble(MainConfig.CFG.PLUGINS_USE_AURELIUMSKILLS_BLOCK);
 
                     if (value > 0) {
                         TreeStructure.debug.i("Adding AureliumSkills Block EXP!");

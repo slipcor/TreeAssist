@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.36 - help with AureliumSkills compatibility by waiting for it to load before hooking into it
+- v7.3.37 - fix an Aurelium related config warning, addresses github issue #90
 - [read more](doc/changelog.md)
 
 ***

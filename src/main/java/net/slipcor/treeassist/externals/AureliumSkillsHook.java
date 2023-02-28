@@ -15,7 +15,7 @@ public class AureliumSkillsHook {
      * @param player the player who should gain the EXP
      * @param value  the EXP amount to give
      */
-    public static void addAureliumExp(Player player, Integer value) {
+    public static void addAureliumExp(Player player, Double value) {
         AureliumAPI.addXp(player, Skills.FORAGING, value);
     }
 }
