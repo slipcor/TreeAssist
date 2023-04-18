@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.39 - allow to check your toggle status by appending "check" after the world, or the toggle command
 - v7.3.38 - implement adding all tree block drops to inventory (can be disabled)
 - v7.3.37 - fix an Aurelium related config warning, addresses github issue #90
 - v7.3.36 - help with AureliumSkills compatibility by waiting for it to load before hooking into it

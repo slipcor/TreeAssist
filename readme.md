@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.38 - implement adding all tree block drops to inventory (can be disabled)
+- v7.3.39 - allow to check your toggle status by appending "check" after the world, or the toggle command
 - [read more](doc/changelog.md)
 
 ***
