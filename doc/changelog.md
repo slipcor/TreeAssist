@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.38 - implement adding all tree block drops to inventory (can be disabled)
 - v7.3.37 - fix an Aurelium related config warning, addresses github issue #90
 - v7.3.36 - help with AureliumSkills compatibility by waiting for it to load before hooking into it
 - v7.3.35 - stop the auto plant feature from duplicating saplings

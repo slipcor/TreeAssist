@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.37 - fix an Aurelium related config warning, addresses github issue #90
+- v7.3.38 - implement adding all tree block drops to inventory (can be disabled)
 - [read more](doc/changelog.md)
 
 ***

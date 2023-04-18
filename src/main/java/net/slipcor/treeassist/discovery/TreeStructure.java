@@ -1914,8 +1914,8 @@ public class TreeStructure {
             player.incrementStatistic(Statistic.MINE_BLOCK, blockMaterial);
         }
 
-        if (MaterialUtils.isLog(blockMaterial)
-                && config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY)) {
+        if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY) &&
+                (!config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_ONLY_LOGS_TO_INVENTORY) || MaterialUtils.isLog(blockMaterial))) {
             debug.i("breaking block [maybeBreakBlock] because of auto adding: " + BlockUtils.printBlock(block));
             if (statPickup) {
                 player.incrementStatistic(Statistic.PICKUP, blockMaterial);

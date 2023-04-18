@@ -9,8 +9,11 @@ Automatic Destruction:
   # Damage the player's tool for leaves broken automatically
   Apply Tool Damage For Leaves: true
 
-  # Add the logs the player's inventory
+  # Add the tree drops to the player's inventory
   Auto Add To Inventory: false
+
+  # Only add the logs to the player's inventory
+  Auto Add Only Logs To Inventory: true
 
   # Seconds to wait before (force) removing remnants of the tree
   Cleanup Delay Seconds: 20
@@ -280,4 +283,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.3026
+Version: 7.3038
