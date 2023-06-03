@@ -9,7 +9,8 @@ This command allows toggling of plugin functionality for players/worlds
 Command |  Definition
 ------------- | -------------
 /ta toggle | toggle plugin usage for yourself, globally
-/ta toggle check | check plugin usage status for yourself, globally
+/ta toggle check | check plugin usage status for yourself
+/ta toggle check slipcor | check plugin usage status for player `slipcor`
 /ta toggle slipcor spawn | toggle plugin usage for player `slipcor` in the world `spawn`
 /ta toggle spawn | toggle plugin usage for yourself in the world `spawn`
 /ta toggle spawn check | check plugin usage status for yourself in the world `spawn`

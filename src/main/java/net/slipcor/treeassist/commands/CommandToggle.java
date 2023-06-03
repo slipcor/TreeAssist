@@ -31,7 +31,7 @@ public class CommandToggle extends CoreCommand {
 
         if (args.length > 1 && !args[1].toLowerCase().equals("check")) {
 
-            if (args.length > 2 && !args[2].toLowerCase().equals("check")) {
+            if (args.length > 2) {
                 if (Bukkit.getWorld(args[2]) == null) {
                     TreeAssist.instance.sendPrefixed(sender, Language.MSG.ERROR_NOTFOUND_WORLD.parse(args[2]));
                     return;
@@ -63,16 +63,6 @@ public class CommandToggle extends CoreCommand {
                 return;
             }
 
-            if (args.length > 2) {
-                // we want to check
-                if (TreeAssist.instance.isDisabled(args[1], sender.getName())) {
-                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_OFF.parse(args[1]));
-                } else {
-                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_ON.parse(args[1]));
-                }
-                return;
-            }
-
             if (TreeAssist.instance.toggleWorld(args[1], sender.getName())) {
                 sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_ON.parse(args[1]));
             } else {
@@ -83,13 +73,46 @@ public class CommandToggle extends CoreCommand {
         }
 
         if (args.length > 1) {
-            // we want to check
-            if (TreeAssist.instance.isDisabled("global", sender.getName())) {
-                sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_OFF.parse());
+            // toggle check
+            // toggle check playername
+
+            if (args.length > 2) {
+                // we want to check another player's toggle status
+
+                if (TreeAssist.instance.isDisabled("global", args[2])) {
+                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_OFF.parse(args[2]));
+                } else {
+                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_ON.parse(args[2]));
+                }
+
+                for (World w : Bukkit.getWorlds()) {
+                    String worldName = w.getName();
+                    if (TreeAssist.instance.isDisabled(worldName, args[2])) {
+                        sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_OFF.parse(args[2], worldName));
+                    } else {
+                        sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_ON.parse(args[2], worldName));
+                    }
+                }
+
+                return;
             } else {
-                sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_ON.parse());
+                // we want to check our the toggle status
+                if (TreeAssist.instance.isDisabled("global", sender.getName())) {
+                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_OFF.parse());
+                } else {
+                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_ON.parse());
+                }
+
+                for (World w : Bukkit.getWorlds()) {
+                    String worldName = w.getName();
+                    if (TreeAssist.instance.isDisabled(worldName, sender.getName())) {
+                        sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_OFF.parse(worldName));
+                    } else {
+                        sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_ON.parse(worldName));
+                    }
+                }
+                return;
             }
-            return;
         }
 
         if (TreeAssist.instance.toggleGlobal(sender.getName())) {

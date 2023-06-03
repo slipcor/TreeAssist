@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.39 - allow to check your toggle status by appending "check" after the world, or the toggle command
+- v7.3.40 - change how the toggle check command works, allow to check for other players now though
 - [read more](doc/changelog.md)
 
 ***
