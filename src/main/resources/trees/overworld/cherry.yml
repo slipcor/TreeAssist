@@ -1,0 +1,47 @@
+Blocks:
+
+  # Here you can add extra blocks that can be expected inside or around tree leaves
+  Materials:
+    - minecraft:cherry_leaves
+  Middle:
+
+    # Radius around the trunk to check for leaves
+    Radius: 3
+  Top:
+
+    # Radius around the trunk to check for leaves
+    Radius: 4
+  Cap:
+
+    # Max radius of a branch cap
+    Radius: 4
+  Custom Drops:
+
+    # Drop chances for extra drops. 1.0 would be 100% chance!
+    Items:
+      minecraft:cherry_leaves: 0.01
+
+# The parent tree config to inherit from, recursively
+Parent: default
+
+# The permission required for this tree type
+Permission: treeassist.destroy.cherry
+Replanting:
+
+  # The material to place
+  Material: minecraft:cherry_sapling
+Trunk:
+
+  # One of these materials needs to be part of the trunk for it to count as a trunk
+  Materials:
+    - minecraft:cherry_log
+    - minecraft:stripped_cherry_log
+
+  # The trunk can go diagonally
+  Diagonal: true
+
+  # Look for branches
+  Branch: true
+
+# Version number for automagical config updates
+Version: 7.3041

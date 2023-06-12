@@ -32,7 +32,8 @@ public class MainConfigUpdater {
 
     enum TreeAddition {
         AZALEA(7.2012f, "overworld", "azalea.yml"),
-        MANGROVE(7.330f, "overworld", "mangrove.yml");
+        MANGROVE(7.330f, "overworld", "mangrove.yml"),
+        CHERRY(7.341f, "overworld", "cherry.yml");
 
         private final float version;
         private final String path;

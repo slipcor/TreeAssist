@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.40 - change how the toggle check command works, allow to check for other players now though
+- v7.3.41 - support cherry trees
 - [read more](doc/changelog.md)
 
 ***
