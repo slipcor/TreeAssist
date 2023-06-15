@@ -59,7 +59,8 @@ public class CommandFindForest extends CoreCommand {
         }
 
         if (biomeMap.isEmpty()) {
-            TreeAssist.instance.sendPrefixed(sender, "Please use /locatebiome");
+
+            TreeAssist.instance.sendPrefixed(sender, "Please use '/locate biome' or '/locatebiome' on servers below 1.19");
             return;
         }
 

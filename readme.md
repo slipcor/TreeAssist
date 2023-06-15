@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.42 - allow restricting max dimensions of a tree, this counts the trunk only
+- v7.3.43 - update locate biome message to reflect the new command since 1.19
 - [read more](doc/changelog.md)
 
 ***
