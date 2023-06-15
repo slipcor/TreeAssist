@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.42 - allow restricting max dimensions of a tree, this counts the trunk only
 - v7.3.41 - support cherry trees
 - v7.3.40 - change how the toggle check command works, allow to check for other players now though
 - v7.3.39 - allow to check your toggle status by appending "check" after the world, or the toggle command

@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.41 - support cherry trees
+- v7.3.42 - allow restricting max dimensions of a tree, this counts the trunk only
 - [read more](doc/changelog.md)
 
 ***

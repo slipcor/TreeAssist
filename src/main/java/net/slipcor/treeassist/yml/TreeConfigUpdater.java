@@ -82,7 +82,8 @@ public class TreeConfigUpdater {
 
         AUTOMATIC_DESTRUCTION_CLEANUP_LEAVES(7.3018f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CLEANUP_LEAVES.getNode(), true),
         TRUNK_GREEDY(7.3025f, "default", TreeConfig.CFG.TRUNK_GREEDY.getNode(), false),
-        AUTOMATIC_DESTRUCTION_AUTO_ADD_ONLY_LOGS_TO_INVENTORY(7.3037f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_ONLY_LOGS_TO_INVENTORY.getNode(), false)
+        AUTOMATIC_DESTRUCTION_AUTO_ADD_ONLY_LOGS_TO_INVENTORY(7.3037f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_ONLY_LOGS_TO_INVENTORY.getNode(), false),
+        DEFAULT_MAXIMUM_HEIGHT(7.3041f, "default", TreeConfig.CFG.TRUNK_MAXIMUM_HEIGHT.getNode(), -1)
         ;
 
         private final float version;

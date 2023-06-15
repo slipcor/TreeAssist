@@ -99,6 +99,8 @@ public class TreeConfig extends CoreConfig {
 
         TRUNK_DIAGONAL("Trunk.Diagonal", false, "The trunk can go diagonally"),
         TRUNK_GREEDY("Trunk.Greedy", false, "Try to recognize as many blocks as possible as trunk blocks"),
+        TRUNK_MAXIMUM_HEIGHT("Trunk.Maximum Height", -1, "How high can it be to qualify as a tree"),
+
         TRUNK_MINIMUM_HEIGHT("Trunk.Minimum Height", 4, "How high does it need to be to qualify as a tree"),
         TRUNK_MATERIALS("Trunk.Materials", new ArrayList<>(), "One of these materials needs to be part of the trunk for it to count as a trunk"),
         TRUNK_THICKNESS("Trunk.Thickness", 1, "How thick is the trunk"),

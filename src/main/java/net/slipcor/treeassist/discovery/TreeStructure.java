@@ -149,12 +149,17 @@ public class TreeStructure {
                 return;
             }
 
+            int max = config.getInt(TreeConfig.CFG.TRUNK_MAXIMUM_HEIGHT);
             int min = config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT);
             int height = trunk.size();
 
             if (height < min) {
                 debug.i("Lower than minimum: " + height + " < " + min + " for " + trunk.get(0).getType());
                 discoveryResult = new DiscoveryResult(config, this, FailReason.TOO_SMALL);
+                return;
+            } else if (max > -1 && height > max) {
+                debug.i("Higher than maximum: " + height + " > " + min + " for " + trunk.get(0).getType());
+                discoveryResult = new DiscoveryResult(config, this, FailReason.TOO_LARGE);
                 return;
             }
 
@@ -288,12 +293,17 @@ public class TreeStructure {
             return;
         }
 
+        int max = config.getInt(TreeConfig.CFG.TRUNK_MAXIMUM_HEIGHT);
         int min = config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT);
         int height = trunk.size() / trunks.size();
 
         if (height < min) {
             debug.i("Lower than thick minimum: " + height + " < " + min + " for " + trunk.get(0).getType());
             discoveryResult = new DiscoveryResult(config, this, FailReason.TOO_SMALL);
+            return;
+        } else if (max > -1 && height > max) {
+            debug.i("Higher than thick maximum: " + height + " > " + min + " for " + trunk.get(0).getType());
+            discoveryResult = new DiscoveryResult(config, this, FailReason.TOO_LARGE);
             return;
         }
 
@@ -520,12 +530,17 @@ public class TreeStructure {
         }
         debug.i("Tree of size " + trunk.size() + " found!");
 
+        int max = config.getInt(TreeConfig.CFG.TRUNK_MAXIMUM_HEIGHT);
         int min = config.getInt(TreeConfig.CFG.TRUNK_MINIMUM_HEIGHT);
         int height = trunk.size();
 
         if (height < min) {
             debug.i("Lower than minimum: " + height + " < " + min + " for " + trunk.get(0).getType());
             discoveryResult = new DiscoveryResult(config, this, FailReason.TOO_SMALL);
+            return;
+        } else if (max > -1 && height > max) {
+            debug.i("Higher than maximum: " + height + " > " + min + " for " + trunk.get(0).getType());
+            discoveryResult = new DiscoveryResult(config, this, FailReason.TOO_LARGE);
             return;
         }
 

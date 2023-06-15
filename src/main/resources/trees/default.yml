@@ -273,6 +273,9 @@ Trunk:
   # Try to recognize as many blocks as possible as trunk blocks
   Greedy: false
 
+  # How high can it be to qualify as a tree (-1 = disabled)
+  Maximum Height: -1
+
   # How high does it need to be to qualify as a tree
   Minimum Height: 4
 
@@ -283,4 +286,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.3038
+Version: 7.3041
