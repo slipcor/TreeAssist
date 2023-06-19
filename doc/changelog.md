@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.44 - help with cherry tree support by allowing pink petals near the tree
 - v7.3.43 - update locate biome message to reflect the new command since 1.19
 - v7.3.42 - allow restricting max dimensions of a tree, this counts the trunk only
 - v7.3.41 - support cherry trees

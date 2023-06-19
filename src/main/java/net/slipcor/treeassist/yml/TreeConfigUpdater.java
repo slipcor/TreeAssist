@@ -27,6 +27,7 @@ public class TreeConfigUpdater {
         NATURAL_BROWN_SHROOM(7.2020f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:red_mushroom"),
         GROUND_MUSHROOM_CRIMSON_NYLIUM(7.3014f, "mushroom", TreeConfig.CFG.GROUND_BLOCKS, "minecraft:crimson_nylium"),
         GROUND_MUSHROOM_WARPED_NYLIUM(7.3014f, "mushroom", TreeConfig.CFG.GROUND_BLOCKS, "minecraft:warped_nylium"),
+        NATURAL_PINK_PETALS(7.3043f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:pink_petals"),
         ;
 
         private final float version;

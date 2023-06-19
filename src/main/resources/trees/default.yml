@@ -186,6 +186,7 @@ Natural Blocks:
 - 'minecraft:peony'
 - 'red_mushroom'
 - 'brown_mushroom'
+- 'minecraft:pink_petals'
 
 # The permission required for this tree type
 Permission: treeassist.destroy.*
@@ -286,4 +287,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.3041
+Version: 7.3044
