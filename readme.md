@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.46 - add placeholders ta_global - ta_world - ta_cooldown - for toggle and cooldown status
+- v7.3.47 - add language entries for on and off
 - [read more](doc/changelog.md)
 
 ***

@@ -84,6 +84,10 @@ public final class Language extends CoreLanguage {
         INFO_SAPLING_PROTECTED("info.sapling_protected", "&aThis sapling is protected!"),
         INFO_PLUGIN_PREFIX("info.plugin_prefix", "&8[&2TreeAssist&8]&r "),
 
+        INFO_VALUE_ON("info.value_on", "&aon&r"),
+
+        INFO_VALUE_OFF("info.value_off", "&coff&r"),
+
         WARNING_ADDTOOL_ONLYONE("warning.addtool_onlyone", "&6You can only use one enchantment. Using: %1%"),
         WARNING_DESTRUCTION_FAILED("warning.destruction_invalidblock", "&6We found a player placed block nearby: &r%1%"),
 

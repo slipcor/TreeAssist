@@ -64,6 +64,8 @@ info:
   never_break_log_with_breaking_tool: '&aVotre outil casserait ! Faites attention !'
   sapling_protected: '&aCet arbuste est protégé !'
   plugin_prefix: '&8[&2TreeAssist&8]&r '
+  value_on: '&aactivé&r'
+  value_off: '&cdésactivé&r'
 warning:
   addtool_onlyone: '&6Vous pouvez utiliser seulement un enchantement. Retenu: %1%'
   destruction_invalidblock: '&6Un bloc placé par un joueur a été trouvé à proximité: &r%1%'

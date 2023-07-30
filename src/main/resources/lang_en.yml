@@ -65,6 +65,8 @@ info:
   never_break_log_with_breaking_tool: '&aYour tool would break! Be careful!'
   sapling_protected: '&aThis sapling is protected!'
   plugin_prefix: '&8[&2TreeAssist&8]&r '
+  value_on: '&aon&r'
+  value_off: '&coff&r'
 warning:
   addtool_onlyone: '&6You can only use one enchantment. Using: %1%'
   destruction_invalidblock: '&6We found a player placed block nearby: &r%1%'
