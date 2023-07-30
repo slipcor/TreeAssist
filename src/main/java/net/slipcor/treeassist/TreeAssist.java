@@ -8,6 +8,7 @@ import net.slipcor.treeassist.discovery.DiscoveryResult;
 import net.slipcor.treeassist.discovery.TreeBlock;
 import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.externals.WorldGuardListener;
+import net.slipcor.treeassist.listeners.PlaceholderAPIListener;
 import net.slipcor.treeassist.listeners.TreeAssistBlockListener;
 import net.slipcor.treeassist.listeners.TreeAssistPlayerListener;
 import net.slipcor.treeassist.listeners.TreeAssistSpawnListener;
@@ -365,6 +366,9 @@ public class TreeAssist extends CorePlugin {
         if (loadLanguage() != null) {
             getPluginLoader().disablePlugin(this);
             return;
+        }
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceholderAPIListener().register();
         }
 
         this.updater = new CoreUpdater(this, getFile(), "treeassist",

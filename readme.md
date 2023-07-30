@@ -66,6 +66,7 @@ It also will take down an entire tree when it is enabled in the config.
 - [Commands](doc/commands.md)
 - [Permissions](doc/permissions.md)
 - [Configuration](doc/configuration.md)
+- [PAPI Placeholders](doc/placeholders.md)
 - [TreeConfiguration](doc/treeconfig.md)
 - [Troubleshooting](doc/troubleshooting.md)
 
@@ -73,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.45 - /ta config restore [config] | Restore a tree config to its default
+- v7.3.46 - add placeholders ta_global - ta_world - ta_cooldown - for toggle and cooldown status
 - [read more](doc/changelog.md)
 
 ***

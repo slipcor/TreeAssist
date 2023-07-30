@@ -4,7 +4,7 @@ version: 7.3.build-number
 api-version: 1.15
 authors: [slipcor, FriendlyBaron]
 description: TreeAssist
-softdepend: [AureliumSkills, CoreProtect, Jobs, mcMMO, Prism, LogBlock, WorldGuard]
+softdepend: [AureliumSkills, CoreProtect, Jobs, mcMMO, Prism, LogBlock, PlaceholderAPI, WorldGuard]
 dev-url: https://www.spigotmc.org/resources/treeassist.67436/
 commands:
   TreeAssist:
