@@ -73,7 +73,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.44 - help with cherry tree support by allowing pink petals near the tree
+- v7.3.45 - /ta config restore [config] | Restore a tree config to its default
 - [read more](doc/changelog.md)
 
 ***

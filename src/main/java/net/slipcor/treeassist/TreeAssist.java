@@ -49,6 +49,8 @@ public class TreeAssist extends CorePlugin {
 
     private final Set<TreeStructure> validTrees = new HashSet<>();
 
+    public static final List<String> defaultTreeDefinitions = new ArrayList<>();
+
     public boolean Enabled = true;  // Whether the plugin as a whole is enabled
     public boolean mcMMO = false;   // Whether mcMMO has been found and hooked into
     public boolean jobs = false;    // Whether Jobs has been found and hooked into
@@ -68,6 +70,33 @@ public class TreeAssist extends CorePlugin {
     private CoreUpdater updater = null;
     private CoreTabCompleter completer;
     private CoreLanguage language;
+
+    static {
+        defaultTreeDefinitions.add("trees/default.yml");
+
+        defaultTreeDefinitions.add("trees/overworld/acacia.yml");
+        defaultTreeDefinitions.add("trees/overworld/azalea.yml");
+        defaultTreeDefinitions.add("trees/overworld/birch.yml");
+        defaultTreeDefinitions.add("trees/overworld/cherry.yml");
+        defaultTreeDefinitions.add("trees/overworld/dark_oak.yml");
+        defaultTreeDefinitions.add("trees/overworld/jungle.yml");
+        defaultTreeDefinitions.add("trees/overworld/mangrove.yml");
+        defaultTreeDefinitions.add("trees/overworld/oak.yml");
+        defaultTreeDefinitions.add("trees/overworld/spruce.yml");
+        defaultTreeDefinitions.add("trees/overworld/tall_jungle.yml");
+        defaultTreeDefinitions.add("trees/overworld/tall_oak.yml");
+        defaultTreeDefinitions.add("trees/overworld/tall_spruce.yml");
+
+        defaultTreeDefinitions.add("trees/nether.yml");
+        defaultTreeDefinitions.add("trees/nether/crimson_fungus.yml");
+        defaultTreeDefinitions.add("trees/nether/thick_crimson_fungus.yml");
+        defaultTreeDefinitions.add("trees/nether/thick_warped_fungus.yml");
+        defaultTreeDefinitions.add("trees/nether/warped_fungus.yml");
+
+        defaultTreeDefinitions.add("trees/mushroom.yml");
+        defaultTreeDefinitions.add("trees/mushroom/mushroom-brown.yml");
+        defaultTreeDefinitions.add("trees/mushroom/mushroom-red.yml");
+    }
 
     /**
      * Check for AureliumSkills if requested
@@ -400,26 +429,9 @@ public class TreeAssist extends CorePlugin {
             hasTrees = treeFolder.listFiles().length > 1;
         }
         if (!hasTrees) {
-            saveResource("trees/default.yml", false);
-            saveResource("trees/overworld/acacia.yml", false);
-            saveResource("trees/overworld/birch.yml", false);
-            saveResource("trees/overworld/dark_oak.yml", false);
-            saveResource("trees/overworld/jungle.yml", false);
-            saveResource("trees/overworld/oak.yml", false);
-            saveResource("trees/overworld/spruce.yml", false);
-            saveResource("trees/overworld/tall_jungle.yml", false);
-            saveResource("trees/overworld/tall_oak.yml", false);
-            saveResource("trees/overworld/tall_spruce.yml", false);
-
-            saveResource("trees/nether.yml", false);
-            saveResource("trees/nether/crimson_fungus.yml", false);
-            saveResource("trees/nether/thick_crimson_fungus.yml", false);
-            saveResource("trees/nether/warped_fungus.yml", false);
-            saveResource("trees/nether/thick_warped_fungus.yml", false);
-
-            saveResource("trees/mushroom.yml", false);
-            saveResource("trees/mushroom/mushroom-brown.yml", false);
-            saveResource("trees/mushroom/mushroom-red.yml", false);
+            for (String tree : defaultTreeDefinitions) {
+                saveResource(tree, false);
+            }
         }
         TreeStructure.reloadTreeDefinitions();
     }

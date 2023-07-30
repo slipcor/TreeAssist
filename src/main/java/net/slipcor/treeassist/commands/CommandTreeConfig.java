@@ -92,6 +92,17 @@ public class CommandTreeConfig extends CoreCommand {
             return;
         }
 
+        if (args.length >= 3 && args[1].toLowerCase().equals("restore")) {
+            if (!argCountValid(sender, args, new Integer[]{3})) {
+                return;
+            }
+
+            //           0         2
+            // /ta       config    [type]
+            restore(sender, args[2]);
+            return;
+        }
+
         TreeAssist.instance.sendPrefixed(sender, getShortInfo());
     }
 
@@ -285,6 +296,25 @@ public class CommandTreeConfig extends CoreCommand {
         TreeStructure.reloadTreeDefinitions();
     }
 
+    private void restore(final CommandSender sender, final String configName) {
+        TreeAssist treeAssist = TreeAssist.instance;
+
+        boolean found = false;
+        for (String tree : TreeAssist.defaultTreeDefinitions) {
+            if (tree.contains(configName.toLowerCase())) {
+                TreeAssist.instance.saveResource(tree, true);
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            new CommandReload(TreeAssist.instance).commit(sender, null);
+            treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_RESTORE_SUCCESS.parse(configName));
+            return;
+        }
+        treeAssist.sendPrefixed(sender, Language.MSG.ERROR_CONFIG_NO_TREECONFIG.parse(configName));
+    }
+
     private void set(final CommandSender sender, final String configName, final String node, final String value) {
 
         TreeConfig.CFG completedEntry = getFullNode(node);
@@ -377,6 +407,7 @@ public class CommandTreeConfig extends CoreCommand {
             results.add("add");
             results.add("info");
             results.add("remove");
+            results.add("restore");
         } else if (args.length == 2) {
             // second argument!
             addIfMatches(results, "get", args[1]);
@@ -384,9 +415,17 @@ public class CommandTreeConfig extends CoreCommand {
             addIfMatches(results, "add", args[1]);
             addIfMatches(results, "info", args[1]);
             addIfMatches(results, "remove", args[1]);
-        } else if (args.length == 3 && !args[1].equals("info")) {
+            addIfMatches(results, "restore", args[1]);
+        } else if (args.length == 3 && !args[1].equals("info") && !args[1].equals("restore")) {
 
             for (String configName : TreeAssist.treeConfigs.keySet()) {
+                addIfMatches(results, configName, args[2]);
+            }
+        } else if (args.length == 3 && args[1].equals("restore")){
+            for (String configPath : TreeAssist.defaultTreeDefinitions) {
+                String[] configArray = configPath.split("/");
+                String configName = configArray[configArray.length-1].split("\\.")[0];
+
                 addIfMatches(results, configName, args[2]);
             }
         } else {
@@ -476,6 +515,7 @@ public class CommandTreeConfig extends CoreCommand {
                "/treeassist treeconfig info [node] - get information about a config node\n" +
                "/treeassist treeconfig set [type] [node] [value] - set a config value\n" +
                "/treeassist treeconfig add [type] [node] [value] - add a value to a config list\n" +
-               "/treeassist treeconfig remove [type] [node] [value] - remove a value from a config list";
+               "/treeassist treeconfig remove [type] [node] [value] - remove a value from a config list\n" +
+               "/treeassist treeconfig restore [type] - restore a config from the default";
     }
 }

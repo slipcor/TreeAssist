@@ -13,6 +13,7 @@ Command |  Definition
 /ta config set [config] [node] [value] | Tries to set the node to a value
 /ta config add [config] [node] [value] | Add a string value to a string list node
 /ta config remove [config] [node] [value] | Remove a string value from a string list node
+/ta config restore [config] | Restore a tree config to its default
 
 ## Details
 

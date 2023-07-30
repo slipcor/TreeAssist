@@ -34,6 +34,7 @@ public final class Language extends CoreLanguage {
         ERROR_CONFIG_INFO_SUCCESS("error.config.info_success", "Information for &e%1%&r: &e%2%&r"),
         ERROR_CONFIG_REMOVE_SKIPPED("error.config.remove_skipped", "List &e%1%&r does not contain &e%2%&r!"),
         ERROR_CONFIG_REMOVE_SUCCESS("error.config.remove_success", "Removed &e%2%&r from &a%1%&r!"),
+        ERROR_CONFIG_RESTORE_SUCCESS("error.config.restore_success", "Restored tree config &e%1%&r!"),
         ERROR_CONFIG_SET_GROUP_IMPOSSIBLE("error.config.set_group_impossible", "Cannot set value to group node: &e%1%&r!"),
         ERROR_CONFIG_SET_LIST_IMPOSSIBLE("error.config.set_list_impossible", "Cannot set value to list node: &e%1%&r! Use add / remove!"),
         ERROR_CONFIG_SET_SUCCESS("error.config.set_success", "&a%1%&r set to &e%2%&r!"),
