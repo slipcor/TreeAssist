@@ -1073,7 +1073,7 @@ public class TreeStructure {
             }
         }
 
-        if (allExtras.contains(checkBlock.getType()) || MaterialUtils.isAir(checkBlock.getType())) {
+        if (allExtras.contains(checkBlock.getType()) || allNaturals.contains(checkBlock.getType()) || MaterialUtils.isAir(checkBlock.getType())) {
             debug.i("We hit the roof!");
 
             // we hit the roof and no problems
@@ -1114,7 +1114,7 @@ public class TreeStructure {
         checkBlock = checkBlock.getRelative(BlockFace.UP);
         debug.i("roof block: " + BlockUtils.printBlock(checkBlock));
 
-        if (allExtras.contains(checkBlock.getType()) || MaterialUtils.isAir(checkBlock.getType())) {
+        if (allExtras.contains(checkBlock.getType()) || allNaturals.contains(checkBlock.getType()) || MaterialUtils.isAir(checkBlock.getType())) {
             debug.i("We hit the roof!");
 
             // we hit the roof and no problems
@@ -1243,7 +1243,7 @@ public class TreeStructure {
                 checkBlock = checkBlock.getRelative(BlockFace.UP);
             }
 
-            if (allExtras.contains(checkBlock.getType()) || MaterialUtils.isAir(checkBlock.getType())) {
+            if (allExtras.contains(checkBlock.getType()) || allNaturals.contains(checkBlock.getType()) || MaterialUtils.isAir(checkBlock.getType())) {
                 debug.i("We hit the roof!");
 
                 // we hit the roof and no problems

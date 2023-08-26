@@ -18,6 +18,7 @@ Natural Blocks:
 - minecraft:cave_air
 - minecraft:void_air
 - minecraft:netherrack
+- minecraft:nether_quartz_ore
 
 # The parent tree config to inherit from, recursively
 Parent: default
@@ -40,4 +41,4 @@ Trunk:
       minecraft:golden_apple: 0
 
 # Version number for automagical config updates
-Version: 7.2017998695373535
+Version: 7.3048

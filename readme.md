@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.47 - add language entries for on and off
+- v7.3.48 - allow natural blocks to be the roof of a tree - nether hotfix
 - [read more](doc/changelog.md)
 
 ***

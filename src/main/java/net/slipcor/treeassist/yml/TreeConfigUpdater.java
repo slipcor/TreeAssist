@@ -196,7 +196,7 @@ public class TreeConfigUpdater {
         NATURAL_AZURE_WRONG(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:azure-bluet"),
         NATURAL_COCOA_WRONG(7.0108f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:cococa"),
         DEFAULT_BEDROCK(7.2028f, "default", TreeConfig.CFG.TRUNK_MATERIALS, "minecraft:bedrock"),
-        //TRUNK_EDGES_WARPED(8.0f, "thick_warped_fungus", "Trunk.Edges")
+        NETHER_QUARTZ(7.3048f, "nether", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:nether_quartz_ore"),
         ;
 
         private final float version;
