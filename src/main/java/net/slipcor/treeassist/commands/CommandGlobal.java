@@ -23,10 +23,10 @@ public class CommandGlobal extends CoreCommand {
         }
         if (!TreeAssist.instance.Enabled) {
             TreeAssist.instance.Enabled = true;
-            sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_GLOBAL_ON.parse());
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_GLOBAL_ON.parse());
         } else {
             TreeAssist.instance.Enabled = false;
-            sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_GLOBAL_OFF.parse());
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_GLOBAL_OFF.parse());
         }
     }
 
