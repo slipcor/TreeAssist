@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.49 - implement pull #97 manually
 - v7.3.48 - allow natural blocks to be the roof of a tree - nether hotfix
 - v7.3.47 - add language entries for on and off
 - v7.3.46 - add placeholders ta_global - ta_world - ta_cooldown - for toggle and cooldown status

@@ -56,17 +56,17 @@ public class CommandToggle extends CoreCommand {
                 }
 
                 if (TreeAssist.instance.toggleGlobal(args[1])) {
-                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_ON.parse(args[1]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_OTHER_ON.parse(args[1]));
                 } else {
-                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_OFF.parse(args[1]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_OTHER_OFF.parse(args[1]));
                 }
                 return;
             }
 
             if (TreeAssist.instance.toggleWorld(args[1], sender.getName())) {
-                sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_ON.parse(args[1]));
+                TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_ON.parse(args[1]));
             } else {
-                sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_OFF.parse(args[1]));
+                TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_OFF.parse(args[1]));
             }
 
             return;
@@ -80,17 +80,17 @@ public class CommandToggle extends CoreCommand {
                 // we want to check another player's toggle status
 
                 if (TreeAssist.instance.isDisabled("global", args[2])) {
-                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_OFF.parse(args[2]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_OTHER_OFF.parse(args[2]));
                 } else {
-                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_ON.parse(args[2]));
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_OTHER_ON.parse(args[2]));
                 }
 
                 for (World w : Bukkit.getWorlds()) {
                     String worldName = w.getName();
                     if (TreeAssist.instance.isDisabled(worldName, args[2])) {
-                        sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_OFF.parse(args[2], worldName));
+                        TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_OFF.parse(args[2], worldName));
                     } else {
-                        sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_ON.parse(args[2], worldName));
+                        TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_OTHER_WORLD_ON.parse(args[2], worldName));
                     }
                 }
 
@@ -98,17 +98,17 @@ public class CommandToggle extends CoreCommand {
             } else {
                 // we want to check our the toggle status
                 if (TreeAssist.instance.isDisabled("global", sender.getName())) {
-                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_OFF.parse());
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_YOU_OFF.parse());
                 } else {
-                    sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_ON.parse());
+                    TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_YOU_ON.parse());
                 }
 
                 for (World w : Bukkit.getWorlds()) {
                     String worldName = w.getName();
                     if (TreeAssist.instance.isDisabled(worldName, sender.getName())) {
-                        sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_OFF.parse(worldName));
+                        TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_OFF.parse(worldName));
                     } else {
-                        sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_ON.parse(worldName));
+                        TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_YOU_WORLD_ON.parse(worldName));
                     }
                 }
                 return;
@@ -116,9 +116,9 @@ public class CommandToggle extends CoreCommand {
         }
 
         if (TreeAssist.instance.toggleGlobal(sender.getName())) {
-            sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_ON.parse());
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_YOU_ON.parse());
         } else {
-            sender.sendMessage(Language.MSG.SUCCESSFUL_TOGGLE_YOU_OFF.parse());
+            TreeAssist.instance.sendPrefixed(sender, Language.MSG.SUCCESSFUL_TOGGLE_YOU_OFF.parse());
         }
     }
 

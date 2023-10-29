@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.48 - allow natural blocks to be the roof of a tree - nether hotfix
+- v7.3.49 - implement pull #97 manually
 - [read more](doc/changelog.md)
 
 ***
