@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.49 - implement pull #97 manually
+- v7.3.50 - print correct permission message for "treeconfig" command
 - [read more](doc/changelog.md)
 
 ***

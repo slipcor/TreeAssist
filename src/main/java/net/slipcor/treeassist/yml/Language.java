@@ -66,6 +66,7 @@ public final class Language extends CoreLanguage {
         ERROR_PERMISSION_TOGGLE_TOOL("error.permission.toggle_tool", "&cYou don't have 'treeassist.tool'"),
         ERROR_PERMISSION_TOGGLE_DEBUGTOOL("error.permission.toggle_debugtool", "&cYou don't have 'treeassist.debugtool'"),
         ERROR_PERMISSION_TOGGLE_GROWTOOL("error.permission.toggle_growtool", "&cYou don't have 'treeassist.growtool'"),
+        ERROR_PERMISSION_TREECONFIG("error.permission.treeconfig", "&cYou don't have 'treeassist.treeconfig'"),
         ERROR_REMOVETOOL_NOTDONE("error.removetool.not_done", "&cTool is no required tool!"),
 
         ERROR_NOTFOUND_WORLD("error.notfound.world", "&cWorld not found: %1%'"),
