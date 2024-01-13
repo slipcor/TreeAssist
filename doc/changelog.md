@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.51 - update for 1.20.4, also make updating minecraft-version-dependent to not break servers by introducing unknown blocks or tree definitions
 - v7.3.50 - print correct permission message for "treeconfig" command
 - v7.3.49 - implement pull #97 manually
 - v7.3.48 - allow natural blocks to be the roof of a tree - nether hotfix

@@ -194,10 +194,6 @@ public class MainConfig extends CoreConfig {
     public boolean load() {
         try {
             cfg.load(configFile);
-            if (cfg.contains("Main.Use Permissions")) {
-                ConfigV7Updater.commit(); //TODO: remove class next major bump or reuse next rewrite
-                cfg.load(configFile); // reload again!
-            }
             reloadMaps();
             return true;
         } catch (final Exception e) {

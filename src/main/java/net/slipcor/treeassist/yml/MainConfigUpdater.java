@@ -1,6 +1,8 @@
 package net.slipcor.treeassist.yml;
 
 import net.slipcor.treeassist.TreeAssist;
+import net.slipcor.treeassist.utils.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
@@ -31,18 +33,20 @@ public class MainConfigUpdater {
     }
 
     enum TreeAddition {
-        AZALEA(7.2012f, "overworld", "azalea.yml"),
-        MANGROVE(7.330f, "overworld", "mangrove.yml"),
-        CHERRY(7.341f, "overworld", "cherry.yml");
+        AZALEA(7.2012f, "overworld", "azalea.yml", new int[] {1, 17, 0}),
+        MANGROVE(7.330f, "overworld", "mangrove.yml", new int[] {1, 19, 0}),
+        CHERRY(7.341f, "overworld", "cherry.yml", new int[] {1, 20, 0});
 
         private final float version;
         private final String path;
         private final String file;
+        private final int[] mcversion;
 
-        TreeAddition(float v, String p, String f) {
+        TreeAddition(float v, String p, String f, int[] mcv) {
             version = v;
             path = p;
             file = f;
+            mcversion = mcv;
         }
     }
 
@@ -110,6 +114,9 @@ public class MainConfigUpdater {
      */
     public static boolean check(MainConfig instance, FileConfiguration config) {
         instance.preLoad();
+
+        int[] serverVersion = StringUtils.splitToVersionArray(Bukkit.getBukkitVersion());
+
         double version = config.getDouble("Version", 7.0);
         double newVersion = version;
         boolean changed = false;
@@ -149,7 +156,7 @@ public class MainConfigUpdater {
             }
         }
         for (TreeAddition m : TreeAddition.values()) {
-            if (m.version > version) {
+            if (m.version > version && StringUtils.isSupportedVersion(serverVersion, m.mcversion)) {
                 newVersion = Math.max(newVersion, m.version);
 
                 File trees = new File(TreeAssist.instance.getDataFolder(), "trees");

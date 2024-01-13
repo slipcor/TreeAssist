@@ -66,4 +66,51 @@ public final class StringUtils {
         }
         return arguments.toArray(new String[0]);
     }
+
+    /**
+     * Check whether a version is greater or equal to our server version
+     * @param serverVersion the running server minecraft version as integer array
+     * @param testVersion the required server minecraft version as integer array
+     * @return whether a particular check version is greater or equal to a required one
+     */
+    public static boolean isSupportedVersion(int[] serverVersion, int[] testVersion) {
+        for (int i=0; i<3; i++) {
+            if (serverVersion[i] < testVersion[i]) {
+                return false;
+            }
+            if (serverVersion[i] > testVersion[i]) {
+                return true;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Create an integer array of the Bukkit version string
+     * @param version the bukkit version string, i.e. "1.20.4-R0.1....."
+     * @return an integer array, i.e. {1, 20, 4}
+     */
+    public static int[] splitToVersionArray(String version) {
+        String[] chunks = new String[]{"1", "9"};
+        try {
+            chunks = version.split("-")[0].split("\\.");
+        } catch (Exception e) {
+        }
+        int major = 1;
+        int minor = 9;
+        int patch = 0;
+        try {
+            major = Integer.parseInt(chunks[0]);
+        } catch (Exception e) {
+        }
+        try {
+            minor = Integer.parseInt(chunks[1]);
+        } catch (Exception e) {
+        }
+        try {
+            patch = Integer.parseInt(chunks[2]);
+        } catch (Exception e) {
+        }
+        return new int[] {major,minor,patch};
+    }
 }

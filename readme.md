@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.50 - print correct permission message for "treeconfig" command
+- v7.3.51 - update for 1.20.4, also make updating minecraft-version-dependent to not break servers by introducing unknown blocks or tree definitions
 - [read more](doc/changelog.md)
 
 ***

@@ -161,7 +161,7 @@ This is the default tree configuration file.
     - 'minecraft:azure_bluet'
     - 'minecraft:oxeye_daisy'
     - 'minecraft:lilac'
-    - 'minecraft:grass'
+    - 'minecraft:short_grass'
     - 'minecraft:tall_grass'
     - 'minecraft:fern'
     - 'minecraft:dead_bush'
