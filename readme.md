@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.52 - [core update] - Support servers without Spigot base unless they want to use hex codes
+- v7.3.53 - properly reset Toggle varibale when toggling functionality back on - affects "Remember Toggle Status"
 - [read more](doc/changelog.md)
 
 ***

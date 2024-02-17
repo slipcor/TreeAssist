@@ -520,10 +520,11 @@ public class TreeAssist extends CorePlugin {
      * @return whether the player is able to use the plugin in that world now
      */
     public boolean toggleWorld(String world, String player) {
+        boolean result = false;
         if (disabledMap.containsKey(world)) {
             if (disabledMap.get(world).contains(player)) {
                 disabledMap.get(world).remove(player);
-                return true;
+                result = true;
             } else {
                 disabledMap.get(world).add(player);
             }
@@ -538,7 +539,7 @@ public class TreeAssist extends CorePlugin {
             }
             config.save();
         }
-        return false;
+        return result;
     }
 
     /**
