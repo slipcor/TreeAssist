@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.54 - fix a diagonal loop determination issue resulting in false negative tree validity checks
 - v7.3.53 - properly reset Toggle varibale when toggling functionality back on - affects "Remember Toggle Status"
 - v7.3.52 - [core update] - Support servers without Spigot base unless they want to use hex codes
 - v7.3.51 - update for 1.20.4, also make updating minecraft-version-dependent to not break servers by introducing unknown blocks or tree definitions

@@ -1060,7 +1060,7 @@ public class TreeStructure {
                                 debug.i("It's an extra l block: " + BlockUtils.printBlock(checkBlock));
                             } else if (naturalBlocks.contains(innerCheck)){
                                 debug.i("It's a natural l block " + BlockUtils.printBlock(checkBlock));
-                            } else if (!allTrunks.contains(checkMaterial) && !allExtras.contains(checkMaterial)) {
+                            } else if (!allTrunks.contains(innerCheck) && !allExtras.contains(innerCheck)) {
                                 debug.i("Unexpected l block! Not a valid tree!");
 
                                 discoveryResult = new DiscoveryResult(config, this, FailReason.INVALID_TRUNK_BLOCK, "block C: " + BlockUtils.printBlock(checkBlock));

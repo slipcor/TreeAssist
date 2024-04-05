@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.53 - properly reset Toggle varibale when toggling functionality back on - affects "Remember Toggle Status"
+- v7.3.54 - fix a diagonal loop determination issue resulting in false negative tree validity checks
 - [read more](doc/changelog.md)
 
 ***
