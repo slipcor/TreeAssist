@@ -1865,6 +1865,16 @@ public class TreeStructure {
         double chanceValue = (new Random()).nextDouble();
         debug.i("breaking " + blockMaterial +". custom drops: " + calculateCustomDrops + " - roll: " + chanceValue);
 
+        if (creative) {
+            debug.i("no custom drops because in creative mode!");
+        } else {
+            if (this.extraBlocks.contains(blockMaterial) && !calculateCustomDrops) {
+                debug.i("no custom drops because not activated for leaves");
+            } else if (this.trunkBlocks.contains(blockMaterial) && !calculateCustomDrops) {
+                debug.i("no custom drops because not activated for trunk");
+            }
+        }
+
         BlockUtils.callExternals(block, player, false);
         CommandUtils.commitBlock(player, config);
 

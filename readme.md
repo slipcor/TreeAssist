@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.54 - fix a diagonal loop determination issue resulting in false negative tree validity checks
+- v7.3.55 - clarify debug for custom drops deny reason
 - [read more](doc/changelog.md)
 
 ***
