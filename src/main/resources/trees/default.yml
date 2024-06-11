@@ -12,6 +12,9 @@ Automatic Destruction:
   # Add the tree drops to the player's inventory
   Auto Add To Inventory: false
 
+  # Drop items that did not fit into the inventory
+  Auto Add Drop Failed: false
+
   # Only add the logs to the player's inventory
   Auto Add Only Logs To Inventory: true
 
@@ -287,4 +290,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.3044
+Version: 7.3056

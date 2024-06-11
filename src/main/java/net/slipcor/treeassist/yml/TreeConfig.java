@@ -24,6 +24,7 @@ public class TreeConfig extends CoreConfig {
         AUTOMATIC_DESTRUCTION_TOOL_DAMAGE_FOR_LEAVES("Automatic Destruction.Apply Tool Damage For Leaves", true, "Damage the player's tool for leaves broken automatically"),
         AUTOMATIC_DESTRUCTION_AUTO_ADD_TO_INVENTORY("Automatic Destruction.Auto Add To Inventory", false, "Add the tree drops to the player's inventory"),
         AUTOMATIC_DESTRUCTION_AUTO_ADD_ONLY_LOGS_TO_INVENTORY("Automatic Destruction.Auto Add Only Logs To Inventory", false, "Only add the logs to the player's inventory"),
+        AUTOMATIC_DESTRUCTION_AUTO_ADD_DROP_FAILED("Automatic Destruction.Auto Add Drop Failed", false, "Drop items that did not fit into the inventory"),
         AUTOMATIC_DESTRUCTION_CLEANUP_DELAY_TIME("Automatic Destruction.Cleanup Delay Seconds", 20, "Seconds to wait before (force) removing remnants of the tree"),
         AUTOMATIC_DESTRUCTION_CLEANUP_LEAVES("Automatic Destruction.Cleanup Leaves", true, "If we clean up remnants, we also will remove leaves without drops"),
         AUTOMATIC_DESTRUCTION_COOLDOWN("Automatic Destruction.Cooldown Seconds", 0, "Time to wait before allowing the player to automatically destroy again"),

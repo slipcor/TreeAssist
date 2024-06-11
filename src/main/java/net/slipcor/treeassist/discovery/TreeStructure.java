@@ -1946,7 +1946,12 @@ public class TreeStructure {
                 player.incrementStatistic(Statistic.PICKUP, blockMaterial);
             }
             List<ItemStack> drops = new ArrayList<>(block.getDrops(new ItemStack(tool == null?Material.AIR:tool.getType(), 1)));
-            player.getInventory().addItem(drops.toArray(new ItemStack[0]));
+            Map<Integer, ItemStack> didNotFit = player.getInventory().addItem(drops.toArray(new ItemStack[0]));
+            if (config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_DROP_FAILED)) {
+                for (ItemStack item : didNotFit.values()) {
+                    player.getWorld().dropItem(player.getLocation(), item);
+                }
+            }
             block.setType(Material.AIR, true);
         } else {
             debug.i("not auto adding!");

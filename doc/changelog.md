@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.56 - drop items if the auto adding did not fit - defaults to false for backwards compatibility!
 - v7.3.55 - clarify debug for custom drops deny reason
 - v7.3.54 - fix a diagonal loop determination issue resulting in false negative tree validity checks
 - v7.3.53 - properly reset Toggle varibale when toggling functionality back on - affects "Remember Toggle Status"
