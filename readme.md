@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.56 - drop items if the auto adding did not fit - defaults to false for backwards compatibility!
+- v7.3.57 - add AuraSkill support
 - [read more](doc/changelog.md)
 
 ***

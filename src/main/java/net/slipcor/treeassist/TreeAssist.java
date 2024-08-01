@@ -56,6 +56,7 @@ public class TreeAssist extends CorePlugin {
     public boolean mcMMO = false;   // Whether mcMMO has been found and hooked into
     public boolean jobs = false;    // Whether Jobs has been found and hooked into
     public boolean aurelium = false; // Whether AureliumSkills has been found and hooked into
+    public boolean auraskills = false; // Whether AuraSkills has been found and hooked into
     public boolean makeEvents = false;
 
     private File configFile;
@@ -105,8 +106,10 @@ public class TreeAssist extends CorePlugin {
     private void checkAureliumSkills() {
         if (config.getBoolean(MainConfig.CFG.PLUGINS_USE_AURELIUMSKILLS)) {
             this.aurelium = getServer().getPluginManager().isPluginEnabled("AureliumSkills");
+            this.auraskills = getServer().getPluginManager().isPluginEnabled("AuraSkills");
         } else {
             this.aurelium = false;
+            this.auraskills = false;
         }
     }
 

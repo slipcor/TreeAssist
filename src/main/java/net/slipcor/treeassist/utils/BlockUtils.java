@@ -5,6 +5,7 @@ import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.discovery.LeavesStructure;
 import net.slipcor.treeassist.discovery.TreeStructure;
 import net.slipcor.treeassist.events.TALeafDecay;
+import net.slipcor.treeassist.externals.AuraSkillsHook;
 import net.slipcor.treeassist.externals.AureliumSkillsHook;
 import net.slipcor.treeassist.externals.JobsHook;
 import net.slipcor.treeassist.externals.mcMMOHook;
@@ -345,6 +346,28 @@ public class BlockUtils {
                         AureliumSkillsHook.addAureliumExp(player, value);
                     } else {
                         TreeStructure.debug.i("AureliumSkills selected but no exp amount given?!");
+                    }
+                }
+            }
+            if (TreeAssist.instance.auraskills) {
+
+                if (fullTree) {
+                    double value = TreeAssist.instance.config().getDouble(MainConfig.CFG.PLUGINS_USE_AURELIUMSKILLS_TREE);
+
+                    if (value > 0) {
+                        TreeStructure.debug.i("Adding AuraSkills Tree EXP!");
+                        AuraSkillsHook.addAuraExp(player, value);
+                    } else {
+                        TreeStructure.debug.i("AuraSkills selected but no exp amount given?!");
+                    }
+                } else {
+                    double value = TreeAssist.instance.config().getDouble(MainConfig.CFG.PLUGINS_USE_AURELIUMSKILLS_BLOCK);
+
+                    if (value > 0) {
+                        TreeStructure.debug.i("Adding AuraSkills Block EXP!");
+                        AuraSkillsHook.addAuraExp(player, value);
+                    } else {
+                        TreeStructure.debug.i("AuraSkills selected but no exp amount given?!");
                     }
                 }
             }
