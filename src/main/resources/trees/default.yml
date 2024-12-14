@@ -134,6 +134,7 @@ Ground Blocks:
 - 'minecraft:dirt'
 - 'minecraft:coarse_dirt'
 - 'minecraft:sand'
+- 'minecraft:pale_moss_block'
 
 # Blocks that you can expect to be around the tree - these are the exceptions from player building safeguards
 Natural Blocks:
@@ -190,6 +191,9 @@ Natural Blocks:
 - 'red_mushroom'
 - 'brown_mushroom'
 - 'minecraft:pink_petals'
+- 'minecraft:resin_clump'
+- 'minecraft:pale_hanging_moss'
+- 'minecraft:*_eyeblossom'
 
 # The permission required for this tree type
 Permission: treeassist.destroy.*
@@ -290,4 +294,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.3056
+Version: 7.3058

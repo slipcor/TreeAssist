@@ -84,6 +84,7 @@ public class TreeAssist extends CorePlugin {
         defaultTreeDefinitions.add("trees/overworld/jungle.yml");
         defaultTreeDefinitions.add("trees/overworld/mangrove.yml");
         defaultTreeDefinitions.add("trees/overworld/oak.yml");
+        defaultTreeDefinitions.add("trees/overworld/pale_oak.yml");
         defaultTreeDefinitions.add("trees/overworld/spruce.yml");
         defaultTreeDefinitions.add("trees/overworld/tall_jungle.yml");
         defaultTreeDefinitions.add("trees/overworld/tall_oak.yml");

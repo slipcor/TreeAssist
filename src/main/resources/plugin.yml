@@ -21,9 +21,14 @@ permissions:
       treeassist.destroy.spruce: true
       treeassist.destroy.acacia: true
       treeassist.destroy.darkoak: true
+      treeassist.destroy.azalea: true
+      treeassist.destroy.mangrove: true
+      treeassist.destroy.cherry: true
+      treeassist.destroy.pale_oak: true
       treeassist.destroy.brownshroom: true
       treeassist.destroy.redshroom: true
-      treeassist.destroy.azalea: true
+      treeassist.destroy.crimsonfungus: true
+      treeassist.destroy.warpedfungus: true
     default: false
   treeassist.destroy.birch:
     description: allows to use tree-assist for birch trees
@@ -37,12 +42,22 @@ permissions:
     description: allows to use tree-assist for acacia trees
   treeassist.destroy.darkoak:
     description: allows to use tree-assist for dark oak trees
+  treeassist.destroy.azalea:
+    description: allows to use tree-assist for azalea trees
+  treeassist.destroy.mangrove:
+    description: allows to use tree-assist for mangrove trees
+  treeassist.destroy.cherry:
+    description: allows to use tree-assist for cherry trees
+  treeassist.destroy.pale_oak:
+    description: allows to use tree-assist for pale oak trees
   treeassist.destroy.brownshroom:
     description: allows to use tree-assist for brown shrooms
   treeassist.destroy.redshroom:
     description: allows to use tree-assist for red shrooms
-  treeassist.destroy.azalea:
-    description: allows to use tree-assist for azalea trees
+  treeassist.destroy.crimsonfungus:
+    description: allows to use tree-assist for crimson fungus shrooms
+  treeassist.destroy.warpedfungus:
+    description: allows to use tree-assist for warpedfungus shrooms
   treeassist.commands:
     description: allows to use all tree-assist commands
     children:
