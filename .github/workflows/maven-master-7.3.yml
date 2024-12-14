@@ -15,6 +15,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '11'
+          distribution: 'adopt'
       - name: 'Set plugin.yml version'
         run: |
           sed -i 's/build-number/'$GITHUB_RUN_NUMBER'/g' src/main/resources/plugin.yml
