@@ -23,7 +23,7 @@ jobs:
         mkdir -p ~/.m2
         echo "<settings><activeProfiles><activeProfile>github</activeProfile></activeProfiles><profiles><profile><id>github</id><repositories><repository><id>github</id><url>https://maven.pkg.github.com/slipcor/Core</url><snapshots><enabled>true</enabled></snapshots></repository></repositories></profile></profiles><servers><server><id>github</id><username>$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $1}')</username><password>\${env.GITHUB_TOKEN}</password></server></servers></settings>" > ~/.m2/settings.xml
         mvn clean package --batch-mode
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: plugin-files
         path: target/TreeAssist.jar
