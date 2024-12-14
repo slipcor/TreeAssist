@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.58 - add pale oak support
+- v7.3.63 - add pale oak support
 - [read more](doc/changelog.md)
 
 ***
