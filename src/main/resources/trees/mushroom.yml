@@ -28,7 +28,7 @@ Parent: default
 Trunk:
 
   # How high does it need to be to qualify as a tree
-  Minimum Height: 5
+  Minimum Height: 4
 
   # One of these materials needs to be part of the trunk for it to count as a trunk
   Materials:
