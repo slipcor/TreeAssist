@@ -1,6 +1,6 @@
 error:
   addtool:
-    already: '&c你已经将这个添加为必需的工具了!'
+    already: '&c你已经将此添加为必需的工具!'
     other: '&c尝试添加必需的工具时出现了错误: %1%'
   config:
     no_list: '不是列表节点: &e%1%&r!'
