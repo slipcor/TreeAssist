@@ -51,7 +51,7 @@ error:
   notfound:
     world: '&c未找到世界: %1%'''
   only:
-    players: '仅限玩家!'
+    players: '此命令仅适用于玩家!'
     treeassist_blocklist: '&c此命令仅适用于 TreeAssist BlockList!'
 info:
   cooldown:
