@@ -52,7 +52,7 @@ error:
     world: '&c未找到世界: %1%'''
   only:
     players: '仅限玩家!'
-    treeassist_blocklist: '&c此命令仅适用于 TreeAssist 黑名单!'
+    treeassist_blocklist: '&c此命令仅适用于 TreeAssist BlockList!'
 info:
   cooldown:
     done: '&a冷却时间重置!'
