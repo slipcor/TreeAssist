@@ -33,9 +33,9 @@ public class TreeConfigUpdater {
         DEFAULT_SHORT_GRASS(7.3051f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:short_grass", new int[] {1, 20, 4}),
         DEFAULT_RESIN_CLUMP(7.3058f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:resin_clump", new int[] {1, 21, 4}),
         DEFAULT_PALE_HANGING_MOSS(7.3058f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:pale_hanging_moss", new int[] {1, 21, 4}),
-        DEFAULT_PALE_MOSS_BLOCK(7.3058f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:pale_moss_block", new int[] {1, 21, 4}),
-        DEFAULT_PALE_MOSS_CARPET(7.3058f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:pale_moss_carpet", new int[] {1, 21, 4}),
-        DEFAULT_EYEBLOSSOM(7.3058f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:*_eyeblossom", new int[] {1, 21, 4}),
+        DEFAULT_PALE_MOSS_BLOCK(7.3064f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:pale_moss_block", new int[] {1, 21, 4}),
+        DEFAULT_PALE_MOSS_CARPET(7.3064f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:pale_moss_carpet", new int[] {1, 21, 4}),
+        DEFAULT_EYEBLOSSOM(7.3064f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:*_eyeblossom", new int[] {1, 21, 4}),
         ;
 
         private final float version;

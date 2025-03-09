@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.64 - fix pale oak not working by default
 - v7.3.63 - add pale oak support
 - v7.3.57 - add AuraSkill support
 - v7.3.56 - drop items if the auto adding did not fit - defaults to false for backwards compatibility!

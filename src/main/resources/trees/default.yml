@@ -194,6 +194,8 @@ Natural Blocks:
 - 'minecraft:resin_clump'
 - 'minecraft:pale_hanging_moss'
 - 'minecraft:*_eyeblossom'
+- 'minecraft:pale_moss_carpet'
+- 'minecraft:pale_moss_block'
 
 # The permission required for this tree type
 Permission: treeassist.destroy.*
