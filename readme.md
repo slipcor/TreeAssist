@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.64 - fix pale oak not working by default
+- v7.3.65 - repair enchantment logic for tool
 - [read more](doc/changelog.md)
 
 ***

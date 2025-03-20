@@ -141,13 +141,13 @@ public class ToolUtils {
 	 */
 	public static boolean isMatchingTool(final ItemStack inHand, TreeConfig treeConfig) {
         TreeStructure.debug.i("in hand: " + inHand.getType());
-		List<Material> fromConfig = treeConfig.getMaterials(TreeConfig.CFG.TOOL_LIST);
-		if (fromConfig.contains(inHand.getType())) {
+		List<String> fromConfig = treeConfig.getStringList(TreeConfig.CFG.TOOL_LIST);
+		if (fromConfig.contains(inHand.getType().toString())) {
 			return true;
 		} else {
             TreeStructure.debug.i("valid: " + inHand.getType());
-		    for (Material mat : fromConfig) {
-		        TreeStructure.debug.i(mat.name());
+		    for (String mat : fromConfig) {
+		        TreeStructure.debug.i(mat);
             }
         }
 
@@ -168,7 +168,7 @@ public class ToolUtils {
 			}
 
 			for (Enchantment ench : inHand.getEnchantments().keySet()) {
-				if (!ench.getKey().getKey().equalsIgnoreCase(values[1])) {
+				if (!(ench.getKey().getKey()).replace(':', '~').equalsIgnoreCase(values[1])) {
 					continue; // skip other enchantments
 				}
 				int level;
@@ -246,7 +246,7 @@ public class ToolUtils {
                 break;
             }
             entry.append(':');
-            entry.append(ench.getKey());
+            entry.append((ench.getKey()).toString().replace(':', '~'));
             entry.append(':');
             entry.append(item.getEnchantmentLevel(ench));
             found = true;
@@ -279,12 +279,16 @@ public class ToolUtils {
         String definition = null;
 
         List<String> fromConfig = treeConfig.getStringList(TreeConfig.CFG.TOOL_LIST, new ArrayList<>());
+
         if (fromConfig.contains(inHand.getType().name())) {
             fromConfig.remove(inHand.getType().name());
             definition = inHand.getType().name();
+        } else if (fromConfig.contains(inHand.getType().getKey().toString())) {
+            fromConfig.remove(inHand.getType().getKey().toString());
+            definition = inHand.getType().getKey().toString();
         } else {
             for (String tool : fromConfig) {
-                if (!tool.startsWith(inHand.getType().name())) {
+                if (!tool.startsWith(inHand.getType().name()) && !tool.startsWith(inHand.getType().getKey().toString())) {
                     continue; // skip other names
                 }
 
@@ -296,7 +300,7 @@ public class ToolUtils {
                 } else {
 
                     for (Enchantment ench : inHand.getEnchantments().keySet()) {
-                        if (!ench.getKey().getKey().equalsIgnoreCase(values[1])) {
+                        if (!values[1].contains(ench.getKey().getKey().replace(':', '~'))) {
                             continue; // skip other enchantments
                         }
                         int level = 0;
