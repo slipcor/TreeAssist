@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.66 - repair enchantment logic for real - sorry peeps ^^
 - v7.3.65 - repair enchantment logic for tool
 - v7.3.64 - fix pale oak not working by default
 - v7.3.63 - add pale oak support

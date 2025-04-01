@@ -254,9 +254,10 @@ public class TreeConfig extends CoreConfig {
      * @param parent the parent config
      */
     public void loadDefaults(TreeConfig parent) {
-        if (!parent.getConfigName().equals("default.yml")) {
+        if (!getConfigName().equals("default.yml")) {
             this.parent = parent;
         }
+
         for (CFG c : CFG.values()) {
             if (c.type == ConfigEntry.Type.STRING) {
                 strings.put(c.node, parent.getString(c));
@@ -473,6 +474,24 @@ public class TreeConfig extends CoreConfig {
         return matList;
     }
 
+    /**
+     * Retrieve a list of materials from the value maps, overriding with parent if not set and a parent config exists
+     *
+     * @param cfg the node of the value
+     * @return a list of materials (can contain null)
+     */
+    public List<Material> getInheritedMaterials(CFG cfg) {
+        if (materials.containsKey(cfg.node)) {
+            return materials.get(cfg.node);
+        }
+
+        List<Material> matList = this.readRawInheritedMaterials(cfg);
+
+        materials.put(cfg.node, matList);
+
+        return matList;
+    }
+
     public TreeConfig getParent() {
         return parent;
     }
@@ -528,5 +547,38 @@ public class TreeConfig extends CoreConfig {
             }
         }
         return matList;
+    }
+
+    private List<Material> readRawInheritedMaterials(CFG cfg) {
+        List<String> list = getInheritedStringList(cfg, new ArrayList<>());
+
+        List<Material> matList = new ArrayList<>();
+
+        for (String matName : list) {
+            if (matName.contains("*")) {
+                String needle = matName.substring(1).toLowerCase();
+                for (Material mat : Material.values()) {
+                    if (mat.name().toLowerCase().endsWith(needle)) {
+                        matList.add(mat);
+                    }
+                }
+            } else if (Material.matchMaterial(matName) != null){
+                matList.add(Material.matchMaterial(matName));
+            } else {
+                TreeAssist.instance.getLogger().warning("Invalid Material in TreeConfig " + configFile.getName() + " - Node " + cfg.node + " entry invalid: " + matName);
+            }
+        }
+        return matList;
+    }
+
+    public List<String> getInheritedStringList(ConfigEntry cfg, List<String> def) {
+        if (this.cfg.get(cfg.getNode()) == null) {
+            if (this.getParent() == null) {
+                return (List)(def == null ? new LinkedList() : def);
+            }
+            return this.getParent().getInheritedStringList(cfg, def);
+        } else {
+            return this.cfg.getStringList(cfg.getNode());
+        }
     }
 }

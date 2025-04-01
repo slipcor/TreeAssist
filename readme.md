@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.65 - repair enchantment logic for tool
+- v7.3.66 - repair enchantment logic for real - sorry peeps ^^
 - [read more](doc/changelog.md)
 
 ***

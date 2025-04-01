@@ -141,24 +141,29 @@ public class ToolUtils {
 	 */
 	public static boolean isMatchingTool(final ItemStack inHand, TreeConfig treeConfig) {
         TreeStructure.debug.i("in hand: " + inHand.getType());
-		List<String> fromConfig = treeConfig.getStringList(TreeConfig.CFG.TOOL_LIST);
-		if (fromConfig.contains(inHand.getType().toString())) {
+		List<Material> fromConfigMat = treeConfig.getInheritedMaterials(TreeConfig.CFG.TOOL_LIST);
+		if (fromConfigMat.contains(inHand.getType())) {
 			return true;
 		} else {
             TreeStructure.debug.i("valid: " + inHand.getType());
-		    for (String mat : fromConfig) {
-		        TreeStructure.debug.i(mat);
+		    for (Material mat : fromConfigMat) {
+		        TreeStructure.debug.i(mat.toString());
             }
         }
 
-		for (Object obj : fromConfig) {
-			if (!(obj instanceof String)) {
-				continue; // skip item IDs
-			}
-			String tool = (String) obj;
-			if (!tool.equalsIgnoreCase(inHand.getType().name())) {
+        List<String> fromConfig = treeConfig.getInheritedStringList(TreeConfig.CFG.TOOL_LIST, null);
+		for (String tool : fromConfig) {
+			if (!tool.toLowerCase().contains(inHand.getType().name().toLowerCase())) {
 				continue; // skip other names
 			}
+
+            if (tool.startsWith("minecraft:")) {
+                tool = tool.substring(10);
+            }
+
+            if (tool.contains("minecraft~")) {
+                tool = tool.replace("minecraft~", "");
+            }
 
 			String[] values = tool.split(":");
 
@@ -168,7 +173,8 @@ public class ToolUtils {
 			}
 
 			for (Enchantment ench : inHand.getEnchantments().keySet()) {
-				if (!(ench.getKey().getKey()).replace(':', '~').equalsIgnoreCase(values[1])) {
+                String enchantment = (ench.getKey().getKey()).replace(':', '~');
+				if (!enchantment.equalsIgnoreCase(values[1])) {
 					continue; // skip other enchantments
 				}
 				int level;
@@ -188,7 +194,6 @@ public class ToolUtils {
 				return true;
 			}
 		}
-
 		return false;
 	}
 
