@@ -1,0 +1,105 @@
+error:
+  addtool:
+    already: '&cYa ha agregado esto como herramienta requerida!'
+    other: '&cAlgo ha salido mal al intentar agregar la herramienta requerida: %1%'
+  config:
+    no_list: 'No es un nodo de la lista: &e%1%&r!'
+    no_treeconfig: 'No es una configuración de árbol válida: &e%1%&r!'
+    unknown_node: 'Nodo desconocido: &e%1%&r!'
+    unknown_type: 'Tipo de nodo desconocido: &e%1%&r!'
+    add_skipped: La lista &e%1%&r ya contiene &e%2%&r!
+    add_success: Añadido &e%2%&r a &a%1%&r!
+    get_group_impossible: 'No se puede obtener el valor del nodo del grupo: &e%1%&r!'
+    get_success: 'El valor del nodo &a%1%&r es: &e%2%&r'
+    info_empty: El nodo &e%1%&r no tiene información!
+    info_success: 'Información de &e%1%&r: &e%2%&r'
+    remove_skipped: La lista &e%1%&r no contiene &e%2%&r!
+    remove_success: Eliminado &e%2%&r de &a%1%&r!
+    set_group_impossible: 'No se puede establecer el valor al nodo del grupo: &e%1%&r!'
+    set_list_impossible: 'No se puede establecer el valor en el nodo de la lista: &e%1%&r! Use add / remove!'
+    set_success: '&a%1%&r establecido a &e%2%&r!'
+  data_yml: '&cTienes un archivo data.yml desordenado: arréglalo o elimínalo!'
+  emptyhand: '&cNo tienes un item en tu mano.'
+  findforest: '&cBosque no encontrado en el radio de 500 bloques: &r%1%'
+  grow: '&cNo se ha podido cultivar un árbol aquí. Hay suficiente espacio?'
+  invalid_argumentcount: '&cNúmero inválido de argumentos&r (%1% en lugar de %2%)!'
+  invalid_argumentlist: '&cArgumentos inválidos! Valido:&r %1%'
+  invalid_argument_type: '&cArgumento inválido ''%1%'', esperado %2%'
+  invalid_number: '&cNo es un número válido: &r%1%'
+  invalid_treetype: '&cTipo de árbol inválido! Valido:&r %1%'
+  nottool: '&cNo tienes la herramienta necesaria para hacer eso!'
+  outofrange: '&cEl rango máximo para este comando es: %1%'
+  permission:
+    addtool: '&cNo tienes el permiso de ''treeassist.addtool'''
+    config: '&cNo tienes el permiso de ''treeassist.config'''
+    debug: '&cNo tienes el permiso de ''treeassist.debug'''
+    findforest: '&cNo tienes el permiso de ''treeassist.findforest'''
+    forcebreak: '&cNo tienes el permiso de ''treeassist.forcebreak'''
+    forcegrow: '&cNo tienes el permiso de ''treeassist.forcegrow'''
+    noreplant: '&cNo tienes el permiso de ''treeassist.noreplant'''
+    purge: '&cNo tienes el permiso de ''treeassist.purge'''
+    reload: '&cNo tienes el permiso de ''treeassist.reload'''
+    removetool: '&cNo tienes el permiso de ''treeassist.removetool'''
+    toggle: '&cNo tienes el permiso de ''treeassist.toggle'''
+    toggle_other: '&cNo tienes el permiso de ''treeassist.toggle.other'''
+    toggle_global: '&cNo tienes el permiso de ''treeassist.toggle.global'''
+    toggle_tool: '&cNo tienes el permiso de ''treeassist.tool'''
+    toggle_debugtool: '&cNo tienes el permiso de ''treeassist.debugtool'''
+    toggle_growtool: '&cNo tienes el permiso de ''treeassist.growtool'''
+  removetool:
+    not_done: '&cNo es una herramienta necesaria!'
+  notfound:
+    world: '&cMundo no encontrado: %1%'''
+  only:
+    players: Solo para jugadores!
+    treeassist_blocklist: '&cEste comando solo está disponible para TreeAssist BlockList!'
+info:
+  cooldown:
+    done: '&aTiempo de espera restablecido!'
+    still: '&aTodavía no se ha acabado!'
+    value: '&a%1% segundos restantes!'
+    wait: '&aEspera %1% segundos!'
+  never_break_saplings: '&aNo puedes romper árboles jóvenes en este servidor!'
+  never_break_log_without_tool: '&aNo puedes romper árboles en este servidor sin una
+     herramienta!'
+  never_break_log_with_breaking_tool: '&aTu herramienta se va a romper! Ten cuidado!'
+  sapling_protected: '&aEste brote de árbol está protegido!'
+  plugin_prefix: '&8[&2TreeAssist&8]&r '
+  value_on: '&aon&r'
+  value_off: '&coff&r'
+warning:
+  addtool_onlyone: '&6Solo puedes usar un encantamiento. Usando: %1%'
+  destruction_invalidblock: '&6Encontramos un jugador colocado cerca: &r%1%'
+successful:
+  addtool: '&aHerramienta necesaria añadida: %1%'
+  debug_all: depurando TODO
+  debug: depurando %1%
+  findforest: '&aBosque encontrado en &r%1%'
+  noreplant: '&aNo puedes replantar árboles en %1% segundos.'
+  replant: '&aPuedes replantar árboles en %1% segundos.'
+  protect_off: '&aEl brote del árbol ya no está protegido!'
+  protect_on: '&aEl brote del árbol ahora está protegido!'
+  purge:
+    days: '&a%1% entradas han sido purgadas por última vez de %2% días!'
+    global: '&a%1% entradas globales han sido purgadas!'
+    world: '&a%1% entradas han sido purgadas para el mundo %2%!'
+  reload: '&aTreeAssist ha sido recargado.'
+  removetool: '&aHerramienta necesaria eliminada: %1%'
+  toggle:
+    global_off: '&aLas funciones de TreeAssist están desactivadas globalmente!'
+    global_on: '&aLas funciones de TreeAssist ahora están activadas globalmente!'
+    other_global_off: '&aLas funciones de TreeAssist están desactivadas para %1%!'
+    other_global_on: '&aLas funciones de TreeAssist ahora están activadas para %1%!'
+    other_world_off: '&aLas funciones de TreeAssist están desactivadas para %1% en el mundo %2%!'
+    other_world_on: '&aLas funciones de TreeAssist ahora están activadas para %1% en el mundo %2%!'
+    you_global_off: '&aLas funciones de TreeAssist están desactivadas para usted!'
+    you_global_on: '&aLas funciones de TreeAssist ahora están activadas para usted!'
+    you_world_off: '&aLas funciones de TreeAssist están desactivadas para usted en el mundo %1%!'
+    you_world_on: '&aLas funciones de TreeAssist ahora están activadas para usted en el mundo %1%!'
+  debug_tool_off: '&aHerramienta de depuración eliminada!'
+  debug_tool_on: '&aSe le ha proporcionado la herramienta de depuración!'
+  grow_tool_off: '&aHerramienta de cultivo eliminada!'
+  grow_tool_on: '&aSe te ha dado la herramienta de cultivo! Intentará hacer crecer un árbol de
+     tipo &e%1%&a!'
+  tool_off: '&aHerramienta de protección eliminada!'
+  tool_on: '&aSe le ha dado la herramienta de protección!'
