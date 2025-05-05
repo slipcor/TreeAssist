@@ -2031,7 +2031,7 @@ public class TreeStructure {
 
         MainConfig globalConfig = TreeAssist.instance.config();
 
-        if (TreeAssist.instance.getBlockListener().isReplant(player.getName()) &&
+        if (TreeAssist.instance.getBlockListener().isReplant(player.getName()) ||
                 !config.getBoolean(TreeConfig.CFG.REPLANTING_ENFORCE)) {
 
             if (globalConfig.getBoolean(MainConfig.CFG.GENERAL_USE_PERMISSIONS) &&

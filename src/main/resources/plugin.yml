@@ -116,7 +116,7 @@ permissions:
     default: op
   treeassist.replant:
     description: allows to replant trees
-    default: op
+    default: true
   treeassist.replantcommand:
     description: allows to force replacing saplings for some time
     default: op
