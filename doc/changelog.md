@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.68 - repair AuraSkills support
 - v7.3.67 - fix permission check "treeassist.replant" - this never worked as intended and now is at least logically sound - addresses #103
 - v7.3.66 - repair enchantment logic for real - sorry peeps ^^
 - v7.3.65 - repair enchantment logic for tool
