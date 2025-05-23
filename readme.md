@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.68 - repair AuraSkills support
+- v7.3.69 - update list of natural occurring blocks based on 1.21.5 additions - addresses #108
 - [read more](doc/changelog.md)
 
 ***

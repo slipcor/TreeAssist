@@ -196,6 +196,13 @@ Natural Blocks:
 - 'minecraft:*_eyeblossom'
 - 'minecraft:pale_moss_carpet'
 - 'minecraft:pale_moss_block'
+- 'minecraft:bush'
+- 'minecraft:cactus_flower'
+- 'minecraft:firefly_bush'
+- 'minecraft:leaf_litter'
+- 'minecraft:short_dry_grass'
+- 'minecraft:tall_dry_grass'
+- 'minecraft:wildflowers'
 
 # The permission required for this tree type
 Permission: treeassist.destroy.*
@@ -296,4 +303,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.3058
+Version: 7.3070

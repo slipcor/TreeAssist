@@ -36,6 +36,17 @@ public class TreeConfigUpdater {
         DEFAULT_PALE_MOSS_BLOCK(7.3064f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:pale_moss_block", new int[] {1, 21, 4}),
         DEFAULT_PALE_MOSS_CARPET(7.3064f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:pale_moss_carpet", new int[] {1, 21, 4}),
         DEFAULT_EYEBLOSSOM(7.3064f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:*_eyeblossom", new int[] {1, 21, 4}),
+
+
+        DEFAULT_1215_BUSH(7.3069f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:bush", new int[] {1, 21, 5}),
+        DEFAULT_1215_CACTUS_FLOWER(7.3069f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:cactus_flower", new int[] {1, 21, 5}),
+        DEFAULT_1215_FIREFLY_BUSH(7.3069f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:firefly_bush", new int[] {1, 21, 5}),
+        DEFAULT_1215_LEAF_LITTER(7.3069f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:leaf_litter", new int[] {1, 21, 5}),
+        DEFAULT_1215_SHORT_DRY_GRASS(7.3069f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:short_dry_grass", new int[] {1, 21, 5}),
+        DEFAULT_1215_TALL_DRY_GRASS(7.3069f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:tall_dry_grass", new int[] {1, 21, 5}),
+        DEFAULT_1215_WILDFLOWERS(7.3069f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:wildflowers", new int[] {1, 21, 5}),
+
+
         ;
 
         private final float version;
