@@ -1,12 +1,13 @@
 package net.slipcor.treeassist.blocklists;
 
-import me.botsko.prism.Prism;
-import me.botsko.prism.actionlibs.ActionsQuery;
-import me.botsko.prism.actionlibs.QueryParameters;
-import me.botsko.prism.actionlibs.QueryResult;
-import me.botsko.prism.actionlibs.RecordingQueue;
-import me.botsko.prism.actions.BlockAction;
-import me.botsko.prism.actions.Handler;
+import network.darkhelmet.prism.Prism;
+import network.darkhelmet.prism.actionlibs.ActionsQuery;
+import network.darkhelmet.prism.actionlibs.QueryParameters;
+import network.darkhelmet.prism.actionlibs.QueryResult;
+import network.darkhelmet.prism.actionlibs.RecordingQueue;
+import network.darkhelmet.prism.actions.BlockAction;
+import network.darkhelmet.prism.api.actions.Handler;
+import network.darkhelmet.prism.api.actions.ActionType;
 import net.slipcor.treeassist.TreeAssist;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -40,12 +41,13 @@ public class Prism2BlockList extends EmptyBlockList {
 		QueryParameters parameters = new QueryParameters();
 		parameters.setWorld(block.getWorld().toString());
 		parameters.setSpecificBlockLocation(block.getLocation());
-		parameters.addActionType("block-break");
-		parameters.addActionType("block-burn");
-		parameters.addActionType("block-spread");
+		//parameters.addActionType("block-break");
+		//parameters.addActionType("block-burn");
+		//parameters.addActionType("block-spread");
+		//parameters.addActionType("block-place");
+		//parameters.addActionType("entity-break");
+		//parameters.addActionType("entity-explode");
 		parameters.addActionType("block-place");
-		parameters.addActionType("entity-break");
-		parameters.addActionType("entity-explode");
 		
 		parameters.setLimit(1); // LOOKUP = Most recent actions first.
 		parameters.setSinceTime(System.currentTimeMillis() - (lookupTime*1000L) );
@@ -58,7 +60,7 @@ public class Prism2BlockList extends EmptyBlockList {
 				for(Handler a : results){
 					// An example that prints the player name and the action type.
 					// full action details will be available to you here.
-					if (a.getType().getShortName().equals("block-break")) {
+					if (a.getActionType().getShortName().equals("block-place")) {
 						return true;
 					}
 				}
@@ -72,10 +74,12 @@ public class Prism2BlockList extends EmptyBlockList {
 		if (prism == null) {
 			return;
 		}
+		// Default constructor for BlockAction already uses ActionType.BLOCK_BREAK
 		BlockAction action = new BlockAction();
+		action.setActionType( "block-place" );
 		action.setBlock(block);
-		action.setActionType("block-break");
-		action.setPlayerName(player == null ? "TreeAssist" : player.getName());
+
+		action.setSourceName(player == null ? "TreeAssist" : player.getName());
 		RecordingQueue.addToQueue(action);
 	}
 
