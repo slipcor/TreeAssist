@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.71 - update to Prism 3.X - still pondering if I should release this
 - v7.3.70 - add support for Prism 3.X - use the plugin setting "Prism3"
 - v7.3.69 - update list of natural occurring blocks based on 1.21.5 additions - addresses #108
 - v7.3.68 - repair AuraSkills support

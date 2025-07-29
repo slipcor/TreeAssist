@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.70 - add support for Prism 3.X - use the plugin setting "Prism3"
+- v7.3.71 - update to Prism 3.X - still pondering if I should release this 
 - [read more](doc/changelog.md)
 
 ***
