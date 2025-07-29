@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.71 - update to Prism 3.X - still pondering if I should release this 
+- v7.3.72 - update to Prism 3.X - thanks to @kleinpanic - manually closes #110 
 - [read more](doc/changelog.md)
 
 ***
