@@ -74,7 +74,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.69 - update list of natural occurring blocks based on 1.21.5 additions - addresses #108
+- v7.3.70 - add support for Prism 3.X - use the plugin setting "Prism3"
 - [read more](doc/changelog.md)
 
 ***

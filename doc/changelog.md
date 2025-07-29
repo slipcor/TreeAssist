@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.70 - add support for Prism 3.X - use the plugin setting "Prism3"
 - v7.3.69 - update list of natural occurring blocks based on 1.21.5 additions - addresses #108
 - v7.3.68 - repair AuraSkills support
 - v7.3.67 - fix permission check "treeassist.replant" - this never worked as intended and now is at least logically sound - addresses #103

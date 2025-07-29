@@ -354,6 +354,8 @@ public class TreeAssist extends CorePlugin {
                 blockList = new FlatFileBlockList();
             } else if ("Prism".equalsIgnoreCase(pluginName)) {
                 blockList = new Prism2BlockList();
+            } else if ("Prism3".equalsIgnoreCase(pluginName)) {
+                blockList = new Prism3BlockList();
             } else if ("LogBlock".equalsIgnoreCase(pluginName)) {
                 blockList = new LogBlockBlockList();
             } else if ("CoreProtect".equalsIgnoreCase(pluginName)) {
