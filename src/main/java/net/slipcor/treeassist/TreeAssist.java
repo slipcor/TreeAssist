@@ -291,6 +291,12 @@ public class TreeAssist extends CorePlugin {
         String[] newArgs = StringUtils.compress(args);
 
         if (newArgs == null || newArgs.length == 0) {
+            // Default to toggle when no arguments are provided
+            CoreCommand toggleCommand = commandMap.get("toggle");
+            if (toggleCommand != null) {
+                toggleCommand.commit(sender, new String[]{"toggle"});
+                return true;
+            }
             return false;
         }
 
