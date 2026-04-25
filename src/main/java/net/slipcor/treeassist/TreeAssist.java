@@ -291,7 +291,7 @@ public class TreeAssist extends CorePlugin {
         String[] newArgs = StringUtils.compress(args);
 
         if (newArgs == null || newArgs.length == 0) {
-            return false;
+            return showCommands(sender);
         }
 
         if (acc != null) {
@@ -305,6 +305,10 @@ public class TreeAssist extends CorePlugin {
                 return true;
             }
         }
+        return showCommands(sender);
+    }
+
+    private boolean showCommands(CommandSender sender) {
         boolean found = false;
         for (CoreCommand command : commandList) {
             if (command.hasPerms(sender)) {
