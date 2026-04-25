@@ -50,8 +50,8 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 				return;
 			}
 		}
-		
-		Bukkit.getScheduler().runTaskLater(TreeAssist.instance, this, delay);
+
+		TreeAssist.getScheduler().runLater(this, delay);
 	}
 
 	private Block findBlock(Item item) {
@@ -87,7 +87,7 @@ public class TreeAssistSaplingSelfPlant implements Runnable {
 			block.setType(overrideMaterial == null ? config.getMaterial(TreeConfig.CFG.REPLANTING_MATERIAL) : overrideMaterial);
 			if (drop.getItemStack().getAmount() > 1) {
 				drop.getItemStack().setAmount(drop.getItemStack().getAmount()-1);
-				Bukkit.getScheduler().runTaskLater(TreeAssist.instance, this, delay);
+				TreeAssist.getScheduler().runLater(this, delay);
 				return;
 			}
 			drop.remove();

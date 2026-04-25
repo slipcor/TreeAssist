@@ -6,6 +6,7 @@ authors: [slipcor, FriendlyBaron]
 description: TreeAssist
 softdepend: [AureliumSkills, AuraSkills, CoreProtect, Jobs, mcMMO, Prism, LogBlock, PlaceholderAPI, WorldGuard]
 dev-url: https://www.spigotmc.org/resources/treeassist.67436/
+folia-supported: true
 commands:
   TreeAssist:
     description: Turn TreeAssist features on or off

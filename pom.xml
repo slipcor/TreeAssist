@@ -20,6 +20,10 @@
 			<id>placeholderapi-repo</id>
 			<url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
 		</repository>
+		<repository>
+			<id>tcoded-releases</id>
+			<url>https://repo.tcoded.com/releases</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -27,6 +31,12 @@
 			<artifactId>spigot-api</artifactId>
 			<version>1.17-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.tcoded</groupId>
+			<artifactId>FoliaLib</artifactId>
+			<version>0.5.1</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.sk89q.worldguard</groupId>
@@ -151,7 +161,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.4</version>
+				<version>3.5.3</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -162,6 +172,7 @@
 							<artifactSet>
 								<includes>
 									<include>net.slipcor:core</include>
+									<include>com.tcoded:FoliaLib</include>
 								</includes>
 							</artifactSet>
 							<filters>
@@ -179,6 +190,10 @@
 									<includes>
 										<include>net.slipcor.core.*</include>
 									</includes>
+								</relocation>
+								<relocation>
+									<pattern>com.tcoded.folialib</pattern>
+									<shadedPattern>net.slipcor.TreeAssist.lib.folialib</shadedPattern>
 								</relocation>
 							</relocations>
 						</configuration>

@@ -1,14 +1,17 @@
 package net.slipcor.treeassist.runnables;
 
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.yml.Language;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class CoolDownCounter extends BukkitRunnable {
+import java.util.function.Consumer;
+
+public class CoolDownCounter implements Consumer<WrappedTask> {
     private final String name;
     private int seconds;
+    private WrappedTask wrappedTask;
 
     /**
      * A runnable counting down by the second until a player can use the auto destruction again
@@ -22,13 +25,20 @@ public class CoolDownCounter extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(WrappedTask task) {
+        this.wrappedTask = task;
         if (--seconds <= 0) {
             commit();
             try {
-                this.cancel();
+                task.cancel();
             } catch (IllegalStateException e) {
             }
+        }
+    }
+
+    public void cancel() {
+        if (wrappedTask != null) {
+            wrappedTask.cancel();
         }
     }
 

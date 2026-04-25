@@ -86,7 +86,7 @@ public class BlockUtils {
                 falling.setVelocity(
                         new Vector(looking.getX(), -level, looking.getZ())
                 );
-                Bukkit.getScheduler().runTaskLater(TreeAssist.instance, () -> falling.setGravity(true), 30L);
+                TreeAssist.getScheduler().runAtEntityLater(falling, (t) -> falling.setGravity(true), 30L);
             }
 
             fallingBlocks.add(falling);
@@ -264,7 +264,7 @@ public class BlockUtils {
                 TreeAssist.instance.treeAdd(leaves);
 
                 CleanRunner cleaner = (new CleanRunner(leaves, delay, new LinkedHashSet<>(breakables), Material.AIR, true, new ArrayList<>()));
-                cleaner.runTaskTimer(TreeAssist.instance, delay, delay);
+                TreeAssist.getScheduler().runAtLocationTimer(block.getLocation(), cleaner, delay, delay);
             }
         }
     }

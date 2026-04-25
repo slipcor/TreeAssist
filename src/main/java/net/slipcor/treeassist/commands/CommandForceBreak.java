@@ -65,7 +65,9 @@ public class CommandForceBreak extends CoreCommand {
                 }
             }
 
-            Bukkit.getScheduler().runTaskLater(TreeAssist.instance, () -> TreeAssist.instance.setCoolDownOverride(player.getName(), false), 200);
+            TreeAssist.getScheduler().runLater((t) -> {
+                TreeAssist.instance.setCoolDownOverride(player.getName(), false);
+            }, 200);
 
             return;
         }

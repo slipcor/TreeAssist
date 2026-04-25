@@ -1,12 +1,13 @@
 package net.slipcor.treeassist.runnables;
 
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import net.slipcor.treeassist.TreeAssist;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 
 /**
@@ -16,10 +17,10 @@ public class TreeAssistAntiGrow {
     final Map<String, Integer> blocks = new HashMap<>();
     private boolean lock = false;
 
-    class AntiGrowRunner extends BukkitRunnable {
+    class AntiGrowRunner implements Consumer<WrappedTask> {
 
         @Override
-        public void run() {
+        public void accept(WrappedTask task) {
 
             final Map<String, Integer> temp = new HashMap<>();
 
@@ -44,7 +45,7 @@ public class TreeAssistAntiGrow {
             }
 
             if (blocks.size() < 1) {
-                this.cancel();
+                task.cancel();
             }
         }
     }
@@ -63,7 +64,7 @@ public class TreeAssistAntiGrow {
         if (blocks.size() < 1) {
             // empty, refill!
             blocks.put(locToString(block.getLocation()), seconds);
-            new AntiGrowRunner().runTaskTimer(TreeAssist.instance, 20L, 20L);
+            TreeAssist.getScheduler().runTimer(new AntiGrowRunner(), 20L, 20L);
         } else {
             // add
             while (lock) {

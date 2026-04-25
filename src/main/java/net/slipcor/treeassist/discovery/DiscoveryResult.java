@@ -1,5 +1,6 @@
 package net.slipcor.treeassist.discovery;
 
+import com.tcoded.folialib.FoliaLib;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.utils.BlockUtils;
@@ -7,6 +8,7 @@ import net.slipcor.treeassist.utils.CommandUtils;
 import net.slipcor.treeassist.yml.MainConfig;
 import net.slipcor.treeassist.yml.TreeConfig;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -144,24 +146,28 @@ public class DiscoveryResult {
                 }
             }
         }
-        Bukkit.getScheduler().runTaskLater(TreeAssist.instance, new Runnable() {
-            @Override
-            public void run() {
-                TreeAssist.instance.sendPrefixed(player, "Removing valid tree #" + System.identityHashCode(tree));
 
-                for (Block block : tree.trunk) {
-                    player.sendBlockChange(block.getLocation(), block.getType().createBlockData());
-                }
+        Location location;
+        if (tree.getBlocks().isEmpty()) {
+            location = player.getLocation();
+        } else {
+            location = tree.getBlocks().getFirst().getLocation();
+        }
+        TreeAssist.getScheduler().runAtLocationLater(location, (t) -> {
+            TreeAssist.instance.sendPrefixed(player, "Removing valid tree #" + System.identityHashCode(tree));
 
-                for (Block block : tree.extras) {
-                    player.sendBlockChange(block.getLocation(), block.getType().createBlockData());
-                }
+            for (Block block : tree.trunk) {
+                player.sendBlockChange(block.getLocation(), block.getType().createBlockData());
+            }
 
-                if (tree.branchMap != null) {
-                    for (List<Block> list : tree.branchMap.values()) {
-                        for (Block block : list) {
-                            player.sendBlockChange(block.getLocation(), block.getType().createBlockData());
-                        }
+            for (Block block : tree.extras) {
+                player.sendBlockChange(block.getLocation(), block.getType().createBlockData());
+            }
+
+            if (tree.branchMap != null) {
+                for (List<Block> list : tree.branchMap.values()) {
+                    for (Block block : list) {
+                        player.sendBlockChange(block.getLocation(), block.getType().createBlockData());
                     }
                 }
             }

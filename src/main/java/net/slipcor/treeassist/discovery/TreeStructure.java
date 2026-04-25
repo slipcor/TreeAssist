@@ -25,7 +25,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 
 import java.io.File;
 import java.util.*;
@@ -2216,9 +2216,7 @@ public class TreeStructure {
         final boolean cleanUpLeaves = config.getBoolean(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CLEANUP_LEAVES);
         final List<Material> leaves = config.getMaterials(TreeConfig.CFG.BLOCKS_MATERIALS);
 
-        class InstantRunner extends BukkitRunnable {
-            @Override
-            public void run() {
+        java.util.function.Consumer<WrappedTask> instantRunner = (task) -> {
                 if (offset < 0) {
                     for (Block block : removeBlocks) {
                         if (sapling.equals(block.getType())) {
@@ -2228,7 +2226,7 @@ public class TreeStructure {
                         debug.i("InstantRunner: 1 " + BlockUtils.printBlock(block));
                         maybeBreakBlock(block, tool, player, statPickup, statMineBlock, damage, creative);
                         if (damage && ToolUtils.willBreak(tool, player)) {
-                            this.cancel();
+                            task.cancel();
                             TreeAssistPlayerListener.removeDestroyer(player, TreeStructure.this);
                             // we skip clearing the block list because there was an issue that requires cleanup
                             return;
@@ -2248,7 +2246,7 @@ public class TreeStructure {
                             debug.i("InstantRunner: 2b " + BlockUtils.printBlock(block));
                             maybeBreakBlock(block, tool, player, statPickup, statMineBlock, damage, creative);
                             if (damage && ToolUtils.willBreak(tool, player)) {
-                                this.cancel();
+                                task.cancel();
                                 TreeAssistPlayerListener.removeDestroyer(player, TreeStructure.this);
                                 // we skip clearing the block list because there was an issue that requires cleanup
                                 return;
@@ -2260,22 +2258,20 @@ public class TreeStructure {
                 }
                 try {
                     TreeAssistPlayerListener.removeDestroyer(player, TreeStructure.this);
-                    this.cancel();
+                    task.cancel();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-
-        }
+        };
 
         CleanRunner cleaner = (new CleanRunner(this, offset, removeBlocks, sapling, cleanUpLeaves, leaves));
         if (player != null) {
-            (new InstantRunner()).runTaskTimer(TreeAssist.instance, delay, offset);
+            TreeAssist.getScheduler().runAtLocationTimer(bottom.getLocation(), instantRunner, delay, offset);
         }
 
         int cleanDelay = config.getInt(TreeConfig.CFG.AUTOMATIC_DESTRUCTION_CLEANUP_DELAY_TIME);
 
-        cleaner.runTaskTimer(TreeAssist.instance, cleanDelay *20L, offset);
+        TreeAssist.getScheduler().runAtLocationTimer(bottom.getLocation(), cleaner, cleanDelay *20L, offset);
     }
 
     /**

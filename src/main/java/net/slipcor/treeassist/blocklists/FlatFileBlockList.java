@@ -215,7 +215,9 @@ public class FlatFileBlockList extends EmptyBlockList {
             e.printStackTrace();
         }
 
-        Bukkit.getScheduler().runTaskTimer(TreeAssist.instance, () -> FlatFileBlockList.this.save(false), 1200, 1200);
+        TreeAssist.getScheduler().runTimer((t)->{
+            FlatFileBlockList.this.save(false);
+        }, 1200, 1200);
     }
 
     @Override
@@ -453,7 +455,7 @@ public class FlatFileBlockList extends EmptyBlockList {
         if (force) {
             new RunLater().run();
         } else {
-            Bukkit.getScheduler().runTaskAsynchronously(TreeAssist.instance, new RunLater());
+            TreeAssist.getScheduler().runAsync((t) -> new RunLater());
         }
     }
 }

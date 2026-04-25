@@ -1,5 +1,7 @@
 package net.slipcor.treeassist;
 
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.impl.PlatformScheduler;
 import net.slipcor.core.*;
 import net.slipcor.treeassist.blocklists.*;
 import net.slipcor.treeassist.commands.*;
@@ -59,6 +61,8 @@ public class TreeAssist extends CorePlugin {
     public boolean auraskills = false; // Whether AuraSkills has been found and hooked into
     public boolean makeEvents = false;
 
+    private static PlatformScheduler scheduler;
+
     private File configFile;
     private MainConfig config;
 
@@ -99,6 +103,14 @@ public class TreeAssist extends CorePlugin {
         defaultTreeDefinitions.add("trees/mushroom.yml");
         defaultTreeDefinitions.add("trees/mushroom/mushroom-brown.yml");
         defaultTreeDefinitions.add("trees/mushroom/mushroom-red.yml");
+    }
+
+    /**
+     * Get the scheduler for the current platform
+     * @return agnostic scheduler
+     */
+    public static PlatformScheduler getScheduler() {
+        return TreeAssist.scheduler;
     }
 
     /**
@@ -304,7 +316,7 @@ public class TreeAssist extends CorePlugin {
     }
 
     public void onDisable() {
-        this.getServer().getScheduler().cancelTasks(this);
+        TreeAssist.getScheduler().cancelAllTasks();
         if (this.blockList instanceof FlatFileBlockList) {
             blockList.save(true);
         }
@@ -315,6 +327,10 @@ public class TreeAssist extends CorePlugin {
         checkAureliumSkills();
         checkMcMMO();
         checkJobs();
+        if (TreeAssist.scheduler == null) {
+            TreeAssist.scheduler = new FoliaLib(this).getScheduler();
+        }
+
         this.makeEvents = config().getBoolean(MainConfig.CFG.PLUGINS_USE_CUSTOM_EVENTS);
 
         if (worldGuard != null) {
@@ -478,7 +494,7 @@ public class TreeAssist extends CorePlugin {
                     String.valueOf(coolDown)));
         }
         CoolDownCounter cc = new CoolDownCounter(player, coolDown);
-        cc.runTaskTimer(this, 20L, 20L);
+        TreeAssist.getScheduler().runTimer(cc, 20L, 20L);
         coolDowns.put(player.getName(), cc);
     }
 

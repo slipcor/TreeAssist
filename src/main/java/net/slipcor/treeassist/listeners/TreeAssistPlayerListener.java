@@ -245,7 +245,12 @@ public class TreeAssistPlayerListener implements Listener {
             plugin.toggleGlobal(event.getPlayer().getName());
         }
         if (event.getPlayer().isOp() && plugin.getUpdater() != null) {
-            plugin.getUpdater().message(event.getPlayer());
+            try {
+                plugin.getUpdater().message(event.getPlayer());
+            } catch (UnsupportedOperationException ignored) {
+                // Folia does not support Bukkit's scheduler - update check skipped
+                // This is a pending chore for slipcor's core lib (replace Bukkit scheduler)
+            }
         }
     }
 

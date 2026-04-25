@@ -154,7 +154,7 @@ public class TreeAssistBlockListener implements Listener {
                     return;
                 }
                 Runnable b = new TreeAssistReplant(block, event.getType(), config);
-                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, b, 20);
+                TreeAssist.getScheduler().runAtLocationLater(block.getLocation(), (t) -> b.run(), 20);
                 debug.explain(TreeAssistDebugger.ErrorType.SAPLING, block, ChatColor.GREEN + "Burning block sapling replacement should have worked!");
                 return;
             }

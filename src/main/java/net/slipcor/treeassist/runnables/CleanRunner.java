@@ -1,5 +1,6 @@
 package net.slipcor.treeassist.runnables;
 
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import net.slipcor.treeassist.TreeAssist;
 import net.slipcor.treeassist.core.TreeAssistDebugger;
 import net.slipcor.treeassist.discovery.FailReason;
@@ -10,12 +11,12 @@ import net.slipcor.treeassist.yml.MainConfig;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
-public class CleanRunner extends BukkitRunnable {
+public class CleanRunner implements Consumer<WrappedTask> {
     private final TreeStructure me;
     private final int offset;
     private final Set<Block> removeBlocks;
@@ -34,7 +35,7 @@ public class CleanRunner extends BukkitRunnable {
     }
 
     @Override
-    public void run() {
+    public void accept(WrappedTask task) {
         boolean generateDrops = (me instanceof LeavesStructure) && TreeAssist.instance.config().getBoolean(MainConfig.CFG.DESTRUCTION_FAST_LEAF_DECAY_REGULAR_DROPS);
         debug.i("CleanRunner: will generate drops: " + generateDrops);
         ItemStack breakTool = generateDrops ? new ItemStack(Material.AIR, 1) : null;
@@ -84,7 +85,7 @@ public class CleanRunner extends BukkitRunnable {
         me.setFailReason(FailReason.INVALID_BLOCK);
         try {
             TreeAssist.instance.treeRemove(me);
-            this.cancel();
+            task.cancel();
         } catch (Exception e) {
         }
     }
