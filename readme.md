@@ -61,6 +61,16 @@ It also will take down an entire tree when it is enabled in the config.
 
 ***
 
+## How to update
+
+- Replace jar
+- Restart server
+- If a config is missing, run a command like this, for the config: `/ta treeconfig restore poplar`
+
+Valid trees: [github](https://github.com/slipcor/TreeAssist/tree/master/src/main/resources/trees)
+
+***
+
 ## Documentation
 
 - [Commands](doc/commands.md)
@@ -74,7 +84,7 @@ It also will take down an entire tree when it is enabled in the config.
 
 ## Changelog
 
-- v7.3.72 - update to Prism 3.X - thanks to @kleinpanic - manually closes #110 
+- v7.3.73 - add support for Minecraft 26.3 - poplar trees and red shrubs 
 - [read more](doc/changelog.md)
 
 ***

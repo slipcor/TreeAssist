@@ -26,6 +26,7 @@ permissions:
       treeassist.destroy.mangrove: true
       treeassist.destroy.cherry: true
       treeassist.destroy.pale_oak: true
+      treeassist.destroy.poplar: true
       treeassist.destroy.brownshroom: true
       treeassist.destroy.redshroom: true
       treeassist.destroy.crimsonfungus: true
@@ -51,6 +52,8 @@ permissions:
     description: allows to use tree-assist for cherry trees
   treeassist.destroy.pale_oak:
     description: allows to use tree-assist for pale oak trees
+  treeassist.destroy.poplar:
+    description: allows to use tree-assist for poplar trees
   treeassist.destroy.brownshroom:
     description: allows to use tree-assist for brown shrooms
   treeassist.destroy.redshroom:

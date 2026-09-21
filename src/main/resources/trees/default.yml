@@ -203,6 +203,7 @@ Natural Blocks:
 - 'minecraft:short_dry_grass'
 - 'minecraft:tall_dry_grass'
 - 'minecraft:wildflowers'
+- 'minecraft:leaf_litter'
 
 # The permission required for this tree type
 Permission: treeassist.destroy.*
@@ -303,4 +304,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.3070
+Version: 7.3072

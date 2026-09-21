@@ -46,6 +46,7 @@ public class TreeConfigUpdater {
         DEFAULT_1215_TALL_DRY_GRASS(7.3069f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:tall_dry_grass", new int[] {1, 21, 5}),
         DEFAULT_1215_WILDFLOWERS(7.3069f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:wildflowers", new int[] {1, 21, 5}),
 
+        DEFAULT_263_RED_SHRUB(7.3072f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:red_shrub", new int[] {26, 3, 0})
 
         ;
 
