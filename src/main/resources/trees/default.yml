@@ -90,6 +90,7 @@ Blocks:
       minecraft:diamond_axe: 1.0
       minecraft:golden_axe: 0.75
       minecraft:iron_axe: 0.5
+      minecraft:copper_axe: 0.35
       minecraft:stone_axe: 0.25
       minecraft:wooden_axe: 0.1
 
@@ -260,6 +261,7 @@ Tool List:
 - 'minecraft:golden_axe'
 - 'minecraft:iron_axe'
 - 'minecraft:stone_axe'
+- 'minecraft:copper_axe'
 Trunk:
 
   # Look for branches
@@ -279,6 +281,7 @@ Trunk:
       minecraft:diamond_axe: 1.0
       minecraft:golden_axe: 0.75
       minecraft:iron_axe: 0.5
+      minecraft:copper_axe: 0.35
       minecraft:stone_axe: 0.25
       minecraft:wooden_axe: 0.1
 
@@ -304,4 +307,4 @@ Trunk:
   Uneven Bottom: false
 
 # Version number for automagical config updates
-Version: 7.3072
+Version: 7.3074

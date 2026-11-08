@@ -2,6 +2,7 @@
 
 ## v7.3 - API Expansion
 
+- v7.3.74 - add copper axe to the default tool list and custom drop factors, add copper tool cooldown timings
 - v7.3.73 - add support for Minecraft 26.3 - poplar trees and red shrubs 
 - v7.3.72 - update to Prism 3.X - thanks to @kleinpanic - manually closes #110
 - v7.3.71 - update to Prism 3.X - still pondering if I should release this

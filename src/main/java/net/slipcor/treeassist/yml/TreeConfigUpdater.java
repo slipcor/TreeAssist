@@ -46,7 +46,9 @@ public class TreeConfigUpdater {
         DEFAULT_1215_TALL_DRY_GRASS(7.3069f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:tall_dry_grass", new int[] {1, 21, 5}),
         DEFAULT_1215_WILDFLOWERS(7.3069f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:wildflowers", new int[] {1, 21, 5}),
 
-        DEFAULT_263_RED_SHRUB(7.3072f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:red_shrub", new int[] {26, 3, 0})
+        DEFAULT_263_RED_SHRUB(7.3072f, "default", TreeConfig.CFG.NATURAL_BLOCKS, "minecraft:red_shrub", new int[] {26, 3, 0}),
+
+        TOOL_LIST_COPPER(7.3074f, "default", TreeConfig.CFG.TOOL_LIST, "minecraft:copper_axe", new int[] {1, 21, 9})
 
         ;
 
@@ -109,7 +111,10 @@ public class TreeConfigUpdater {
         AUTOMATIC_DESTRUCTION_AUTO_ADD_ONLY_LOGS_TO_INVENTORY(7.3037f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_ONLY_LOGS_TO_INVENTORY.getNode(), false, new int[] {1, 16, 0}),
         DEFAULT_MAXIMUM_HEIGHT(7.3041f, "default", TreeConfig.CFG.TRUNK_MAXIMUM_HEIGHT.getNode(), -1, new int[] {1, 16, 0}),
 
-        AUTOMATIC_DESTRUCTION_AUTO_ADD_DROP_FAILED(7.3055f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_DROP_FAILED.getNode(), false, new int[] {1, 13, 0})
+        AUTOMATIC_DESTRUCTION_AUTO_ADD_DROP_FAILED(7.3055f, "default", TreeConfig.CFG.AUTOMATIC_DESTRUCTION_AUTO_ADD_DROP_FAILED.getNode(), false, new int[] {1, 13, 0}),
+
+        BLOCKS_DROP_CHANCE_COPPER_AXE(7.3074f, "default", TreeConfig.CFG.BLOCKS_CUSTOM_DROPS_FACTORS.getNode() + ".minecraft:copper_axe", 0.35, new int[] {1, 21, 9}),
+        TRUNK_DROP_CHANCE_COPPER_AXE(7.3074f, "default", TreeConfig.CFG.TRUNK_CUSTOM_DROPS_FACTORS.getNode() + ".minecraft:copper_axe", 0.35, new int[] {1, 21, 9})
         ;
 
         private final float version;
