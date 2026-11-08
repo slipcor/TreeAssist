@@ -65,14 +65,6 @@
 		<dependency>
 			<groupId>me.botsko</groupId>
 			<artifactId>prism</artifactId>
-			<version>2.0.4</version>
-			<type>jar</type>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/prism-2.0.4.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>me.botsko</groupId>
-			<artifactId>prism</artifactId>
 			<version>3.12.0</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/Prism-3.12.0-all.jar</systemPath>
