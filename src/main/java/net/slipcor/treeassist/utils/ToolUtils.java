@@ -51,7 +51,11 @@ public class ToolUtils {
                 logTime = 1.5F;
                 break;
             default:
-                logTime = 3.0F;
+                if (element.name().equals("COPPER_AXE")) {
+                    logTime = 0.6F;
+                } else {
+                    logTime = 3.0F;
+                }
                 break;
         }
 
@@ -75,7 +79,11 @@ public class ToolUtils {
                 strippedLogTime = 0.75F;
                 break;
             default:
-                strippedLogTime = 1.5F;
+                if (element.name().equals("COPPER_AXE")) {
+                    strippedLogTime = 0.3F;
+                } else {
+                    strippedLogTime = 1.5F;
+                }
                 break;
         }
 
@@ -104,7 +112,13 @@ public class ToolUtils {
                 leafTime = 0.2F;
                 break;
             default:
-                leafTime = 0.35F;
+                if (element.name().equals("COPPER_SWORD")) {
+                    leafTime = 0.2F;
+                } else if (element.name().equals("COPPER_HOE")) {
+                    leafTime = 0.075F;
+                } else {
+                    leafTime = 0.35F;
+                }
                 break;
         }
 
